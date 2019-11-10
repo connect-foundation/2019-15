@@ -3,9 +3,9 @@ import ReactDOM from 'react-dom';
 import { ThemeProvider } from 'styled-components';
 import ApolloClient from 'apollo-boost';
 import { ApolloProvider } from '@apollo/react-hooks';
-import Main from './pages/main';
-import theme from './themes/theme';
+import globalStyle from './themes/globalStyle';
 import * as serviceWorker from './serviceWorker';
+import Router from './Router';
 
 let REACT_APP_API_URI = process.env.REACT_APP_LOCAL_API_URI;
 if (process.env.REACT_APP_ENVIRONMENT === 'development') {
@@ -17,8 +17,8 @@ const client = new ApolloClient({ uri: REACT_APP_API_URI });
 
 ReactDOM.render(
   <ApolloProvider client={client}>
-    <ThemeProvider theme={theme}>
-      <Main />
+    <ThemeProvider theme={globalStyle}>
+      <Router />
     </ThemeProvider>
   </ApolloProvider>, document.getElementById('root'));
 

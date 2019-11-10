@@ -29,7 +29,4 @@ app.use((err, req, res) => {
   });
 });
 
-require('dotenv').config();
-console.log(process.env.NODE_ENV)
-
 module.exports = app;
