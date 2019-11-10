@@ -20,7 +20,7 @@ const baseDbSetting = {
 
 module.exports = {
   production: {
-    host: process.env.DB_HOST,
+    host: process.env.DB_PROD_HOST,
     ...baseDbSetting,
   },
 
@@ -29,8 +29,8 @@ module.exports = {
     ...baseDbSetting,
   },
 
-  test: {
-    host: process.env.DB_DEV_HOST,
+  local: {
+    host: process.env.DB_LOCAL_HOST,
     ...baseDbSetting,
   },
 };
