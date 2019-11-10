@@ -6,9 +6,9 @@
     "start": "cross-env NODE_ENV='production' node ./bin/www",
     "dev": "cross-env NODE_ENV='development' node ./bin/www",
     "local": "cross-env NODE_ENV='local' nodemon ./bin/www",
-    "test:prod": "cross-env NODE_ENV='production' ./node_modules/.bin/jest",
-    "test:dev": "cross-env NODE_ENV='development' ./node_modules/.bin/jest",
-    "test:local": "cross-env NODE_ENV='local' ./node_modules/.bin/jest"
+    "test:prod": "cross-env NODE_ENV='production' jest",
+    "test:dev": "cross-env NODE_ENV='development' jest",
+    "test:local": "cross-env NODE_ENV='local' jest"
   },
   "repository": {
     "type": "git",
