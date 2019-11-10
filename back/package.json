@@ -1,0 +1,56 @@
+{
+  "name": "server",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "cross-env NODE_ENV='production' node ./bin/www",
+    "dev": "cross-env NODE_ENV='development' node ./bin/www",
+    "local": "cross-env NODE_ENV='local' nodemon ./bin/www",
+    "test:prod": "cross-env NODE_ENV='production' ./node_modules/.bin/jest",
+    "test:dev": "cross-env NODE_ENV='development' ./node_modules/.bin/jest",
+    "test:local": "cross-env NODE_ENV='local' ./node_modules/.bin/jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/changgunyee/membership-airbnb.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/changgunyee/membership-airbnb/issues"
+  },
+  "homepage": "https://github.com/changgunyee/membership-airbnb#readme",
+  "dependencies": {
+    "cookie-parser": "~1.4.4",
+    "cors": "^2.8.5",
+    "debug": "~2.6.9",
+    "dotenv": "^8.1.0",
+    "express": "~4.16.1",
+    "express-graphql": "^0.9.0",
+    "express-session": "^1.16.2",
+    "graphql": "^14.5.8",
+    "graphql-tools": "^4.0.5",
+    "http-errors": "~1.6.3",
+    "jsonwebtoken": "^8.5.1",
+    "morgan": "~1.9.1",
+    "mysql2": "^1.7.0",
+    "sequelize": "^5.19.6",
+    "sequelize-cli": "^5.5.1"
+  },
+  "devDependencies": {
+    "cross-env": "^6.0.3",
+    "eslint": "^6.1.0",
+    "eslint-config-airbnb": "^18.0.1",
+    "eslint-config-node": "^4.0.0",
+    "eslint-config-prettier": "^6.5.0",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
+    "eslint-plugin-node": "^10.0.0",
+    "eslint-plugin-prettier": "^3.1.1",
+    "eslint-plugin-react": "^7.14.3",
+    "eslint-plugin-react-hooks": "^1.7.0",
+    "jest": "^24.9.0",
+    "nodemon": "^1.19.2",
+    "prettier": "^1.18.2"
+  }
+}
