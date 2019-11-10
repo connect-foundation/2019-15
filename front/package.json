@@ -18,9 +18,9 @@
     "start": "cross-env REACT_APP_ENV='local' react-scripts start",
     "build": "cross-env REACT_APP_ENV='production' react-scripts build",
     "build:dev": "cross-env REACT_APP_ENV='development' react-scripts build",
-    "test:prod": "cross-env REACT_APP_ENV='production' react-scripts test",
-    "test:dev": "cross-env REACT_APP_ENV='development' react-scripts test",
-    "test:local": "cross-env REACT_APP_ENV='local' react-scripts test",
+    "test:prod": "cross-env REACT_APP_ENV='production' jest",
+    "test:dev": "cross-env REACT_APP_ENV='development' jest",
+    "test:local": "cross-env REACT_APP_ENV='local' jest",
     "eject": "react-scripts eject"
   },
   "browserslist": {

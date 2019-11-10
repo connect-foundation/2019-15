@@ -1,9 +1,5 @@
-import React from 'react';
-
-const Topics = () => (
-  <div>
-    <h2>Topics</h2>
-  </div>
-);
-
-export default Topics;
+describe('sample test', () => {
+    it('abc', () => {
+        expect(3).toBe(3);
+    })
+});
