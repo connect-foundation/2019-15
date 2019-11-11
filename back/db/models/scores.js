@@ -1,11 +1,15 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
-  const scores = sequelize.define('scores', {
-    user_id: DataTypes.INTEGER,
-    score: DataTypes.BIGINT
-  }, {});
+  const scores = sequelize.define(
+    'scores',
+    {
+      user_id: DataTypes.INTEGER,
+      score: DataTypes.BIGINT,
+    },
+    {},
+  );
   scores.associate = function(models) {
-    // associations can be defined here
+    scores.belongsTo(models.users, { as: 'user_id', foreignkey: 'id' });
   };
   return scores;
 };

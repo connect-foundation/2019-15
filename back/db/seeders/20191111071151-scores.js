@@ -16,19 +16,19 @@ module.exports = {
       'scores',
       [
         {
-          userid: '1111',
+          user_id: 1,
           score: 10000,
         },
         {
-          userid: '2222',
+          user_id: 2,
           score: 20000,
         },
         {
-          userid: '3333',
+          user_id: 3,
           score: 30000,
         },
         {
-          userid: '4444',
+          user_id: 4,
           score: 40000,
         },
       ],
