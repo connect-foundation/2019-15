@@ -1,0 +1,89 @@
+language: node_js
+
+node_js:
+  - 12
+
+cache: npm
+
+services:
+  - docker
+
+branches:
+  only:
+    - master
+    - develop
+
+jobs:
+  include:
+    - stage: "TEST"
+      name: "FRONT TEST"
+      before_install:
+        - cd ./front
+      install:
+        - npm install
+      script:
+        - |
+          if [ $TRAVIS_BRANCH == "master" ]; then
+            npm run test:prod
+          else
+            npm run test:dev
+          fi
+
+    - name: "BACK TEST"
+      before_install:
+        - cd ./back
+      install:
+        - npm install
+      script:
+        - |
+          if [ $TRAVIS_BRANCH == "master" ]; then
+            npm run test:prod
+          else
+            npm run test:dev
+          fi
+
+    - stage: "DEV DEPLOY"
+      name: "DEPLOY FRONT"
+      if: type = push AND branch = develop
+      before_install:
+        - sudo apt-get install sshpass
+      before_script:
+        - echo "$DOCKER_PASSWORD" | docker login -u "${DOCKER_USERNAME}" --password-stdin
+      script:
+        - docker build -t "$DOCKER_USERNAME"/"$DOCKER_FRONT_DEV_REPO":latest ./front
+        - docker push "$DOCKER_USERNAME"/"$DOCKER_FRONT_DEV_REPO":latest
+        - sshpass -p "$DEVELOPER_PASSWORD" ssh -o StrictHostKeyChecking=no developer@"$DEV_FRONT_IP" "/home/execute.sh" 
+
+    - name: "DEPLOY BACK"
+      if: type = push AND branch = develop
+      before_install:
+        - sudo apt-get install sshpass
+      before_script:
+        - echo "$DOCKER_PASSWORD" | docker login -u "${DOCKER_USERNAME}" --password-stdin  
+      script:
+        - docker build -t "$DOCKER_USERNAME"/"$DOCKER_BACK_DEV_REPO":latest ./back
+        - docker push "$DOCKER_USERNAME"/"$DOCKER_BACK_DEV_REPO":latest
+        - sshpass -p "$DEVELOPER_PASSWORD" ssh -o StrictHostKeyChecking=no developer@"$DEV_BACK_IP" "/home/execute.sh"
+
+    - stage: "MASTER DEPLOY"
+      name: "DEPLOY FRONT"
+      if: type = push AND branch = master
+      before_install:
+        - sudo apt-get install sshpass
+      before_script:
+        - echo "$DOCKER_PASSWORD" | docker login -u "${DOCKER_USERNAME}" --password-stdin
+      script:
+        - docker build -t "$DOCKER_USERNAME"/"$DOCKER_FRONT_REPO":latest ./front
+        - docker push "$DOCKER_USERNAME"/"$DOCKER_FRONT_REPO":latest
+        - sshpass -p "$DEVELOPER_PASSWORD" ssh -o StrictHostKeyChecking=no developer@"$FRONT_IP" "/home/execute.sh" 
+
+    - name: "DEPLOY BACK"
+      if: type = push AND branch = master
+      before_install:
+        - sudo apt-get install sshpass
+      before_script:
+        - echo "$DOCKER_PASSWORD" | docker login -u "${DOCKER_USERNAME}" --password-stdin
+      script:
+        - docker build -t "$DOCKER_USERNAME"/"$DOCKER_BACK_REPO":latest ./back
+        - docker push "$DOCKER_USERNAME"/"$DOCKER_BACK_REPO":latest
+        - sshpass -p "$DEVELOPER_PASSWORD" ssh -o StrictHostKeyChecking=no developer@"$BACK_IP" "/home/execute.sh"
