@@ -2,16 +2,16 @@
 
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.bulfInsert(
+    return queryInterface.bulkInsert(
       'users',
       [
         {
-          userid: '1111',
+          user_id: '1111',
           nickname: '이지영',
         },
-        { userid: '2222', nickname: '이창권' },
-        { userid: '3333', nickname: '손진아' },
-        { userid: '4444', nickname: '최형준' },
+        { user_id: '2222', nickname: '이창권' },
+        { user_id: '3333', nickname: '손진아' },
+        { user_id: '4444', nickname: '최형준' },
       ],
       {},
     );
