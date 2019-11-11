@@ -6,28 +6,28 @@ module.exports = {
       'friends',
       [
         {
-          p_friend_id: '1111',
-          s_friend_id: '4444',
+          p_friend_id: 1,
+          s_friend_id: 4,
         },
         {
-          p_friend_id: '2222',
-          s_friend_id: '4444',
+          p_friend_id: 2,
+          s_friend_id: 4,
         },
         {
-          p_friend_id: '3333',
-          s_friend_id: '4444',
+          p_friend_id: 3,
+          s_friend_id: 4,
         },
         {
-          p_friend_id: '4444',
-          s_friend_id: '1111',
+          p_friend_id: 4,
+          s_friend_id: 1,
         },
         {
-          p_friend_id: '4444',
-          s_friend_id: '2222',
+          p_friend_id: 4,
+          s_friend_id: 2,
         },
         {
-          p_friend_id: '4444',
-          s_friend_id: '3333',
+          p_friend_id: 4,
+          s_friend_id: 3,
         },
       ],
       {},

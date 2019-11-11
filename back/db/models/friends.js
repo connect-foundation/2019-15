@@ -1,11 +1,17 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
-  const friends = sequelize.define('friends', {
-    p_friend_id: DataTypes.INTEGER,
-    s_friend_id: DataTypes.INTEGER
-  }, {});
+  const friends = sequelize.define(
+    'friends',
+    {
+      p_friend_id: DataTypes.INTEGER,
+      s_friend_id: DataTypes.INTEGER,
+    },
+    {},
+  );
   friends.associate = function(models) {
-    // associations can be defined here
+    friends.belongsTo(models.users, { as: 'p_friend_id', foreignkey: 'id' });
+    friends.belongsTo(models.users, { as: 's_friend_id', foreignkey: 'id' });
+    friends.hasMany(models.invitaions);
   };
   return friends;
 };
