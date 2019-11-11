@@ -6,19 +6,19 @@ module.exports = {
       'invitations',
       [
         {
-          frined_id: 1,
+          friends_id: 1,
           url: 'https://github.com/eminem54',
         },
         {
-          frined_id: 2,
+          friends_id: 2,
           url: 'https://github.com/hos101010',
         },
         {
-          frined_id: 3,
+          friends_id: 3,
           url: 'https://github.com/changgunyee',
         },
         {
-          frined_id: 4,
+          friends_id: 4,
           url: 'https://github.com/einere',
         },
       ],

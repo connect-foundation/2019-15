@@ -10,6 +10,10 @@ module.exports = {
       },
       friends_id: {
         type: Sequelize.INTEGER,
+        references: {
+          model: 'friends',
+          key: 'id',
+        },
       },
       url: {
         type: Sequelize.TEXT,
@@ -17,10 +21,12 @@ module.exports = {
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
+        defaultValue: Sequelize.literal('NOW()'),
       },
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE,
+        defaultValue: Sequelize.literal('NOW()'),
       },
     });
   },
