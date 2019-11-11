@@ -3,7 +3,6 @@ module.exports = (sequelize, DataTypes) => {
   const scores = sequelize.define(
     'scores',
     {
-      user_id: DataTypes.INTEGER,
       score: DataTypes.BIGINT,
     },
     {},

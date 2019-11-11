@@ -1,15 +1,9 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
-  const invitations = sequelize.define(
-    'invitations',
-    {
-      friends_id: DataTypes.INTEGER,
-    },
-    {},
-  );
+  const invitations = sequelize.define('invitations', {}, {});
   invitations.associate = function(models) {
     invitations.belongsTo(models.friends, {
-      as: 'friends_id',
+      as: 'friend_id',
       foreignKey: 'id',
     });
   };

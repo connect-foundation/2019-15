@@ -1,14 +1,6 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
-  const before_friends = sequelize.define(
-    'before_friends',
-    {
-      p_friend_id: DataTypes.INTEGER,
-      s_friend_id: DataTypes.INTEGER,
-      friend_state_id: DataTypes.INTEGER,
-    },
-    {},
-  );
+  const before_friends = sequelize.define('before_friends', {}, {});
   before_friends.associate = function(models) {
     before_friends.belongsTo(models.users, {
       as: 'p_friend_id',
