@@ -8,6 +8,7 @@ const LoginGoogleStyle = styled.button`
   border-radius: 5px;
   text-align: center;
   font-size: 1.5rem;
+  border: 1px solid lightgray;
   margin: 0.5rem;
   & > img,
   & > span {
