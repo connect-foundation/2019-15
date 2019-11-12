@@ -1,3 +1,4 @@
+require('dotenv').config();
 const createError = require('http-errors');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
@@ -8,10 +9,10 @@ const session = require('express-session');
 // cors
 const corsOptions = require('./config/corsOptions');
 // passport
-const passport = require('./config/passportFacebook');
+const passport = require('./config/passport');
 // router
 const apiRouter = require('./router/api');
-const authRouter = require('./router/auth');
+const authRouter = require('./router/auth/auth');
 
 const app = express();
 app.use(cors(corsOptions));
