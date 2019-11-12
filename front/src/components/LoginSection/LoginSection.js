@@ -1,13 +1,8 @@
 import React from 'react';
-import styled from 'styled-components';
 import LoginFacebook from './LoginFacebook/LoginFacebook';
 import LoginGoogle from './LoginGoogle/LoginGoogle';
 import AutoLogin from './AutoLogin/AutoLogin';
-
-const LoginSectionStyle = styled.section`
-  display: flex;
-  flex-direction: column;
-`;
+import LoginSectionStyle from './LoginSection.style';
 
 const LoginSection = () => (
   <LoginSectionStyle className="login-section">

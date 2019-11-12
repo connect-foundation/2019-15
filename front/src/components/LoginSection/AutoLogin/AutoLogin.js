@@ -1,8 +1,13 @@
 import React from 'react';
-import styled from 'styled-components';
+import AutoLoginStyle from './AutoLogin.style';
 
-const AutoLoginStyle = styled.input``;
-
-const AutoLogin = () => <AutoLoginStyle type="checkbox" />;
+const AutoLogin = () => (
+  <>
+    <label>
+      <AutoLoginStyle type="checkbox" />
+      자동 로그인
+    </label>
+  </>
+);
 
 export default AutoLogin;
