@@ -2,3 +2,7 @@ html, body{
     margin:0;
     padding:0;
 }
+
+a, a:active, a:visited, a:hover, a:link {
+    text-decoration: none;
+}
