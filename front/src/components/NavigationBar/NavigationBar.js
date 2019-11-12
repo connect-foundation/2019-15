@@ -7,8 +7,7 @@ import Image from '../globalComponents/Image/Image';
 const NavigationBar = () => {
   return (
     <NavigationBarStyle >
-      <Image src={mainlogo} width={'200px'} height={'50px'}/>
-      <Button/>
+      <Image src={mainlogo}/>
     </NavigationBarStyle>
   )
 }

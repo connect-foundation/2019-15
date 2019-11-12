@@ -1,8 +1,8 @@
 import React from 'react';
 import ButtonStyle from './Button.style';
 
-const Button = () => (
-    <ButtonStyle label={'버튼입니당'} width={'5rem'} height={'1.5rem'}/>
+const Button = (props) => (
+    <ButtonStyle value={props.value} onClick={props.onClick}/>
   );
   
   export default Button;
