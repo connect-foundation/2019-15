@@ -22,7 +22,12 @@ jobs:
       install:
         - npm install
       script:
-        - npm test
+        - |
+          if [ $TRAVIS_BRANCH == "master" ]; then
+            npm run test:prod
+          else
+            npm run test:dev
+          fi
 
     - name: "BACK TEST"
       before_install:
@@ -30,7 +35,12 @@ jobs:
       install:
         - npm install
       script:
-        - npm test
+        - |
+          if [ $TRAVIS_BRANCH == "master" ]; then
+            npm run test:prod
+          else
+            npm run test:dev
+          fi
 
     - stage: "DEV DEPLOY"
       name: "DEPLOY FRONT"
@@ -40,9 +50,9 @@ jobs:
       before_script:
         - echo "$DOCKER_PASSWORD" | docker login -u "${DOCKER_USERNAME}" --password-stdin
       script:
-        - docker build -t "$DOCKER_USERNAME"/"$DOCKER_FRONT_DEV_REPO":latest ./front
+        - docker build -f ./front/Dockerfile.dev -t "$DOCKER_USERNAME"/"$DOCKER_FRONT_DEV_REPO":latest ./front
         - docker push "$DOCKER_USERNAME"/"$DOCKER_FRONT_DEV_REPO":latest
-        - sshpass -p "$ROOT_PASSWORD" ssh -o StrictHostKeyChecking=no root@"$DEV_FRONT_IP" "/home/execute.sh" 
+        - sshpass -p "$DEVELOPER_PASSWORD" ssh -o StrictHostKeyChecking=no developer@"$DEV_FRONT_IP" "/home/execute.sh" 
 
     - name: "DEPLOY BACK"
       if: type = push AND branch = develop
@@ -51,9 +61,9 @@ jobs:
       before_script:
         - echo "$DOCKER_PASSWORD" | docker login -u "${DOCKER_USERNAME}" --password-stdin  
       script:
-        - docker build -t "$DOCKER_USERNAME"/"$DOCKER_BACK_DEV_REPO":latest ./back
+        - docker build -f ./back/Dockerfile.dev -t "$DOCKER_USERNAME"/"$DOCKER_BACK_DEV_REPO":latest ./back
         - docker push "$DOCKER_USERNAME"/"$DOCKER_BACK_DEV_REPO":latest
-        - sshpass -p "$ROOT_PASSWORD" ssh -o StrictHostKeyChecking=no root@"$DEV_BACK_IP" "/home/execute.sh"
+        - sshpass -p "$DEVELOPER_PASSWORD" ssh -o StrictHostKeyChecking=no developer@"$DEV_BACK_IP" "/home/execute.sh"
 
     - stage: "MASTER DEPLOY"
       name: "DEPLOY FRONT"
@@ -65,7 +75,7 @@ jobs:
       script:
         - docker build -t "$DOCKER_USERNAME"/"$DOCKER_FRONT_REPO":latest ./front
         - docker push "$DOCKER_USERNAME"/"$DOCKER_FRONT_REPO":latest
-        - sshpass -p "$ROOT_PASSWORD" ssh -o StrictHostKeyChecking=no root@"$FRONT_IP" "/home/execute.sh" 
+        - sshpass -p "$DEVELOPER_PASSWORD" ssh -o StrictHostKeyChecking=no developer@"$FRONT_IP" "/home/execute.sh" 
 
     - name: "DEPLOY BACK"
       if: type = push AND branch = master
