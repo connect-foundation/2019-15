@@ -6,6 +6,7 @@ const LoginFacebookStyle = styled.button`
   color: white;
   background-color: #4267b2;
   border-radius: 5px;
+  border: 0;
   text-align: center;
   font-size: 1.5rem;
   margin: 0.5rem;
