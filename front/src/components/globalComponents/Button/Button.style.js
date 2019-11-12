@@ -1,9 +1,6 @@
 import styled from 'styled-components';
 
-const ButtonStyle = styled.input.attrs(props=>({
-    type:'button',
-    value: props.value
-}))`
+const ButtonStyle = styled.button`
     text-align: center;
     border: 1px solid #EDEEEC;
     border-radius: 1rem;
