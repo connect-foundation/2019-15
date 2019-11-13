@@ -1,6 +1,7 @@
+const user = require('./user');
+
 const root = `
     type Query
-    type Mutation
 `;
 
-module.exports = [root];
+module.exports = [root, user];
