@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const MAIN_COMPONENT_HEIGHT = `50rem`;
+const MAIN_COMPONENT_HEIGHT = '50rem';
 
 const RoomSelectSectionStyle = styled.div`
   width: 100%;
