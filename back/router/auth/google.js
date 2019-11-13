@@ -27,11 +27,11 @@ router.get(
 
 router.get('/login_success', function(req, res) {
   req.user.token = signJWT(req);
-  res.sendStatus(200);
+  res.redirect(`${process.env.REACT_APP_LOCAL_URI}/main`);
 });
 
 router.get('/login_fail', function(req, res) {
-  res.sendStatus(401);
+  res.redirect(`${process.env.REACT_APP_LOCAL_URI}`);
 });
 
 module.exports = router;
