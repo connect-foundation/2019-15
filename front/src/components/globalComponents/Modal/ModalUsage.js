@@ -4,29 +4,21 @@ import Button from '../Button/Button';
 import Modal from './Modal';
 
 const ModalUsage = (props) => {
-  const [state, setState] = useState(false);
+  const [open, setOpen] = useState(false);
 
-  function ChangeState(changeState) {
-    setState(changeState);
+  function modalOn() {
+    setOpen(true);
+  }
+
+  function modalOff() {
+    setOpen(false);
   }
 
   return (
     <>
-      <Button
-        onClick={() => {
-          ChangeState(true);
-        }}
-      >
-        모달 키기
-      </Button>
-      <Modal isVisible={state}>
-        <Button
-          onClick={() => {
-            ChangeState(false);
-          }}
-        >
-          모달 끄기
-        </Button>
+      <Button onClick={modalOn}>모달 키기</Button>
+      <Modal isVisible={open}>
+        <Button onClick={modalOff}>모달 끄기</Button>
       </Modal>
     </>
   );
