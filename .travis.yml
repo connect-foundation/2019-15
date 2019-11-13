@@ -41,6 +41,7 @@ jobs:
       before_script:
         - sed -i 's/DB_USER=/DB_USER='"$DB_USER"'/' .env
         - sed -i 's/DB_PW=/DB_PW='"$DEVELOPER_PASSWORD"'/' .env
+        - sed -i 's/DB_NAME=/DB_NAME='"$DB_NAME"'/' .env
         - sed -i 's/DB_PROD_HOST=/DB_PROD_HOST='"$DB_PROD_HOST"'/' .env
         - sed -i 's/DB_DEV_HOST=/DB_DEV_HOST='"$DB_DEV_HOST"'/' .env
         - sed -i 's/PASSPORT_FACEBOOK_CLIENT_ID=/PASSPORT_FACEBOOK_CLIENT_ID='"$PASSPORT_FACEBOOK_CLIENT_ID"'/' .env
@@ -78,6 +79,7 @@ jobs:
       before_script:
         - sed -i 's/DB_USER=/DB_USER='"$DB_USER"'/' .env
         - sed -i 's/DB_PW=/DB_PW='"$DEVELOPER_PASSWORD"'/' .env
+        - sed -i 's/DB_NAME=/DB_NAME='"$DB_NAME"'/' .env
         - sed -i 's/DB_DEV_HOST=/DB_DEV_HOST='"$DB_DEV_HOST"'/' .env
         - sed -i 's/PASSPORT_FACEBOOK_CLIENT_ID=/PASSPORT_FACEBOOK_CLIENT_ID='"$PASSPORT_FACEBOOK_CLIENT_ID"'/' .env
         - sed -i 's/PASSPORT_FACEBOOK_CLIENT_SECRET=/PASSPORT_FACEBOOK_CLIENT_SECRET='"$PASSPORT_FACEBOOK_CLIENT_SECRET"'/' .env
@@ -112,6 +114,7 @@ jobs:
       before_script:
         - sed -i 's/DB_USER=/DB_USER='"$DB_USER"'/' .env
         - sed -i 's/DB_PW=/DB_PW='"$DEVELOPER_PASSWORD"'/' .env
+        - sed -i 's/DB_NAME=/DB_NAME='"$DB_NAME"'/' .env
         - sed -i 's/DB_PROD_HOST=/DB_PROD_HOST='"$DB_PROD_HOST"'/' .env
         - sed -i 's/PASSPORT_FACEBOOK_CLIENT_ID=/PASSPORT_FACEBOOK_CLIENT_ID='"$PASSPORT_FACEBOOK_CLIENT_ID"'/' .env
         - sed -i 's/PASSPORT_FACEBOOK_CLIENT_SECRET=/PASSPORT_FACEBOOK_CLIENT_SECRET='"$PASSPORT_FACEBOOK_CLIENT_SECRET"'/' .env
