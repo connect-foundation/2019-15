@@ -1,8 +1,9 @@
 const express = require('express');
 
 const router = express.Router();
-const passport = require('../../config/passport');
+const passport = require('../../util/passport');
 const authenticate = require('../../middleware/authenticate');
+const signJWT = require('../../util/signJWT');
 
 router.get('/test', authenticate);
 
@@ -17,6 +18,7 @@ router.get(
 );
 
 router.get('/login_success', function(req, res) {
+  req.user.token = signJWT(req);
   res.sendStatus(200);
 });
 
