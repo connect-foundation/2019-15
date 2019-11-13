@@ -1,5 +1,6 @@
 import React from 'react';
-import { BackgroundModalStyle, ModalStyle } from './Modal.style';
+import BackgroundModalStyle from './BackgroundModal.style';
+import ModalStyle from './Modal.style';
 
 function Modal(props) {
   return (
