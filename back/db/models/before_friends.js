@@ -1,4 +1,3 @@
-'use strict';
 module.exports = (sequelize, DataTypes) => {
   const before_friends = sequelize.define('before_friends', {}, {});
   before_friends.associate = function(models) {
