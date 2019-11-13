@@ -1,4 +1,3 @@
-'use strict';
 module.exports = (sequelize, DataTypes) => {
   const friend_states = sequelize.define(
     'friend_states',

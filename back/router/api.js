@@ -5,11 +5,13 @@ const schema = require('../graphql/schema');
 
 const router = express.Router();
 
-router.use('/',
+router.use(
+  '/',
   graphqlHTTP({
     schema,
     graphiql: true,
     context: models,
-  }));
+  }),
+);
 
 module.exports = router;
