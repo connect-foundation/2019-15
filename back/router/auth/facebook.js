@@ -1,8 +1,9 @@
 const express = require('express');
 
 const router = express.Router();
-const passport = require('../../config/passport');
+const passport = require('../../util/passport');
 const authenticate = require('../../middleware/authenticate');
+const signJWT = require('../../util/signJWT');
 
 router.get('/test', authenticate);
 
@@ -17,11 +18,12 @@ router.get(
 );
 
 router.get('/login_success', function(req, res) {
-  res.sendStatus(200);
+  req.user.token = signJWT(req);
+  res.redirect(`${process.env.REACT_APP_LOCAL_URI}/main`);
 });
 
 router.get('/login_fail', function(req, res) {
-  res.sendStatus(401);
+  res.redirect(`${process.env.REACT_APP_LOCAL_URI}`);
 });
 
 module.exports = router;
