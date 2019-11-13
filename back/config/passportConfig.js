@@ -1,8 +1,8 @@
 let SERVER_URI = process.env.DB_LOCAL_HOST;
 if (process.env.NODE_ENV === 'production') {
   SERVER_URI = process.env.DB_PROD_HOST;
-} else if(process.env.NODE_ENV==='development'){
-  SERVER_URI=process.env.DB_DEV_HOST;
+} else if (process.env.NODE_ENV === 'development') {
+  SERVER_URI = process.env.DB_DEV_HOST;
 }
 
 const passportConfig = {

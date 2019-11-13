@@ -3,7 +3,7 @@ require('dotenv').config();
 const baseDbSetting = {
   username: process.env.DB_USER,
   password: process.env.DB_PW,
-  dialect: mysql,
+  dialect: 'mysql',
   database: process.env.DB_NAME,
   pool: {
     max: 100,
