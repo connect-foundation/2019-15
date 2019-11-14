@@ -63,11 +63,11 @@ jobs:
     - stage: "DEV DEPLOY"
       name: "DEPLOY FRONT"
       before_install:
+        - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
         - cd ./front
         - sudo apt-get install sshpass
       before_script:
         - sed -i 's/REACT_APP_DEV_API_URI=/REACT_APP_DEV_API_URI='"$DEV_BACK_IP"'/' .env
-        - echo "$DOCKER_PASSWORD" | docker login -u "${DOCKER_USERNAME}" --password-stdin
         - cat .env
       script:
         - docker build -f ./Dockerfile.dev -t "$DOCKER_USERNAME"/"$DOCKER_FRONT_DEV_REPO":latest .
@@ -76,6 +76,7 @@ jobs:
 
     - name: "DEPLOY BACK"
       before_install:
+        - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
         - cd ./back
         - sudo apt-get install sshpass
       before_script:
@@ -90,7 +91,6 @@ jobs:
         - sed -i 's/JWT_SECRET=/JWT_SECRET='"$JWT_SECRET"'/' .env
         - sed -i 's/EXPRESS_APP_URI=/EXPRESS_APP_URI='"$DEV_BACK_IP"'/' .env
         - sed -i 's/REACT_APP_URI=/REACT_APP_URI='"$DEV_FRONT_IP"'/' .env
-        - echo "$DOCKER_PASSWORD" | docker login -u "${DOCKER_USERNAME}" --password-stdin  
         - cat .env
       script:
         - docker build -f ./Dockerfile.dev -t "$DOCKER_USERNAME"/"$DOCKER_BACK_DEV_REPO":latest .
@@ -101,11 +101,11 @@ jobs:
       name: "DEPLOY FRONT"
       if: type = push AND branch = master
       before_install:
+        - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
         - cd ./front
         - sudo apt-get install sshpass
       before_script:
         - sed -i 's/REACT_APP_API_URI=/REACT_APP_API_URI='"$BACK_IP"'/' .env
-        - echo "$DOCKER_PASSWORD" | docker login -u "${DOCKER_USERNAME}" --password-stdin
         - cat .env
       script:
         - docker build -t "$DOCKER_USERNAME"/"$DOCKER_FRONT_REPO":latest .
@@ -115,6 +115,7 @@ jobs:
     - name: "DEPLOY BACK"
       if: type = push AND branch = master
       before_install:
+        - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
         - cd ./back
         - sudo apt-get install sshpass
       before_script:
@@ -129,7 +130,6 @@ jobs:
         - sed -i 's/JWT_SECRET=/JWT_SECRET='"$JWT_SECRET"'/' .env
         - sed -i 's/EXPRESS_APP_URI=/EXPRESS_APP_URI='"$BACK_IP"'/' .env
         - sed -i 's/REACT_APP_URI=/REACT_APP_URI='"$FRONT_IP"'/' .env
-        - echo "$DOCKER_PASSWORD" | docker login -u "${DOCKER_USERNAME}" --password-stdin
         - cat .env
       script:
         - docker build -t "$DOCKER_USERNAME"/"$DOCKER_BACK_REPO":latest .
