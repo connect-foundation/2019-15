@@ -49,6 +49,8 @@ jobs:
         - sed -i 's/PASSPORT_GOOGLE_CLIENT_ID=/PASSPORT_GOOGLE_CLIENT_ID='"$PASSPORT_GOOGLE_CLIENT_ID"'/' .env
         - sed -i 's/PASSPORT_GOOGLE_CLIENT_SECRET=/PASSPORT_GOOGLE_CLIENT_SECRET='"$PASSPORT_GOOGLE_CLIENT_SECRET"'/' .env
         - sed -i 's/JWT_SECRET=/JWT_SECRET='"$JWT_SECRET"'/' .env
+        - sed -i 's/EXPRESS_APP_URI=/EXPRESS_APP_URI='"$DEV_BACK_IP"'/' .env
+        - sed -i 's/REACT_APP_URI=/REACT_APP_URI='"$DEV_FRONT_IP"'/' .env
         - cat .env
       script:
         - |
@@ -86,6 +88,8 @@ jobs:
         - sed -i 's/PASSPORT_GOOGLE_CLIENT_ID=/PASSPORT_GOOGLE_CLIENT_ID='"$PASSPORT_GOOGLE_CLIENT_ID"'/' .env
         - sed -i 's/PASSPORT_GOOGLE_CLIENT_SECRET=/PASSPORT_GOOGLE_CLIENT_SECRET='"$PASSPORT_GOOGLE_CLIENT_SECRET"'/' .env
         - sed -i 's/JWT_SECRET=/JWT_SECRET='"$JWT_SECRET"'/' .env
+        - sed -i 's/EXPRESS_APP_URI=/EXPRESS_APP_URI='"$DEV_BACK_IP"'/' .env
+        - sed -i 's/REACT_APP_URI=/REACT_APP_URI='"$DEV_FRONT_IP"'/' .env
         - echo "$DOCKER_PASSWORD" | docker login -u "${DOCKER_USERNAME}" --password-stdin  
         - cat .env
       script:
@@ -121,6 +125,8 @@ jobs:
         - sed -i 's/PASSPORT_GOOGLE_CLIENT_ID=/PASSPORT_GOOGLE_CLIENT_ID='"$PASSPORT_GOOGLE_CLIENT_ID"'/' .env
         - sed -i 's/PASSPORT_GOOGLE_CLIENT_SECRET=/PASSPORT_GOOGLE_CLIENT_SECRET='"$PASSPORT_GOOGLE_CLIENT_SECRET"'/' .env
         - sed -i 's/JWT_SECRET=/JWT_SECRET='"$JWT_SECRET"'/' .env
+        - sed -i 's/EXPRESS_APP_URI=/EXPRESS_APP_URI='"$BACK_IP"'/' .env
+        - sed -i 's/REACT_APP_URI=/REACT_APP_URI='"$FRONT_IP"'/' .env
         - echo "$DOCKER_PASSWORD" | docker login -u "${DOCKER_USERNAME}" --password-stdin
         - cat .env
       script:
