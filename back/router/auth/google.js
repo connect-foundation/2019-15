@@ -2,10 +2,7 @@ const express = require('express');
 
 const router = express.Router();
 const passport = require('../../util/passport');
-const authenticate = require('../../middleware/authenticate');
 const signJWT = require('../../util/signJWT');
-
-router.get('/test', authenticate);
 
 router.get(
   '/login',
