@@ -61,6 +61,7 @@ jobs:
           fi
 
     - stage: "DEV DEPLOY"
+      if: type = push AND branch = develop
       name: "DEPLOY FRONT"
       before_install:
         - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
@@ -75,6 +76,7 @@ jobs:
         - sshpass -p "$DEVELOPER_PASSWORD" ssh -o StrictHostKeyChecking=no developer@"$DEV_FRONT_IP" "/home/execute.sh" 
 
     - name: "DEPLOY BACK"
+      if: type = push AND branch = develop
       before_install:
         - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
         - cd ./back
