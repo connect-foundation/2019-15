@@ -5,7 +5,7 @@ import GLogo from './GLogo/GLogo';
 const LoginGoogle = () => {
   // logics으로 분리 예정
   function loginByGoogle() {
-    window.location.href = `${process.env.REACT_APP_API_URI}/auth/google/login`;
+    window.location.href = `${process.env.REACT_APP_LOCAL_API_URI}/auth/google/login`;
   }
 
   return (
