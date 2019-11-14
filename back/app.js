@@ -5,6 +5,8 @@ const logger = require('morgan');
 const cors = require('cors');
 const express = require('express');
 const session = require('express-session');
+const http = require('http');
+const socketIo = require('socket.io');
 
 // cors
 const corsOptions = require('./config/corsOptions');
@@ -14,7 +16,19 @@ const passport = require('./util/passport');
 const apiRouter = require('./router/api');
 const authRouter = require('./router/auth/auth');
 
+// create express server
 const app = express();
+
+// create http server
+const server = http.createServer(app);
+
+// create socket handler
+const io = socketIo(server);
+const initSocketIO = require('./socket');
+
+// initSocket
+initSocketIO(io);
+
 app.use(cors(corsOptions));
 app.use(logger('dev'));
 app.use(express.json());
@@ -60,4 +74,4 @@ app.use((err, req, res) => {
   });
 });
 
-module.exports = app;
+module.exports = { app, server };
