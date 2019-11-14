@@ -1,6 +1,15 @@
 import React from 'react';
-import PublicRoomStyle from './PublicRoom.style';
+import RoomContainer from '../RoomContainer/RoomContainer';
+import PublicRoomButton from './PublicRoomButton.style';
 
-const PublicRoom = () => <PublicRoomStyle>1</PublicRoomStyle>;
+const PublicRoom = () => {
+  const buttons = ['3명', '6명', '12명', '100명'];
+
+  const buttonComponents = buttons.map((text) => (
+    <PublicRoomButton key={text}>{text}</PublicRoomButton>
+  ));
+
+  return <RoomContainer text="랜덤 게임" buttons={buttonComponents} />;
+};
 
 export default PublicRoom;
