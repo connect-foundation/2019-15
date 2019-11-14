@@ -1,9 +1,8 @@
 const request = require('supertest');
-const app = require('../../app');
+const { app } = require('../../app');
 
 const req = request(app);
 const graphqlPath = '/api';
-
 describe('graphql user resolvers tests', () => {
   it('users query', async done => {
     const res = await req
@@ -16,7 +15,6 @@ describe('graphql user resolvers tests', () => {
           }`,
       })
       .expect(200);
-
     const usersExpected = [
       { user_id: '1111', nickname: '이지영' },
       { user_id: '2222', nickname: '이창권' },
