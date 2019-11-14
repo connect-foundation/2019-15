@@ -25,13 +25,13 @@ router.get(
   }),
 );
 
-router.get('/login_success', function(req, res) {
+router.get('/login_success', function (req, res) {
   req.user.token = signJWT(req);
-  res.redirect(`${process.env.REACT_APP_LOCAL_URI}/main`);
+  res.redirect(`${process.env.REACT_APP_URI}/main`);
 });
 
-router.get('/login_fail', function(req, res) {
-  res.redirect(`${process.env.REACT_APP_LOCAL_URI}`);
+router.get('/login_fail', function (req, res) {
+  res.redirect(`${process.env.REACT_APP_URI}`);
 });
 
 module.exports = router;
