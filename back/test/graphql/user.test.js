@@ -5,7 +5,6 @@ const req = request(app);
 const graphqlPath = '/api';
 
 describe('graphql user resolvers tests', () => {
-  const server = app.listen();
   it('users query', async done => {
     const res = await req
       .post(graphqlPath)
@@ -29,5 +28,4 @@ describe('graphql user resolvers tests', () => {
     );
     done();
   });
-  server.close();
 });
