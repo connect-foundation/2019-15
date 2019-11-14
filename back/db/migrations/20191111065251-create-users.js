@@ -11,6 +11,10 @@ module.exports = {
         type: Sequelize.STRING,
         unique: true,
       },
+      score: {
+        type: Sequelize.BIGINT,
+        defaultValue: 0,
+      },
       nickname: {
         type: Sequelize.STRING,
         unique: true,
