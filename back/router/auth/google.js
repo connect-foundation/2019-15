@@ -1,12 +1,21 @@
 const express = require('express');
 
 const router = express.Router();
-const passport = require('../../config/passport');
+const passport = require('../../util/passport');
 const authenticate = require('../../middleware/authenticate');
+const signJWT = require('../../util/signJWT');
 
 router.get('/test', authenticate);
 
-router.get('/login', passport.authenticate('googleLogin', { scope: 'email' }));
+router.get(
+  '/login',
+  passport.authenticate('googleLogin', {
+    scope: [
+      'https://www.googleapis.com/auth/userinfo.email',
+      'https://www.googleapis.com/auth/userinfo.profile',
+    ],
+  }),
+);
 
 router.get(
   '/callback',
@@ -16,12 +25,13 @@ router.get(
   }),
 );
 
-router.get('/login_success', function(req, res) {
-  res.sendStatus(200);
+router.get('/login_success', function (req, res) {
+  req.user.token = signJWT(req);
+  res.redirect(`${process.env.REACT_APP_URI}/main`);
 });
 
-router.get('/login_fail', function(req, res) {
-  res.sendStatus(401);
+router.get('/login_fail', function (req, res) {
+  res.redirect(`${process.env.REACT_APP_URI}`);
 });
 
 module.exports = router;

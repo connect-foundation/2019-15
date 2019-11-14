@@ -9,7 +9,7 @@ const session = require('express-session');
 // cors
 const corsOptions = require('./config/corsOptions');
 // passport
-const passport = require('./config/passport');
+const passport = require('./util/passport');
 // router
 const apiRouter = require('./router/api');
 const authRouter = require('./router/auth/auth');
