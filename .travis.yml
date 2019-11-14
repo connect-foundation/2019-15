@@ -62,21 +62,21 @@ jobs:
 
     - stage: "DEV DEPLOY"
       name: "DEPLOY FRONT"
-      if: type = push AND branch = develop
       before_install:
+        - cd ./front
         - sudo apt-get install sshpass
       before_script:
-        - sed -i 's/REACT_APP_DEV_API_URI=/REACT_APP_DEV_API_URI="'"$DEV_BACK_IP"'"/' .env
+        - sed -i 's/REACT_APP_DEV_API_URI=/REACT_APP_DEV_API_URI='"$DEV_BACK_IP"'/' .env
         - echo "$DOCKER_PASSWORD" | docker login -u "${DOCKER_USERNAME}" --password-stdin
         - cat .env
       script:
-        - docker build -f ./front/Dockerfile.dev -t "$DOCKER_USERNAME"/"$DOCKER_FRONT_DEV_REPO":latest ./front
+        - docker build -f ./Dockerfile.dev -t "$DOCKER_USERNAME"/"$DOCKER_FRONT_DEV_REPO":latest .
         - docker push "$DOCKER_USERNAME"/"$DOCKER_FRONT_DEV_REPO":latest
         - sshpass -p "$DEVELOPER_PASSWORD" ssh -o StrictHostKeyChecking=no developer@"$DEV_FRONT_IP" "/home/execute.sh" 
 
     - name: "DEPLOY BACK"
-      if: type = push AND branch = develop
       before_install:
+        - cd ./back
         - sudo apt-get install sshpass
       before_script:
         - sed -i 's/DB_USER=/DB_USER='"$DB_USER"'/' .env
@@ -93,7 +93,7 @@ jobs:
         - echo "$DOCKER_PASSWORD" | docker login -u "${DOCKER_USERNAME}" --password-stdin  
         - cat .env
       script:
-        - docker build -f ./back/Dockerfile.dev -t "$DOCKER_USERNAME"/"$DOCKER_BACK_DEV_REPO":latest ./back
+        - docker build -f ./Dockerfile.dev -t "$DOCKER_USERNAME"/"$DOCKER_BACK_DEV_REPO":latest .
         - docker push "$DOCKER_USERNAME"/"$DOCKER_BACK_DEV_REPO":latest
         - sshpass -p "$DEVELOPER_PASSWORD" ssh -o StrictHostKeyChecking=no developer@"$DEV_BACK_IP" "/home/execute.sh"
 
@@ -101,19 +101,21 @@ jobs:
       name: "DEPLOY FRONT"
       if: type = push AND branch = master
       before_install:
+        - cd ./front
         - sudo apt-get install sshpass
       before_script:
-        - sed -i 's/REACT_APP_API_URI=/REACT_APP_API_URI="'"$BACK_IP"'"/' .env
+        - sed -i 's/REACT_APP_API_URI=/REACT_APP_API_URI='"$BACK_IP"'/' .env
         - echo "$DOCKER_PASSWORD" | docker login -u "${DOCKER_USERNAME}" --password-stdin
         - cat .env
       script:
-        - docker build -t "$DOCKER_USERNAME"/"$DOCKER_FRONT_REPO":latest ./front
+        - docker build -t "$DOCKER_USERNAME"/"$DOCKER_FRONT_REPO":latest .
         - docker push "$DOCKER_USERNAME"/"$DOCKER_FRONT_REPO":latest
         - sshpass -p "$DEVELOPER_PASSWORD" ssh -o StrictHostKeyChecking=no developer@"$FRONT_IP" "/home/execute.sh" 
 
     - name: "DEPLOY BACK"
       if: type = push AND branch = master
       before_install:
+        - cd ./back
         - sudo apt-get install sshpass
       before_script:
         - sed -i 's/DB_USER=/DB_USER='"$DB_USER"'/' .env
@@ -130,6 +132,6 @@ jobs:
         - echo "$DOCKER_PASSWORD" | docker login -u "${DOCKER_USERNAME}" --password-stdin
         - cat .env
       script:
-        - docker build -t "$DOCKER_USERNAME"/"$DOCKER_BACK_REPO":latest ./back
+        - docker build -t "$DOCKER_USERNAME"/"$DOCKER_BACK_REPO":latest .
         - docker push "$DOCKER_USERNAME"/"$DOCKER_BACK_REPO":latest
         - sshpass -p "$DEVELOPER_PASSWORD" ssh -o StrictHostKeyChecking=no developer@"$BACK_IP" "/home/execute.sh"
