@@ -1,7 +1,7 @@
 const { req, graphqlPath } = require('./setSuperTest');
 
 describe('ranking resolvers test', () => {
-  it('ranking test with order DESC limit 3 offset 1', async done => {
+  it('ranking test with order DESC limit 3 offset 1', async (done) => {
     const res = await req
       .post(graphqlPath)
       .send({
@@ -21,7 +21,7 @@ describe('ranking resolvers test', () => {
     done();
   });
 
-  it('ranking test with order ASC limit 1 offset 3', async done => {
+  it('ranking test with order ASC limit 1 offset 3', async (done) => {
     const res = await req
       .post(graphqlPath)
       .send({

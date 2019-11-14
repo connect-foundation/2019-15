@@ -1,10 +1,7 @@
-const request = require('supertest');
-const { app } = require('../../app');
+const { req, graphqlPath } = require('./setSuperTest');
 
-const req = request(app);
-const graphqlPath = '/api';
 describe('graphql user resolvers tests', () => {
-  it('users query', async done => {
+  it('users query', async (done) => {
     const res = await req
       .post(graphqlPath)
       .send({
