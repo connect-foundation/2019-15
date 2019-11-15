@@ -4,10 +4,10 @@ module.exports = {
       'FriendStates',
       [
         {
-          state: '요청',
+          state: 'request',
         },
         {
-          state: '거절',
+          state: 'decline',
         },
       ],
       {},

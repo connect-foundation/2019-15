@@ -2,15 +2,15 @@ module.exports = (sequelize, DataTypes) => {
   const BeforeFriend = sequelize.define('BeforeFriend', {}, {});
   BeforeFriend.associate = function(models) {
     BeforeFriend.belongsTo(models.User, {
-      as: 'p_friend_id',
+      as: 'pFriend',
       foreignKey: 'id',
     });
     BeforeFriend.belongsTo(models.User, {
-      as: 's_friend_id',
+      as: 'sFriend',
       foreignKey: 'id',
     });
     BeforeFriend.belongsTo(models.User, {
-      as: 'friend_state_id',
+      as: 'friendState',
       foreignKey: 'id',
     });
   };

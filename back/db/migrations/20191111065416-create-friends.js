@@ -7,14 +7,14 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      p_friend_id: {
+      pFriendId: {
         type: Sequelize.INTEGER,
         references: {
           model: 'Users',
           key: 'id',
         },
       },
-      s_friend_id: {
+      sFriendId: {
         type: Sequelize.INTEGER,
         references: {
           model: 'Users',
