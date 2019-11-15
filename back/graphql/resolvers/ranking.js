@@ -2,11 +2,11 @@ const Sequelize = require('sequelize');
 
 module.exports = {
   Query: {
-    ranking: (obj, { order, limit, offset }, { User }) => {
+    ranking: (obj, { order, limit, offset }, { Users }) => {
       let scoreOrdering = ['score', 'DESC'];
       if (order === 'ASC') scoreOrdering = ['score'];
 
-      return User.findAll({
+      return Users.findAll({
         offset,
         limit,
         order: [scoreOrdering],
