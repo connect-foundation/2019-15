@@ -39,6 +39,7 @@ jobs:
       install:
         - npm install
       before_script:
+        - cat .env
         - sed -i 's/DB_USER=/DB_USER='"$DB_USER"'/' .env
         - sed -i 's/DB_PW=/DB_PW='"$DEVELOPER_PASSWORD"'/' .env
         - sed -i 's/DB_NAME=/DB_NAME='"$DB_NAME"'/' .env
@@ -50,6 +51,7 @@ jobs:
         - sed -i 's/PASSPORT_GOOGLE_CLIENT_SECRET=/PASSPORT_GOOGLE_CLIENT_SECRET='"$PASSPORT_GOOGLE_CLIENT_SECRET"'/' .env
         - sed -i 's/JWT_SECRET=/JWT_SECRET='"$JWT_SECRET"'/' .env
         - sed -i 's/EXPRESS_APP_URI=/EXPRESS_APP_URI='"$DEV_BACK_IP"'/' .env
+        - cat .env
         - sed -i 's/REACT_APP_URI=/REACT_APP_URI='"$DEV_FRONT_IP"'/' .env
         - cat .env
       script:
