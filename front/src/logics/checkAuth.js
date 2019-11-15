@@ -5,7 +5,7 @@ function checkAuth() {
   })
     .then((response) => {
       if (response.status === 401 || response.status === 403) {
-        window.location.href = `${process.env.REACT_APP_URI}`;
+        window.location.href = `${process.env.REACT_APP_LOCAL_URI}`;
       }
     })
     .catch((error) => console.log(error));
