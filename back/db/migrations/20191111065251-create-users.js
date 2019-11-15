@@ -1,6 +1,6 @@
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('users', {
+    return queryInterface.createTable('Users', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -10,6 +10,10 @@ module.exports = {
       user_id: {
         type: Sequelize.STRING,
         unique: true,
+      },
+      score: {
+        type: Sequelize.BIGINT,
+        defaultValue: 0,
       },
       nickname: {
         type: Sequelize.STRING,
@@ -28,6 +32,6 @@ module.exports = {
     });
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('users');
+    return queryInterface.dropTable('Users');
   },
 };

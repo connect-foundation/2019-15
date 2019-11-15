@@ -3,6 +3,7 @@ module.exports = `
     id:ID!
     user_id:String!
     nickname:String!
+    score:Int!
     createdAt:String
     updatedAt:String
   }
