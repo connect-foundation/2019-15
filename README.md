@@ -23,6 +23,7 @@
 
 ## Getting started
 
+
 initialize tables
 
 ```
@@ -30,7 +31,7 @@ npx sequelize db:migrate --env local
 npx sequelize db:seed:all --env local
 ```
 
-run server :whale:
+run server 🐳
 
 ```
 cd back
@@ -38,7 +39,8 @@ npm install
 npm run local
 ```
 
-run front :christmas_tree:
+
+run front 🎄
 
 ```
 cd front
@@ -50,6 +52,7 @@ npm start
 
 ## Test 🕹
 
+
 ```
 npm run test:local
 ```
@@ -60,8 +63,9 @@ Contributions, issues and feature requests are welcome!<br />Feel free to check 
 
 ## Show your support
 
-Give a :star:️ if this project helped you!
 
-—
+Give a ⭐️ if this project helped you!
 
-\_This README was generated with :heart:
+---
+
+\_This README was generated with ❤️
