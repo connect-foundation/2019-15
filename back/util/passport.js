@@ -21,7 +21,7 @@ passport.use(
     profile,
     done,
   ) {
-    const [users, isCreated] = await models.users.findOrCreate({
+    const [users, isCreated] = await models.User.findOrCreate({
       where: {
         user_id: profile.id,
       },
@@ -42,12 +42,12 @@ passport.use(
     profile,
     done,
   ) {
-    const [users, isCreated] = await models.users.findOrCreate({
+    const [users, isCreated] = await models.User.findOrCreate({
       where: {
         user_id: profile.id,
       },
       defaults: {
-        nickname: 'foo',
+        nickname: 'bar',
       },
     });
     return done(null, { id: profile.id, displayName: profile.displayName });
