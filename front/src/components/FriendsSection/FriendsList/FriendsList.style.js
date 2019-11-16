@@ -9,7 +9,7 @@ const FriendsListStyle = styled.div`
   bottom: ${friendsBtnBottom + 3}rem;
   right: ${friendsBtnRight}rem;
   width: 8rem;
-  height: 17rem;
+  height: auto;
   background-color: yellow;
 `;
 
