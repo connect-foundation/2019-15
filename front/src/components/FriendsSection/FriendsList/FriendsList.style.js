@@ -5,8 +5,7 @@ const friendsBtnRight = 2;
 
 const FriendsListStyle = styled.div`
   position: fixed;
-  display: ${(props) => props.isVisible};
-  bottom: ${friendsBtnBottom + 3}rem;
+  bottom: ${friendsBtnBottom + 4}rem;
   right: ${friendsBtnRight}rem;
   width: 8rem;
   height: auto;

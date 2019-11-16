@@ -4,18 +4,17 @@ import FriendsList from './FriendsList/FriendsList';
 import ListPopUpButtonStyle from './ListPopUpButton.style';
 
 const FriendsSection = (props) => {
-  const [open, setOpen] = useState('none');
+  const [open, setOpen] = useState(false);
 
   function changeOpen() {
-    if (open === 'none') setOpen('block');
-    else setOpen('none');
+    setOpen(!open);
   }
 
   return (
     <>
-      <FriendsList isVisible={open} />
+      {open ? <FriendsList /> : null}
       <ListPopUpButtonStyle onClick={changeOpen}>
-        {open === 'none' ? '친구 목록' : '목록 숨기기'}
+        {open ? '목록 숨기기' : '친구 목록'}
       </ListPopUpButtonStyle>
     </>
   );

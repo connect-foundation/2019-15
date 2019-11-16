@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 
 const ModalStyle = styled.div`
-  display: ${(props) => (props.isVisible ? 'flex' : 'none')};
   position: fixed;
   top: 50%;
   left: 50%;

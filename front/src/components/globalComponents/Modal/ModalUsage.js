@@ -17,9 +17,11 @@ const ModalUsage = (props) => {
   return (
     <>
       <Button onClick={modalOn}>모달 키기</Button>
-      <Modal isVisible={open}>
-        <Button onClick={modalOff}>모달 끄기</Button>
-      </Modal>
+      {open ? (
+        <Modal>
+          <Button onClick={modalOff}>모달 끄기</Button>
+        </Modal>
+      ) : null}
     </>
   );
 };
