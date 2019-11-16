@@ -1,7 +1,7 @@
 module.exports = `
   type User{
     id:ID!
-    user_id:String!
+    userId:String!
     nickname:String!
     score:Int!
     createdAt:String

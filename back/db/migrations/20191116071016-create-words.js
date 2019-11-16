@@ -1,20 +1,24 @@
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('Friends', {
+    return queryInterface.createTable('Words', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      pFriendId: {
+      word: {
+        type: Sequelize.STRING,
+      },
+      categoryId: {
         type: Sequelize.INTEGER,
         references: {
-          model: 'Users',
+          model: 'Categories',
           key: 'id',
         },
       },
-      sFriendId: {
+      userId: {
+        allowNull: true,
         type: Sequelize.INTEGER,
         references: {
           model: 'Users',
@@ -34,6 +38,6 @@ module.exports = {
     });
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('Friends');
+    return queryInterface.dropTable('Words');
   },
 };
