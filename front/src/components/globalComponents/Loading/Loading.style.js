@@ -1,8 +1,9 @@
 import styled from 'styled-components';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-const LoadingStyle = styled(FontAwesomeIcon)`
-  color: ${(props) => props.theme.eastSide};
+const LoadingStyle = styled.div`
+  width: 100%;
+  height: 100%;
+  position: relative;
 `;
 
 export default LoadingStyle;
