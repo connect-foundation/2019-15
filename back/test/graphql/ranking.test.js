@@ -52,9 +52,9 @@ const testEdges = (values, testOptions) => {
   expect(edges[edges.length - 1].cursor).toEqual(pageInfo.endCursor);
 };
 
-describe('ranking resolvers test', () => {
-  it(`순서: ASC, 개수:2개 커서:X`, async (done) => {
-    const expectedLength = 3;
+describe('랭킹 graphql 쿼리 테스트', () => {
+  it(`순서: ASC, 개수:12개 커서:X`, async (done) => {
+    const expectedLength = 12;
     const order = 'ASC';
     const res = await req
       .post(graphqlPath)
@@ -70,7 +70,7 @@ describe('ranking resolvers test', () => {
     done();
   });
 
-  it('순서: DESC, 개수: 3개, 커서:X', async (done) => {
+  it('순서: DESC, 개수: 10개, 커서:X', async (done) => {
     const order = 'DESC';
     const expectedLength = 3;
     const res = await req
@@ -87,7 +87,7 @@ describe('ranking resolvers test', () => {
     done();
   });
 
-  it(`DB에 유저 3~5명 있을 시(마지막 페이지 일 때), 순서: DESC, 개수: 3개, 커서: `, async (done) => {
+  it(`순서: DESC, 개수: 10개, 커서: 00000011110000001111`, async (done) => {
     const order = 'DESC';
     const expectedLength = 3;
     const res = await req
@@ -95,7 +95,7 @@ describe('ranking resolvers test', () => {
       .send({
         query: getQuery({
           first: expectedLength,
-          after: '00000000030000002222',
+          after: '00000011110000001111',
         }),
       })
       .expect(200);
