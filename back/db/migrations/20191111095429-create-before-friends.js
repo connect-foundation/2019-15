@@ -1,44 +1,54 @@
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('BeforeFriends', {
-      id: {
-        allowNull: false,
-        autoIncrement: true,
-        primaryKey: true,
-        type: Sequelize.INTEGER,
-      },
-      pFriendId: {
-        type: Sequelize.INTEGER,
-        references: {
-          model: 'Users',
-          key: 'id',
+    return queryInterface.createTable(
+      'BeforeFriends',
+      {
+        id: {
+          allowNull: false,
+          autoIncrement: true,
+          primaryKey: true,
+          type: Sequelize.INTEGER,
+        },
+        pFriendId: {
+          type: Sequelize.INTEGER,
+          references: {
+            model: 'Users',
+            key: 'id',
+          },
+        },
+        sFriendId: {
+          type: Sequelize.INTEGER,
+          references: {
+            model: 'Users',
+            key: 'id',
+          },
+        },
+        friendStateId: {
+          type: Sequelize.INTEGER,
+          references: {
+            model: 'FriendStates',
+            key: 'id',
+          },
+        },
+        createdAt: {
+          allowNull: false,
+          type: Sequelize.DATE,
+          defaultValue: Sequelize.literal('NOW()'),
+        },
+        updatedAt: {
+          allowNull: false,
+          type: Sequelize.DATE,
+          defaultValue: Sequelize.literal('NOW()'),
         },
       },
-      sFriendId: {
-        type: Sequelize.INTEGER,
-        references: {
-          model: 'Users',
-          key: 'id',
+      {
+        uniqueKeys: {
+          Items_unique: {
+            fields: ['pFriendId', 'sFriendId'],
+          },
         },
       },
-      friendStateId: {
-        type: Sequelize.INTEGER,
-        references: {
-          model: 'FriendStates',
-          key: 'id',
-        },
-      },
-      createdAt: {
-        allowNull: false,
-        type: Sequelize.DATE,
-        defaultValue: Sequelize.literal('NOW()'),
-      },
-      updatedAt: {
-        allowNull: false,
-        type: Sequelize.DATE,
-        defaultValue: Sequelize.literal('NOW()'),
-      },
-    });
+    );
   },
   down: (queryInterface, Sequelize) => {
     return queryInterface.dropTable('BeforeFriends');
