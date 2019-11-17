@@ -6,7 +6,7 @@ const NavigationBarStyle = styled.div`
   left: 0;
   width: 100%;
   height: 4rem;
-  background-color: ${props => props.theme.navigationBarColor};
+  background-color: ${(props) => props.theme.navigationBarColor};
 `;
 
 export default NavigationBarStyle;
