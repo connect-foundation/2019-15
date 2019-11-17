@@ -1,7 +1,23 @@
 const Sequelize = require('sequelize');
-const { MIN_ID, MAX_SCORE, CURSOR_LENGTH } = require('./constants/ranking');
+const {
+  MIN_ID,
+  MAX_SCORE,
+  CURSOR_LENGTH,
+  INT_TO_STRING_PADDING,
+} = require('./constants/ranking');
 
 const { Op } = Sequelize;
+
+const getScoreOrdering = (order) => {
+  return order === 'ASC' ? ['score'] : ['score', 'DESC'];
+};
+
+const splitCursor = (cursor) => {
+  return {
+    id: parseInt(cursor.slice(0, CURSOR_LENGTH / 2), 10),
+    score: parseInt(cursor.slice(CURSOR_LENGTH / 2, CURSOR_LENGTH), 10),
+  };
+};
 
 module.exports = {
   Query: {
@@ -12,14 +28,9 @@ module.exports = {
         ],
       });
 
-      let scoreOrdering = ['score', 'DESC'];
-      if (order === 'ASC') scoreOrdering = ['score'];
-      const id = after
-        ? parseInt(after.slice(0, CURSOR_LENGTH / 2), 10)
-        : MIN_ID;
-      const score = after
-        ? parseInt(after.slice(CURSOR_LENGTH / 2, CURSOR_LENGTH), 10)
-        : MAX_SCORE;
+      const { id, score } = after
+        ? splitCursor(after)
+        : { id: MIN_ID, score: MAX_SCORE };
 
       const nodes = await Users.findAll({
         where: {
@@ -36,7 +47,7 @@ module.exports = {
             },
           ],
         },
-        order: [scoreOrdering, Sequelize.col('id')],
+        order: [getScoreOrdering(order), Sequelize.col('id')],
         limit: first,
       });
 
@@ -44,8 +55,12 @@ module.exports = {
         return {
           node,
           cursor:
-            node.id.toString().padStart(10, '0') +
-            node.score.toString().padStart(10, '0'),
+            node.id
+              .toString()
+              .padStart(CURSOR_LENGTH / 2, INT_TO_STRING_PADDING) +
+            node.score
+              .toString()
+              .padStart(CURSOR_LENGTH / 2, INT_TO_STRING_PADDING),
         };
       });
 
