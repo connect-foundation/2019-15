@@ -1,16 +1,17 @@
 const jwt = require('jsonwebtoken');
 
 module.exports = (req, res) => {
-  if (!req.user || !req.user.token) res.sendStatus(401);
+  if (!req.cookies.jwt) res.status(401).send(false);
   else {
     try {
-      jwt.verify(req.user.token, process.env.JWT_SECRET, {
+      jwt.verify(req.cookies.jwt, process.env.JWT_SECRET, {
         issuer: 'catchMyMind',
         subject: 'userInfo',
       });
-      res.sendStatus(200);
+      res.status(200).send(true);
     } catch (e) {
-      res.sendStatus(403);
+      if (e.name === 'TokenExpiredError') res.status(401).send(false);
+      else res.status(403).send(false);
     }
   }
 };
