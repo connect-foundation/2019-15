@@ -1,8 +1,7 @@
 const Sequelize = require('sequelize');
+const { MIN_ID, MAX_SCORE, CURSOR_LENGTH } = require('./constants/ranking');
 
 const { Op } = Sequelize;
-const MAX_SCORE = 999999999;
-const MIN_ID = 0;
 
 module.exports = {
   Query: {
@@ -15,8 +14,12 @@ module.exports = {
 
       let scoreOrdering = ['score', 'DESC'];
       if (order === 'ASC') scoreOrdering = ['score'];
-      const id = after ? parseInt(after.slice(0, 10), 10) : MIN_ID;
-      const score = after ? parseInt(after.slice(10, 20), 10) : MAX_SCORE;
+      const id = after
+        ? parseInt(after.slice(0, CURSOR_LENGTH / 2), 10)
+        : MIN_ID;
+      const score = after
+        ? parseInt(after.slice(CURSOR_LENGTH / 2, CURSOR_LENGTH), 10)
+        : MAX_SCORE;
 
       const nodes = await Users.findAll({
         where: {
