@@ -20,8 +20,8 @@ module.exports = {
         ],
       });
     },
-    deleteFriend: (obj, { id, nickname }, { Friends, Users }) => {
-      const idFromNicknames = Users.findAll({
+    deleteFriend: async (obj, { id, nickname }, { Friends, Users }) => {
+      const idFromNicknames = await Users.findAll({
         where: { nickname: nickname },
       });
       const conditionColumns = {
@@ -43,7 +43,7 @@ module.exports = {
         },
       };
 
-      Friends.destroy(conditionColumns);
+      await Friends.destroy(conditionColumns);
       return Friends.findAll(conditionColumns);
     },
     addFriendForTest: (obj, args, { Friends }) => {

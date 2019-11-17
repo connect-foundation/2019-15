@@ -6,4 +6,11 @@ export default {
             }
         }`;
   },
+  deleteFriend(id, nickname) {
+    return `{
+      deleteFriend(id:${id}, nickname:"${nickname}"){
+        id
+      }
+    }`;
+  },
 };

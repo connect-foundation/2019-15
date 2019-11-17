@@ -7,7 +7,7 @@ import Icon from './Icons.style';
 import DoneButton from './DoneButton.style';
 import Input from './Input.style';
 import FriendsSetModal from './FriendsSetModal/FriendsSetModal';
-import getFriends from '../../../logics/friends';
+import getFriends from '../../../logics/getFriends';
 
 const FriendsList = (props) => {
   const [friends, setFriends] = useState([]);

@@ -8,7 +8,7 @@ async function getFriends(id) {
     opts(body),
   );
   let responseJson = await response.json();
-  return (responseJson || []);
+  return responseJson || [];
 }
 
 export default getFriends;
