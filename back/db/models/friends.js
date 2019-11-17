@@ -12,6 +12,7 @@ module.exports = (sequelize, DataTypes) => {
     Friends.hasMany(models.Invitations, {
       foreignKey: 'friendsId',
       sourceKey: 'id',
+      onDelete: 'cascade',
     });
   };
   return Friends;

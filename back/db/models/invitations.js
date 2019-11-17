@@ -4,6 +4,7 @@ module.exports = (sequelize, DataTypes) => {
     Invitations.belongsTo(models.Friends, {
       foreignKey: 'friendsId',
       targetKey: 'id',
+      onDelete: 'cascade',
     });
   };
   return Invitations;

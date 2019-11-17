@@ -8,6 +8,8 @@ module.exports = `
   }
   
   extend type Query{
-    friends(pFriendId:Int):[User]
+    friends(pFriendId:Int):[User],
+    deleteFriend(id:Int, nickname:String):[Friend],
+    addFriendForTest:[Friend]
   } 
 `;
