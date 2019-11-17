@@ -2,6 +2,7 @@ const passport = require('passport');
 const FacebookStrategy = require('passport-facebook').Strategy;
 const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 const { facebookConfig, googleConfig } = require('../config/passportConfig');
+const models = require('../db/models');
 
 passport.serializeUser((user, done) => {
   done(null, user);
@@ -20,7 +21,14 @@ passport.use(
     profile,
     done,
   ) {
-    // todo: need to retrieve from db
+    const [users, isCreated] = await models.User.findOrCreate({
+      where: {
+        user_id: profile.id,
+      },
+      defaults: {
+        nickname: 'foo',
+      },
+    });
     return done(null, { id: profile.id, displayName: profile.displayName });
   }),
 );
@@ -34,7 +42,14 @@ passport.use(
     profile,
     done,
   ) {
-    // todo: need to retrieve from db
+    const [users, isCreated] = await models.User.findOrCreate({
+      where: {
+        user_id: profile.id,
+      },
+      defaults: {
+        nickname: 'bar',
+      },
+    });
     return done(null, { id: profile.id, displayName: profile.displayName });
   }),
 );
