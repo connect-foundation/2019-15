@@ -1,7 +1,7 @@
 import React from 'react';
 import { useState } from 'react';
 import FriendsList from './FriendsList/FriendsList';
-import ListPopUpButtonStyle from './ListPopUpButton.style';
+import ListPopUpButton from './ListPopUpButton.style';
 
 const FriendsSection = (props) => {
   const [open, setOpen] = useState(false);
@@ -13,9 +13,9 @@ const FriendsSection = (props) => {
   return (
     <>
       {open ? <FriendsList /> : null}
-      <ListPopUpButtonStyle onClick={changeOpen}>
+      <ListPopUpButton onClick={changeOpen}>
         {open ? '목록 숨기기' : '친구 목록'}
-      </ListPopUpButtonStyle>
+      </ListPopUpButton>
     </>
   );
 };

@@ -3,9 +3,9 @@ import { useState, useEffect } from 'react';
 import { faCog, faUserPlus, faMinusCircle } from '@fortawesome/free-solid-svg-icons';
 import FriendsListStyle from './FriendsList.style';
 import FriendComponent from './FriendComponent/FriendComponent';
-import IconStyle from './Icons.style';
-import DoneButtonStyle from './DoneButton.style';
-import InputStyle from './Input.style';
+import Icon from './Icons.style';
+import DoneButton from './DoneButton.style';
+import Input from './Input.style';
 import FriendsSetModal from './FriendsSetModal/FriendsSetModal';
 import getFriends from '../../../logics/friends';
 
@@ -47,18 +47,18 @@ const FriendsList = (props) => {
           ? (
             <>
               <FriendComponent>
-                <DoneButtonStyle onClick={changeConfigMode}>완료</DoneButtonStyle>
+                <DoneButton onClick={changeConfigMode}>완료</DoneButton>
               </FriendComponent>
               <FriendComponent>
-                <InputStyle onChange={inputChangeHandler} />
-                <IconStyle icon={faUserPlus} onClick={() => modalOnOff('add', inputValue)} />
+                <Input onChange={inputChangeHandler} />
+                <Icon icon={faUserPlus} onClick={() => modalOnOff('add', inputValue)} />
               </FriendComponent>
           </>
           ) : (
           <>
             <FriendComponent>
                 <span>친구 목록</span>
-                <IconStyle icon={faCog} onClick={changeConfigMode} />
+                <Icon icon={faCog} onClick={changeConfigMode} />
               </FriendComponent>
           </>
           )
@@ -69,7 +69,7 @@ const FriendsList = (props) => {
           <FriendComponent key={idx}>
             {friend.nickname}
             {configMode ? (
-              <IconStyle
+              <Icon
                 icon={faMinusCircle}
                 onClick={() => modalOnOff('delete', friend.nickname)}
               />
