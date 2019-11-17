@@ -1,8 +1,14 @@
 {
-  "extends": ["react-app", "prettier", "airbnb"],
+  "env": {
+    "es6": true,
+    "jest": true,
+    "browser": true
+  },
+  "extends": ["airbnb","prettier","prettier/react"],
   "plugins": ["prettier"],
   "rules": {
     "prettier/prettier": ["error"],
-    "react/jsx-filename-extension": 0
+    "react/jsx-filename-extension": "off",
+    "no-underscore-dangle": "off"
   }
 }
