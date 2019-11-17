@@ -1,16 +1,15 @@
 const { Users, Words, Op } = require('../db/models');
-const getDataValues = require('../util/getDataValues');
+const getRandomInt = require('../util/getRandomInt');
 
 async function logInOrSignUp(accessToken, refreshToken, profile, done) {
-  const word = getDataValues(
-    await Words.findOne({
-      where: {
-        userId: {
-          [Op.eq]: null,
-        },
+  const words = await Words.findAll({
+    where: {
+      userId: {
+        [Op.eq]: null,
       },
-    }),
-  );
+    },
+  });
+  const word = words[getRandomInt(0, words.length)];
 
   const [users, isCreated] = await Users.findOrCreate({
     where: {
