@@ -1,9 +1,9 @@
-import { useState, useEffect } from React from 'react';
+import React, { useState } from 'react';
 
 import FriendsList from './FriendsList/FriendsList';
 import ListPopUpButtonStyle from './ListPopUpButton.style';
 
-const FriendsSection = (props) => {
+const FriendsSection = () => {
   const [open, setOpen] = useState('none');
 
   function changeOpen() {

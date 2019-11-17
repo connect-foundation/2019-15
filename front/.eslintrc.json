@@ -5,10 +5,15 @@
     "browser": true
   },
   "extends": ["airbnb","prettier","prettier/react"],
-  "plugins": ["prettier"],
+  "plugins": [
+    "prettier",
+    "react-hooks"
+  ],
   "rules": {
     "prettier/prettier": ["error"],
     "react/jsx-filename-extension": "off",
-    "no-underscore-dangle": "off"
+    "no-underscore-dangle": "off",
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn"
   }
 }
