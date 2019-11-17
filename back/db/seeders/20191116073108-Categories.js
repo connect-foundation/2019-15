@@ -1,13 +1,13 @@
 module.exports = {
   up: (queryInterface, Sequelize) => {
     return queryInterface.bulkInsert(
-      'FriendStates',
+      'Categories',
       [
         {
-          state: 'request',
+          category: 'food',
         },
         {
-          state: 'decline',
+          category: 'animal',
         },
       ],
       {},
@@ -15,6 +15,6 @@ module.exports = {
   },
 
   down: (queryInterface, Sequelize) => {
-    return queryInterface.bulkDelete('FriendStates', null, {});
+    return queryInterface.bulkDelete('Categories', null, {});
   },
 };
