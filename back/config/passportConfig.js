@@ -1,15 +1,18 @@
 const { EXPRESS_URI } = require('../config/uri');
 
+const tmpStrs = EXPRESS_URI.split(':');
+const tmpStr = `${tmpStrs[0]}.xip.io:${tmpStrs[1]}`;
+
 const passportConfig = {
   facebookConfig: {
     clientID: process.env.PASSPORT_FACEBOOK_CLIENT_ID,
     clientSecret: process.env.PASSPORT_FACEBOOK_CLIENT_SECRET,
-    callbackURL: `${EXPRESS_URI}/auth/facebook/callback`,
+    callbackURL: `${tmpStr}/auth/facebook/callback`,
   },
   googleConfig: {
     clientID: process.env.PASSPORT_GOOGLE_CLIENT_ID,
     clientSecret: process.env.PASSPORT_GOOGLE_CLIENT_SECRET,
-    callbackURL: `${EXPRESS_URI}/auth/google/callback`,
+    callbackURL: `${tmpStr}/auth/google/callback`,
   },
 };
 
