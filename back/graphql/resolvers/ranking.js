@@ -1,10 +1,5 @@
 const Sequelize = require('sequelize');
-const {
-  MIN_ID,
-  MAX_SCORE,
-  CURSOR_LENGTH,
-  INT_TO_STRING_PADDING,
-} = require('./constants/ranking');
+const { MIN_ID, MAX_SCORE, CURSOR_LENGTH, INT_TO_STRING_PADDING } = require('./constants/ranking');
 
 const getScoreOrdering = (order) => {
   return order === 'ASC' ? ['score'] : ['score', 'DESC'];
@@ -17,53 +12,32 @@ const splitCursor = (cursor) => {
   };
 };
 
+const makeNodeToEdge = (node) => {
+  return {
+    node,
+    cursor:
+      node.id.toString().padStart(CURSOR_LENGTH / 2, INT_TO_STRING_PADDING) +
+      node.score.toString().padStart(CURSOR_LENGTH / 2, INT_TO_STRING_PADDING),
+  };
+};
+
 module.exports = {
   Query: {
     rankingAll: async (obj, { order, first, after }, { Users, Op }) => {
-      const totalCountArr = await Users.findAll({
-        attributes: [
-          [Sequelize.fn('COUNT', Sequelize.col('id')), 'totalCount'],
-        ],
-      });
+      const { id, score } = after ? splitCursor(after) : { id: MIN_ID, score: MAX_SCORE };
 
-      const { id, score } = after
-        ? splitCursor(after)
-        : { id: MIN_ID, score: MAX_SCORE };
-
-      const nodes = await Users.findAll({
+      const { rows: nodes, count } = await Users.findAndCountAll({
         where: {
-          [Op.and]: [
-            {
-              id: {
-                [Op.ne]: id,
-              },
-            },
-            {
-              score: {
-                [Op.lte]: score,
-              },
-            },
-          ],
+          [Op.and]: [{ id: { [Op.ne]: id } }, { score: { [Op.lte]: score } }],
         },
         order: [getScoreOrdering(order), Sequelize.col('id')],
         limit: first,
       });
 
-      const edgesWithCursor = nodes.map((node) => {
-        return {
-          node,
-          cursor:
-            node.id
-              .toString()
-              .padStart(CURSOR_LENGTH / 2, INT_TO_STRING_PADDING) +
-            node.score
-              .toString()
-              .padStart(CURSOR_LENGTH / 2, INT_TO_STRING_PADDING),
-        };
-      });
+      const edgesWithCursor = nodes.map((node) => makeNodeToEdge(node));
 
       return {
-        totalCount: totalCountArr[0].dataValues.totalCount,
+        totalCount: count,
         edges: edgesWithCursor,
         pageInfo: {
           endCursor: edgesWithCursor.length
