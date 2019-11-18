@@ -1,30 +1,30 @@
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('before_friends', {
+    return queryInterface.createTable('BeforeFriends', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      p_friend_id: {
+      pFriendId: {
         type: Sequelize.INTEGER,
         references: {
-          model: 'users',
+          model: 'Users',
           key: 'id',
         },
       },
-      s_friend_id: {
+      sFriendId: {
         type: Sequelize.INTEGER,
         references: {
-          model: 'users',
+          model: 'Users',
           key: 'id',
         },
       },
-      friend_state_id: {
+      friendStateId: {
         type: Sequelize.INTEGER,
         references: {
-          model: 'friend_states',
+          model: 'FriendStates',
           key: 'id',
         },
       },
@@ -41,6 +41,6 @@ module.exports = {
     });
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('before_friends');
+    return queryInterface.dropTable('BeforeFriends');
   },
 };

@@ -1,31 +1,31 @@
 module.exports = {
   up: (queryInterface, Sequelize) => {
     return queryInterface.bulkInsert(
-      'friends',
+      'Friends',
       [
         {
-          p_friend_id: 1,
-          s_friend_id: 4,
+          pFriendId: 1,
+          sFriendId: 4,
         },
         {
-          p_friend_id: 2,
-          s_friend_id: 4,
+          pFriendId: 2,
+          sFriendId: 4,
         },
         {
-          p_friend_id: 3,
-          s_friend_id: 4,
+          pFriendId: 3,
+          sFriendId: 4,
         },
         {
-          p_friend_id: 4,
-          s_friend_id: 1,
+          pFriendId: 4,
+          sFriendId: 1,
         },
         {
-          p_friend_id: 4,
-          s_friend_id: 2,
+          pFriendId: 4,
+          sFriendId: 2,
         },
         {
-          p_friend_id: 4,
-          s_friend_id: 3,
+          pFriendId: 4,
+          sFriendId: 3,
         },
       ],
       {},
@@ -33,6 +33,6 @@ module.exports = {
   },
 
   down: (queryInterface, Sequelize) => {
-    return queryInterface.bulkDelete('friends', null, {});
+    return queryInterface.bulkDelete('Friends', null, {});
   },
 };

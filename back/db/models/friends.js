@@ -1,9 +1,18 @@
 module.exports = (sequelize, DataTypes) => {
-  const friends = sequelize.define('friends', {}, {});
-  friends.associate = function(models) {
-    friends.belongsTo(models.users, { as: 'p_friend_id', foreignkey: 'id' });
-    friends.belongsTo(models.users, { as: 's_friend_id', foreignkey: 'id' });
-    friends.hasMany(models.invitations);
+  const Friends = sequelize.define('Friends', {}, {});
+  Friends.associate = function(models) {
+    Friends.belongsTo(models.Users, {
+      foreignKey: 'pFriendId',
+      targetKey: 'id',
+    });
+    Friends.belongsTo(models.Users, {
+      foreignKey: 'sFriendId',
+      targetKey: 'id',
+    });
+    Friends.hasMany(models.Invitations, {
+      foreignKey: 'friendsId',
+      sourceKey: 'id',
+    });
   };
-  return friends;
+  return Friends;
 };

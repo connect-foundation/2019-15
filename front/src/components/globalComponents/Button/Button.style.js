@@ -8,7 +8,7 @@ const ButtonStyle = styled.button`
   height: 2rem;
   color: #edeeec;
   font-size: 7px;
-  background-color: ${props => props.theme.buttonColor};
+  background-color: ${(props) => props.theme.buttonColor};
   &:hover {
     background-color: #15062c;
     cursor: pointer;

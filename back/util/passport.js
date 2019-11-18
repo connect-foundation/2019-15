@@ -2,6 +2,7 @@ const passport = require('passport');
 const FacebookStrategy = require('passport-facebook').Strategy;
 const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 const { facebookConfig, googleConfig } = require('../config/passportConfig');
+const logInOrSignUp = require('../util/logInOrSignUp');
 
 passport.serializeUser((user, done) => {
   done(null, user);
@@ -14,29 +15,10 @@ passport.deserializeUser((user, done) => {
 // 페이스북 로그인
 passport.use(
   'facebookLogin',
-  new FacebookStrategy(facebookConfig, async function(
-    accessToken,
-    refreshToken,
-    profile,
-    done,
-  ) {
-    // todo: need to retrieve from db
-    return done(null, { id: profile.id, displayName: profile.displayName });
-  }),
+  new FacebookStrategy(facebookConfig, logInOrSignUp),
 );
 
 // 구글 로그인
-passport.use(
-  'googleLogin',
-  new GoogleStrategy(googleConfig, async function(
-    accessToken,
-    refreshToken,
-    profile,
-    done,
-  ) {
-    // todo: need to retrieve from db
-    return done(null, { id: profile.id, displayName: profile.displayName });
-  }),
-);
+passport.use('googleLogin', new GoogleStrategy(googleConfig, logInOrSignUp));
 
 module.exports = passport;
