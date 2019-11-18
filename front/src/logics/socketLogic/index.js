@@ -1,11 +1,10 @@
 import socketIo from 'socket.io-client';
+import APP_URI from '../../uri';
 
 const io = {
   socket: null,
   async connectSocket() {
-    this.socket = await socketIo.connect(
-      `${process.env.REACT_APP_LOCAL_API_URI}`,
-    );
+    this.socket = await socketIo.connect(`${APP_URI.REACT_APP_API_URI}`);
   },
   async getSocket() {
     if (this.socket !== null) {
