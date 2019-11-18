@@ -1,8 +1,7 @@
-import React, { useEffect } from 'react';
+import React, {useEffect} from 'react';
 import NavigationBar from '../../components/NavigationBar/NavigationBar';
 import RoomSelectSection from '../../components/RoomSelectSection/RoomSelectSection';
 import FriendsSection from '../../components/FriendsSection/FriendsSection';
-import checkAuth from '../../logics/checkAuth';
 import io from '../../logics/socketLogic';
 import MainSocketContext from './Main.context';
 
@@ -13,7 +12,7 @@ const Main = () => {
   };
 
   useEffect(() => {
-    checkAuth();
+    // checkAuth();
     initSocket();
   }, []);
 
