@@ -1,6 +1,7 @@
 import styled from 'styled-components';
+import Image from '../globalComponents/Image/Image.style';
 
-const NavigationBarStyle = styled.div`
+export const NavigationBarStyle = styled.div`
   display: absolute;
   top: 0;
   left: 0;
@@ -9,4 +10,8 @@ const NavigationBarStyle = styled.div`
   background-color: ${(props) => props.theme.navigationBarColor};
 `;
 
-export default NavigationBarStyle;
+export const LogoImage = styled(Image)`
+  margin-top: 5px;
+  width: 12rem;
+  height: 3.3rem;
+`;
