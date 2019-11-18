@@ -19,7 +19,7 @@ const splitCursor = (cursor) => {
 
 module.exports = {
   Query: {
-    ranking: async (obj, { order, first, after }, { Users, Op }) => {
+    rankingAll: async (obj, { order, first, after }, { Users, Op }) => {
       const totalCountArr = await Users.findAll({
         attributes: [
           [Sequelize.fn('COUNT', Sequelize.col('id')), 'totalCount'],

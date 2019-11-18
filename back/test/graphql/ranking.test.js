@@ -2,7 +2,7 @@ const { req, graphqlPath } = require('./setSuperTest');
 
 const getQuery = ({ order, first, after }) => {
   let query = `{
-     ranking(`;
+     rankingAll(`;
   query = order ? `${query} order:${order}` : query;
   query = first ? `${query} first:${first}` : query;
   query = after ? `${query} after:"${after}"` : query;
@@ -62,7 +62,7 @@ describe('랭킹 graphql 쿼리 테스트', () => {
         query: getQuery({ order, first: expectedLength }),
       })
       .expect(200);
-    const { pageInfo, edges } = res.body.data.ranking;
+    const { pageInfo, edges } = res.body.data.rankingAll;
     testEdges(
       { edges, pageInfo, expectedLength },
       { order, isEdgeLengthSame: true },
@@ -79,7 +79,7 @@ describe('랭킹 graphql 쿼리 테스트', () => {
         query: getQuery({ first: expectedLength }),
       })
       .expect(200);
-    const { pageInfo, edges } = res.body.data.ranking;
+    const { pageInfo, edges } = res.body.data.rankingAll;
     testEdges(
       { edges, pageInfo, expectedLength },
       { order, isEdgeLengthSame: true },
@@ -99,7 +99,7 @@ describe('랭킹 graphql 쿼리 테스트', () => {
         }),
       })
       .expect(200);
-    const { pageInfo, edges } = res.body.data.ranking;
+    const { pageInfo, edges } = res.body.data.rankingAll;
     testEdges(
       { edges, pageInfo, expectedLength },
       { order, isEdgeLengthSame: false },
