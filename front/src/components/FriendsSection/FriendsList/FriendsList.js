@@ -6,7 +6,7 @@ import {
   faMinusCircle,
 } from '@fortawesome/free-solid-svg-icons';
 import FriendsListStyle from './FriendsList.style';
-import FriendComponent from './FriendComponent/FriendComponent';
+import FriendComponent from './FriendComponent.style';
 import Icon from './Icons.style';
 import DoneButton from './DoneButton.style';
 import Input from './Input.style';
