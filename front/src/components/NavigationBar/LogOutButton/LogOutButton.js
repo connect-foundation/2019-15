@@ -1,6 +1,6 @@
 import React from 'react';
 import Button from '../../globalComponents/Button/Button';
-import APP_URI from '../../../uri'
+import APP_URI from '../../../util/uri'
 
 const LogOutButton = () => {
   // logics로 분리 예정
