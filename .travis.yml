@@ -18,12 +18,13 @@ jobs:
     - stage: "TEST"
       name: "FRONT TEST"
       before_install:
+        - openssl aes-256-cbc -K $encrypted_6599d9cbfa5d_key -iv $encrypted_6599d9cbfa5d_iv -in env.tar.enc -out env.tar -d
+        - tar xvf env.tar
+        - cp .front.env ./front/.env
         - cd ./front
       install:
         - npm install
       before_script:
-        - sed -i 's/REACT_APP_DEV_API_URI=/REACT_APP_DEV_API_URI='"$DEV_BACK_IP"'/' .env
-        - sed -i 's/REACT_APP_PROD_API_URI=/REACT_APP_PROD_API_URI='"$BACK_IP"'/' .env
         - cat .env
       script:
         - |
@@ -35,22 +36,13 @@ jobs:
 
     - name: "BACK TEST"
       before_install:
+        - openssl aes-256-cbc -K $encrypted_6599d9cbfa5d_key -iv $encrypted_6599d9cbfa5d_iv -in env.tar.enc -out env.tar -d
+        - tar xvf env.tar
+        - cp .back.env ./back/.env
         - cd ./back
       install:
         - npm install
       before_script:
-        - sed -i 's/DB_USER=/DB_USER='"$DB_USER"'/' .env
-        - sed -i 's/DB_PW=/DB_PW='"$DEVELOPER_PASSWORD"'/' .env
-        - sed -i 's/DB_NAME=/DB_NAME='"$DB_NAME"'/' .env
-        - sed -i 's/DB_PROD_HOST=/DB_PROD_HOST='"$DB_PROD_HOST"'/' .env
-        - sed -i 's/DB_DEV_HOST=/DB_DEV_HOST='"$DB_DEV_HOST"'/' .env
-        - sed -i 's/PASSPORT_FACEBOOK_CLIENT_ID=/PASSPORT_FACEBOOK_CLIENT_ID='"$PASSPORT_FACEBOOK_CLIENT_ID"'/' .env
-        - sed -i 's/PASSPORT_FACEBOOK_CLIENT_SECRET=/PASSPORT_FACEBOOK_CLIENT_SECRET='"$PASSPORT_FACEBOOK_CLIENT_SECRET"'/' .env
-        - sed -i 's/PASSPORT_GOOGLE_CLIENT_ID=/PASSPORT_GOOGLE_CLIENT_ID='"$PASSPORT_GOOGLE_CLIENT_ID"'/' .env
-        - sed -i 's/PASSPORT_GOOGLE_CLIENT_SECRET=/PASSPORT_GOOGLE_CLIENT_SECRET='"$PASSPORT_GOOGLE_CLIENT_SECRET"'/' .env
-        - sed -i 's/JWT_SECRET=/JWT_SECRET='"$JWT_SECRET"'/' .env
-        - sed -i 's/EXPRESS_APP_URI=/EXPRESS_APP_URI='"$DEV_BACK_IP"'/' .env
-        - sed -i 's/REACT_APP_URI=/REACT_APP_URI='"$DEV_FRONT_IP"'/' .env
         - cat .env
       script:
         - |
@@ -61,14 +53,16 @@ jobs:
           fi
 
     - stage: "DEV DEPLOY"
-      if: type = push AND branch = develop
       name: "DEPLOY FRONT"
+      if: type = push AND branch = develop
       before_install:
         - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+        - openssl aes-256-cbc -K $encrypted_6599d9cbfa5d_key -iv $encrypted_6599d9cbfa5d_iv -in env.tar.enc -out env.tar -d
+        - tar xvf env.tar
+        - cp .front.env ./front/.env
         - cd ./front
         - sudo apt-get install sshpass
       before_script:
-        - sed -i 's/REACT_APP_DEV_API_URI=/REACT_APP_DEV_API_URI='"$DEV_BACK_IP"'/' .env
         - cat .env
       script:
         - docker build -f ./Dockerfile.dev -t "$DOCKER_USERNAME"/"$DOCKER_FRONT_DEV_REPO":latest .
@@ -79,20 +73,12 @@ jobs:
       if: type = push AND branch = develop
       before_install:
         - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+        - openssl aes-256-cbc -K $encrypted_6599d9cbfa5d_key -iv $encrypted_6599d9cbfa5d_iv -in env.tar.enc -out env.tar -d
+        - tar xvf env.tar
+        - cp .back.env ./back/.env
         - cd ./back
         - sudo apt-get install sshpass
       before_script:
-        - sed -i 's/DB_USER=/DB_USER='"$DB_USER"'/' .env
-        - sed -i 's/DB_PW=/DB_PW='"$DEVELOPER_PASSWORD"'/' .env
-        - sed -i 's/DB_NAME=/DB_NAME='"$DB_NAME"'/' .env
-        - sed -i 's/DB_DEV_HOST=/DB_DEV_HOST='"$DB_DEV_HOST"'/' .env
-        - sed -i 's/PASSPORT_FACEBOOK_CLIENT_ID=/PASSPORT_FACEBOOK_CLIENT_ID='"$PASSPORT_FACEBOOK_CLIENT_ID"'/' .env
-        - sed -i 's/PASSPORT_FACEBOOK_CLIENT_SECRET=/PASSPORT_FACEBOOK_CLIENT_SECRET='"$PASSPORT_FACEBOOK_CLIENT_SECRET"'/' .env
-        - sed -i 's/PASSPORT_GOOGLE_CLIENT_ID=/PASSPORT_GOOGLE_CLIENT_ID='"$PASSPORT_GOOGLE_CLIENT_ID"'/' .env
-        - sed -i 's/PASSPORT_GOOGLE_CLIENT_SECRET=/PASSPORT_GOOGLE_CLIENT_SECRET='"$PASSPORT_GOOGLE_CLIENT_SECRET"'/' .env
-        - sed -i 's/JWT_SECRET=/JWT_SECRET='"$JWT_SECRET"'/' .env
-        - sed -i 's/EXPRESS_APP_URI=/EXPRESS_APP_URI='"$DEV_BACK_IP"'/' .env
-        - sed -i 's/REACT_APP_URI=/REACT_APP_URI='"$DEV_FRONT_IP"'/' .env
         - cat .env
       script:
         - docker build -f ./Dockerfile.dev -t "$DOCKER_USERNAME"/"$DOCKER_BACK_DEV_REPO":latest .
@@ -104,10 +90,12 @@ jobs:
       if: type = push AND branch = master
       before_install:
         - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+        - openssl aes-256-cbc -K $encrypted_6599d9cbfa5d_key -iv $encrypted_6599d9cbfa5d_iv -in env.tar.enc -out env.tar -d
+        - tar xvf env.tar
+        - cp .front.env ./front/.env
         - cd ./front
         - sudo apt-get install sshpass
       before_script:
-        - sed -i 's/REACT_APP_API_URI=/REACT_APP_API_URI='"$BACK_IP"'/' .env
         - cat .env
       script:
         - docker build -t "$DOCKER_USERNAME"/"$DOCKER_FRONT_REPO":latest .
@@ -118,20 +106,12 @@ jobs:
       if: type = push AND branch = master
       before_install:
         - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+        - openssl aes-256-cbc -K $encrypted_6599d9cbfa5d_key -iv $encrypted_6599d9cbfa5d_iv -in env.tar.enc -out env.tar -d
+        - tar xvf env.tar
+        - cp .back.env ./back/.env
         - cd ./back
         - sudo apt-get install sshpass
       before_script:
-        - sed -i 's/DB_USER=/DB_USER='"$DB_USER"'/' .env
-        - sed -i 's/DB_PW=/DB_PW='"$DEVELOPER_PASSWORD"'/' .env
-        - sed -i 's/DB_NAME=/DB_NAME='"$DB_NAME"'/' .env
-        - sed -i 's/DB_PROD_HOST=/DB_PROD_HOST='"$DB_PROD_HOST"'/' .env
-        - sed -i 's/PASSPORT_FACEBOOK_CLIENT_ID=/PASSPORT_FACEBOOK_CLIENT_ID='"$PASSPORT_FACEBOOK_CLIENT_ID"'/' .env
-        - sed -i 's/PASSPORT_FACEBOOK_CLIENT_SECRET=/PASSPORT_FACEBOOK_CLIENT_SECRET='"$PASSPORT_FACEBOOK_CLIENT_SECRET"'/' .env
-        - sed -i 's/PASSPORT_GOOGLE_CLIENT_ID=/PASSPORT_GOOGLE_CLIENT_ID='"$PASSPORT_GOOGLE_CLIENT_ID"'/' .env
-        - sed -i 's/PASSPORT_GOOGLE_CLIENT_SECRET=/PASSPORT_GOOGLE_CLIENT_SECRET='"$PASSPORT_GOOGLE_CLIENT_SECRET"'/' .env
-        - sed -i 's/JWT_SECRET=/JWT_SECRET='"$JWT_SECRET"'/' .env
-        - sed -i 's/EXPRESS_APP_URI=/EXPRESS_APP_URI='"$BACK_IP"'/' .env
-        - sed -i 's/REACT_APP_URI=/REACT_APP_URI='"$FRONT_IP"'/' .env
         - cat .env
       script:
         - docker build -t "$DOCKER_USERNAME"/"$DOCKER_BACK_REPO":latest .

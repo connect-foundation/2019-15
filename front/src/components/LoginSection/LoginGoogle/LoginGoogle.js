@@ -1,11 +1,12 @@
 import React from 'react';
 import LoginGoogleStyle from './LoginGoogle.style';
 import GLogo from './GLogo/GLogo';
+import APP_URI from '../../../uri'
 
 const LoginGoogle = () => {
   // logics으로 분리 예정
   function loginByGoogle() {
-    window.location.href = `${process.env.REACT_APP_LOCAL_API_URI}/auth/google/login`;
+    window.location.href = `${APP_URI.REACT_APP_API_URI}/auth/google/login`;
   }
 
   return (
