@@ -3,7 +3,7 @@ import { useState } from 'react';
 import Button from '../Button/Button';
 import Modal from './Modal';
 
-const ModalUsage = (props) => {
+const ModalUsage = () => {
   const [open, setOpen] = useState(false);
 
   function modalOn() {

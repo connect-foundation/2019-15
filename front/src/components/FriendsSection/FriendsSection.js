@@ -3,7 +3,7 @@ import { useState } from 'react';
 import FriendsList from './FriendsList/FriendsList';
 import ListPopUpButton from './ListPopUpButton.style';
 
-const FriendsSection = (props) => {
+const FriendsSection = () => {
   const [open, setOpen] = useState(false);
 
   function changeOpen() {

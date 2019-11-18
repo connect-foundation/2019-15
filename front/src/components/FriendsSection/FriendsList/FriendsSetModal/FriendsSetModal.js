@@ -1,5 +1,6 @@
 import React from 'react';
 import { useState } from 'react';
+import PropTypes from 'prop-types';
 import Modal from '../../../globalComponents/Modal/Modal';
 import Button from '../../../globalComponents/Button/Button';
 import Div from './Div.style';
@@ -16,12 +17,10 @@ const FriendsSetModal = ({ mode, nickname, modalOff }) => {
     else if (content === 'add') {
       switchContent('addDone');
       // add
-    }
-    else if (content === 'delete') {
+    } else if (content === 'delete') {
       switchContent('deleteDone');
       await deleteFriend(4, nickname);
-    }
-    else if (content === 'deleteDone') {
+    } else if (content === 'deleteDone') {
       window.location.href = '/main';
     }
   }
@@ -29,7 +28,10 @@ const FriendsSetModal = ({ mode, nickname, modalOff }) => {
   return (
     <Modal>
       <Div>
-        <span>{nickname}{message[content]}</span>
+        <span>
+          {nickname}
+          {message[content]}
+        </span>
         <ButtonSectionStyle>
           <Button onClick={clickHandler}>확인</Button>
           <Button onClick={modalOff}>취소</Button>
@@ -37,6 +39,18 @@ const FriendsSetModal = ({ mode, nickname, modalOff }) => {
       </Div>
     </Modal>
   );
+};
+
+FriendsSetModal.propTypes = {
+  mode: PropTypes.string,
+  nickname: PropTypes.string,
+  modalOff: PropTypes.func,
+};
+
+FriendsSetModal.defaultProps = {
+  mode: null,
+  nickname: null,
+  modalOff: null,
 };
 
 export default FriendsSetModal;
