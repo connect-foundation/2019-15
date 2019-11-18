@@ -7,18 +7,18 @@ function personEnterRoom(socket, messageToClient, capacity) {
 }
 
 function initSocketIO(io) {
-  io.on('connection', socket => {
-    socket.on('enter_3', data => {
-      personEnterRoom(socket, 'connect_3', 3);
+  io.on('connection', (socket) => {
+    socket.on('enter_3명', (data) => {
+      personEnterRoom(socket, 'connect_3명', 3);
     });
-    socket.on('enter_6', data => {
-      personEnterRoom(socket, 'connect_6', 6);
+    socket.on('enter_6명', (data) => {
+      personEnterRoom(socket, 'connect_6명', 6);
     });
-    socket.on('enter_12', data => {
-      personEnterRoom(socket, 'connect_12', 12);
+    socket.on('enter_12명', (data) => {
+      personEnterRoom(socket, 'connect_12명', 12);
     });
-    socket.on('enter_100', data => {
-      personEnterRoom(socket, 'connect_100', 100);
+    socket.on('enter_100명', (data) => {
+      personEnterRoom(socket, 'connect_100명', 100);
     });
   });
 }
