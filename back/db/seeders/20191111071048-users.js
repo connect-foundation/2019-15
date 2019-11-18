@@ -1,5 +1,7 @@
+const { MAX_SCORE } = require('../../graphql/resolvers/constants/ranking');
+
 const getRandomInt = () => {
-  return Math.floor(Math.random() * 100000000);
+  return Math.floor(Math.random() * MAX_SCORE);
 };
 
 module.exports = {

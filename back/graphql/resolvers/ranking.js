@@ -6,8 +6,6 @@ const {
   INT_TO_STRING_PADDING,
 } = require('./constants/ranking');
 
-const { Op } = Sequelize;
-
 const getScoreOrdering = (order) => {
   return order === 'ASC' ? ['score'] : ['score', 'DESC'];
 };
@@ -21,7 +19,7 @@ const splitCursor = (cursor) => {
 
 module.exports = {
   Query: {
-    ranking: async (obj, { order, first, after }, { Users }) => {
+    ranking: async (obj, { order, first, after }, { Users, Op }) => {
       const totalCountArr = await Users.findAll({
         attributes: [
           [Sequelize.fn('COUNT', Sequelize.col('id')), 'totalCount'],
