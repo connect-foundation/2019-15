@@ -5,11 +5,11 @@ describe('friend resolvers test', () => {
     const res = await req
       .post(graphqlPath)
       .send({
-        query: `{
-            friends(pFriendId:4){
-                nickname
-            }
-        }`,
+        query: `mutation {
+                  friends(pFriendId:4){
+                    nickname
+                  }
+                }`,
       })
       .expect(200);
     const friendsExpected = [
