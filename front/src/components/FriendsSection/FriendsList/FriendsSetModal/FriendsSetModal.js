@@ -1,15 +1,17 @@
 import React from 'react';
 import { useState } from 'react';
 import PropTypes from 'prop-types';
+import { useMutation } from '@apollo/react-hooks';
 import Modal from '../../../globalComponents/Modal/Modal';
 import Button from '../../../globalComponents/Button/Button';
 import Div from './Div.style';
 import ButtonSectionStyle from './ButtonSection.style';
-import deleteFriend from '../../../../logics/deleteFriend';
 import message from '../../../../logics/messages';
+import friendQuery from '../../../../queries/friend';
 
 const FriendsSetModal = ({ mode, nickname, modalOff }) => {
   const [content, switchContent] = useState(mode);
+  const [deleteFunc] = useMutation(friendQuery.deleteFriend);
 
   async function clickHandler() {
     if (content === 'empty' || content === 'addDone') modalOff();
@@ -19,7 +21,7 @@ const FriendsSetModal = ({ mode, nickname, modalOff }) => {
       // add
     } else if (content === 'delete') {
       switchContent('deleteDone');
-      await deleteFriend(4, nickname);
+      deleteFunc({ variables: { id: 4, nickname } });
     } else if (content === 'deleteDone') {
       window.location.href = '/main';
     }
