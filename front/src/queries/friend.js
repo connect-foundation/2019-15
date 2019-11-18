@@ -2,7 +2,7 @@ import gql from 'graphql-tag';
 
 const friendQuery = {
   findFriendsById: gql`
-    query friends($id: Int) {
+    mutation friends($id: Int) {
       friends(pFriendId: $id) {
         nickname
       }

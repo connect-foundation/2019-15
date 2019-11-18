@@ -13,6 +13,7 @@ const FriendsList = () => {
   const [configMode, switchMode] = useState(false);
   const [modalInfo, setModal] = useState({ mode: false, nickname: null });
   const [inputValue, setValue] = useState('');
+  const [refresh, setRefresh] = useState(true);
 
   function changeConfigMode() {
     switchMode((currentConfigMode) => !currentConfigMode);
@@ -33,6 +34,8 @@ const FriendsList = () => {
           mode={modalInfo.mode}
           nickname={modalInfo.nickname}
           modalOff={() => modalOnOff(false)}
+          refresh={refresh}
+          setRefresh={setRefresh}
         />
       ) : null}
 
@@ -58,7 +61,12 @@ const FriendsList = () => {
             </FriendComponentStyle>
           </>
         )}
-        <FriendComponents modalOnOff={modalOnOff} configMode={configMode} />
+        <FriendComponents
+          modalOnOff={modalOnOff}
+          configMode={configMode}
+          refresh={refresh}
+          setRefresh={setRefresh}
+        />
       </FriendsListStyle>
     </>
   );

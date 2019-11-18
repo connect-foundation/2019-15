@@ -4,22 +4,7 @@ const { Op } = Sequelize;
 
 module.exports = {
   Query: {
-    friends: (obj, { pFriendId }, { Friends, Users }) => {
-      return Users.findAll({
-        type: Sequelize.QueryTypes.SELECT,
-        include: [
-          {
-            model: Friends,
-            where: {
-              [Op.and]: [
-                { sFriendId: Sequelize.col('Users.id') },
-                { pFriendId: pFriendId },
-              ],
-            },
-          },
-        ],
-      });
-    },
+    
     addFriendForTest: (obj, args, { Friends }) => {
       Friends.create({ pFriendId: 1, sFriendId: 2 }).then({}, (err) => {
         console.log('already exists');
@@ -38,6 +23,22 @@ module.exports = {
     },
   },
   Mutation: {
+    friends: (obj, { pFriendId }, { Friends, Users }) => {
+      return Users.findAll({
+        type: Sequelize.QueryTypes.SELECT,
+        include: [
+          {
+            model: Friends,
+            where: {
+              [Op.and]: [
+                { sFriendId: Sequelize.col('Users.id') },
+                { pFriendId: pFriendId },
+              ],
+            },
+          },
+        ],
+      });
+    },
     deleteFriend: async (obj, { id, nickname }, { Friends, Users }) => {
       const idFromNicknames = await Users.findAll({
         where: { nickname: nickname },

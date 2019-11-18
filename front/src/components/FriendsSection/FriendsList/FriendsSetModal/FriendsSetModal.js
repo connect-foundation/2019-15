@@ -9,7 +9,7 @@ import ButtonSectionStyle from './ButtonSection.style';
 import message from '../../../../logics/messages';
 import friendQuery from '../../../../queries/friend';
 
-const FriendsSetModal = ({ mode, nickname, modalOff }) => {
+const FriendsSetModal = ({ mode, nickname, modalOff, setRefresh }) => {
   const [content, switchContent] = useState(mode);
   const [deleteFunc] = useMutation(friendQuery.deleteFriend);
 
@@ -22,8 +22,9 @@ const FriendsSetModal = ({ mode, nickname, modalOff }) => {
     } else if (content === 'delete') {
       switchContent('deleteDone');
       deleteFunc({ variables: { id: 4, nickname } });
+      setRefresh(true);
     } else if (content === 'deleteDone') {
-      window.location.href = '/main';
+      modalOff();
     }
   }
 
@@ -47,12 +48,14 @@ FriendsSetModal.propTypes = {
   mode: PropTypes.string,
   nickname: PropTypes.string,
   modalOff: PropTypes.func,
+  setRefresh: PropTypes.func,
 };
 
 FriendsSetModal.defaultProps = {
   mode: null,
   nickname: null,
   modalOff: null,
+  setRefresh: null,
 };
 
 export default FriendsSetModal;

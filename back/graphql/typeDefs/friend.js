@@ -8,11 +8,11 @@ module.exports = `
   }
   
   extend type Query{
-    friends(pFriendId:Int):[User],
     addFriendForTest:[Friend]
   } 
 
   extend type Mutation{
+    friends(pFriendId:Int):[User],
     deleteFriend(id:Int, nickname:String):[Friend]
   }
 `;

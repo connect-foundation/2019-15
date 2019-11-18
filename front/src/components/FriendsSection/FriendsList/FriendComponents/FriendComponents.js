@@ -1,17 +1,27 @@
 import React from 'react';
-import { useQuery } from '@apollo/react-hooks';
+import { useState, useEffect } from 'react';
+import { useMutation } from '@apollo/react-hooks';
 import { faMinusCircle } from '@fortawesome/free-solid-svg-icons';
 import PropTypes from 'prop-types';
 import friendQuery from '../../../../queries/friend';
 import FriendComponentStyle from '../FriendComponent.style';
 import Icon from '../Icons.style';
 
-function FriendComponents({ modalOnOff, configMode }) {
-  const { data, loading, error } = useQuery(friendQuery.findFriendsById, {
-    variables: { id: 4 },
+function FriendComponents({ modalOnOff, configMode, refresh, setRefresh }) {
+  const [findFunc] = useMutation(friendQuery.findFriendsById);
+  const [data, setData] = useState({ friends: [{ nickname: null }] });
+
+  const fetchItems = async () => {
+    const newItems = await findFunc({ variables: { id: 4 } });
+    await setData(newItems.data);
+  };
+
+  useEffect(() => {
+    if (refresh) {
+      fetchItems();
+    }
+    setRefresh(false);
   });
-  if (loading) return <p>Loading </p>;
-  if (error) return <p>ERROR</p>;
 
   return (
     <>
@@ -35,9 +45,13 @@ export default FriendComponents;
 FriendComponents.propTypes = {
   modalOnOff: PropTypes.func,
   configMode: PropTypes.bool,
+  refresh: PropTypes.bool,
+  setRefresh: PropTypes.func,
 };
 
 FriendComponents.defaultProps = {
   modalOnOff: null,
   configMode: null,
+  refresh: null,
+  setRefresh: null,
 };
