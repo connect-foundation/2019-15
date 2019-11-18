@@ -4,7 +4,8 @@ const friend = require('./friend');
 const pageInfo = require('./pageInfo');
 
 const root = `
-    type Query
+    type Query,
+    type Mutation
 `;
 
 module.exports = [root, pageInfo, user, ranking, friend];

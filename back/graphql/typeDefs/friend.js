@@ -9,7 +9,10 @@ module.exports = `
   
   extend type Query{
     friends(pFriendId:Int):[User],
-    deleteFriend(id:Int, nickname:String):[Friend],
     addFriendForTest:[Friend]
   } 
+
+  extend type Mutation{
+    deleteFriend(id:Int, nickname:String):[Friend]
+  }
 `;
