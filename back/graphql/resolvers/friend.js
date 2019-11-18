@@ -2,8 +2,8 @@ const Sequelize = require('sequelize');
 
 module.exports = {
   Query: {
-    friends: async (obj, { pFriendId }, { Friends, Users }) => {
-      return await Friends.findAll({
+    friends: (obj, { pFriendId }, { Friends }) => {
+      return Friends.findAll({
         where: {
           pFriendId: pFriendId,
         },
