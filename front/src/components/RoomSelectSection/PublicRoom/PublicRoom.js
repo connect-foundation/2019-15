@@ -10,7 +10,10 @@ const PublicRoom = () => {
 
   const makeGameStartBtnHandler = (capacity) => {
     const clickGameStartBtn = () => {
-      io.socket.emit(`enter_${capacity}`, 3);
+      io.socket.emit(`enter_${capacity}`, {
+        // 랜덤넘버 대신 유저아이디 or 닉네임이 들어가야함
+        userId: parseInt(Math.random() * 1000, 0),
+      });
     };
     return clickGameStartBtn;
   };

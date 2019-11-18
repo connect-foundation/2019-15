@@ -4,11 +4,15 @@ const makeRoomId = () => {
   return uuid();
 };
 
+const makeNewRoom = (roomId) => {
+  return { roomId, people: [] };
+};
+
 const publicRoom = {
-  room: { 3: [], 6: [], 12: [], 100: [] },
+  room: { '3명': [], '6명': [], '12명': [], '100명': [] },
   // 방이 없을 때 새로운 방을 만들고 반환.
-  makeRoom: function(capacity) {
-    const newRoom = { roomid: makeRoomId(), people: 0 };
+  addRoom: function(capacity) {
+    const newRoom = makeNewRoom(makeRoomId());
     this.room[capacity].push(newRoom);
     return newRoom;
   },
@@ -16,12 +20,14 @@ const publicRoom = {
   getEnableRoom: function(capacity) {
     const nRooms = this.room[capacity];
 
-    const idx = nRooms.findIndex((v) => v.people < capacity);
+    // warn: 병목 예상
+    const idx = nRooms.findIndex(
+      (v) => v.people.length < parseInt(capacity.slice(0, 1), 0),
+    );
 
-    if (nRooms.length === 0) {
-      return this.makeRoom(capacity);
+    if (idx < 0) {
+      return this.addRoom(capacity);
     }
-
     return nRooms[idx];
   },
 };
