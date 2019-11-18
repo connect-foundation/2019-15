@@ -1,7 +1,6 @@
 import React, { useContext } from 'react';
 import RoomContainer from '../RoomContainer/RoomContainer';
 import PublicRoomButton from './PublicRoomButton.style';
-// eslint-disable-next-line import/no-cycle
 import MainSocketContext from '../../../pages/Main/Main.context';
 
 const PublicRoom = () => {
