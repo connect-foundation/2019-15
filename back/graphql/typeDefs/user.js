@@ -8,6 +8,11 @@ module.exports = `
     updatedAt:String
   }
   
+  type UserEdge{
+    node:User
+    cursor:String
+  }
+  
   extend type Query{
     users:[User]
   }
