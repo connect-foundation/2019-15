@@ -15,17 +15,21 @@ const io = {
     return this.socket;
   },
   async initMsgHandler() {
-    this.socket.on('connect_3명', (data) => {
-      console.log(data);
+    this.socket.on('connect_3명', ({ roomType, roomId }) => {
+      this.socket.emit('get_userlist', { roomType, roomId });
     });
-    this.socket.on('connect_6명', (data) => {
-      console.log(data);
+    this.socket.on('connect_6명', ({ roomType, roomId }) => {
+      this.socket.emit('get_userlist', { roomType, roomId });
     });
-    this.socket.on('connect_12명', (data) => {
-      console.log(data);
+    this.socket.on('connect_12명', ({ roomType, roomId }) => {
+      this.socket.emit('get_userlist', { roomType, roomId });
     });
-    this.socket.on('connect_100명', (data) => {
-      console.log(data);
+    this.socket.on('connect_100명', ({ roomType, roomId }) => {
+      this.socket.emit('get_userlist', { roomType, roomId });
+    });
+
+    this.socket.on('userlist', ({ userlist }) => {
+      console.log('userlist: ', JSON.parse(userlist));
     });
   },
 };
