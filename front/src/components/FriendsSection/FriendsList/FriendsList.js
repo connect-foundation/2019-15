@@ -1,34 +1,21 @@
 import React from 'react';
-import { useState, useEffect } from 'react';
-import {
-  faCog,
-  faUserPlus,
-  faMinusCircle,
-} from '@fortawesome/free-solid-svg-icons';
+import { useState } from 'react';
+import { faCog, faUserPlus } from '@fortawesome/free-solid-svg-icons';
 import FriendsListStyle from './FriendsList.style';
-import FriendComponent from './FriendComponent.style';
+import FriendComponents from './FriendComponents/FriendComponents';
+import FriendComponentStyle from './FriendComponent.style';
 import Icon from './Icons.style';
 import DoneButton from './DoneButton.style';
 import Input from './Input.style';
 import FriendsSetModal from './FriendsSetModal/FriendsSetModal';
-import getFriends from '../../../logics/getFriends';
 
 const FriendsList = () => {
-  const [friends, setFriends] = useState([]);
   const [configMode, switchMode] = useState(false);
   const [modalInfo, setModal] = useState({ mode: false, nickname: null });
   const [inputValue, setValue] = useState('');
 
-  useEffect(() => {
-    const fetchItems = async () => {
-      const newItems = await getFriends(4); // getFriends함수 인자로 현재 user의 id 넘겨줘야함
-      setFriends(newItems.data.friends);
-    };
-    fetchItems();
-  }, []);
-
   function changeConfigMode() {
-    switchMode(!configMode);
+    switchMode((currentConfigMode) => !currentConfigMode);
   }
 
   function modalOnOff(mode, nickname) {
@@ -52,37 +39,26 @@ const FriendsList = () => {
       <FriendsListStyle>
         {configMode ? (
           <>
-            <FriendComponent>
+            <FriendComponentStyle>
               <DoneButton onClick={changeConfigMode}>완료</DoneButton>
-            </FriendComponent>
-            <FriendComponent>
+            </FriendComponentStyle>
+            <FriendComponentStyle>
               <Input onChange={inputChangeHandler} />
               <Icon
                 icon={faUserPlus}
                 onClick={() => modalOnOff('add', inputValue)}
               />
-            </FriendComponent>
+            </FriendComponentStyle>
           </>
         ) : (
           <>
-            <FriendComponent>
+            <FriendComponentStyle>
               <span>친구 목록</span>
               <Icon icon={faCog} onClick={changeConfigMode} />
-            </FriendComponent>
+            </FriendComponentStyle>
           </>
         )}
-
-        {friends.map((friend) => (
-          <FriendComponent key={friend.nickname}>
-            {friend.nickname}
-            {configMode ? (
-              <Icon
-                icon={faMinusCircle}
-                onClick={() => modalOnOff('delete', friend.nickname)}
-              />
-            ) : null}
-          </FriendComponent>
-        ))}
+        <FriendComponents modalOnOff={modalOnOff} configMode={configMode} />
       </FriendsListStyle>
     </>
   );
