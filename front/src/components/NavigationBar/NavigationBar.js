@@ -1,13 +1,15 @@
 import React from 'react';
-import NavigationBarStyle from './NavigationBar.style';
+import { Link } from 'react-router-dom';
+import { NavigationBarStyle, LogoImage } from './NavigationBar.style';
+import ButtonContainer from './ButtonContainer/ButtonContainer';
 import mainlogo from '../../asset/mainlogo.png';
-import Image from '../globalComponents/Image/Image';
-import LogOutButton from './LogOutButton/LogOutButton';
 
 const NavigationBar = () => (
   <NavigationBarStyle>
-    <Image src={mainlogo} />
-    <LogOutButton />
+    <Link to="/main">
+      <LogoImage src={mainlogo} />
+    </Link>
+    <ButtonContainer />
   </NavigationBarStyle>
 );
 
