@@ -7,7 +7,7 @@ const FriendsSection = () => {
   const [open, setOpen] = useState(false);
 
   function changeOpen() {
-    setOpen(!open);
+    setOpen((currentOpen) => !currentOpen);
   }
 
   return (

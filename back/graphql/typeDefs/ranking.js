@@ -3,7 +3,14 @@ module.exports = `
     ASC
     DESC
   }
+  
+  type RankingConnection{
+    totalCount:Int
+    edges:[UserEdge]
+    pageInfo:PageInfo
+  }
+  
   extend type Query{
-    ranking(order:Order, limit:Int, offset:Int):[User]
+    ranking(order:Order, first:Int!, after:String):RankingConnection
   }
 `;
