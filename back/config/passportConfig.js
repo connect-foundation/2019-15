@@ -1,7 +1,7 @@
 const { EXPRESS_URI } = require('../config/uri');
 
 const tmpStrs = EXPRESS_URI.split(':');
-const tmpStr = `${tmpStrs[0]}:${tmpStrs[1]}.xip.io:${tmpStrs[2]}}`;
+const tmpStr = `${tmpStrs[0]}:${tmpStrs[1]}.xip.io:${tmpStrs[2]}`;
 
 const passportConfig = {
   facebookConfig: {
