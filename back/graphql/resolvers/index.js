@@ -1,3 +1,4 @@
 const user = require('./user');
+const ranking = require('./ranking');
 
-module.exports = [user];
+module.exports = [user, ranking];

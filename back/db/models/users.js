@@ -1,16 +1,25 @@
 module.exports = (sequelize, DataTypes) => {
-  const users = sequelize.define(
-    'users',
+  const Users = sequelize.define(
+    'Users',
     {
-      user_id: DataTypes.STRING,
+      userId: DataTypes.STRING,
       nickname: DataTypes.STRING,
+      score: DataTypes.BIGINT,
     },
     {},
   );
-  users.associate = function(models) {
-    users.hasOne(models.scores);
-    users.hasMany(models.before_friends);
-    users.hasMany(models.friends);
+  Users.associate = function(models) {
+    Users.hasMany(models.BeforeFriends, {
+      foreignKey: 'pFriendId',
+      sourceKey: 'id',
+    });
+    Users.hasMany(models.BeforeFriends, {
+      foreignKey: 'sFriendId',
+      sourceKey: 'id',
+    });
+    Users.hasMany(models.Friends, { foreignKey: 'pFriendId', sourceKey: 'id' });
+    Users.hasMany(models.Friends, { foreignKey: 'sFriendId', sourceKey: 'id' });
+    Users.hasOne(models.Words, { foreignKey: 'userId', sourceKey: 'id' });
   };
-  return users;
+  return Users;
 };

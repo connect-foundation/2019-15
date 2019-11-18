@@ -1,7 +1,7 @@
 module.exports = {
   Query: {
-    users: (obj, args, { users }) => {
-      return users.findAll();
+    users: (obj, args, { Users }) => {
+      return Users.findAll();
     },
   },
 };

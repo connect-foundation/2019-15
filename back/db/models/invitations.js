@@ -1,10 +1,10 @@
 module.exports = (sequelize, DataTypes) => {
-  const invitations = sequelize.define('invitations', {}, {});
-  invitations.associate = function(models) {
-    invitations.belongsTo(models.friends, {
-      as: 'friend_id',
-      foreignKey: 'id',
+  const Invitations = sequelize.define('Invitations', {}, {});
+  Invitations.associate = function(models) {
+    Invitations.belongsTo(models.Friends, {
+      foreignKey: 'friendsId',
+      targetKey: 'id',
     });
   };
-  return invitations;
+  return Invitations;
 };

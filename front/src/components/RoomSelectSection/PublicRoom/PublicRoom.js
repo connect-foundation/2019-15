@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import RoomContainer from '../RoomContainer/RoomContainer';
 import PublicRoomButton from './PublicRoomButton.style';
 // eslint-disable-next-line import/no-cycle
-import { MainSocketContext } from '../../../pages/Main';
+import MainSocketContext from '../../../pages/Main/Main.context';
 
 const PublicRoom = () => {
   const buttons = ['3명', '6명', '12명', '100명'];

@@ -13,7 +13,9 @@ if (process.env.REACT_APP_ENVIRONMENT === 'development') {
 } else if (process.env.REACT_APP_ENVIRONMENT === 'production') {
   REACT_APP_API_URI = process.env.REACT_APP_PROD_API_URI;
 }
-const client = new ApolloClient({ uri: REACT_APP_API_URI });
+
+const graphqlPath = '/api/';
+const client = new ApolloClient({ uri: `${REACT_APP_API_URI}${graphqlPath}` });
 
 ReactDOM.render(
   <ApolloProvider client={client}>
