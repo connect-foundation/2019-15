@@ -13,9 +13,9 @@ describe('friend resolvers test', () => {
       })
       .expect(200);
     const friendsExpected = [
-      { nickname: '이지영' },
-      { nickname: '이창권' },
-      { nickname: '손진아' },
+      {
+        nickname: expect.any(String),
+      },
     ];
     expect(res.body.data.friends).toStrictEqual(
       expect.arrayContaining(friendsExpected),

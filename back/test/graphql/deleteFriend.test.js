@@ -18,8 +18,8 @@ describe('deleteFriend resolvers test', () => {
     const res = await req
       .post(graphqlPath)
       .send({
-        query: `{
-                  deleteFriend(id:2,nickname:"이지영"){
+        query: `mutation deleteFriend {
+                  deleteFriend(id: 2, nickname: "이지영") {
                     id
                   }
                 }`,
