@@ -2,7 +2,7 @@ import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFacebookSquare } from '@fortawesome/free-brands-svg-icons';
 import LoginFacebookStyle from './LoginFacebook.style';
-import APP_URI from '../../../uri'
+import APP_URI from '../../../util/uri'
 
 const LoginFacebook = () => {
   // logics으로 분리 예정

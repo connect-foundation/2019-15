@@ -67,7 +67,7 @@ jobs:
       script:
         - docker build -f ./Dockerfile.dev -t "$DOCKER_USERNAME"/"$DOCKER_FRONT_DEV_REPO":latest .
         - docker push "$DOCKER_USERNAME"/"$DOCKER_FRONT_DEV_REPO":latest
-        - sshpass -p "$DEVELOPER_PASSWORD" ssh -o StrictHostKeyChecking=no developer@"$DEV_FRONT_IP" "/home/execute.sh" 
+        - sshpass -p "$DEVELOPER_PASSWORD" ssh -o StrictHostKeyChecking=no developer@"$DEV_FRONT_IP" "/home/execute.sh"
 
     - name: "DEPLOY BACK"
       if: type = push AND branch = develop
@@ -100,7 +100,7 @@ jobs:
       script:
         - docker build -t "$DOCKER_USERNAME"/"$DOCKER_FRONT_REPO":latest .
         - docker push "$DOCKER_USERNAME"/"$DOCKER_FRONT_REPO":latest
-        - sshpass -p "$DEVELOPER_PASSWORD" ssh -o StrictHostKeyChecking=no developer@"$FRONT_IP" "/home/execute.sh" 
+        - sshpass -p "$DEVELOPER_PASSWORD" ssh -o StrictHostKeyChecking=no developer@"$FRONT_IP" "/home/execute.sh"
 
     - name: "DEPLOY BACK"
       if: type = push AND branch = master
