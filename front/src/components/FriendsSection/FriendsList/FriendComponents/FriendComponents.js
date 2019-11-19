@@ -15,12 +15,11 @@ function FriendComponents({ modalOnOff, configMode, refresh, setRefresh }) {
     const newItems = await findFunc({ variables: { id: 4 } });
     await setData(newItems.data);
   };
-
   useEffect(() => {
     if (refresh) {
       fetchItems();
+      setRefresh(false);
     }
-    setRefresh(false);
   });
 
   return (
