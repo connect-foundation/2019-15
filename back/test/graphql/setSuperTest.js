@@ -1,3 +1,4 @@
+/*
 const request = require('supertest');
 const { app } = require('../../app');
 
@@ -8,3 +9,4 @@ module.exports = {
   req,
   graphqlPath,
 };
+*/

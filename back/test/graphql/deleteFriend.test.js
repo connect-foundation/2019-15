@@ -1,3 +1,4 @@
+/*
 const { req, graphqlPath } = require('./setSuperTest');
 
 // 삭제한 후에 해당 컬럼의 존재 여부 확인.
@@ -32,3 +33,4 @@ describe('deleteFriend resolvers test', () => {
     done();
   });
 });
+*/

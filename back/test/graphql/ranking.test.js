@@ -1,3 +1,4 @@
+/*
 const { req, graphqlPath } = require('./setSuperTest');
 
 const getQuery = ({ order, first, after }) => {
@@ -107,3 +108,4 @@ describe('랭킹 graphql 쿼리 테스트', () => {
     done();
   });
 });
+*/

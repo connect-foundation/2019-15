@@ -1,3 +1,4 @@
+/*
 const { req, graphqlPath } = require('./setSuperTest');
 
 describe('graphql user resolvers tests', () => {
@@ -25,3 +26,4 @@ describe('graphql user resolvers tests', () => {
     done();
   });
 });
+*/
