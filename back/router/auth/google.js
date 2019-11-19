@@ -23,12 +23,12 @@ router.get(
   }),
 );
 
-router.get('/login_success', function (req, res) {
-  res.cookie('jwt', signJWT(req));
+router.get('/login_success', async function(req, res) {
+  res.cookie('jwt', await signJWT(req));
   res.redirect(`${REACT_URI}/main`);
 });
 
-router.get('/login_fail', function (req, res) {
+router.get('/login_fail', function(req, res) {
   res.redirect(`${REACT_URI}`);
 });
 
