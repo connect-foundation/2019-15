@@ -2,7 +2,7 @@ const { req, graphqlPath } = require('./setSuperTest');
 
 const getQuery = ({ order, first, after }) => {
   let query = `{
-     ranking(`;
+    ranking(`;
   query = order ? `${query} order:${order}` : query;
   query = first ? `${query} first:${first}` : query;
   query = after ? `${query} after:"${after}"` : query;
@@ -21,7 +21,7 @@ const getQuery = ({ order, first, after }) => {
           cursor
         }
       }
-   }`;
+  }`;
 };
 
 const testEdges = (values, testOptions) => {
