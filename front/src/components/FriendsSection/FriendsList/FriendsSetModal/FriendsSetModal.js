@@ -11,7 +11,7 @@ import friendQuery from '../../../../queries/friend';
 
 const FriendsSetModal = ({ mode, nickname, modalOff, setRefresh }) => {
   const [content, switchContent] = useState(mode);
-  const [deleteFunc] = useMutation(friendQuery.deleteFriend);
+  const [deleteFriend] = useMutation(friendQuery.deleteFriend);
 
   async function clickHandler() {
     if (content === 'empty' || content === 'addDone') modalOff();
@@ -21,7 +21,7 @@ const FriendsSetModal = ({ mode, nickname, modalOff, setRefresh }) => {
       // add
     } else if (content === 'delete') {
       switchContent('deleteDone');
-      deleteFunc({ variables: { id: 4, nickname } });
+      deleteFriend({ variables: { id: 4, nickname } });
       setRefresh(true);
     } else if (content === 'deleteDone') {
       modalOff();
