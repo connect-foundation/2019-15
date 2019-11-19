@@ -1,5 +1,5 @@
 import socketIo from 'socket.io-client';
-import APP_URI from '../../uri';
+import APP_URI from '../../util/uri';
 
 const io = {
   socket: null,
