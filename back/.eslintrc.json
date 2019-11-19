@@ -1,0 +1,26 @@
+{
+
+  "env": {
+    "node": true,
+    "jest": true
+  },
+  "extends": ["airbnb", "prettier", "plugin:node/recommended"],
+  "plugins": ["prettier"],
+  "rules": {
+    "prettier/prettier": "error",
+    "no-unused-vars": "warn",
+    "no-console": "off",
+    "func-names": "off",
+    "no-process-exit": "off",
+    "object-shorthand": "off",
+    "class-methods-use-this": "off",
+    "linebreak-style": 0
+  },
+  "overrides": [{
+    "files": "**/*.test.js",
+    "rules": {
+      "node/no-unpublished-require": 0,
+      "node/no-missing-require": 0
+    }
+  }]
+}
