@@ -1,12 +1,12 @@
 import React, { useContext } from 'react';
 import RoomContainer from '../RoomContainer/RoomContainer';
 import PublicRoomButton from './PublicRoomButton.style';
-import MainSocketContext from '../../../pages/Main/Main.context';
+import MainContext from '../../../Main.context';
 
 const PublicRoom = () => {
   const buttons = ['3명', '6명', '12명', '100명'];
 
-  const { io } = useContext(MainSocketContext);
+  const { io } = useContext(MainContext);
 
   const makeGameStartBtnHandler = (capacity) => {
     const clickGameStartBtn = () => {
