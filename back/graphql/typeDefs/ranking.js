@@ -12,5 +12,6 @@ module.exports = `
   
   extend type Query{
     rankingAll(order:Order, first:Int!, after:String):RankingConnection
+    rankingFriends(order:Order, first:Int!, after:String):RankingConnection
   }
 `;

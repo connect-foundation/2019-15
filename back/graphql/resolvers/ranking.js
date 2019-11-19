@@ -1,5 +1,4 @@
-const Sequelize = require('sequelize');
-const { MIN_ID, MAX_SCORE, CURSOR_LENGTH, INT_TO_STRING_PADDING } = require('./constants/ranking');
+const { MIN_ID, MAX_INT, CURSOR_LENGTH, INT_TO_STRING_PADDING } = require('./constants/ranking');
 
 const getScoreOrdering = (order) => {
   return order === 'ASC' ? ['score'] : ['score', 'DESC'];
@@ -21,31 +20,58 @@ const makeNodeToEdge = (node) => {
   };
 };
 
+const toRankingResult = (edgesWithCursor, totalCount, first) => {
+  return {
+    totalCount: totalCount,
+    edges: edgesWithCursor,
+    pageInfo: {
+      endCursor: edgesWithCursor.length ? edgesWithCursor[edgesWithCursor.length - 1].cursor : null,
+      hasNextPage: edgesWithCursor.length === first,
+    },
+  };
+};
+
 module.exports = {
   Query: {
     rankingAll: async (obj, { order, first, after }, { Users, Op }) => {
-      const { id, score } = after ? splitCursor(after) : { id: MIN_ID, score: MAX_SCORE };
+      const { id, score } = after ? splitCursor(after) : { id: MIN_ID, score: MAX_INT };
 
-      const { rows: nodes, count } = await Users.findAndCountAll({
+      const { rows: nodes, count: totalCount } = await Users.findAndCountAll({
         where: {
           [Op.and]: [{ id: { [Op.ne]: id } }, { score: { [Op.lte]: score } }],
         },
-        order: [getScoreOrdering(order), Sequelize.col('id')],
+        order: [getScoreOrdering(order), 'id', 'nickname'],
         limit: first,
       });
 
       const edgesWithCursor = nodes.map((node) => makeNodeToEdge(node));
 
-      return {
-        totalCount: count,
-        edges: edgesWithCursor,
-        pageInfo: {
-          endCursor: edgesWithCursor.length
-            ? edgesWithCursor[edgesWithCursor.length - 1].cursor
-            : null,
-          hasNextPage: edgesWithCursor.length === first,
-        },
-      };
+      return toRankingResult(edgesWithCursor, totalCount, first);
+    },
+    rankingFriends: async (obj, { order, first, after }, { Users, Friends, Op, user }) => {
+      console.log(user);
+      const { id, score } = after ? splitCursor(after) : { id: MIN_ID, score: MAX_INT };
+
+      const { rows: nodes, count: totalCount } = await Friends.findAndCountAll({
+        where: { pFriendId: user.id },
+        include: [
+          {
+            model: Users,
+            where: {
+              [Op.and]: [{ id: { [Op.ne]: id } }, { score: { [Op.lte]: score } }],
+            },
+          },
+        ],
+        order: [
+          [{ model: Users }, ...getScoreOrdering(order)],
+          [{ model: Users }, 'id'],
+          [{ model: Users }, 'nickname'],
+        ],
+        limit: first,
+      });
+      const edgesWithCursor = nodes.map(({ User }) => makeNodeToEdge(User));
+
+      return toRankingResult(edgesWithCursor, totalCount, first);
     },
   },
 };
