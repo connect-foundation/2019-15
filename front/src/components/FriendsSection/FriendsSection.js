@@ -1,22 +1,21 @@
-import React, { useState } from 'react';
-
+import React from 'react';
+import { useState } from 'react';
 import FriendsList from './FriendsList/FriendsList';
-import ListPopUpButtonStyle from './ListPopUpButton.style';
+import ListPopUpButton from './ListPopUpButton.style';
 
 const FriendsSection = () => {
-  const [open, setOpen] = useState('none');
+  const [open, setOpen] = useState(false);
 
   function changeOpen() {
-    if (open === 'none') setOpen('block');
-    else setOpen('none');
+    setOpen((currentOpen) => !currentOpen);
   }
 
   return (
     <>
-      <FriendsList isVisible={open} />
-      <ListPopUpButtonStyle onClick={changeOpen}>
-        {open === 'none' ? '친구 목록' : '목록 숨기기'}
-      </ListPopUpButtonStyle>
+      {open ? <FriendsList /> : null}
+      <ListPopUpButton onClick={changeOpen}>
+        {open ? '목록 숨기기' : '친구 목록'}
+      </ListPopUpButton>
     </>
   );
 };

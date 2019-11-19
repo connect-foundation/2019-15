@@ -25,7 +25,7 @@ const getRankingQuery = (resolverName, { order, first, after }) => {
           cursor
         }
       }
-   }`;
+  }`;
 };
 
 const testEdges = (values, testOptions) => {

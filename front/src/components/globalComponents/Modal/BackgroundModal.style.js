@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 
 const BackgroundModalStyle = styled.div`
-  display: ${(props) => (props.isVisible ? 'flex' : 'none')};
   position: fixed;
   z-index: 1;
   left: 0;
