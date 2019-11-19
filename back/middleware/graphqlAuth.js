@@ -10,7 +10,6 @@ module.exports = async (req, res, next) => {
         subject: 'userInfo',
       });
       req.user = user;
-      console.log(user);
       next();
     } catch (e) {
       if (e.name === 'TokenExpiredError') res.status(401).send(false);
