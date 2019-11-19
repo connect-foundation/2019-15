@@ -13,6 +13,7 @@ module.exports = {
           model: 'Friends',
           key: 'id',
         },
+        onDelete: 'CASCADE',
       },
       url: {
         type: Sequelize.TEXT,
