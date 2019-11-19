@@ -49,7 +49,6 @@ module.exports = {
       return toRankingResult(edgesWithCursor, totalCount, first);
     },
     rankingFriends: async (obj, { order, first, after }, { Users, Friends, Op, user }) => {
-      console.log(user);
       const { id, score } = after ? splitCursor(after) : { id: MIN_ID, score: MAX_INT };
 
       const { rows: nodes, count: totalCount } = await Friends.findAndCountAll({

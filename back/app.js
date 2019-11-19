@@ -7,6 +7,7 @@ const express = require('express');
 const session = require('express-session');
 const http = require('http');
 const socketIo = require('socket.io');
+const graphqlPath=require('./config/graphqlPath');
 
 // cors
 const corsOptions = require('./config/corsOptions');
@@ -55,7 +56,7 @@ app.use(passport.session());
 app.use('/', function(req, res, next) {
   next();
 });
-app.use('/api', apiRouter);
+app.use(graphqlPath, apiRouter);
 app.use('/auth', authRouter);
 
 // error handling

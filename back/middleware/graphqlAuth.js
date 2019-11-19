@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
 
 module.exports = async (req, res, next) => {
+  console.log(req.cookies);
   if (!req.cookies.jwt) res.status(401).send(false);
   else {
     try {
@@ -9,6 +10,7 @@ module.exports = async (req, res, next) => {
         subject: 'userInfo',
       });
       req.user = user;
+      console.log(user);
       next();
     } catch (e) {
       if (e.name === 'TokenExpiredError') res.status(401).send(false);
