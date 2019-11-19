@@ -1,29 +1,41 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useContext } from 'react';
 import NavigationBar from '../../components/NavigationBar/NavigationBar';
 import RoomSelectSection from '../../components/RoomSelectSection/RoomSelectSection';
 import FriendsSection from '../../components/FriendsSection/FriendsSection';
+import MainContext from '../../Main.context';
 import checkAuth from '../../logics/checkAuth';
-import io from '../../logics/socketLogic';
-import MainSocketContext from './Main.context';
+import Loading from '../../components/globalComponents/Loading/Loading';
 
 const Main = () => {
-  const initSocket = async () => {
-    await io.connectSocket();
-    await io.initMsgHandler();
-  };
+  const { io, userlist, setUserlist, room, setRoom } = useContext(MainContext);
 
   useEffect(() => {
+    const initSocket = async () => {
+      await io.connectSocket();
+      await io.initMsgHandler({ setUserlist, setRoom });
+    };
     checkAuth();
     initSocket();
-  }, []);
+  }, [io, setRoom, setUserlist]);
 
-  return (
-    <MainSocketContext.Provider value={{ io }}>
-      <NavigationBar />
-      <RoomSelectSection />
-      <FriendsSection />
-    </MainSocketContext.Provider>
-  );
+  // 메인 화면
+  if (room.roomType === null) {
+    return (
+      <>
+        <NavigationBar />
+        <RoomSelectSection />
+        <FriendsSection />
+      </>
+    );
+  }
+
+  // 혼자일 경우 게임 대기
+  if (userlist.length <= 1) {
+    return <Loading />;
+  }
+
+  // 게임 화면
+  return <>게임중이시네요</>;
 };
 
 export default Main;
