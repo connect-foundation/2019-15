@@ -1,13 +1,12 @@
 import styled from 'styled-components';
 
 const ModalStyle = styled.div`
-  display: ${(props) => (props.isVisible ? 'flex' : 'none')};
   position: fixed;
   top: 50%;
   left: 50%;
   border: 1px solid lightgray;
-  width: 10rem;
-  height: 10rem;
+  min-width: 3rem;
+  min-height: 3rem;
   background-color: white;
   border-radius: 1rem;
 

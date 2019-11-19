@@ -6,10 +6,10 @@ describe('graphql user resolvers tests', () => {
       .post(graphqlPath)
       .send({
         query: `{
-           users{
-             userId nickname score
-           }
-          }`,
+          users{
+            userId nickname score
+          }
+        }`,
       })
       .expect(200);
     const usersExpected = [
