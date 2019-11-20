@@ -7,7 +7,7 @@ import NOTICE from '../../../asset/notice.png';
 import MYPAGE from '../../../asset/mypage.png';
 import LOGOUT from '../../../asset/logout.png';
 import Button from './Button/Button';
-import APP_URI from '../../../uri';
+import APP_URI from '../../../util/uri';
 import Messages from '../../Messages/Messages';
 
 const ButtonContainer = () => {

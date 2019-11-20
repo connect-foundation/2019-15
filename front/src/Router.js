@@ -1,23 +1,37 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import io from './logics/socketLogic';
+import MainContext from './Main.context';
+
 import Home from './pages/Home';
 import Main from './pages/Main/Main';
 import MyPage from './pages/MyPage';
 
-const Router = () => (
-  <BrowserRouter>
-    <Switch>
-      <Route exact path="/">
-        <Home />
-      </Route>
-      <Route path="/main">
-        <Main />
-      </Route>
-      <Route path="/mypage">
-        <MyPage />
-      </Route>
-    </Switch>
-  </BrowserRouter>
-);
+import Room from './logics/room';
+
+const Router = () => {
+  const [userlist, setUserlist] = useState([]);
+  const [room, setRoom] = useState(Room());
+
+  return (
+    <BrowserRouter>
+      <Switch>
+        <Route exact path="/">
+          <Home />
+        </Route>
+        <MainContext.Provider
+          value={{ io, userlist, setUserlist, room, setRoom }}
+        >
+          <Route path="/main">
+            <Main />
+          </Route>
+        </MainContext.Provider>
+        <Route path="/mypage">
+          <MyPage />
+        </Route>
+      </Switch>
+    </BrowserRouter>
+  );
+};
 
 export default Router;
