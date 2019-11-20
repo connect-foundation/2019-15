@@ -6,4 +6,6 @@ export default {
   ecstasy: '#FD7E14',
   eastSide: '#BD83CE',
   amour: '#F7E8F6',
+  wePeep: '#F1C6E7',
+  frenchLilac: '#E5B0EA',
 };
