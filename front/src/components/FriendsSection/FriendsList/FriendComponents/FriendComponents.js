@@ -8,19 +8,18 @@ import FriendComponentStyle from '../FriendComponent.style';
 import Icon from '../Icons.style';
 
 function FriendComponents({ modalOnOff, configMode, refresh, setRefresh }) {
-  const [findFunc] = useMutation(friendQuery.findFriendsById);
+  const [findFriends] = useMutation(friendQuery.findFriendsById);
   const [data, setData] = useState({ friends: [{ nickname: null }] });
 
   const fetchItems = async () => {
-    const newItems = await findFunc({ variables: { id: 4 } });
+    const newItems = await findFriends({ variables: { id: 4 } });
     await setData(newItems.data);
   };
-
   useEffect(() => {
     if (refresh) {
       fetchItems();
+      setRefresh(false);
     }
-    setRefresh(false);
   });
 
   return (
