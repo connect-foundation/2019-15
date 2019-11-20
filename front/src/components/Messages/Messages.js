@@ -11,7 +11,7 @@ import globalMessages from '../../logics/messages';
 import ButtonDiv from './ButtonDiv.style';
 
 function MessageList() {
-  const [isOpen, setOpen] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
 
   const { loading, data, error } = useQuery(friendQuery.findFriendRequests, {
     variables: { id: 5 },
@@ -31,17 +31,17 @@ function MessageList() {
             {friend.nickname}
             {globalMessages.recieveRequest}
             <ButtonDiv>
-              <Button onClick={() => setOpen(true)}>수락</Button>
+              <Button onClick={() => setOpenModal(true)}>수락</Button>
               <Button>거절</Button>
             </ButtonDiv>
           </MessageComponentStyle>
         ))}
       </MessagesStyle>
-      {isOpen ? (
+      {openModal ? (
         <Modal>
           <Div>
             {globalMessages.acceptRequest}
-            <Button onClick={() => setOpen(false)}>확인</Button>
+            <Button onClick={() => setOpenModal(false)}>확인</Button>
           </Div>
         </Modal>
       ) : null}
