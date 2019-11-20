@@ -16,11 +16,11 @@ module.exports = `
   
   extend type Query{
     addFriendForTest:[Friend]
-    findFriendRequests(sFriendId:Int):[User]
   } 
 
   extend type Mutation{
-    friends(pFriendId:Int):[User],
-    deleteFriend(id:Int, nickname:String):[Friend],
+    friends(pFriendId:Int):[User]
+    deleteFriend(id:Int, nickname:String):[Friend]
+    findFriendRequests(sFriendId:Int):[User]
   }
 `;

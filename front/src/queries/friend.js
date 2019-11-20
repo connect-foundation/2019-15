@@ -16,7 +16,7 @@ const friendQuery = {
     }
   `,
   findFriendRequests: gql`
-    query findFriendRequest($id: Int) {
+    mutation findFriendRequest($id: Int) {
       findFriendRequests(sFriendId: $id) {
         nickname
       }

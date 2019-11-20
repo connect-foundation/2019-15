@@ -20,14 +20,6 @@ module.exports = {
         },
       });
     },
-    findFriendRequests : async (obj, { sFriendId }, { BeforeFriends, Users }) => {
-      const sFriendRows = await BeforeFriends.findAll({
-        where: { sFriendId : sFriendId },
-      });
-      return Users.findAll({
-        where: { id: sFriendRows.map((acc)=> acc.dataValues.pFriendId)},
-      });
-    },
   },
   Mutation: {
     friends: (obj, { pFriendId }, { Friends, Users }) => {
@@ -37,13 +29,18 @@ module.exports = {
           {
             model: Friends,
             where: {
-              [Op.and]: [
-                { sFriendId: Sequelize.col('Users.id') },
-                { pFriendId: pFriendId },
-              ],
+              [Op.and]: [{ sFriendId: Sequelize.col('Users.id') }, { pFriendId: pFriendId }],
             },
           },
         ],
+      });
+    },
+    findFriendRequests: async (obj, { sFriendId }, { BeforeFriends, Users }) => {
+      const sFriendRows = await BeforeFriends.findAll({
+        where: { sFriendId: sFriendId },
+      });
+      return Users.findAll({
+        where: { id: sFriendRows.map((acc) => acc.dataValues.pFriendId) },
       });
     },
     deleteFriend: async (obj, { id, nickname }, { Friends, Users }) => {
@@ -54,16 +51,10 @@ module.exports = {
         where: {
           [Op.or]: [
             {
-              [Op.and]: [
-                { pFriendId: idFromNicknames.dataValues.id },
-                { sFriendId: id },
-              ],
+              [Op.and]: [{ pFriendId: idFromNicknames.dataValues.id }, { sFriendId: id }],
             },
             {
-              [Op.and]: [
-                { sFriendId: idFromNicknames.dataValues.id },
-                { pFriendId: id },
-              ],
+              [Op.and]: [{ sFriendId: idFromNicknames.dataValues.id }, { pFriendId: id }],
             },
           ],
         },

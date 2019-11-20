@@ -1,6 +1,6 @@
 import React from 'react';
-import { useState } from 'react';
-import { useQuery } from '@apollo/react-hooks';
+import { useState, useEffect } from 'react';
+import { useMutation } from '@apollo/react-hooks';
 import friendQuery from '../../queries/friend';
 import MessagesStyle from './Messages.style';
 import MessageComponentStyle from './MessageComponent.style';
@@ -12,21 +12,25 @@ import ButtonDiv from './ButtonDiv.style';
 
 function MessageList() {
   const [openModal, setOpenModal] = useState(false);
-
-  const { loading, data, error } = useQuery(friendQuery.findFriendRequests, {
-    variables: { id: 5 },
+  const [friendRequests, setFriendRequests] = useState([]);
+  const [findFriendRequests] = useMutation(friendQuery.findFriendRequests, {
+    onCompleted({ findFriendRequests }) {
+      setFriendRequests(findFriendRequests);
+    },
   });
-  if (loading) {
-    return <MessagesStyle>loading</MessagesStyle>;
-  }
-  if (error) {
-    return <MessagesStyle>error</MessagesStyle>;
-  }
+  
+
+  useEffect(() => {
+    const fetch = async () => {
+      await findFriendRequests({ variables: { id: 5 } });
+    };
+    fetch();
+  }, [findFriendRequests]);
 
   return (
     <>
       <MessagesStyle>
-        {data.findFriendRequests.map((friend) => (
+        {friendRequests.map((friend) => (
           <MessageComponentStyle key={friend.nickname}>
             {friend.nickname}
             {globalMessages.recieveRequest}
