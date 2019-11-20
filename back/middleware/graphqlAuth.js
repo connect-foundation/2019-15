@@ -1,7 +1,6 @@
 const jwt = require('jsonwebtoken');
 
 module.exports = async (req, res, next) => {
-  console.log(req.cookies);
   if (!req.cookies.jwt) res.status(401).send(false);
   else {
     try {

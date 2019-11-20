@@ -45,11 +45,13 @@ const testEdges = (values, testOptions) => {
       expect(edges[idx].node.score).toBeGreaterThanOrEqual(edges[idx + 1].node.score);
     };
   }
+
   edges.forEach((_, idx) => {
     if (idx >= edges.length - 1) return;
     scoreExpectFunc(idx);
   });
-  expect(edges[edges.length - 1].cursor).toEqual(pageInfo.endCursor);
+
+  if (edges.length) expect(edges[edges.length - 1].cursor).toEqual(pageInfo.endCursor);
 };
 
 let token;
@@ -94,6 +96,7 @@ describe('랭킹 graphql 쿼리 테스트', () => {
   test(`순서: DESC, 개수: 10개, 커서: 00000011110000001111`, async (done) => {
     const order = 'DESC';
     const expectedLength = 10;
+    const after = '00000011110000001111';
     const res = await request
       .agent(app)
       .set('Cookie', [`jwt=${token}`])
@@ -101,7 +104,7 @@ describe('랭킹 graphql 쿼리 테스트', () => {
       .send({
         query: getRankingQuery('rankingAll', {
           first: expectedLength,
-          after: '00000011110000001111',
+          after,
         }),
       })
       .expect(200);
@@ -112,7 +115,7 @@ describe('랭킹 graphql 쿼리 테스트', () => {
 });
 
 describe('친구 랭킹 graphql 쿼리 테스트', () => {
-  it(`순서: ASC, 개수:8개 커서:X`, async (done) => {
+  it(`순서: ASC, 개수:8개, 커서:X`, async (done) => {
     const expectedLength = 8;
     const order = 'ASC';
     const res = await request
@@ -126,6 +129,41 @@ describe('친구 랭킹 graphql 쿼리 테스트', () => {
 
     const { pageInfo, edges } = res.body.data.rankingFriends;
     testEdges({ edges, pageInfo, expectedLength }, { order, isEdgeLengthSame: true });
+    done();
+  });
+
+  it(`순서: DESC, 개수:10개, 커서:X`, async (done) => {
+    const expectedLength = 10;
+    const order = 'DESC';
+    const res = await request
+      .agent(app)
+      .set('Cookie', [`jwt=${token}`])
+      .post(graphqlPath)
+      .send({
+        query: getRankingQuery('rankingFriends', { order, first: expectedLength }),
+      })
+      .expect(200);
+
+    const { pageInfo, edges } = res.body.data.rankingFriends;
+    testEdges({ edges, pageInfo, expectedLength }, { order, isEdgeLengthSame: true });
+    done();
+  });
+
+  it(`순서: DESC, 개수:10개, 커서:00000011110000001111`, async (done) => {
+    const expectedLength = 10;
+    const order = 'DESC';
+    const after = '00000011110000001111';
+    const res = await request
+      .agent(app)
+      .set('Cookie', [`jwt=${token}`])
+      .post(graphqlPath)
+      .send({
+        query: getRankingQuery('rankingFriends', { order, first: expectedLength, after }),
+      })
+      .expect(200);
+
+    const { pageInfo, edges } = res.body.data.rankingFriends;
+    testEdges({ edges, pageInfo, expectedLength }, { order, isEdgeLengthSame: false });
     done();
   });
 });
