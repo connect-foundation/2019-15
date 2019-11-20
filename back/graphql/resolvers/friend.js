@@ -4,7 +4,6 @@ const { Op } = Sequelize;
 
 module.exports = {
   Query: {
-    
     addFriendForTest: (obj, args, { Friends }) => {
       Friends.create({ pFriendId: 1, sFriendId: 2 }).then({}, (err) => {
         console.log('already exists');
@@ -19,6 +18,14 @@ module.exports = {
             { [Op.and]: [{ pFriendId: 2 }, { sFriendId: 1 }] },
           ],
         },
+      });
+    },
+    findFriendRequests : async (obj, { sFriendId }, { BeforeFriends, Users }) => {
+      const sFriendRows = await BeforeFriends.findAll({
+        where: { sFriendId : sFriendId },
+      });
+      return Users.findAll({
+        where: { id: sFriendRows.map((acc)=> acc.dataValues.pFriendId)},
       });
     },
   },
@@ -40,7 +47,7 @@ module.exports = {
       });
     },
     deleteFriend: async (obj, { id, nickname }, { Friends, Users }) => {
-      const idFromNicknames = await Users.findAll({
+      const idFromNicknames = await Users.findOne({
         where: { nickname: nickname },
       });
       const conditionColumns = {
@@ -48,20 +55,19 @@ module.exports = {
           [Op.or]: [
             {
               [Op.and]: [
-                { pFriendId: idFromNicknames.map((acc) => acc.dataValues.id) },
+                { pFriendId: idFromNicknames.dataValues.id },
                 { sFriendId: id },
               ],
             },
             {
               [Op.and]: [
-                { sFriendId: idFromNicknames.map((acc) => acc.dataValues.id) },
+                { sFriendId: idFromNicknames.dataValues.id },
                 { pFriendId: id },
               ],
             },
           ],
         },
       };
-
       await Friends.destroy(conditionColumns);
       return Friends.findAll(conditionColumns);
     },

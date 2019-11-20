@@ -15,6 +15,13 @@ const friendQuery = {
       }
     }
   `,
+  findFriendRequests: gql`
+    query findFriendRequest($id: Int) {
+      findFriendRequests(sFriendId: $id) {
+        nickname
+      }
+    }
+  `,
 };
 
 export default friendQuery;
