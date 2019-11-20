@@ -4,4 +4,6 @@ export default {
   delete: '님을 친구에서 삭제하시겠습니까?',
   addDone: '님에게 친구 요청이 전달되었습니다.',
   deleteDone: '님을 삭제하였습니다.',
+  recieveRequest: '님이 친구 요청을 보냈습니다.',
+  acceptRequest: '추가 완료되었습니다.',
 };
