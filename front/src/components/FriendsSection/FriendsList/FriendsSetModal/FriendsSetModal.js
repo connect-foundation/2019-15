@@ -21,7 +21,7 @@ const FriendsSetModal = ({ mode, nickname, modalOff, setRefresh }) => {
       // add
     } else if (content === 'delete') {
       switchContent('deleteDone');
-      deleteFriend({ variables: { id: 4, nickname } });
+      await deleteFriend({ variables: { id: 4, nickname } });
       setRefresh(true);
     } else if (content === 'deleteDone') {
       modalOff();
