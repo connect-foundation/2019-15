@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { useMutation } from '@apollo/react-hooks';
 import Modal from '../../../globalComponents/Modal/Modal';
 import Button from '../../../globalComponents/Button/Button';
-import Div from './Div.style';
+import Div from '../../../globalComponents/Modal/ContentDiv.style';
 import ButtonSectionStyle from './ButtonSection.style';
 import message from '../../../../logics/messages';
 import friendQuery from '../../../../queries/friend';
