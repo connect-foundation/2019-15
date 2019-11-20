@@ -1,14 +1,14 @@
 import React from 'react';
 import { useQuery } from '@apollo/react-hooks';
-import GET_RANKING_ALL from '../../../queries/ranking';
+import { getRankingAll } from '../../../queries/ranking';
 import Loading from '../../globalComponents/Loading/Loading';
 import Alert from '../../globalComponents/Alert/Alert';
-import UserRankingList from './UserRankingList/UserRankingList';
+import UserRankingList from '../UserRankingList/UserRankingList';
 import Button from '../../globalComponents/Button/Button';
 import RankingAllStyle from './RankingAll.style';
 
 const RankingAll = () => {
-  const { data, loading, error, fetchMore } = useQuery(GET_RANKING_ALL);
+  const { data, loading, error, fetchMore } = useQuery(getRankingAll);
   if (loading) {
     return <Loading />;
   }
@@ -26,7 +26,7 @@ const RankingAll = () => {
 
   const loadMore = () =>
     fetchMore({
-      query: GET_RANKING_ALL,
+      query: getRankingAll,
       variables: { after: endCursor },
       updateQuery: (prev, { fetchMoreResult }) => {
         const newEdges = fetchMoreResult.rankingAll.edges;
