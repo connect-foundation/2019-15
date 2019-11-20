@@ -1,21 +1,34 @@
-const { req, graphqlPath } = require('./setSuperTest');
+const request = require('supertest');
 
-// 삭제한 후에 해당 컬럼의 존재 여부 확인.
-// add -> delete -> add했던 컬럼 있나 확인
+const graphqlPath = require('../../config/graphqlPath');
+const { app } = require('../../app');
+const signJWT = require('../../util/signJWT');
+
+let token;
+beforeAll(async (done) => {
+  token = await signJWT({ user: { id: 1111, displayName: '최형준' } });
+  done();
+});
 
 describe('deleteFriend resolvers test', () => {
   it(`delete friend by nickname`, async (done) => {
     // add
-    req.post(graphqlPath).send({
-      query: `{
+    request
+      .agent(app)
+      .set('Cookie', [`jwt=${token}`])
+      .post(graphqlPath)
+      .send({
+        query: `{
                 addFriendForTest{
                   id
                 }
               }`,
-    });
+      });
 
     // delete
-    const res = await req
+    const res = await request
+      .agent(app)
+      .set('Cookie', [`jwt=${token}`])
       .post(graphqlPath)
       .send({
         query: `mutation deleteFriend {
@@ -26,9 +39,7 @@ describe('deleteFriend resolvers test', () => {
       })
       .expect(200);
     const deleteExpected = [];
-    expect(res.body.data.deleteFriend).toStrictEqual(
-      expect.arrayContaining(deleteExpected),
-    );
+    expect(res.body.data.deleteFriend).toStrictEqual(expect.arrayContaining(deleteExpected));
     done();
   });
 });

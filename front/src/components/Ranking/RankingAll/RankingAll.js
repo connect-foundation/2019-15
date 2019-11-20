@@ -19,7 +19,7 @@ const RankingAll = () => {
   const {
     pageInfo: { endCursor, hasNextPage },
     edges,
-  } = data.ranking;
+  } = data.rankingAll;
   if (!edges.length) {
     return <Alert type="noData" />;
   }
@@ -29,13 +29,13 @@ const RankingAll = () => {
       query: GET_RANKING_ALL,
       variables: { after: endCursor },
       updateQuery: (prev, { fetchMoreResult }) => {
-        const newEdges = fetchMoreResult.ranking.edges;
-        const { pageInfo } = fetchMoreResult.ranking;
+        const newEdges = fetchMoreResult.rankingAll.edges;
+        const { pageInfo } = fetchMoreResult.rankingAll;
         return newEdges.length
           ? {
-              ranking: {
-                __typename: prev.ranking.__typename,
-                edges: [...prev.ranking.edges, ...newEdges],
+              rankingAll: {
+                __typename: prev.rankingAll.__typename,
+                edges: [...prev.rankingAll.edges, ...newEdges],
                 pageInfo,
               },
             }
