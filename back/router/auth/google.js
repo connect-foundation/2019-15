@@ -3,7 +3,9 @@ const express = require('express');
 const router = express.Router();
 const passport = require('../../util/passport');
 const signJWT = require('../../util/signJWT');
-const { REACT_URI } = require('../../config/uri');
+const { REACT_URI, EXPRESS_URI } = require('../../config/uri');
+const expiresIn = require('../../util/getMsOfDay');
+const getDomain = require('../../util/getDomain');
 
 router.get(
   '/login',
@@ -24,7 +26,10 @@ router.get(
 );
 
 router.get('/login_success', async function(req, res) {
-  res.cookie('jwt', await signJWT(req));
+  res.cookie('jwt', await signJWT(req), {
+    expires: new Date(Date.now() + expiresIn),
+    domain: getDomain(REACT_URI),
+  });
   res.redirect(`${REACT_URI}/main`);
 });
 

@@ -16,7 +16,10 @@ router.get(
 );
 
 router.get('/login_success', async function(req, res) {
-  res.cookie('jwt', await signJWT(req));
+  res.cookie('jwt', await signJWT(req), {
+    expires: new Date(Date.now() + expiresIn),
+    domain: getDomain(REACT_URI),
+  });
   res.redirect(`${REACT_URI}/main`);
 });
 
