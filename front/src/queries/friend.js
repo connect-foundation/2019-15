@@ -22,6 +22,13 @@ const friendQuery = {
       }
     }
   `,
+  deleteFriendRequest: gql`
+    mutation deleteFriendRequest($id: Int, $nickname: String) {
+      deleteFriendRequest(id: $id, nickname: $nickname) {
+        id
+      }
+    }
+  `,
 };
 
 export default friendQuery;

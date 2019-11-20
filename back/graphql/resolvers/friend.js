@@ -62,5 +62,17 @@ module.exports = {
       await Friends.destroy(conditionColumns);
       return Friends.findAll(conditionColumns);
     },
+    deleteFriendRequest: async (obj, { id, nickname }, { BeforeFriends, Users }) => {
+      const idFromNicknames = await Users.findOne({
+        where: { nickname: nickname },
+      });
+      const conditionColumns = {
+        where: {
+          [Op.and]: [{ pFriendId: idFromNicknames.dataValues.id }, { sFriendId: id }],
+        },
+      };
+      await BeforeFriends.destroy(conditionColumns);
+      return BeforeFriends.findAll(conditionColumns);
+    },
   },
 };
