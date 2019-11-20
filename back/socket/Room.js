@@ -21,9 +21,7 @@ const publicRoom = {
     const nRooms = this.room[capacity];
 
     // warn: 병목 예상
-    const idx = nRooms.findIndex(
-      (v) => v.people.length < parseInt(capacity.slice(0, 1), 0),
-    );
+    const idx = nRooms.findIndex((v) => v.people.length < parseInt(capacity.replace('명', ''), 0));
 
     if (idx < 0) {
       return this.addRoom(capacity);

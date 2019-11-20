@@ -15,9 +15,7 @@ function personEnterRoom(userId, socket, capacity) {
   });
 
   const userlist = room.people.map((v) => v.id);
-  socket.broadcast
-    .to(room.roomId)
-    .emit('userlist', { userlist: JSON.stringify(userlist) });
+  socket.broadcast.to(room.roomId).emit('userlist', { userlist: JSON.stringify(userlist) });
 }
 
 function initSocketIO(io) {
@@ -38,7 +36,7 @@ function initSocketIO(io) {
     socket.on('get_userlist', ({ roomType, roomId }) => {
       const nRooms = publicRoom.room[roomType];
 
-      const roomIdx = nRooms.findIndex((v) => v.roomId === roomId);
+      const roomIdx = nRooms.findIndex((roomObject) => roomObject.roomId === roomId);
 
       if (roomIdx < 0) {
         // 방이 없는 경우
