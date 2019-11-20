@@ -2,7 +2,7 @@ import { gql } from 'apollo-boost';
 
 const GET_RANKING_ALL = gql`
   query getRankingAll($order: Order = DESC, $first: Int = 10, $after: String) {
-    ranking(order: $order, first: $first, after: $after) {
+    rankingAll(order: $order, first: $first, after: $after) {
       pageInfo {
         endCursor
         hasNextPage

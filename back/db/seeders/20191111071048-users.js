@@ -1,5 +1,7 @@
+const { MAX_INT } = require('../../graphql/resolvers/constants/ranking');
+
 const getRandomInt = () => {
-  return Math.floor(Math.random() * 100000000);
+  return Math.floor(Math.random() * MAX_INT);
 };
 
 module.exports = {
@@ -8,9 +10,9 @@ module.exports = {
       'Users',
       [
         {
-          userId: '1111',
+          userId: getRandomInt().toString(),
           nickname: '이지영',
-          score: '1111',
+          score: getRandomInt().toString(),
         },
         {
           userId: getRandomInt().toString(),
@@ -23,9 +25,9 @@ module.exports = {
           score: getRandomInt(),
         },
         {
-          userId: getRandomInt().toString(),
+          userId: '1111',
           nickname: '최형준',
-          score: getRandomInt(),
+          score: '1111',
         },
         {
           userId: getRandomInt().toString(),
