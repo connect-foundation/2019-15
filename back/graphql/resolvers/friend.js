@@ -20,6 +20,14 @@ module.exports = {
         },
       });
     },
+    findFriendRequests : async (obj, { sFriendId }, { BeforeFriends, Users }) => {
+      const sFriendRows = await BeforeFriends.findAll({
+        where: { sFriendId : sFriendId },
+      });
+      return Users.findAll({
+        where: { id: sFriendRows.map((acc)=> acc.dataValues.pFriendId)},
+      });
+    },
   },
   Mutation: {
     friends: (obj, { pFriendId }, { Friends, Users }) => {
