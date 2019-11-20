@@ -19,6 +19,9 @@ const Router = () => {
         <Route exact path="/">
           <Home />
         </Route>
+        <Route path="/mypage">
+          <MyPage />
+        </Route>
         <MainContext.Provider
           value={{ io, userlist, setUserlist, room, setRoom }}
         >
@@ -26,9 +29,6 @@ const Router = () => {
             <Main />
           </Route>
         </MainContext.Provider>
-        <Route path="/mypage">
-          <MyPage />
-        </Route>
       </Switch>
     </BrowserRouter>
   );
