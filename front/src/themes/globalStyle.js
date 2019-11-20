@@ -7,4 +7,5 @@ export default {
   ecstasy: '#FD7E14',
   eastSide: '#BD83CE',
   amour: '#F7E8F6',
+  text: '#50525D',
 };
