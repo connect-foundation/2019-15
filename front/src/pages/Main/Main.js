@@ -1,10 +1,10 @@
 import React, { useEffect, useContext } from 'react';
-import NavigationBar from '../../components/NavigationBar/NavigationBar';
-import RoomSelectSection from '../../components/RoomSelectSection/RoomSelectSection';
-import FriendsSection from '../../components/FriendsSection/FriendsSection';
 import MainContext from '../../Main.context';
 import checkAuth from '../../logics/checkAuth';
 import Loading from '../../components/globalComponents/Loading/Loading';
+
+import GamePlay from './GamePlay';
+import MainPage from './MainPage';
 
 const Main = () => {
   const { io, userlist, setUserlist, room, setRoom } = useContext(MainContext);
@@ -20,13 +20,7 @@ const Main = () => {
 
   // 메인 화면
   if (room.roomType === null) {
-    return (
-      <>
-        <NavigationBar />
-        <RoomSelectSection />
-        <FriendsSection />
-      </>
-    );
+    return <MainPage />;
   }
 
   // 혼자일 경우 게임 대기
@@ -35,7 +29,7 @@ const Main = () => {
   }
 
   // 게임 화면
-  return <>게임중이시네요</>;
+  return <GamePlay />;
 };
 
 export default Main;

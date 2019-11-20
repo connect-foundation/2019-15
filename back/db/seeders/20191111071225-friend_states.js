@@ -7,7 +7,7 @@ module.exports = {
           state: 'request',
         },
         {
-          state: 'decline',
+          state: 'accept',
         },
       ],
       {},

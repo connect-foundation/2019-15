@@ -9,7 +9,10 @@ import Router from './Router';
 import APP_URI from './util/uri'
 
 const graphqlPath = '/api/';
-const client = new ApolloClient({ uri: `${APP_URI.REACT_APP_API_URI}${graphqlPath}` });
+const client = new ApolloClient({
+  uri: `${APP_URI.REACT_APP_API_URI}${graphqlPath}`,
+  credentials: 'include',
+});
 
 ReactDOM.render(
   <ApolloProvider client={client}>

@@ -4,14 +4,14 @@ import PropTypes from 'prop-types';
 import { useMutation } from '@apollo/react-hooks';
 import Modal from '../../../globalComponents/Modal/Modal';
 import Button from '../../../globalComponents/Button/Button';
-import Div from './Div.style';
+import Div from '../../../globalComponents/Modal/ContentDiv.style';
 import ButtonSectionStyle from './ButtonSection.style';
 import message from '../../../../logics/messages';
 import friendQuery from '../../../../queries/friend';
 
 const FriendsSetModal = ({ mode, nickname, modalOff, setRefresh }) => {
   const [content, switchContent] = useState(mode);
-  const [deleteFunc] = useMutation(friendQuery.deleteFriend);
+  const [deleteFriend] = useMutation(friendQuery.deleteFriend);
 
   async function clickHandler() {
     if (content === 'empty' || content === 'addDone') modalOff();
@@ -21,7 +21,7 @@ const FriendsSetModal = ({ mode, nickname, modalOff, setRefresh }) => {
       // add
     } else if (content === 'delete') {
       switchContent('deleteDone');
-      deleteFunc({ variables: { id: 4, nickname } });
+      deleteFriend({ variables: { id: 4, nickname } });
       setRefresh(true);
     } else if (content === 'deleteDone') {
       modalOff();

@@ -18,7 +18,7 @@ jobs:
     - stage: "TEST"
       name: "FRONT TEST"
       before_install:
-        - openssl aes-256-cbc -K $encrypted_d4aff414f791_key -iv $encrypted_d4aff414f791_iv -in env.tar.enc -out env.tar -d
+        - openssl aes-256-cbc -K $encrypted_95dd47aaf502_key -iv $encrypted_95dd47aaf502_iv -in env.tar.enc -out env.tar -d
         - tar xvf env.tar
         - cp .front.env ./front/.env
         - cd ./front
@@ -36,7 +36,7 @@ jobs:
 
     - name: "BACK TEST"
       before_install:
-        - openssl aes-256-cbc -K $encrypted_d4aff414f791_key -iv $encrypted_d4aff414f791_iv -in env.tar.enc -out env.tar -d
+        - openssl aes-256-cbc -K $encrypted_95dd47aaf502_key -iv $encrypted_95dd47aaf502_iv -in env.tar.enc -out env.tar -d
         - tar xvf env.tar
         - cp .back.env ./back/.env
         - cd ./back
@@ -57,7 +57,7 @@ jobs:
 #      if: type = push AND branch = develop
       before_install:
         - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-        - openssl aes-256-cbc -K $encrypted_d4aff414f791_key -iv $encrypted_d4aff414f791_iv -in env.tar.enc -out env.tar -d
+        - openssl aes-256-cbc -K $encrypted_95dd47aaf502_key -iv $encrypted_95dd47aaf502_iv -in env.tar.enc -out env.tar -d
         - tar xvf env.tar
         - cp .front.env ./front/.env
         - cd ./front
@@ -73,7 +73,7 @@ jobs:
 #      if: type = push AND branch = develop
       before_install:
         - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-        - openssl aes-256-cbc -K $encrypted_d4aff414f791_key -iv $encrypted_d4aff414f791_iv -in env.tar.enc -out env.tar -d
+        - openssl aes-256-cbc -K $encrypted_95dd47aaf502_key -iv $encrypted_95dd47aaf502_iv -in env.tar.enc -out env.tar -d
         - tar xvf env.tar
         - cp .back.env ./back/.env
         - cd ./back
@@ -90,7 +90,7 @@ jobs:
       if: type = push AND branch = master
       before_install:
         - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-        - openssl aes-256-cbc -K $encrypted_d4aff414f791_key -iv $encrypted_d4aff414f791_iv -in env.tar.enc -out env.tar -d
+        - openssl aes-256-cbc -K $encrypted_95dd47aaf502_key -iv $encrypted_95dd47aaf502_iv -in env.tar.enc -out env.tar -d
         - tar xvf env.tar
         - cp .front.env ./front/.env
         - cd ./front
@@ -106,7 +106,7 @@ jobs:
       if: type = push AND branch = master
       before_install:
         - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-        - openssl aes-256-cbc -K $encrypted_6599d9cbfa5d_key -iv $encrypted_6599d9cbfa5d_iv -in env.tar.enc -out env.tar -d
+        - openssl aes-256-cbc -K $encrypted_95dd47aaf502_key -iv $encrypted_95dd47aaf502_iv -in env.tar.enc -out env.tar -d
         - tar xvf env.tar
         - cp .back.env ./back/.env
         - cd ./back
