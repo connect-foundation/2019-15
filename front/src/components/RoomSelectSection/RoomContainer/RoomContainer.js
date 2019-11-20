@@ -15,7 +15,7 @@ function RoomContainer({ text, buttons }) {
 
 RoomContainer.propTypes = {
   text: PropTypes.string.isRequired,
-  buttons: PropTypes.arrayOf(PropTypes.string).isRequired,
+  buttons: PropTypes.arrayOf(PropTypes.element).isRequired,
 };
 
 export default RoomContainer;

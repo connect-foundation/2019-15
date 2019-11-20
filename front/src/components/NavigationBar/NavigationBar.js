@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { NavigationBarStyle, LogoImage } from './NavigationBar.style';
 import ButtonContainer from './ButtonContainer/ButtonContainer';
-import mainlogo from '../../asset/mainlogo.png';
+import mainlogo from '../../asset/mainlogo4.png';
 
 const NavigationBar = () => (
   <NavigationBarStyle>
