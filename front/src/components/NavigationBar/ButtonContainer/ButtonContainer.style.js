@@ -11,7 +11,6 @@ export const NavImage = styled(Image)`
 `;
 
 export const ButtonContainerStyle = styled.div`
-  display: ${(props) => (props.visible ? 'none' : 'block')};
   height: 100%;
   float: right;
 `;
