@@ -1,1 +1,1 @@
-module.exports = 864000;
+module.exports = 86400000;
