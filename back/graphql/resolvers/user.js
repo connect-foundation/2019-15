@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+const Sequelize = require('sequelize');
 const jwtOptions = require('../../config/jwtOptions');
 const { REACT_URI } = require('../../config/uri');
 const expiresIn = require('../../util/getMsOfDay');
@@ -29,45 +30,59 @@ module.exports = {
 
       if (wordFound && wordFound.dataValues.userId) throw new Error('duplicated');
 
-      if (!wordFound) {
-        await Words.create({ word: nickname, categoryId: null, userId: req.user.id });
-      } else if (!wordFound.dataValues.userId) {
-        await Words.update(
-          {
-            userId: req.user.id,
-          },
+      let transaction;
+      try {
+        transaction = await Sequelize.transaction();
+        if (!wordFound) {
+          await Words.create(
+            { word: nickname, categoryId: null, userId: req.user.id },
+            { transaction },
+          );
+        } else if (!wordFound.dataValues.userId) {
+          await Words.update(
+            {
+              userId: req.user.id,
+            },
+            {
+              where: {
+                id: wordFound.dataValues.id,
+              },
+              transaction,
+            },
+          );
+        }
+
+        const [changedRows] = await Users.update(
+          { nickname },
           {
             where: {
-              id: wordFound.dataValues.id,
+              id: req.user.id,
             },
+            transaction,
           },
         );
-      }
+        if (!changedRows) throw new Error(`fails updating ${req.user.id} nickname to ${nickname}`);
 
-      await Users.update(
-        { nickname },
-        {
-          where: {
-            id: req.user.id,
-          },
-        },
-      );
-
-      res.cookie(
-        'jwt',
-        jwt.sign(
+        res.cookie(
+          'jwt',
+          jwt.sign(
+            {
+              ...req.user,
+              nickname,
+            },
+            process.env.JWT_SECRET,
+          ),
           {
-            ...req.user,
-            nickname,
+            expires: new Date(Date.now() + expiresIn),
+            domain: getDomain(REACT_URI),
           },
-          process.env.JWT_SECRET,
-        ),
-        {
-          expires: new Date(Date.now() + expiresIn),
-          domain: getDomain(REACT_URI),
-        },
-      );
-      return true;
+        );
+        await transaction.commit();
+        return true;
+      } catch (e) {
+        if (transaction) await transaction.rollback();
+        throw new Error('rollback occurred');
+      }
     },
   },
 };
