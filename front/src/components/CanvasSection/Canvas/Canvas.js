@@ -1,10 +1,11 @@
 import React from 'react';
+import CanvasStyle from './Canvas.style';
 
 const Canvas = () => {
   return (
-    <div>
+    <CanvasStyle>
       <div>그림판</div>
-    </div>
+    </CanvasStyle>
   );
 };
 
