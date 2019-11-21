@@ -11,11 +11,8 @@ import Room from './logics/room';
 import User from './logics/user';
 
 const Router = () => {
-  const [userlist, setUserlist] = useState([]);
   const [room, setRoom] = useState(Room());
   const [user, setUser] = useState(User());
-  const [painter, setPainter] = useState(null);
-
   return (
     <BrowserRouter>
       <Switch>
@@ -25,19 +22,7 @@ const Router = () => {
         <Route path="/mypage">
           <MyPage />
         </Route>
-        <GlobalContext.Provider
-          value={{
-            io,
-            userlist,
-            setUserlist,
-            room,
-            setRoom,
-            user,
-            setUser,
-            painter,
-            setPainter,
-          }}
-        >
+        <GlobalContext.Provider value={{ io, user, setUser, room, setRoom }}>
           <Route path="/main">
             <Main />
           </Route>
