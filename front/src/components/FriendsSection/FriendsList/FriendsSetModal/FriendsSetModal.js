@@ -9,6 +9,9 @@ import ButtonSectionStyle from './ButtonSection.style';
 import message from '../../../../logics/messages';
 import {deleteFriend, sendFriendRequest} from '../../../../queries/friend';
 
+const testId = 4;
+
+
 const FriendsSetModal = ({ mode, nickname, modalOff, setRefresh }) => {
   const [content, switchContent] = useState(mode);
   const [deleteFriendFunc] = useMutation(deleteFriend);
@@ -19,10 +22,10 @@ const FriendsSetModal = ({ mode, nickname, modalOff, setRefresh }) => {
     else if (nickname === '') switchContent('empty');
     else if (content === 'add') {
       switchContent('addDone');
-      await sendFriendRequestFunc({variables:{id: 4, nickname: nickname}});
+      await sendFriendRequestFunc({variables:{id: testId, nickname: nickname}});
     } else if (content === 'delete') {
       switchContent('deleteDone');
-      await deleteFriendFunc({ variables: { id: 4, nickname } });
+      await deleteFriendFunc({ variables: { id: testId, nickname } });
       setRefresh(true);
     } else if (content === 'deleteDone') {
       modalOff();
