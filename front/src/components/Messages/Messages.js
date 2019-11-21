@@ -23,9 +23,21 @@ function MessageList() {
       findFriendRequests({ variables: { id: 5 } });
     },
   });
+  const [acceptFriendRequest] = useMutation(friendQuery.acceptFriendRequest, {
+    onCompleted(data) {
+      deleteFriendRequest({
+        variables: { id: 5, nickname: data.acceptFriendRequest.nickname },
+      });
+    },
+  });
 
   async function declineRequest(nickname) {
     await deleteFriendRequest({ variables: { id: 5, nickname } });
+  }
+
+  async function acceptRequest(nickname) {
+    await acceptFriendRequest({ variables: { id: 5, nickname } });
+    setOpenModal(true);
   }
 
   useEffect(() => {
@@ -43,7 +55,9 @@ function MessageList() {
             {friend.nickname}
             {globalMessages.recieveRequest}
             <ButtonDiv>
-              <Button onClick={() => setOpenModal(true)}>수락</Button>
+              <Button onClick={() => acceptRequest(friend.nickname)}>
+                수락
+              </Button>
               <Button onClick={() => declineRequest(friend.nickname)}>
                 거절
               </Button>

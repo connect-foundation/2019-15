@@ -29,6 +29,13 @@ const friendQuery = {
       }
     }
   `,
+  acceptFriendRequest: gql`
+    mutation acceptFriendRequest($id: Int, $nickname: String) {
+      acceptFriendRequest(id: $id, nickname: $nickname) {
+        nickname
+      }
+    }
+  `,
 };
 
 export default friendQuery;

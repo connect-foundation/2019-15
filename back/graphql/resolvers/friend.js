@@ -74,5 +74,30 @@ module.exports = {
       await BeforeFriends.destroy(conditionColumns);
       return BeforeFriends.findAll(conditionColumns);
     },
+    acceptFriendRequest: async (obj, { id, nickname }, { BeforeFriends, Users, Friends }) => {
+      // this.deleteFriendRequest({id:id, nickname:nickname}); resolver 안에서 resolver 호출하는법.....
+      const idFromNickname = await Users.findOne({
+        where: { nickname: nickname },
+      });
+      await Friends.create({ pFriendId: idFromNickname.dataValues.id, sFriendId: id }).then(
+        {},
+        (err) => {
+          console.log('already exists');
+        },
+      );
+      await Friends.create({ pFriendId: id, sFriendId: idFromNickname.dataValues.id }).then(
+        {},
+        (err) => {
+          console.log('already exists');
+        },
+      );
+      await Friends.update(
+        { friendStateId: 2 },
+        {
+          where: { [Op.and]: [{ pFriendId: idFromNickname.dataValues.id }, { sFriendId: id }] },
+        },
+      );
+      return idFromNickname;
+    },
   },
 };
