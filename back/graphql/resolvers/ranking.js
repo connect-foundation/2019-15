@@ -35,7 +35,7 @@ const toRankingResult = (edgesWithCursor, totalCount, first) => {
   };
 };
 
-module.exports = {
+const rankingResolvers = {
   Query: {
     rankingAll: async (obj, { order, first, after }, { Users }) => {
       const { id, score } = after ? splitCursor(after) : { id: MIN_ID, score: MAX_INT };
@@ -78,3 +78,5 @@ module.exports = {
     },
   },
 };
+
+module.exports = rankingResolvers;
