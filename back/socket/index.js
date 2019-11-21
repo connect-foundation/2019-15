@@ -11,11 +11,13 @@ function personEnterRoom(nickname, socket, capacity, io) {
     roomType: capacity,
   });
 
-  const userlist = room.people.map((v) => v.id);
-  socket.broadcast.to(room.roomId).emit('userlist', { userlist: JSON.stringify(userlist) });
+  const userlist = room.people.map((v) => {
+    return { nickname: v.nickname, socketId: v.socket.id };
+  });
+  io.in(room.roomId).emit('userlist', { userlist: JSON.stringify(userlist) });
 
   if (room.people.length === 2) {
-    io.to(room.roomId).emit('gamestart', { painter: room.people[0].id });
+    io.to(room.roomId).emit('gamestart', { painter: room.people[0].socket.id });
   }
 }
 
