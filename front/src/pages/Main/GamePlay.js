@@ -6,6 +6,7 @@ import MainContext from '../../Main.context';
 import Userlist from '../../components/Userlist/Userlist';
 import Canvas from '../../components/Canvas/Canvas';
 import Chatting from '../../components/Chatting/Chatting';
+import BackGroundStyle from '../../components/RoomSelectSection/BackGroundStyle.style';
 
 const GamePlay = () => {
   const { room } = useContext(MainContext);
@@ -13,11 +14,13 @@ const GamePlay = () => {
     <>
       <NavigationBar visible={room.roomType} />
       <GameInfo />
-      <FlexRowStyle>
-        <Userlist />
-        <Canvas />
-        <Chatting />
-      </FlexRowStyle>
+      <BackGroundStyle>
+        <FlexRowStyle>
+          <Userlist />
+          <Canvas />
+          <Chatting />
+        </FlexRowStyle>
+      </BackGroundStyle>
     </>
   );
 };
