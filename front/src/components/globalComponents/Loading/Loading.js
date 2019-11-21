@@ -1,7 +1,6 @@
 import React from 'react';
 import { faCog } from '@fortawesome/free-solid-svg-icons';
-import CogStyle from './Cog.style';
-import LoadingStyle from './Loading.style';
+import { CogStyle, LoadingStyle } from './Loading.style';
 
 const Loading = () => (
   <LoadingStyle>

@@ -1,11 +1,13 @@
 export default {
-  bodyColor: '#EDEEEC',
-  navigationBarColor: '#617B88',
-  buttonColor: '#3B434C',
-  containerColor: '#DBE0DB',
+  grayNurse: '#EDEEEC', 
+  slateGray: '#617B88', 
+  brightGray: '#3B434C', 
+  Pumice: '#DBE0DB', 
   surfCrest: '#B1C2B5',
   ecstasy: '#FD7E14',
   eastSide: '#BD83CE',
   amour: '#F7E8F6',
-  text: '#50525D',
+  wePeep: '#F1C6E7',
+  frenchLilac: '#E5B0EA',
+  stormBrain: '#50525D',
 };

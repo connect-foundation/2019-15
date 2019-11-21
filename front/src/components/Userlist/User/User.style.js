@@ -40,7 +40,7 @@ export const UserNickName = styled.div``;
 export const Text = styled.span`
   font-size: 28px;
   font-weight: 680;
-  color: ${(props) => props.theme.navigationBarColor};
+  color: ${(props) => props.theme.slateGray};
   text-shadow: 1px 1px 2px #000000;
 `;
 export const Drawer = styled.img`
@@ -52,5 +52,5 @@ export const Drawer = styled.img`
 export const Score = styled.div`
   font-weight: 600;
   font-size: 18px;
-  color: ${(props) => props.theme.text};
+  color: ${(props) => props.theme.stormBrain};
 `;
