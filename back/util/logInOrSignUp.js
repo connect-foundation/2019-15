@@ -1,44 +1,22 @@
-const { Users, Words, Op } = require('../db/models');
-const getRandomInt = require('../util/getRandomInt');
+const { Users } = require('../db/models');
+const signUp = require('../util/signUp');
 
 async function logInOrSignUp(accessToken, refreshToken, profile, done) {
-  const words = await Words.findAll({
-    where: {
-      userId: {
-        [Op.eq]: null,
-      },
-    },
-  });
-  const word = words[getRandomInt(0, words.length)];
-
-  const [users, isCreated] = await Users.findOrCreate({
+  // 회원가입인지 로그인인지 판단한다
+  let user = await Users.findOne({
     where: {
       userId: profile.id,
     },
-    defaults: {
-      nickname: word.word,
-    },
   });
-
-  if (isCreated) {
-    Words.update(
-      {
-        userId: users.id,
-      },
-      {
-        where: {
-          id: {
-            [Op.eq]: word.id,
-          },
-        },
-      },
-    );
+  // 회원가입인 경우
+  if (!user) {
+      user = signUp(user, profile);
   }
 
   return done(null, {
     id: profile.id,
     displayName: profile.displayName,
-    nickname: word.word,
+    nickname: user.nickname,
   });
 }
 
