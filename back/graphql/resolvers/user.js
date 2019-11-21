@@ -1,4 +1,4 @@
-const userResolvers = {
+module.exports = {
   Query: {
     users: (obj, args, { Users }) => {
       return Users.findAll();
@@ -50,5 +50,3 @@ const userResolvers = {
     },
   },
 };
-
-module.exports = userResolvers;
