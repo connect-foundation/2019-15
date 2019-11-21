@@ -2,7 +2,7 @@ import React, { useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { ButtonContainerStyle, NavImage } from './ButtonContainer.style';
 
-import MainContext from '../../../Main.context';
+import GlobalContext from '../../../global.context';
 import APP_URI from '../../../util/uri';
 import Button from './Button/Button';
 import NOTICE from '../../../asset/notice.png';
@@ -13,7 +13,7 @@ import Messages from '../../Messages/Messages';
 
 const ButtonContainer = () => {
   const [openNotice, setOpenNotice] = useState(false);
-  const { room } = useContext(MainContext);
+  const { room } = useContext(GlobalContext);
 
   // logics 로 분리예정
   function logout() {

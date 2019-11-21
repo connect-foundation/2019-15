@@ -1,10 +1,10 @@
 import React, { useContext } from 'react';
 import UserlistStyle from './Userlist.style';
-import MainContext from '../../Main.context';
+import GlobalContext from '../../global.context';
 import User from './User/User';
 
 const Userlist = () => {
-  const { userlist } = useContext(MainContext);
+  const { userlist } = useContext(GlobalContext);
 
   const UserComponents = userlist.map((user, index) => (
     <User nickname={user} index={index + 1} />
