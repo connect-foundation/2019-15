@@ -48,11 +48,11 @@ module.exports = {
 
       return toRankingResult(edgesWithCursor, totalCount, first);
     },
-    rankingFriends: async (obj, { order, first, after }, { Users, Friends, Op, user }) => {
+    rankingFriends: async (obj, { order, first, after }, { Users, Friends, Op, req }) => {
       const { id, score } = after ? splitCursor(after) : { id: MIN_ID, score: MAX_INT };
 
       const { rows: nodes, count: totalCount } = await Friends.findAndCountAll({
-        where: { pFriendId: user.id },
+        where: { pFriendId: req.user.id },
         include: [
           {
             model: Users,

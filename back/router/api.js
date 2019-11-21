@@ -12,7 +12,7 @@ router.use(
   graphqlHTTP((req, res) => ({
     schema,
     graphiql: true,
-    context: { user: req.user, ...models },
+    context: { req, res, ...models },
   })),
 );
 
