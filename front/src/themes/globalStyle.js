@@ -7,5 +7,7 @@ export default {
   ecstasy: '#FD7E14',
   eastSide: '#BD83CE',
   amour: '#F7E8F6',
-  text: '#50525D',
+  wePeep: '#F1C6E7',
+  frenchLilac: '#E5B0EA',
+  stormBrain: '#50525D',
 };
