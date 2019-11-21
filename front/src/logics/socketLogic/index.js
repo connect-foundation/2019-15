@@ -1,6 +1,7 @@
 import socketIo from 'socket.io-client';
 import Room from '../room';
 import APP_URI from '../../util/uri';
+import roomInfo from '../room/roomInfo';
 
 const io = {
   socket: null,
@@ -14,27 +15,22 @@ const io = {
     await this.connectSocket();
     return this.socket;
   },
-  async initMsgHandler({ setUserlist, setRoom }) {
-    this.socket.on('connect_3명', ({ roomType, roomId }) => {
-      setRoom(Room(roomType, roomId));
-      this.socket.emit('get_userlist', { roomType, roomId });
+  async initConnectMsgHandler({ setRoom }) {
+    roomInfo.roomList.forEach((roomName) => {
+      this.socket.on(`connect_${roomName}`, ({ roomType, roomId }) => {
+        setRoom(Room(roomType, roomId));
+      });
     });
-    this.socket.on('connect_6명', ({ roomType, roomId }) => {
-      setRoom(Room(roomType, roomId));
-      this.socket.emit('get_userlist', { roomType, roomId });
-    });
-    this.socket.on('connect_12명', ({ roomType, roomId }) => {
-      setRoom(Room(roomType, roomId));
-      this.socket.emit('get_userlist', { roomType, roomId });
-    });
-    this.socket.on('connect_100명', ({ roomType, roomId }) => {
-      setRoom(Room(roomType, roomId));
-      this.socket.emit('get_userlist', { roomType, roomId });
-    });
-
+  },
+  async initUserlistMsgHandler({ setUserlist }) {
     this.socket.on('userlist', ({ userlist }) => {
       const parsedList = JSON.parse(userlist);
       setUserlist(parsedList);
+    });
+  },
+  async initGameStartMsgHandler({ setPainter }) {
+    this.socket.on('gamestart', ({ painter }) => {
+      setPainter(painter);
     });
   },
 };

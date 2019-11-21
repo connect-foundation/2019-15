@@ -32,7 +32,6 @@ export const Ranking = styled.span`
   font-size: 32px;
   font-weight: 820;
   margin-right: 10px;
-  text-shadow: 1px 1px 2px #000000;
 `;
 
 export const UserNickName = styled.div``;
@@ -41,7 +40,6 @@ export const Text = styled.span`
   font-size: 28px;
   font-weight: 680;
   color: ${(props) => props.theme.slateGray};
-  text-shadow: 1px 1px 2px #000000;
 `;
 export const Drawer = styled.img`
   width: 20px;
