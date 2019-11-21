@@ -4,7 +4,7 @@ import GameInfo from '../../components/GameInfo/GameInfo';
 import { FlexRowStyle } from '../../components/globalComponents/Container/Flex.style';
 import MainContext from '../../Main.context';
 import Userlist from '../../components/Userlist/Userlist';
-import Canvas from '../../components/Canvas/Canvas';
+import CanvasSection from '../../components/CanvasSection/CanvasSection';
 import Chatting from '../../components/Chatting/Chatting';
 import BackGroundStyle from '../../components/RoomSelectSection/BackGroundStyle.style';
 
@@ -17,7 +17,7 @@ const GamePlay = () => {
       <BackGroundStyle>
         <FlexRowStyle>
           <Userlist />
-          <Canvas />
+          <CanvasSection />
           <Chatting />
         </FlexRowStyle>
       </BackGroundStyle>
