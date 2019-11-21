@@ -7,10 +7,9 @@ import Button from '../../../globalComponents/Button/Button';
 import Div from '../../../globalComponents/Modal/ContentDiv.style';
 import ButtonSectionStyle from './ButtonSection.style';
 import message from '../../../../logics/messages';
-import {deleteFriend, sendFriendRequest} from '../../../../queries/friend';
+import { deleteFriend, sendFriendRequest } from '../../../../queries/friend';
 
 const testId = 4;
-
 
 const FriendsSetModal = ({ mode, nickname, modalOff, setRefresh }) => {
   const [content, switchContent] = useState(mode);
@@ -22,7 +21,9 @@ const FriendsSetModal = ({ mode, nickname, modalOff, setRefresh }) => {
     else if (nickname === '') switchContent('empty');
     else if (content === 'add') {
       switchContent('addDone');
-      await sendFriendRequestFunc({variables:{id: testId, nickname: nickname}});
+      await sendFriendRequestFunc({
+        variables: { id: testId, nickname },
+      });
     } else if (content === 'delete') {
       switchContent('deleteDone');
       await deleteFriendFunc({ variables: { id: testId, nickname } });

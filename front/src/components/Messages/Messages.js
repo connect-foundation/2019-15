@@ -1,7 +1,11 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 import { useMutation } from '@apollo/react-hooks';
-import {findFriendRequests, deleteFriendRequest, acceptFriendRequest } from '../../queries/friend';
+import {
+  findFriendRequests,
+  deleteFriendRequest,
+  acceptFriendRequest,
+} from '../../queries/friend';
 import MessagesStyle from './Messages.style';
 import MessageComponentStyle from './MessageComponent.style';
 import Button from '../globalComponents/Button/Button';
