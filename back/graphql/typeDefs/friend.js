@@ -24,5 +24,6 @@ module.exports = `
     findFriendRequests(sFriendId:Int):[User]
     deleteFriendRequest(id:Int, nickname:String):[BeforeFriend]
     acceptFriendRequest(id:Int, nickname:String):User
+    sendFriendRequest(id:Int, nickname:String):BeforeFriend
   }
 `;

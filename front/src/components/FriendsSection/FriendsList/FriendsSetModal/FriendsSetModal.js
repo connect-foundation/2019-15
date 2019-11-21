@@ -12,13 +12,14 @@ import friendQuery from '../../../../queries/friend';
 const FriendsSetModal = ({ mode, nickname, modalOff, setRefresh }) => {
   const [content, switchContent] = useState(mode);
   const [deleteFriend] = useMutation(friendQuery.deleteFriend);
+  const [sendFriendRequest] = useMutation(friendQuery.sendFriendRequest);
 
   async function clickHandler() {
     if (content === 'empty' || content === 'addDone') modalOff();
     else if (nickname === '') switchContent('empty');
     else if (content === 'add') {
       switchContent('addDone');
-      // add
+      await sendFriendRequest({variables:{id: 4, nickname: nickname}});
     } else if (content === 'delete') {
       switchContent('deleteDone');
       await deleteFriend({ variables: { id: 4, nickname } });

@@ -99,5 +99,17 @@ module.exports = {
       );
       return idFromNickname;
     },
+    sendFriendRequest: async (obj, { id, nickname }, { BeforeFriends, Users }) => {
+      const idFromNickname = await Users.findOne({
+        where: { nickname: nickname },
+      });
+      await BeforeFriends.create({ pFriendId: id, sFriendId: idFromNickname.dataValues.id, friendStateId: 1}).then(
+        {},
+        (err) => {
+          console.log('already sent');
+        },
+      );
+      return idFromNickname;
+    }
   },
 };

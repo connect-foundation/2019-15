@@ -36,6 +36,13 @@ const friendQuery = {
       }
     }
   `,
+  sendFriendRequest: gql`
+    mutation sendFriendRequest($id: Int, $nickname: String) {
+      sendFriendRequest(id: $id, nickname: $nickname) {
+				id
+      }
+    }
+  `
 };
 
 export default friendQuery;
