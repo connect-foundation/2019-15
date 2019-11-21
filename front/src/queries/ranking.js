@@ -1,7 +1,7 @@
 import { gql } from 'apollo-boost';
 
-const GET_RANKING_ALL = gql`
-  query getRankingAll($order: Order = DESC, $first: Int = 10, $after: String) {
+export const getRankingAll = gql`
+  query getRankingAll($order: Order = DESC, $first: Int = 5, $after: String) {
     rankingAll(order: $order, first: $first, after: $after) {
       pageInfo {
         endCursor
@@ -18,4 +18,24 @@ const GET_RANKING_ALL = gql`
   }
 `;
 
-export default GET_RANKING_ALL;
+export const getRankingFriends = gql`
+  query getRankingFriends(
+    $order: Order = DESC
+    $first: Int = 5
+    $after: String
+  ) {
+    rankingFriends(order: $order, first: $first, after: $after) {
+      pageInfo {
+        endCursor
+        hasNextPage
+      }
+      edges {
+        node {
+          score
+          nickname
+        }
+        cursor
+      }
+    }
+  }
+`;

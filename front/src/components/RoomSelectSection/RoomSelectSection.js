@@ -1,13 +1,13 @@
 import React from 'react';
-import RoomSelectSectionStyle from './RoomSelectSection.style';
+import BackGroundStyle from './BackGroundStyle.style';
 import PublicRoom from './PublicRoom/PublicRoom';
 import PrivateRoom from './PrivateRoom/PrivateRoom';
 
 const RoomSelectSection = () => (
-  <RoomSelectSectionStyle>
+  <BackGroundStyle>
     <PublicRoom />
     <PrivateRoom />
-  </RoomSelectSectionStyle>
+  </BackGroundStyle>
 );
 
 export default RoomSelectSection;

@@ -1,9 +1,13 @@
 import styled from 'styled-components';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-const LoadingStyle = styled.div`
-  width: 100%;
-  height: 100%;
-  position: relative;
+export const CogStyle = styled(FontAwesomeIcon)`
+  color: ${(props) => props.theme.eastSide};
+  transform: translateX(-50%) translateY(-50%);
 `;
 
-export default LoadingStyle;
+export const LoadingStyle = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
