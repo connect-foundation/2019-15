@@ -1,6 +1,6 @@
 module.exports = `
   type User{
-    id:ID!
+    id:Int!
     userId:String!
     nickname:String!
     score:Int!
@@ -14,10 +14,10 @@ module.exports = `
   }
   
   type Word{
-    id:ID!
+    id:Int!
     word:String
-    categoryId:ID
-    userId:ID
+    categoryId:Int
+    userId:Int
     createdAt:String
     updatedAt:String
   }
