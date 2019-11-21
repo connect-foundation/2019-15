@@ -15,18 +15,20 @@ const io = {
     await this.connectSocket();
     return this.socket;
   },
-  async initMsgHandler({ setUserlist, setRoom, setPainter }) {
+  async initConnectMsgHandler({ setRoom }) {
     roomInfo.roomList.forEach((roomName) => {
       this.socket.on(`connect_${roomName}`, ({ roomType, roomId }) => {
         setRoom(Room(roomType, roomId));
       });
     });
-
+  },
+  async initUserlistMsgHandler({ setUserlist }) {
     this.socket.on('userlist', ({ userlist }) => {
       const parsedList = JSON.parse(userlist);
       setUserlist(parsedList);
     });
-
+  },
+  async initGameStartMsgHandler({ setPainter }) {
     this.socket.on('gamestart', ({ painter }) => {
       setPainter(painter);
     });
