@@ -1,18 +1,18 @@
 import React, { useState } from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import io from './logics/socketLogic';
-import MainContext from './Main.context';
+import GlobalContext from './global.context';
 
 import Home from './pages/Home';
 import Main from './pages/Main/Main';
 import MyPage from './pages/MyPage';
 
 import Room from './logics/room';
+import User from './logics/user';
 
 const Router = () => {
-  const [userlist, setUserlist] = useState([]);
   const [room, setRoom] = useState(Room());
-
+  const [user, setUser] = useState(User());
   return (
     <BrowserRouter>
       <Switch>
@@ -22,13 +22,11 @@ const Router = () => {
         <Route path="/mypage">
           <MyPage />
         </Route>
-        <MainContext.Provider
-          value={{ io, userlist, setUserlist, room, setRoom }}
-        >
+        <GlobalContext.Provider value={{ io, user, setUser, room, setRoom }}>
           <Route path="/main">
             <Main />
           </Route>
-        </MainContext.Provider>
+        </GlobalContext.Provider>
       </Switch>
     </BrowserRouter>
   );

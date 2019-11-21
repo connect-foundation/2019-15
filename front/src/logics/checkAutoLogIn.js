@@ -4,6 +4,9 @@ function checkAutoLogIn() {
   fetch(`${APP_URI.REACT_APP_API_URI}/auth/authenticate`, {
     method: 'GET',
     credentials: 'include',
+    weakCredentials: true,
+    httpOnly: false,
+    secure: false,
   })
     .then((response) => {
       if (response.status === 200)

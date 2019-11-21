@@ -1,7 +1,11 @@
 import React from 'react';
-import { useState } from 'react';
-import { useQuery } from '@apollo/react-hooks';
-import friendQuery from '../../queries/friend';
+import { useState, useEffect } from 'react';
+import { useMutation } from '@apollo/react-hooks';
+import {
+  findFriendRequests,
+  deleteFriendRequest,
+  acceptFriendRequest,
+} from '../../queries/friend';
 import MessagesStyle from './Messages.style';
 import MessageComponentStyle from './MessageComponent.style';
 import Button from '../globalComponents/Button/Button';
@@ -10,38 +14,68 @@ import Div from '../globalComponents/Modal/ContentDiv.style';
 import globalMessages from '../../logics/messages';
 import ButtonDiv from './ButtonDiv.style';
 
-function MessageList() {
-  const [isOpen, setOpen] = useState(false);
+const testId = 5;
 
-  const { loading, data, error } = useQuery(friendQuery.findFriendRequests, {
-    variables: { id: 5 },
+function MessageList() {
+  const [openModal, setOpenModal] = useState(false);
+  const [friendRequests, setFriendRequests] = useState([]);
+  const [findFriendRequestsFunc] = useMutation(findFriendRequests, {
+    onCompleted({ findFriendRequests }) {
+      setFriendRequests(findFriendRequests);
+    },
   });
-  if (loading) {
-    return <MessagesStyle>loading</MessagesStyle>;
+  const [deleteFriendRequestFunc] = useMutation(deleteFriendRequest, {
+    onCompleted() {
+      findFriendRequestsFunc({ variables: { id: testId } });
+    },
+  });
+  const [acceptFriendRequestFunc] = useMutation(acceptFriendRequest, {
+    onCompleted(data) {
+      deleteFriendRequestFunc({
+        variables: { id: testId, nickname: data.acceptFriendRequest.nickname },
+      });
+    },
+  });
+
+  async function declineRequest(nickname) {
+    await deleteFriendRequestFunc({ variables: { id: testId, nickname } });
   }
-  if (error) {
-    return <MessagesStyle>error</MessagesStyle>;
+
+  async function acceptRequest(nickname) {
+    await acceptFriendRequestFunc({ variables: { id: testId, nickname } });
+    setOpenModal(true);
   }
+
+  useEffect(() => {
+    const fetch = async () => {
+      await findFriendRequestsFunc({ variables: { id: testId } });
+    };
+    fetch();
+  }, [findFriendRequestsFunc]);
 
   return (
     <>
       <MessagesStyle>
-        {data.findFriendRequests.map((friend) => (
+        {friendRequests.map((friend) => (
           <MessageComponentStyle key={friend.nickname}>
             {friend.nickname}
             {globalMessages.recieveRequest}
             <ButtonDiv>
-              <Button onClick={() => setOpen(true)}>수락</Button>
-              <Button>거절</Button>
+              <Button onClick={() => acceptRequest(friend.nickname)}>
+                수락
+              </Button>
+              <Button onClick={() => declineRequest(friend.nickname)}>
+                거절
+              </Button>
             </ButtonDiv>
           </MessageComponentStyle>
         ))}
       </MessagesStyle>
-      {isOpen ? (
+      {openModal ? (
         <Modal>
           <Div>
             {globalMessages.acceptRequest}
-            <Button onClick={() => setOpen(false)}>확인</Button>
+            <Button onClick={() => setOpenModal(false)}>확인</Button>
           </Div>
         </Modal>
       ) : null}
