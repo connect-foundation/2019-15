@@ -15,5 +15,7 @@ module.exports = `
   
   extend type Query{
     users:[User]
+    checkNicknameAvailable(nickname:String!):Boolean
   }
+  
 `;
