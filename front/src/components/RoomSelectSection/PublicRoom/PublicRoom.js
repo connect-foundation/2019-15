@@ -2,25 +2,25 @@ import React, { useContext } from 'react';
 import RoomContainer from '../RoomContainer/RoomContainer';
 import PublicRoomButton from './PublicRoomButton.style';
 import MainContext from '../../../Main.context';
+import roomInfo from '../../../logics/room/roomInfo';
 
 const PublicRoom = () => {
-  const buttons = ['3명', '6명', '12명', '100명'];
-
-  const { io } = useContext(MainContext);
-
+  const { io, user } = useContext(MainContext);
   const makeGameStartBtnHandler = (capacity) => {
     const clickGameStartBtn = () => {
       io.socket.emit(`enter_${capacity}`, {
-        // 랜덤넘버 대신 유저아이디 or 닉네임이 들어가야함
-        userId: parseInt(Math.random() * 1000, 0),
+        nickname: user.nickname,
       });
     };
     return clickGameStartBtn;
   };
 
-  const buttonComponents = buttons.map((text) => (
-    <PublicRoomButton key={text} onClick={makeGameStartBtnHandler(text)}>
-      {text}
+  const buttonComponents = roomInfo.roomList.map((roomName) => (
+    <PublicRoomButton
+      key={roomName}
+      onClick={makeGameStartBtnHandler(roomName)}
+    >
+      {roomName}
     </PublicRoomButton>
   ));
 

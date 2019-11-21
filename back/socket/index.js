@@ -1,12 +1,9 @@
 const publicRoom = require('./Room');
+const User = require('./user');
 
-function User(id, socket) {
-  return { id, socket };
-}
-
-function personEnterRoom(userId, socket, capacity) {
+function personEnterRoom(nickname, socket, capacity, io) {
   const room = publicRoom.getEnableRoom(capacity);
-  room.people.push(User(userId, socket));
+  room.people.push(User(nickname, socket));
 
   socket.join(room.roomId);
   socket.emit(`connect_${capacity}`, {
@@ -16,21 +13,18 @@ function personEnterRoom(userId, socket, capacity) {
 
   const userlist = room.people.map((v) => v.id);
   socket.broadcast.to(room.roomId).emit('userlist', { userlist: JSON.stringify(userlist) });
+
+  if (room.people.length === 2) {
+    io.to(room.roomId).emit('gamestart', { painter: room.people[0].id });
+  }
 }
 
 function initSocketIO(io) {
   io.on('connection', (socket) => {
-    socket.on('enter_3명', ({ userId }) => {
-      personEnterRoom(userId, socket, '3명');
-    });
-    socket.on('enter_6명', ({ userId }) => {
-      personEnterRoom(userId, socket, '6명');
-    });
-    socket.on('enter_12명', ({ userId }) => {
-      personEnterRoom(userId, socket, '12명');
-    });
-    socket.on('enter_100명', ({ userId }) => {
-      personEnterRoom(userId, socket, '100명');
+    publicRoom.roomList.forEach((roomName) => {
+      socket.on(`enter_${roomName}`, ({ nickname }) => {
+        personEnterRoom(nickname, socket, roomName, io);
+      });
     });
 
     socket.on('get_userlist', ({ roomType, roomId }) => {
