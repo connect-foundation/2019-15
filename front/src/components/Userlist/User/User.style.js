@@ -52,5 +52,5 @@ export const Drawer = styled.img`
 export const Score = styled.div`
   font-weight: 600;
   font-size: 18px;
-  color: ${(props) => props.theme.text};
+  color: ${(props) => props.theme.stormBrain};
 `;
