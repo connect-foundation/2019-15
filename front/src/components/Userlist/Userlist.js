@@ -7,7 +7,7 @@ const Userlist = () => {
   const { userlist } = useContext(GlobalContext);
 
   const UserComponents = userlist.map((user, index) => (
-    <User nickname={user} index={index + 1} />
+    <User nickname={user.nickname} index={index + 1} />
   ));
 
   return <UserlistStyle>{UserComponents}</UserlistStyle>;
