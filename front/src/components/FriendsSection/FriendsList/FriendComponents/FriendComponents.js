@@ -3,12 +3,12 @@ import { useState, useEffect } from 'react';
 import { useMutation } from '@apollo/react-hooks';
 import { faMinusCircle } from '@fortawesome/free-solid-svg-icons';
 import PropTypes from 'prop-types';
-import friendQuery from '../../../../queries/friend';
+import {findFriendsById} from '../../../../queries/friend';
 import FriendComponentStyle from '../FriendComponent.style';
 import Icon from '../Icons.style';
 
 function FriendComponents({ modalOnOff, configMode, refresh, setRefresh }) {
-  const [findFriends] = useMutation(friendQuery.findFriendsById);
+  const [findFriends] = useMutation(findFriendsById);
   const [data, setData] = useState({ friends: [{ nickname: null }] });
 
   const fetchItems = async () => {

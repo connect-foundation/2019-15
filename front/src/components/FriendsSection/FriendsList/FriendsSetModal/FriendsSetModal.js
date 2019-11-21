@@ -7,22 +7,22 @@ import Button from '../../../globalComponents/Button/Button';
 import Div from '../../../globalComponents/Modal/ContentDiv.style';
 import ButtonSectionStyle from './ButtonSection.style';
 import message from '../../../../logics/messages';
-import friendQuery from '../../../../queries/friend';
+import {deleteFriend, sendFriendRequest} from '../../../../queries/friend';
 
 const FriendsSetModal = ({ mode, nickname, modalOff, setRefresh }) => {
   const [content, switchContent] = useState(mode);
-  const [deleteFriend] = useMutation(friendQuery.deleteFriend);
-  const [sendFriendRequest] = useMutation(friendQuery.sendFriendRequest);
+  const [deleteFriendFunc] = useMutation(deleteFriend);
+  const [sendFriendRequestFunc] = useMutation(sendFriendRequest);
 
   async function clickHandler() {
     if (content === 'empty' || content === 'addDone') modalOff();
     else if (nickname === '') switchContent('empty');
     else if (content === 'add') {
       switchContent('addDone');
-      await sendFriendRequest({variables:{id: 4, nickname: nickname}});
+      await sendFriendRequestFunc({variables:{id: 4, nickname: nickname}});
     } else if (content === 'delete') {
       switchContent('deleteDone');
-      await deleteFriend({ variables: { id: 4, nickname } });
+      await deleteFriendFunc({ variables: { id: 4, nickname } });
       setRefresh(true);
     } else if (content === 'deleteDone') {
       modalOff();

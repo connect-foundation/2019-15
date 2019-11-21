@@ -1,7 +1,7 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 import { useMutation } from '@apollo/react-hooks';
-import friendQuery from '../../queries/friend';
+import {findFriendRequests, deleteFriendRequest, acceptFriendRequest } from '../../queries/friend';
 import MessagesStyle from './Messages.style';
 import MessageComponentStyle from './MessageComponent.style';
 import Button from '../globalComponents/Button/Button';
@@ -13,39 +13,39 @@ import ButtonDiv from './ButtonDiv.style';
 function MessageList() {
   const [openModal, setOpenModal] = useState(false);
   const [friendRequests, setFriendRequests] = useState([]);
-  const [findFriendRequests] = useMutation(friendQuery.findFriendRequests, {
+  const [findFriendRequestsFunc] = useMutation(findFriendRequests, {
     onCompleted({ findFriendRequests }) {
       setFriendRequests(findFriendRequests);
     },
   });
-  const [deleteFriendRequest] = useMutation(friendQuery.deleteFriendRequest, {
+  const [deleteFriendRequestFunc] = useMutation(deleteFriendRequest, {
     onCompleted() {
-      findFriendRequests({ variables: { id: 5 } });
+      findFriendRequestsFunc({ variables: { id: 5 } });
     },
   });
-  const [acceptFriendRequest] = useMutation(friendQuery.acceptFriendRequest, {
+  const [acceptFriendRequestFunc] = useMutation(acceptFriendRequest, {
     onCompleted(data) {
-      deleteFriendRequest({
+      deleteFriendRequestFunc({
         variables: { id: 5, nickname: data.acceptFriendRequest.nickname },
       });
     },
   });
 
   async function declineRequest(nickname) {
-    await deleteFriendRequest({ variables: { id: 5, nickname } });
+    await deleteFriendRequestFunc({ variables: { id: 5, nickname } });
   }
 
   async function acceptRequest(nickname) {
-    await acceptFriendRequest({ variables: { id: 5, nickname } });
+    await acceptFriendRequestFunc({ variables: { id: 5, nickname } });
     setOpenModal(true);
   }
 
   useEffect(() => {
     const fetch = async () => {
-      await findFriendRequests({ variables: { id: 5 } });
+      await findFriendRequestsFunc({ variables: { id: 5 } });
     };
     fetch();
-  }, [findFriendRequests]);
+  }, [findFriendRequestsFunc]);
 
   return (
     <>
