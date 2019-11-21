@@ -18,4 +18,7 @@ module.exports = `
     checkNicknameAvailable(nickname:String!):Boolean
   }
   
+  extend type Mutation{
+    changeNickname(nickname:String!):Boolean
+  }
 `;
