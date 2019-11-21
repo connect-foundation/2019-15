@@ -8,6 +8,7 @@ import Canvas from '../../components/Canvas/Canvas';
 import Chatting from '../../components/Chatting/Chatting';
 import BackGroundStyle from '../../components/RoomSelectSection/BackGroundStyle.style';
 import GamePlayContext from './GamePlay.context';
+import GameLoading from '../../components/GameLoading/GameLoading';
 
 const GamePlay = () => {
   const { io, room } = useContext(GlobalContext);
@@ -24,6 +25,7 @@ const GamePlay = () => {
 
   return (
     <GamePlayContext.Provider value={{ userlist, painter, setPainter }}>
+      <GameLoading />
       <NavigationBar visible={room.roomType} />
       <GameInfo />
       <BackGroundStyle>
