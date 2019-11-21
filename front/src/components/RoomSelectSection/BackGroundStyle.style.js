@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 const MAIN_COMPONENT_HEIGHT = '50rem';
 
-const RoomSelectSectionStyle = styled.div`
+const BackGroundStyle = styled.div`
   width: 100%;
   height: ${MAIN_COMPONENT_HEIGHT};
   background-color: ${(props) => props.theme.bodyColor};
@@ -12,4 +12,4 @@ const RoomSelectSectionStyle = styled.div`
   align-items: center;
 `;
 
-export default RoomSelectSectionStyle;
+export default BackGroundStyle;
