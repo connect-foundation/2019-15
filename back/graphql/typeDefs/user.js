@@ -29,7 +29,7 @@ module.exports = `
   }
   
   extend type Mutation{
-    changeNickname(nickname:String!):Boolean
+    changeNickname(nickname:String!):String
     updateUserNicknameById(id:String, nickname:String):[Int]
     createWord(userId:String, nickname:String):Word
     updateWordUserIdById(id:String, nickname:String):Word

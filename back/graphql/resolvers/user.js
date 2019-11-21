@@ -1,25 +1,23 @@
 const jwt = require('jsonwebtoken');
 const Sequelize = require('sequelize');
-const jwtOptions = require('../../config/jwtOptions');
 const { REACT_URI } = require('../../config/uri');
 const expiresIn = require('../../util/getMsOfDay');
 const getDomain = require('../../util/getDomain');
 
-const Sequelize = require('sequelize');
 const { Op } = Sequelize;
 
-module.exports = {
+const userResolvers = {
   Query: {
     users: (obj, args, { Users }) => {
       return Users.findAll();
     },
     checkNicknameAvailable: async (obj, { nickname }, { Words, req }) => {
       if (req.user.nickname === nickname) return false;
-      const wordFound = await Words.findOne({
-        where: {
-          word: nickname,
-        },
-      });
+      const wordFound = await userResolvers.Query.getWordByNickname(
+        obj,
+        { nickname },
+        { Words, req },
+      );
       return !wordFound || !wordFound.dataValues.userId;
     },
     getWordByNickname: (obj, { nickname }, { Words }) => {
@@ -33,18 +31,14 @@ module.exports = {
     },
   },
   Mutation: {
-    changeNickname: async (obj, { nickname }, { Users, Words, req, res }) => {
-      const wordFound = await Words.findOne({
-        where: {
-          word: nickname,
-        },
-      });
+    changeNickname: async (obj, { nickname }, { Users, Words, req, res, sequelize }) => {
+      const wordFound = await userResolvers.Query.getWordByNickname(obj, { nickname }, { Words });
 
       if (wordFound && wordFound.dataValues.userId) throw new Error('duplicated');
 
       let transaction;
       try {
-        transaction = await Sequelize.transaction();
+        transaction = await sequelize.transaction();
         if (!wordFound) {
           await Words.create(
             { word: nickname, categoryId: null, userId: req.user.id },
@@ -90,10 +84,10 @@ module.exports = {
           },
         );
         await transaction.commit();
-        return true;
+        return nickname;
       } catch (e) {
         if (transaction) await transaction.rollback();
-        throw new Error('rollback occurred');
+        throw new Error(e);
       }
     },
     updateUserNicknameById: (obj, { id, nickname }, { Users }) => {
@@ -128,3 +122,5 @@ module.exports = {
     },
   },
 };
+
+module.exports = userResolvers;

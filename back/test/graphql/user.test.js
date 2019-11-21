@@ -80,7 +80,7 @@ describe('유저 닉네임 중복검사 및 변경 테스트', () => {
         }`,
       })
       .expect(200);
-    expect(res.body.data).toBeTruthy();
+    expect(res.body.data.changeNickname).toBe(nicknameToChange);
     done();
   });
 });
