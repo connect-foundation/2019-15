@@ -8,10 +8,13 @@ import Main from './pages/Main/Main';
 import MyPage from './pages/MyPage';
 
 import Room from './logics/room';
+import User from './logics/user';
 
 const Router = () => {
   const [userlist, setUserlist] = useState([]);
   const [room, setRoom] = useState(Room());
+
+  const [user, setUser] = useState(User());
 
   return (
     <BrowserRouter>
@@ -23,7 +26,7 @@ const Router = () => {
           <MyPage />
         </Route>
         <MainContext.Provider
-          value={{ io, userlist, setUserlist, room, setRoom }}
+          value={{ io, userlist, setUserlist, room, setRoom, user, setUser }}
         >
           <Route path="/main">
             <Main />
