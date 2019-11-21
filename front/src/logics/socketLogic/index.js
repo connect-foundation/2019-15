@@ -15,11 +15,10 @@ const io = {
     await this.connectSocket();
     return this.socket;
   },
-  async initMsgHandler({ setUserlist, setRoom }) {
+  async initMsgHandler({ setUserlist, setRoom, setPainter }) {
     roomInfo.roomList.forEach((roomName) => {
       this.socket.on(`connect_${roomName}`, ({ roomType, roomId }) => {
         setRoom(Room(roomType, roomId));
-        this.socket.emit('get_userlist', { roomType, roomId });
       });
     });
 
@@ -29,7 +28,7 @@ const io = {
     });
 
     this.socket.on('gamestart', ({ painter }) => {
-      console.log(painter);
+      setPainter(painter);
     });
   },
 };
