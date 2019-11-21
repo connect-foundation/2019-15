@@ -1,8 +1,10 @@
 import React, { useContext, useEffect } from 'react';
+import GamePlayContext from '../../pages/Main/GamePlay.context';
 import GlobalContext from '../../global.context';
 
 const Canvas = () => {
-  const { io, painter } = useContext(GlobalContext);
+  const { painter } = useContext(GamePlayContext);
+  const { io } = useContext(GlobalContext);
 
   useEffect(() => {
     if (io.socket.id === painter) {
@@ -10,7 +12,7 @@ const Canvas = () => {
     }
 
     return console.log('문제를 맞춰보세요');
-  }, painter);
+  }, [io.socket.id, painter]);
 
   return (
     <div>
