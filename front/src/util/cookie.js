@@ -2,8 +2,8 @@ const parseCookies = (cookie = document.cookie) =>
   cookie
     .split(';')
     .map((v) => v.split('='))
-    .reduce((acc, [k, v]) => {
-      acc[k.trim()] = decodeURIComponent(v);
+    .reduce((acc, [key, value]) => {
+      acc[key.trim()] = decodeURIComponent(value);
       return acc;
     }, {});
 
