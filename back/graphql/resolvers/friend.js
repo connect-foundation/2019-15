@@ -74,7 +74,7 @@ module.exports = {
       await BeforeFriends.destroy(conditionColumns);
       return BeforeFriends.findAll(conditionColumns);
     },
-    acceptFriendRequest: async (obj, { id, nickname }, { BeforeFriends, Users, Friends }) => {
+    acceptFriendRequest: async (obj, { id, nickname }, { Users, Friends }) => {
       // this.deleteFriendRequest({id:id, nickname:nickname}); resolver 안에서 resolver 호출하는법.....
       const idFromNickname = await Users.findOne({
         where: { nickname: nickname },
