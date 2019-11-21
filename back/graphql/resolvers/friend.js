@@ -37,24 +37,24 @@ module.exports = {
     },
     findFriendRequests: async (obj, { sFriendId }, { BeforeFriends, Users }) => {
       const sFriendRows = await BeforeFriends.findAll({
-        where: { sFriendId: sFriendId },
+        where: { [Op.and]: [{ sFriendId: sFriendId }, { friendStateId: 1 }] },
       });
       return Users.findAll({
         where: { id: sFriendRows.map((acc) => acc.dataValues.pFriendId) },
       });
     },
     deleteFriend: async (obj, { id, nickname }, { Friends, Users }) => {
-      const idFromNicknames = await Users.findOne({
+      const idFromNickname = await Users.findOne({
         where: { nickname: nickname },
       });
       const conditionColumns = {
         where: {
           [Op.or]: [
             {
-              [Op.and]: [{ pFriendId: idFromNicknames.dataValues.id }, { sFriendId: id }],
+              [Op.and]: [{ pFriendId: idFromNickname.dataValues.id }, { sFriendId: id }],
             },
             {
-              [Op.and]: [{ sFriendId: idFromNicknames.dataValues.id }, { pFriendId: id }],
+              [Op.and]: [{ sFriendId: idFromNickname.dataValues.id }, { pFriendId: id }],
             },
           ],
         },
@@ -63,12 +63,12 @@ module.exports = {
       return Friends.findAll(conditionColumns);
     },
     deleteFriendRequest: async (obj, { id, nickname }, { BeforeFriends, Users }) => {
-      const idFromNicknames = await Users.findOne({
+      const idFromNickname = await Users.findOne({
         where: { nickname: nickname },
       });
       const conditionColumns = {
         where: {
-          [Op.and]: [{ pFriendId: idFromNicknames.dataValues.id }, { sFriendId: id }],
+          [Op.and]: [{ pFriendId: idFromNickname.dataValues.id }, { sFriendId: id }],
         },
       };
       await BeforeFriends.destroy(conditionColumns);
