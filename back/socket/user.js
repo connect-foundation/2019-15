@@ -1,5 +1,5 @@
-const User = (id, socket) => {
-  return { id, socket };
+const User = (nickname, socket) => {
+  return { nickname, socket };
 };
 
 module.exports = User;
