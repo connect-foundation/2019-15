@@ -67,4 +67,20 @@ describe('유저 닉네임 중복검사 및 변경 테스트', () => {
     expect(res.body.data.checkNicknameAvailable).toBeFalsy();
     done();
   });
+
+  it('닉네임 변경 테스트', async (done) => {
+    const nicknameToChange = uuid();
+    const res = await request
+      .agent(app)
+      .set('Cookie', [`jwt=${token}`])
+      .post(graphqlPath)
+      .send({
+        query: `mutation {
+          changeNickname(nickname:"${nicknameToChange}")
+        }`,
+      })
+      .expect(200);
+    expect(res.body.data).toBeTruthy();
+    done();
+  });
 });
