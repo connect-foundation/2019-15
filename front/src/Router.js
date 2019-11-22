@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import React, {useState} from 'react';
+import {BrowserRouter, Route, Switch} from 'react-router-dom';
 import io from './logics/socketLogic';
 import GlobalContext from './global.context';
 
@@ -24,9 +24,7 @@ const Router = () => {
           <Route path="/mypage">
             <MyPage />
           </Route>
-          <GlobalContext.Provider
-            value={{ io, userlist, setUserlist, room, setRoom }}
-          >
+          <GlobalContext.Provider value={{ io, user, setUser, room, setRoom }}>
             <Route path="/main">
               <Main />
             </Route>
