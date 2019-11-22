@@ -1,5 +1,5 @@
-const user = require('./user');
-const ranking = require('./ranking');
-const friend = require('./friend');
+const userResolvers = require('./user');
+const rankingResolvers = require('./ranking');
+const friendResolvers = require('./friend');
 
-module.exports = [user, ranking, friend];
+module.exports = [userResolvers, rankingResolvers, friendResolvers];

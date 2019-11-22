@@ -1,8 +1,8 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import TabPane from './TabPane/TabPane';
-import {TabContentStyle, TabStyle} from './Tab.style';
-import TabPaneBtnList from './TabPaneNameList/TabPaneBtnList';
+import { TabContentStyle, TabStyle } from './Tab.style';
+import TabPaneBtnList from './TabPaneBtnList/TabPaneBtnList';
 
 const Tab = ({ children: paneList, activeTabColor, inActiveTabColor }) => {
   const [activeTabPaneIdx, setActiveTabPaneIdx] = useState(0);
