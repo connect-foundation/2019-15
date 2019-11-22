@@ -2,7 +2,7 @@ const Sequelize = require('sequelize');
 
 const { Op } = Sequelize;
 
-module.exports = {
+const friendResolvers = {
   Query: {
     addFriendForTest: (obj, args, { Friends }) => {
       Friends.create({ pFriendId: 1, sFriendId: 2 }).then({}, (err) => {
@@ -114,3 +114,5 @@ module.exports = {
     },
   },
 };
+
+module.exports = friendResolvers;
