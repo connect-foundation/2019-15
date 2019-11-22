@@ -30,7 +30,10 @@ router.get('/login_success', async function(req, res) {
     expires: new Date(Date.now() + expiresIn),
     domain: getDomain(REACT_URI),
   });
-  res.cookie('nickname', req.user.nickname);
+  res.cookie('nickname', req.user.nickname, {
+    expires: new Date(Date.now() + expiresIn),
+    domain: getDomain(REACT_URI),
+  });
   res.redirect(`${REACT_URI}/main`);
 });
 

@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const RoomContainerStyle = styled.div`
+const RoomContainerStyle = styled.section`
   width: 30rem;
   height: 25rem;
   background-color: ${(props) => props.theme.Pumice};

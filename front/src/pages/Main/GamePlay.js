@@ -28,13 +28,13 @@ const GamePlay = () => {
       <GameLoading />
       <NavigationBar visible={room.roomType} />
       <GameInfo />
-      <BackGroundStyle>
+      <>
         <FlexRowStyle>
           <Userlist />
           <Canvas />
           <Chatting />
         </FlexRowStyle>
-      </BackGroundStyle>
+      </>
     </GamePlayContext.Provider>
   );
 };

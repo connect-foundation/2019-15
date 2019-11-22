@@ -9,7 +9,7 @@ const Tab = ({ children: paneList, activeTabColor, inActiveTabColor }) => {
 
   const paneNameList = paneList.map((pane) => pane.props.paneName);
   return (
-    <TabStyle>
+    <TabStyle id={'Tab'}>
       <TabPaneBtnList
         activeTabColor={activeTabColor}
         inActiveTabColor={inActiveTabColor}

@@ -10,9 +10,9 @@ const router = express.Router();
 router.use('/facebook', facebookRouter);
 router.use('/google', googleRouter);
 
-router.get('/logout', function (req, res, next) {
+router.get('/logout', async function (req, res, next) {
   // expiresIn must be string because string is micro seconds but int is seconds
-  res.cookie('jwt', signJWT(req, { expiresIn: '0' }));
+  res.cookie('jwt', await signJWT(req, { expiresIn: '0' }));
   res.redirect(`${REACT_URI}`);
 });
 
