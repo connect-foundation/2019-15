@@ -1,0 +1,32 @@
+@font-face {
+    font-family: "Cookierun Black";
+    font-style: normal;
+    font-weight: normal;
+    src: local('CookieRun'), url("./font/CookieRun Black.otf") format('opentype');
+}
+
+@font-face {
+    font-family: "Cookierun Bold";
+    font-style: normal;
+    font-weight: normal;
+    src: local('CookieRun'), url("./font/CookieRun Bold.otf") format('opentype');
+}
+
+html, body{
+    margin:0;
+    padding:0;
+    height: 100%;
+    font-family: "Cookierun Bold", sans-serif;
+}
+
+#root {
+    height: 100%;
+}
+
+a, a:active, a:visited, a:hover, a:link {
+    text-decoration: none;
+}
+
+button {
+    font-family: "Cookierun Bold", sans-serif;
+}

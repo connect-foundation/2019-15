@@ -1,0 +1,6 @@
+module.exports = {
+  MAX_INT: 2147483647,
+  MIN_ID: 0,
+  CURSOR_LENGTH: 20,
+  INT_TO_STRING_PADDING: '0',
+};
