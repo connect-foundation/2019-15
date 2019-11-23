@@ -16,7 +16,6 @@ const signJWT = async (req, options = {}) => {
       nickname,
       userId: req.user.id,
       displayName: req.user.displayName,
-      nickname: req.user.nickname,
     },
     process.env.JWT_SECRET,
     myOptions,
