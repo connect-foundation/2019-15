@@ -4,7 +4,7 @@ const FriendComponentStyle = styled.div`
   display: flex;
   width: 7rem;
   height: 1rem;
-  background-color: ${(props) => props.theme.buttonColor};
+  background-color: ${(props) => props.theme.brightGray};
   color: white;
   padding-top: 0.5rem;
   padding-left: 1rem;

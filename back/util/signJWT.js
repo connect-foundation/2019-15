@@ -1,22 +1,19 @@
 const jwt = require('jsonwebtoken');
+const jwtOptions = require('../config/jwtOptions');
 const { Users } = require('../db/models');
 
-async function signJWT(req, options = {}) {
-  const myOptions = {
-    expiresIn: options.expiresIn ? options.expiresIn : '1h',
-    issuer: 'catchMyMind',
-    subject: 'userInfo',
-  };
-
-  const { id } = await Users.findOne({
+const signJWT = async (req, options = {}) => {
+  const { id, nickname } = await Users.findOne({
     where: {
       userId: req.user.id,
     },
   });
 
+  const myOptions = { ...jwtOptions, expiresIn: options.expiresIn || jwtOptions.expiresIn };
   return jwt.sign(
     {
       id,
+      nickname,
       userId: req.user.id,
       displayName: req.user.displayName,
       nickname: req.user.nickname,
@@ -24,6 +21,6 @@ async function signJWT(req, options = {}) {
     process.env.JWT_SECRET,
     myOptions,
   );
-}
+};
 
 module.exports = signJWT;

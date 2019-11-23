@@ -1,3 +1,7 @@
+const Sequelize = require('sequelize');
+
+const { Op } = Sequelize;
+
 const { MIN_ID, MAX_INT, CURSOR_LENGTH, INT_TO_STRING_PADDING } = require('./constants/ranking');
 
 const getScoreOrdering = (order) => {
@@ -31,9 +35,9 @@ const toRankingResult = (edgesWithCursor, totalCount, first) => {
   };
 };
 
-module.exports = {
+const rankingResolvers = {
   Query: {
-    rankingAll: async (obj, { order, first, after }, { Users, Op }) => {
+    rankingAll: async (obj, { order, first, after }, { Users }) => {
       const { id, score } = after ? splitCursor(after) : { id: MIN_ID, score: MAX_INT };
 
       const { rows: nodes, count: totalCount } = await Users.findAndCountAll({
@@ -48,11 +52,11 @@ module.exports = {
 
       return toRankingResult(edgesWithCursor, totalCount, first);
     },
-    rankingFriends: async (obj, { order, first, after }, { Users, Friends, Op, user }) => {
+    rankingFriends: async (obj, { order, first, after }, { Users, Friends, req }) => {
       const { id, score } = after ? splitCursor(after) : { id: MIN_ID, score: MAX_INT };
 
       const { rows: nodes, count: totalCount } = await Friends.findAndCountAll({
-        where: { pFriendId: user.id },
+        where: { pFriendId: req.user.id },
         include: [
           {
             model: Users,
@@ -74,3 +78,5 @@ module.exports = {
     },
   },
 };
+
+module.exports = rankingResolvers;

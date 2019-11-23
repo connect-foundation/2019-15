@@ -7,7 +7,6 @@ const TitleStyle = styled.div`
   font-weight: 600;
   text-align: center;
   margin-top: 1rem;
-  text-shadow: 1px 1px 2px #000000;
   color: ${(props) => props.theme.stormBrain};
 `;
 

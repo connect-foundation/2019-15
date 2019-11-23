@@ -25,9 +25,11 @@ module.exports = `
   extend type Query{
     users:[User]
     getWordByNickname(nickname:String):Word
+    checkNicknameAvailable(nickname:String!):Boolean
   }
   
   extend type Mutation{
+    changeNickname(nickname:String!):String
     updateUserNicknameById(id:String, nickname:String):[Int]
     createWord(userId:String, nickname:String):Word
     updateWordUserIdById(id:String, nickname:String):Word
