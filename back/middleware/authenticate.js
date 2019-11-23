@@ -11,8 +11,10 @@ module.exports = (req, res) => {
       });
       res.status(200).send(true);
     } catch (e) {
-      if (e.name === 'TokenExpiredError') res.status(401).send(false);
-      else {
+      if (e.name === 'TokenExpiredError') {
+        res.clearCookie('jwt');
+        res.status(401).send(false);
+      } else {
         res.status(403).send(false);
       }
     }
