@@ -6,7 +6,6 @@ import GamePlayContext from '../../pages/Main/GamePlay.context';
 import GlobalContext from '../../global.context';
 
 const CanvasSection = () => {
-
   const { painter } = useContext(GamePlayContext);
   const { io } = useContext(GlobalContext);
 
@@ -17,7 +16,6 @@ const CanvasSection = () => {
 
     return console.log('문제를 맞춰보세요');
   }, [io.socket.id, painter]);
-
 
   return (
     <CanvasSectionStyle>

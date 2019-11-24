@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React from 'react';
 import CanvasStyle from './Canvas.style';
 
 const Canvas = () => {
