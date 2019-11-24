@@ -13,15 +13,6 @@ module.exports = `
     cursor:String
   }
   
-  type Word{
-    id:Int!
-    word:String
-    categoryId:Int
-    userId:Int
-    createdAt:String
-    updatedAt:String
-  }
-  
   extend type Query{
     users:[User]
     getWordByNickname(nickname:String):Word
