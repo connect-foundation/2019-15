@@ -1,146 +1,62 @@
+const request = require('request');
+const cheerio = require('cheerio');
+
+const urlString = (categoryNum) =>
+  `https://krdict.korean.go.kr/dicSearchDetail/searchDetailSenseCategoryResult?searchFlag=Y&sort=W&currentPage=1&ParaWordNo=&deleteWord_no=&returnUrl=&downloadInfo=&downloadInfoText=&downloadGubun=&downloadType=&downloadItemList=&downloadMultilanList=&syllablePosition=&priMoveUrl=&searchType=D&lgCategoryCode=${categoryNum}&miCategoryCode=-1&blockCount=100`;
+
+const urlSet = [];
+
+for (let i = 1; i <= 14; i += 1) {
+  urlSet.push(urlString(i));
+}
+
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.bulkInsert(
-      'Words',
-      [
-        {
-          word: '강아지',
-          categoryId: 2,
-          userId: '1',
-        },
-        {
-          word: '고양이',
-          categoryId: 2,
-          userId: '2',
-        },
-        {
-          word: '치킨',
-          categoryId: 1,
-          userId: '3',
-        },
-        {
-          word: '피자',
-          categoryId: 1,
-          userId: '4',
-        },
-        {
-          word: '곤드레밥',
-          categoryId: 1,
-          userId: '5',
-        },
-        {
-          word: '두부밥',
-          categoryId: 1,
-          userId: '6',
-        },
-        {
-          word: '보리밥',
-          categoryId: 1,
-          userId: '7',
-        },
-        {
-          word: '비빔밥',
-          categoryId: 1,
-          userId: '8',
-        },
-        {
-          word: '쌀밥',
-          categoryId: 1,
-          userId: '9',
-        },
-        {
-          word: '약밥',
-          categoryId: 1,
-          userId: '10',
-        },
-        {
-          word: '볶음밥',
-          categoryId: 1,
-          userId: '11',
-        },
-        {
-          word: '영양밥',
-          categoryId: 1,
-          userId: '12',
-        },
-        {
-          word: '무감자밥',
-          categoryId: 1,
-          userId: '13',
-        },
-        {
-          word: '닭죽',
-          categoryId: 1,
-          userId: '14',
-        },
-        {
-          word: '방풍죽',
-          categoryId: 1,
-          userId: '15',
-        },
-        {
-          word: '아구찜',
-          categoryId: 1,
-          userId: '16',
-        },
-        {
-          word: '전복죽',
-          categoryId: 1,
-          userId: '17',
-        },
-        {
-          word: '타락죽',
-          categoryId: 1,
-          userId: '18',
-        },
-        {
-          word: '상이죽',
-          categoryId: 1,
-          userId: '19',
-        },
-        {
-          word: '호박죽',
-          categoryId: 1,
-          userId: '20',
-        },
-        {
-          word: '팥죽',
-          categoryId: 1,
-          userId: '21',
-        },
-        {
-          word: '배추김치',
-          categoryId: 1,
-          userId: '22',
-        },
-        {
-          word: '동치미',
-          categoryId: 1,
-          userId: null,
-        },
-        {
-          word: '파김치',
-          categoryId: 1,
-          userId: null,
-        },
-        {
-          word: '김치전',
-          categoryId: 1,
-          userId: null,
-        },
-        {
-          word: '참이슬',
-          categoryId: 1,
-          userId: null,
-        },
-        {
-          word: '동래파전',
-          categoryId: 1,
-          userId: null,
-        },
-      ],
-      {},
-    );
+    return new Promise((resolve) => {
+      urlSet.forEach((url) => {
+        const json = [];
+        let word;
+        let category;
+
+        request(url, function(error, response, body) {
+          const HTML = cheerio.load(body);
+
+          HTML('#lcateLayer > ul > li').each(function() {
+            if (
+              HTML(this)
+                .find('input:checked')
+                .val() !== undefined
+            ) {
+              category = HTML(this)
+                .find('li > label')
+                .text()
+                .trim();
+            }
+          });
+          HTML('#page_naviArea2 > div.floatL.sub_left > ul.search_list.w700.printArea > li').each(
+            function() {
+              const kind = HTML(this)
+                .find('p > em')
+                .text();
+              if (kind.trim() === '「명사」') {
+                word = HTML(this)
+                  .find('p > a > strong')
+                  .text()
+                  .trim();
+                json.push({ word: word, category: category, userId: null });
+              }
+            },
+          );
+          queryInterface.bulkInsert('Words', json);
+        });
+      });
+
+      setTimeout(() => {
+        resolve('Done');
+      }, 4000);
+    }).catch((error) => {
+      console.error(error);
+    });
   },
 
   down: (queryInterface, Sequelize) => {
