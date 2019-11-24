@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import ColorBox from './ColorBox/ColorBox';
 import { ColorPickerStyle, ColorBoxList, ColorInfo } from './ColorPicker.style';
+import RGB_LIST from '../../../../logics/Tools';
 
 const ColorPicker = ({ rgbList, color, changeColor }) => {
   return (
@@ -32,7 +33,7 @@ ColorPicker.propTypes = {
 };
 
 ColorPicker.defaultProps = {
-  rgbList: [],
+  rgbList: RGB_LIST,
 };
 
 export default ColorPicker;

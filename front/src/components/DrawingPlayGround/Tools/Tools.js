@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { ToolsStyle } from './Tools.style';
 import ColorPicker from './ColorPicker/ColorPicker';
-import RGB_LIST from '../../../logics/Tools';
 import ToolType from './ToolType/ToolType';
 import Tool from './ToolType/Tool';
 
@@ -22,11 +21,7 @@ const Tools = ({ drawingOptions, setDrawingOptions }) => {
         <ToolType tool={tool} changeTool={changeTool} />
       </div>
       <div>
-        <ColorPicker
-          rgbList={RGB_LIST}
-          color={strokeColor}
-          changeColor={changeColor}
-        />
+        <ColorPicker color={strokeColor} changeColor={changeColor} />
       </div>
     </ToolsStyle>
   );
