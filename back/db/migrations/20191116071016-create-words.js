@@ -10,12 +10,8 @@ module.exports = {
       word: {
         type: Sequelize.STRING,
       },
-      categoryId: {
-        type: Sequelize.INTEGER,
-        references: {
-          model: 'Categories',
-          key: 'id',
-        },
+      category: {
+        type: Sequelize.STRING,
       },
       userId: {
         allowNull: true,

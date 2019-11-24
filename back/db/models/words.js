@@ -3,16 +3,12 @@ module.exports = (sequelize, DataTypes) => {
     'Words',
     {
       word: DataTypes.STRING,
-      categoryId: DataTypes.INTEGER,
+      category: DataTypes.STRING,
       userId: DataTypes.INTEGER,
     },
     {},
   );
   Words.associate = function(models) {
-    Words.belongsTo(models.Categories, {
-      foreignKey: 'categoryId',
-      targetKey: 'id',
-    });
     Words.belongsTo(models.Users, {
       foreignKey: 'userId',
       targetKey: 'id',

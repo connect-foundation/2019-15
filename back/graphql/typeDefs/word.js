@@ -2,7 +2,7 @@ module.exports = `
   type Word{
     id:Int!
     word:String
-    categoryId:Int
+    category:String
     userId:Int
     createdAt:String
     updatedAt:String
