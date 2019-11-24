@@ -7,6 +7,7 @@ export const WordCard = styled.div`
   height: 3rem;
   background-color: white;
   border-radius: 1rem;
+  cursor: pointer;
 `;
 
 export const P = styled.p`
