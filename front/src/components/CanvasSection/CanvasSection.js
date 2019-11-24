@@ -19,7 +19,7 @@ const CanvasSection = () => {
 
   return (
     <CanvasSectionStyle>
-      <WordChoice />
+      {io.socket.id === painter ? <WordChoice /> : null}
       <Canvas />
     </CanvasSectionStyle>
   );
