@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 const HomeStyle = styled.div`
   display: flex;
@@ -6,7 +6,7 @@ const HomeStyle = styled.div`
   justify-content: center;
   align-items: center;
   height: 100%;
-  background-color: ${(props) => props.theme.bodyColor};;
+  background-color: ${(props) => props.theme.bodyColor};
 `;
 
 export default HomeStyle;
