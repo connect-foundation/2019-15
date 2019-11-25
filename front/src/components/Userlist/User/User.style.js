@@ -5,7 +5,7 @@ import {
 } from '../../globalComponents/Container/Flex.style';
 
 export const UserStyle = styled(FlexRowStyle)`
-  width: 16rem;
+  width: 320px;
   height: 7rem;
   margin: 0.3rem;
   margin-bottom: 0.6rem;
