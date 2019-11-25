@@ -31,4 +31,4 @@ const publicRoom = {
   },
 };
 
-module.exports = publicRoom;
+module.exports = { publicRoom, makeNewRoom };
