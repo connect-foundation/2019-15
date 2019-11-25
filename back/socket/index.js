@@ -1,6 +1,13 @@
 const publicRoom = require('./Room');
 const User = require('./user');
 
+function sendUserlistToRoom(list, roomId, io) {
+  const userlist = list.map((v) => {
+    return { nickname: v.nickname, socketId: v.socket.id };
+  });
+  io.in(roomId).emit('userlist', { userlist: JSON.stringify(userlist) });
+}
+
 function personEnterRoom(nickname, socket, capacity, io) {
   const room = publicRoom.getEnableRoom(capacity);
   room.people.push(User(nickname, socket));
