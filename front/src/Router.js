@@ -1,5 +1,5 @@
-import React, {useState} from 'react';
-import {BrowserRouter, Route, Switch} from 'react-router-dom';
+import React, { useState } from 'react';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import io from './logics/socketLogic';
 import GlobalContext from './global.context';
 

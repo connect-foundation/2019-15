@@ -6,7 +6,7 @@ import { ApolloProvider } from '@apollo/react-hooks';
 import globalStyle from './themes/globalStyle';
 import * as serviceWorker from './serviceWorker';
 import Router from './Router';
-import APP_URI from './util/uri'
+import APP_URI from './util/uri';
 
 const graphqlPath = '/api/';
 const client = new ApolloClient({

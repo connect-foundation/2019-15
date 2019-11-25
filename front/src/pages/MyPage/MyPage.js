@@ -1,5 +1,5 @@
-import React, {useContext} from 'react';
-import {ThemeContext} from 'styled-components';
+import React, { useContext } from 'react';
+import { ThemeContext } from 'styled-components';
 import Tab from '../../components/globalComponents/Tab/Tab';
 import TabPane from '../../components/globalComponents/Tab/TabPane/TabPane';
 import RankingAll from '../../components/Ranking/RankingAll/RankingAll';
@@ -12,8 +12,8 @@ const MyPage = () => {
 
   return (
     <>
-      {/*<NavigationBar />*/}
-      <MyPageStyle id={'MyPage'}>
+      {/* <NavigationBar /> */}
+      <MyPageStyle id="MyPage">
         <Tab
           activeTabColor={themeContext.amour}
           inActiveTabColor={themeContext.wePeep}

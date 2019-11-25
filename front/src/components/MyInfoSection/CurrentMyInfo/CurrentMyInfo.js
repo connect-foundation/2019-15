@@ -8,10 +8,10 @@ import Character from '../../globalComponents/Character/Character';
 const CurrentMyInfo = () => {
   return (
     <CurrentMyInfoStyle>
-      <Character alt={'character'} src={character1} />
+      <Character alt="character" src={character1} />
       <div>
-        <span className={'user-card nickname'}>닉네임</span>
-        <span className={'user-card ranking'}>랭킹 xxx위</span>
+        <span className="user-card nickname">닉네임</span>
+        <span className="user-card ranking">랭킹 xxx위</span>
       </div>
     </CurrentMyInfoStyle>
   );

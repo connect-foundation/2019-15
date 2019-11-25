@@ -1,7 +1,7 @@
 import React from 'react';
 import LoginGoogleStyle from './LoginGoogle.style';
 import GLogo from './GLogo/GLogo';
-import APP_URI from '../../../util/uri'
+import APP_URI from '../../../util/uri';
 
 const LoginGoogle = () => {
   // logics으로 분리 예정
