@@ -1,4 +1,5 @@
 import styled, { css } from 'styled-components';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const height = '2rem';
 
@@ -13,7 +14,7 @@ const notActive = css`
   }
 `;
 
-const SButtonStyle = styled.button`
+export const SpectreButtonStyle = styled.button`
   white-space: nowrap;
   text-align: center;
   border: 1px solid transparent;
@@ -30,4 +31,6 @@ const SButtonStyle = styled.button`
   ${(props) => (props.active ? '' : notActive)};
 `;
 
-export default SButtonStyle;
+export const SyncIconStyle = styled(FontAwesomeIcon)`
+  color: ${(props) => props.theme.royalBlue};
+`;
