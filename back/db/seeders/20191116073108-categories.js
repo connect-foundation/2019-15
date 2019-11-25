@@ -1,12 +1,15 @@
-const request = require('request');
+const request = require('request-promise-native');
 const cheerio = require('cheerio');
 const crawling = require('../crawling');
+
+function sortByIdx(a, b) {
+  return a.idx > b.idx ? 1 : -1;
+}
 
 module.exports = {
   up: (queryInterface) => {
     return new Promise((resolve) => {
       const json = [];
-
       crawling.urlSet.forEach((url, idx) => {
         let category;
 
@@ -26,29 +29,26 @@ module.exports = {
               json.push({ idx: idx, category: category });
             }
           });
+        }).then(() => {
+          if (json.length === crawling.urlSet.length) {
+            json.sort(sortByIdx);
+
+            const values = [];
+            json.forEach((element) => {
+              values.push({ category: element.category });
+            });
+
+            queryInterface.bulkInsert('Categories', values);
+            resolve('Done');
+          }
         });
       });
-
-      setTimeout(() => {
-        function sortByIdx(a, b) {
-          return a.idx > b.idx ? 1 : -1;
-        }
-        json.sort(sortByIdx);
-
-        const values = [];
-        json.forEach((element) => {
-          values.push({ category: element.category });
-        });
-
-        queryInterface.bulkInsert('Categories', values);
-        resolve('Done');
-      }, 4000);
     }).catch((error) => {
       console.error(error);
     });
   },
 
   down: (queryInterface) => {
-    return queryInterface.bulkDelete('Words', null, {});
+    return queryInterface.bulkDelete('Categories', null, {});
   },
 };

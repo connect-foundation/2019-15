@@ -1,12 +1,13 @@
-const request = require('request');
+const request = require('request-promise-native');
 const cheerio = require('cheerio');
 const crawling = require('../crawling');
 
 module.exports = {
-  up: (queryInterface, Sequelize) => {
+  up: (queryInterface) => {
     return new Promise((resolve) => {
+      const json = [];
+      let progress = 0;
       crawling.urlSet.forEach((url, idx) => {
-        const json = [];
         let word;
 
         request(url, function(error, response, body) {
@@ -26,19 +27,20 @@ module.exports = {
               }
             },
           );
-          queryInterface.bulkInsert('Words', json);
+        }).then(async function() {
+          progress += 1;
+          if (progress === crawling.urlSet.length) {
+            await queryInterface.bulkInsert('Words', json);
+            await resolve('Done');
+          }
         });
       });
-
-      setTimeout(() => {
-        resolve('Done');
-      }, 4000);
     }).catch((error) => {
       console.error(error);
     });
   },
 
-  down: (queryInterface, Sequelize) => {
+  down: (queryInterface) => {
     return queryInterface.bulkDelete('Words', null, {});
   },
 };
