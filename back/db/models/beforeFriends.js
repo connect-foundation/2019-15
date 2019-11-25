@@ -1,4 +1,4 @@
-module.exports = (sequelize, DataTypes) => {
+module.exports = (sequelize) => {
   const BeforeFriends = sequelize.define('BeforeFriends', {}, {});
   BeforeFriends.associate = function(models) {
     BeforeFriends.belongsTo(models.Users, {

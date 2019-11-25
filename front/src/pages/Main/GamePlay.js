@@ -4,7 +4,7 @@ import GameInfo from '../../components/GameInfo/GameInfo';
 import { FlexRowStyle } from '../../components/globalComponents/Container/Flex.style';
 import GlobalContext from '../../global.context';
 import Userlist from '../../components/Userlist/Userlist';
-import DrawingPlayGround from '../../components/DrawingPlayGround/DrawingPlayGround';
+import CanvasSection from '../../components/CanvasSection/CanvasSection';
 import Chatting from '../../components/Chatting/Chatting';
 import GamePlayContext from './GamePlay.context';
 import GameLoading from '../../components/GameLoading/GameLoading';
@@ -32,10 +32,9 @@ const GamePlay = () => {
         <FlexRowStyle>
           <Userlist />
           <div>
-            <Timer />
-            <DrawingPlayGround canvasSize={{ width: 800, height: 600 }} />
+              <Timer />
+              <CanvasSection />
           </div>
-
           <Chatting />
         </FlexRowStyle>
       </>

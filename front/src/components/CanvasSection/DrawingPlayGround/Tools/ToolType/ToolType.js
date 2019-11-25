@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import ToolManager from './ToolManager';
-import SButton from '../../../globalComponents/SButton/SButton';
+import SButton from '../../../../globalComponents/SButton/SButton';
 import Tool from './Tool';
 import ToolTypeStyle from './ToolType.style';
 

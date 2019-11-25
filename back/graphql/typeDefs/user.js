@@ -1,6 +1,6 @@
 module.exports = `
   type User{
-    id:ID!
+    id:Int!
     userId:String!
     nickname:String!
     score:Int!
@@ -11,15 +11,6 @@ module.exports = `
   type UserEdge{
     node:User
     cursor:String
-  }
-  
-  type Word{
-    id:ID!
-    word:String
-    categoryId:ID
-    userId:ID
-    createdAt:String
-    updatedAt:String
   }
   
   extend type Query{
