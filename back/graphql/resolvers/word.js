@@ -10,7 +10,7 @@ module.exports = {
       const WordsTableLength = await Words.count();
       let randomInt = [];
 
-      const availableRowsQuantity = await Words.count({ where: { userId: null } });
+      const availableRowsQuantity = await Words.count({ where: { categoryId: { [Op.ne]: null } } });
       if (availableRowsQuantity <= 0) return;
 
       while (true) {
