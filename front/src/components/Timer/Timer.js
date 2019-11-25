@@ -4,8 +4,9 @@ import TimerStyle from './Timer.style';
 const Timer = () => {
   const [time, setTime] = useState(30);
   const [flag, setFlag] = useState(false);
+
   const countDown = () => {
-    setTime(time - 1);
+    if (flag) setTime(time - 1);
   };
 
   function runTimer() {
@@ -20,6 +21,11 @@ const Timer = () => {
     runTimer();
   }
 
+  function resetTimer() {
+    setFlag(false);
+    setTime(30);
+  }
+
   useEffect(() => {
     if (flag) runTimer();
   });
@@ -30,6 +36,7 @@ const Timer = () => {
         <span>{time}</span>
       </TimerStyle>
       <button onClick={triggerTimer}>trigger</button>
+      <button onClick={resetTimer}>reset</button>
     </>
   );
 };
