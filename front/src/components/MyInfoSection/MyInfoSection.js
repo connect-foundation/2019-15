@@ -2,13 +2,21 @@ import React from 'react';
 import MyInfoSectionStyle from './MyInfoSection.style';
 import CurrentMyInfo from './CurrentMyInfo/CurrentMyInfo';
 import ChangeMyInfo from './ChangeMyInfo/ChangeMyInfo';
+import ContentSection from '../globalComponents/ContentSection/ContentSection';
 
 const MyInfoSection = () => {
   return (
-    <MyInfoSectionStyle id="MyInfoSection">
-      <CurrentMyInfo />
-      <ChangeMyInfo />
-    </MyInfoSectionStyle>
+    <>
+      <ContentSection title="현재 정보">
+        <MyInfoSectionStyle id="MyInfoSection">
+          <CurrentMyInfo />
+        </MyInfoSectionStyle>
+      </ContentSection>
+
+      <ContentSection title="정보 변경">
+        <ChangeMyInfo />
+      </ContentSection>
+    </>
   );
 };
 

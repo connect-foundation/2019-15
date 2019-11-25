@@ -7,7 +7,7 @@ import Character from '../../globalComponents/Character/Character';
 // 게임 플레이 페이지에서 써먹을 수 있을지도..
 const CurrentMyInfo = () => {
   return (
-    <CurrentMyInfoStyle>
+    <CurrentMyInfoStyle id="CurrentMyInfo">
       <Character alt="character" src={character1} />
       <div>
         <span className="user-card nickname">닉네임</span>

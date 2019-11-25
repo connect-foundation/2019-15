@@ -5,6 +5,8 @@ const CharacterStyle = styled.img`
   height: 5rem;
   max-width: 5rem;
   max-height: 5rem;
+  min-width: 5rem;
+  min-height: 5rem;
 `;
 
 export default CharacterStyle;
