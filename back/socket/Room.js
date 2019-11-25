@@ -8,9 +8,18 @@ const makeNewRoom = (roomId) => {
   return { roomId, people: [] };
 };
 
-const publicRoom = {
-  roomList: ['3명', '6명', '12명', '100명'],
-  room: { '3명': [], '6명': [], '12명': [], '100명': [] },
+const maxPeopleNum = {
+  '3명': 3,
+  '6명': 6,
+  '12명': 12,
+  '100명': 100,
+  비밀방: 100,
+};
+
+const Room = {
+  roomList: ['3명', '6명', '12명', '100명', '비밀방'],
+  room: { '3명': [], '6명': [], '12명': [], '100명': [], 비밀방: [] },
+  maxPeopleNum,
   // 방이 없을 때 새로운 방을 만들고 반환.
   addRoom: function(capacity) {
     const newRoom = makeNewRoom(makeRoomId());
@@ -22,7 +31,7 @@ const publicRoom = {
     const nRooms = this.room[capacity];
 
     // warn: 병목 예상
-    const idx = nRooms.findIndex((v) => v.people.length < parseInt(capacity.replace('명', ''), 0));
+    const idx = nRooms.findIndex((v) => v.people.length < maxPeopleNum[capacity]);
 
     if (idx < 0) {
       return this.addRoom(capacity);
@@ -31,4 +40,4 @@ const publicRoom = {
   },
 };
 
-module.exports = publicRoom;
+module.exports = Room;

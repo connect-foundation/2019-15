@@ -5,11 +5,12 @@ import GlobalContext from '../../../global.context';
 import roomInfo from '../../../logics/room/roomInfo';
 
 const PublicRoom = () => {
-  const { io, user } = useContext(GlobalContext);
+  const { io, user, room } = useContext(GlobalContext);
   const makeGameStartBtnHandler = (capacity) => {
     return () => {
       io.socket.emit(`enter_${capacity}`, {
         nickname: user.nickname,
+        roomType: room.roomType,
       });
     };
   };
