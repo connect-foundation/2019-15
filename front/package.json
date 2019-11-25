@@ -10,6 +10,7 @@
     "@fortawesome/react-fontawesome": "^0.1.7",
     "apollo-boost": "^0.4.4",
     "dotenv": "^8.2.0",
+    "fabric": "^3.5.1",
     "faker": "^4.1.0",
     "graphql": "^14.5.8",
     "graphql-tag": "^2.10.1",

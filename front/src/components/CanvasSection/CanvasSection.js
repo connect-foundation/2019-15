@@ -1,9 +1,10 @@
 import React, { useContext, useEffect } from 'react';
-import Canvas from './Canvas/Canvas';
+import DrawingPlayGround from './DrawingPlayGround/DrawingPlayGround';
 import WordChoice from './WordChoice/WordChoice';
 import CanvasSectionStyle from './CanvasSection.style';
 import GamePlayContext from '../../pages/Main/GamePlay.context';
 import GlobalContext from '../../global.context';
+
 
 const CanvasSection = () => {
   const { painter } = useContext(GamePlayContext);
@@ -20,7 +21,7 @@ const CanvasSection = () => {
   return (
     <CanvasSectionStyle>
       {io.socket.id === painter ? <WordChoice /> : null}
-      <Canvas />
+      <DrawingPlayGround canvasSize={{ width: 800, height: 600 }} />
     </CanvasSectionStyle>
   );
 };

@@ -7,7 +7,7 @@ import MainPageStyle from './MainPage.style';
 const MainPage = () => (
   <>
     <NavigationBar />
-    <MainPageStyle id={'MainPage'}>
+    <MainPageStyle id="MainPage">
       <RoomSelectSection />
       <FriendsSection />
     </MainPageStyle>
