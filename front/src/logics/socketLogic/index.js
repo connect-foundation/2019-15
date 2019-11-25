@@ -33,6 +33,9 @@ const io = {
       setPainter(painter);
     });
   },
+  async exitGameRoom({ nickname, roomType }) {
+    this.socket.emit('exit_room', { nickname, roomType });
+  },
 };
 
 export default io;

@@ -14,7 +14,7 @@ import Room from '../../../logics/room';
 
 const ButtonContainer = () => {
   const [openNotice, setOpenNotice] = useState(false);
-  const { room, setRoom } = useContext(GlobalContext);
+  const { io, user, room, setRoom } = useContext(GlobalContext);
 
   // logics 로 분리예정
   function logout() {
@@ -25,7 +25,10 @@ const ButtonContainer = () => {
     setOpenNotice((cur) => !cur);
   }
 
-  function onClickExit() {
+  async function onClickExit() {
+    const { nickname } = user;
+    const { roomType } = room;
+    await io.exitGameRoom({ nickname, roomType });
     setRoom(Room());
   }
 
