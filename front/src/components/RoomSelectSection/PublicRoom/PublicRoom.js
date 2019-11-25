@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React, { useContext } from 'react';
 import RoomContainer from '../RoomContainer/RoomContainer';
 import PublicRoomButton from './PublicRoomButton.style';
 import GlobalContext from '../../../global.context';

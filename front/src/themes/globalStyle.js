@@ -10,5 +10,7 @@ export default {
   wePeep: '#F1C6E7',
   frenchLilac: '#E5B0EA',
   stormBrain: '#50525D',
+  royalBlue: '#5755D9',
+  alto: '#d9d9d9',
   dimStormBrain: '#50525D80',
 };

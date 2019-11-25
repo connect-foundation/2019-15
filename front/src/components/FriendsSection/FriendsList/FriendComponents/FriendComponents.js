@@ -1,5 +1,5 @@
-import React from 'react';
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
+
 import { useMutation } from '@apollo/react-hooks';
 import { faMinusCircle } from '@fortawesome/free-solid-svg-icons';
 import PropTypes from 'prop-types';
