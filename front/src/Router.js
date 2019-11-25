@@ -6,6 +6,7 @@ import GlobalContext from './global.context';
 import Home from './pages/Home/Home';
 import Main from './pages/Main/Main';
 import MyPage from './pages/MyPage/MyPage';
+import SecretGame from './pages/SecretGame/SecretGame';
 
 import Room from './logics/room';
 import User from './logics/user';
@@ -15,7 +16,7 @@ const Router = () => {
   const [room, setRoom] = useState(Room());
   const [user, setUser] = useState(User());
   return (
-    <RouterStyle id={'Router'}>
+    <RouterStyle id="Router">
       <BrowserRouter>
         <Switch>
           <Route exact path="/">
@@ -27,6 +28,9 @@ const Router = () => {
           <GlobalContext.Provider value={{ io, user, setUser, room, setRoom }}>
             <Route path="/main">
               <Main />
+            </Route>
+            <Route path="/secret:hash">
+              <SecretGame />
             </Route>
           </GlobalContext.Provider>
         </Switch>
