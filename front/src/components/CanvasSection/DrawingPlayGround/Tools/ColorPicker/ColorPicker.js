@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import ColorBox from './ColorBox/ColorBox';
 import { ColorPickerStyle, ColorBoxList, ColorInfo } from './ColorPicker.style';
-import RGB_LIST from '../../../../logics/Tools';
+import RGB_LIST from '../../../../../logics/Tools';
 
 const ColorPicker = ({ rgbList, color, changeColor }) => {
   return (

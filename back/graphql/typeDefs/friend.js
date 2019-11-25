@@ -1,6 +1,6 @@
 module.exports = `
   type Friend{
-    id:ID!
+    id:Int!
     pFriendId:Int!
     sFriendId:Int!
     createdAt:String
@@ -8,7 +8,7 @@ module.exports = `
   }
 
   type BeforeFriend{
-    id:ID!
+    id:Int!
     pFriendId:Int!
     sFriendId:Int!
     friendStateid:Int!
