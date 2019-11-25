@@ -41,7 +41,7 @@ const userResolvers = {
         transaction = await sequelize.transaction();
         if (!wordFound) {
           await Words.create(
-            { word: nickname, category: null, userId: req.user.id },
+            { word: nickname, categoryId: null, userId: req.user.id },
             { transaction },
           );
         } else if (!wordFound.dataValues.userId) {
