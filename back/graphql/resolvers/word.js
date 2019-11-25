@@ -11,9 +11,10 @@ module.exports = {
       let randomInt = [];
 
       const availableRowsQuantity = await Words.count({ where: { categoryId: { [Op.ne]: null } } });
-      if (availableRowsQuantity <= 0) return;
+      if (availableRowsQuantity <= 0) return [];
 
-      while (true) {
+      let endFlag = false;
+      while (endFlag) {
         if (randomInt.length < howmany) {
           const selectedNumber = getRandomInt(1, WordsTableLength + 1);
           const selectedRow = await Words.findOne({ where: { id: selectedNumber } });
@@ -22,7 +23,7 @@ module.exports = {
           randomInt = randomInt.sort().filter(function(item, pos, array) {
             return !pos || item !== array[pos - 1];
           });
-          if (randomInt.length >= howmany) break;
+          if (randomInt.length >= howmany) endFlag = true;
         }
       }
       return Words.findAll({
