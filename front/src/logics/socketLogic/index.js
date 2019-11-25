@@ -33,6 +33,9 @@ const io = {
       setPainter(painter);
     });
   },
+  async requestMakeSecretRoom({ nickname, roomId }) {
+    this.socket.emit('make_secret', { nickname, roomId });
+  },
 };
 
 export default io;
