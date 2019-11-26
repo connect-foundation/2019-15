@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
-import { ButtonContainerStyle, NavImage, Text } from './ButtonContainer.style';
 
+import { ButtonContainerStyle, NavImage, Text } from './ButtonContainer.style';
 import GlobalContext from '../../../global.context';
 import APP_URI from '../../../util/uri';
 import Button from './Button/Button';
@@ -27,8 +27,8 @@ const ButtonContainer = () => {
 
   async function onClickExit() {
     const { nickname } = user;
-    const { roomType } = room;
-    await io.exitGameRoom({ nickname, roomType });
+    const { roomType, roomId } = room;
+    await io.exitGameRoom({ nickname, roomType, roomId });
     setRoom(Room());
   }
 
@@ -49,9 +49,11 @@ const ButtonContainer = () => {
   }
 
   return (
-    <ButtonContainerStyle onClick={onClickExit}>
-      <Text>나가기</Text>
-    </ButtonContainerStyle>
+    <Link to="main" onClick={onClickExit}>
+      <ButtonContainerStyle>
+        <Text>나가기</Text>
+      </ButtonContainerStyle>
+    </Link>
   );
 };
 
