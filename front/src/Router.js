@@ -7,6 +7,7 @@ import Home from './pages/Home/Home';
 import Main from './pages/Main/Main';
 import MyPage from './pages/MyPage/MyPage';
 import SecretGame from './pages/SecretGame/SecretGame';
+import GamePlay from './pages/GamePlay/GamePlay';
 
 import Room from './logics/room';
 import User from './logics/user';
@@ -23,6 +24,9 @@ const Router = () => {
             <Home />
           </Route>
           <GlobalContext.Provider value={{ io, user, setUser, room, setRoom }}>
+            <Route path="/gameplay">
+              <GamePlay />
+            </Route>
             <Route path="/mypage">
               <MyPage />
             </Route>

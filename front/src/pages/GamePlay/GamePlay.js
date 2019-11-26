@@ -1,4 +1,6 @@
 import React, { useContext, useState, useEffect } from 'react';
+import { Redirect } from 'react-router-dom';
+
 import NavigationBar from '../../components/NavigationBar/NavigationBar';
 import GameInfo from '../../components/GameInfo/GameInfo';
 import { FlexRowStyle } from '../../components/globalComponents/Container/Flex.style';
@@ -17,11 +19,17 @@ const GamePlay = () => {
 
   useEffect(() => {
     const initSocket = async () => {
-      await io.initUserlistMsgHandler({ setUserlist });
-      await io.initGameStartMsgHandler({ setPainter });
+      if (io.socket) {
+        await io.initUserlistMsgHandler({ setUserlist });
+        await io.initGameStartMsgHandler({ setPainter });
+      }
     };
     initSocket();
   }, [io]);
+
+  if (io.socket === null) {
+    return <Redirect to="main" />;
+  }
 
   return (
     <GamePlayContext.Provider value={{ userlist, painter, setPainter }}>
@@ -32,8 +40,8 @@ const GamePlay = () => {
         <FlexRowStyle>
           <Userlist />
           <div>
-              <Timer />
-              <CanvasSection />
+            <Timer />
+            <CanvasSection />
           </div>
           <Chatting />
         </FlexRowStyle>
