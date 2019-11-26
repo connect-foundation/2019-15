@@ -16,23 +16,28 @@ const Chatting = () => {
     initSocket();
   }, [io]);
 
-  async function sendMessage() {
-    const { nickname } = user;
-    const { roomId } = room;
-    await io.sendMessage({ nickname, roomId, inputValue });
-  }
-
   function inputChangeHandler(e) {
     setValue(e.target.value);
+  }
+
+  async function inputKeyHandler(e) {
+    const { nickname } = user;
+    const { roomId } = room;
+
+    if (e.key === 'Enter') {
+      await io.sendMessage({ nickname, roomId, inputValue });
+      setValue('');
+    }
   }
 
   return (
     <ChattingStyle>
       <ChattingList>{message}</ChattingList>
-      <TextInput onChange={inputChangeHandler} />
-      <button type="button" onClick={sendMessage}>
-        emit
-      </button>
+      <TextInput
+        value={inputValue}
+        onChange={inputChangeHandler}
+        onKeyPress={inputKeyHandler}
+      />
     </ChattingStyle>
   );
 };
