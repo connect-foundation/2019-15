@@ -5,7 +5,28 @@ const makeRoomId = () => {
 };
 
 const makeNewRoom = (roomId) => {
-  return { roomId, people: [] };
+  /*
+  roomId: number,
+  people: ,
+  wordSet: number(categoryId),
+  word: string,
+  time:
+  state: number?,
+  currentExaminer: number(people index),
+  totalRound: number,
+  currentRound: number
+   */
+  return {
+    roomId,
+    people: [],
+    wordSet: undefined,
+    word: undefined,
+    time: undefined,
+    state: 0,
+    currentExaminer: 0,
+    totalRound: 0,
+    currentRound: 0,
+  };
 };
 
 const publicRoom = {
