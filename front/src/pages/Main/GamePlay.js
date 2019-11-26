@@ -4,10 +4,11 @@ import GameInfo from '../../components/GameInfo/GameInfo';
 import { FlexRowStyle } from '../../components/globalComponents/Container/Flex.style';
 import GlobalContext from '../../global.context';
 import Userlist from '../../components/Userlist/Userlist';
-import DrawingPlayGround from '../../components/DrawingPlayGround/DrawingPlayGround';
+import CanvasSection from '../../components/CanvasSection/CanvasSection';
 import Chatting from '../../components/Chatting/Chatting';
 import GamePlayContext from './GamePlay.context';
 import GameLoading from '../../components/GameLoading/GameLoading';
+import Timer from '../../components/Timer/Timer';
 
 const GamePlay = () => {
   const { io, room } = useContext(GlobalContext);
@@ -30,7 +31,10 @@ const GamePlay = () => {
       <>
         <FlexRowStyle>
           <Userlist />
-          <DrawingPlayGround canvasSize={{ width: 800, height: 600 }} />
+          <div>
+              <Timer />
+              <CanvasSection />
+          </div>
           <Chatting />
         </FlexRowStyle>
       </>
