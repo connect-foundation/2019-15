@@ -1,6 +1,6 @@
 module.exports = `
   type User{
-    id:ID!
+    id:Int!
     userId:String!
     nickname:String!
     score:Int!

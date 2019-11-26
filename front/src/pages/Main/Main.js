@@ -5,7 +5,7 @@ import parseCookies from '../../util/cookie';
 import User from '../../logics/user';
 
 const Main = () => {
-  const { io, setRoom, setUser, page } = useContext(GlobalContext);
+  const { io, setRoom, setUser } = useContext(GlobalContext);
 
   useEffect(() => {
     const initSocket = async () => {
@@ -18,7 +18,7 @@ const Main = () => {
     initSocket();
   }, [io, setRoom, setUser]);
 
-  return page;
+  return <MainPage />;
 };
 
 export default Main;
