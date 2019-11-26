@@ -1,5 +1,7 @@
+const Timer = require('../util/Timer');
+
 const { RoomManager, makeNewRoom } = require('./Room');
-const User = require('./user');
+const User = require('./User');
 
 function sendUserlistToRoom(list, roomId, io) {
   const userlist = list.map((v) => {
@@ -12,6 +14,7 @@ function personEnterRoom(nickname, socket, roomName, io) {
   const roomId = RoomManager.getEnableRoomId(roomName);
   const room = RoomManager.room[roomName][roomId];
   room.players.push(User(nickname, socket));
+  room.timer = new Timer();
 
   socket.join(roomId);
   socket.emit(`connect_${roomName}`, {
@@ -50,10 +53,9 @@ function initSocketIO(io) {
 
       const roomIdx = nRooms.findIndex((roomObject) => roomObject.roomId === roomId);
 
-      if (roomIdx < 0) {
-        // 방이 없는 경우
-        return;
-      }
+      // 방이 없는 경우
+      if (roomIdx < 0) return;
+
       const userlist = nRooms[roomIdx].people.map((v) => v.id);
 
       socket.emit('userlist', { userlist: JSON.stringify(userlist) });
