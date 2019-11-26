@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useReducer } from 'react';
 import { Route, Switch, HashRouter } from 'react-router-dom';
+import jwt from 'jsonwebtoken';
 import io from './logics/socketLogic';
 import GlobalContext from './global.context';
 
@@ -12,11 +13,18 @@ import GamePlay from './pages/GamePlay/GamePlay';
 import Room from './logics/room';
 import User from './logics/user';
 import RouterStyle from './Router.style';
-import MainPage from './pages/Main/MainPage';
+import parseCookies from './util/cookie';
+
+const changeUser = (prev, newUser) => {
+  return { ...prev, ...newUser };
+};
 
 const Router = () => {
+  const { jwt: jwtToken } = parseCookies();
+  let nickname;
+  if (jwtToken) nickname = jwt.decode(jwtToken).nickname;
   const [room, setRoom] = useState(Room());
-  const [user, setUser] = useState(User());
+  const [user, setUser] = useReducer(changeUser, User(nickname));
   return (
     <RouterStyle id="Router">
       <HashRouter>
