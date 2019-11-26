@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const MainPageStyle = styled.div`
+const Background = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -9,4 +9,4 @@ const MainPageStyle = styled.div`
   background-color: ${(props) => props.theme.bodyColor};
 `;
 
-export default MainPageStyle;
+export default Background;

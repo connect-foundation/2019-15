@@ -1,10 +1,10 @@
 import React from 'react';
-import GameInfoStyle from './GameInfo.style';
+import { GameInfoStyle, Text } from './GameInfo.style';
 
 const GameInfo = () => {
   return (
     <GameInfoStyle>
-      <div>Round 1 of 3</div>
+      <Text>Round 1 of 3</Text>
     </GameInfoStyle>
   );
 };
