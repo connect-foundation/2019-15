@@ -25,14 +25,20 @@ function personEnterRoom(nickname, socket, roomName, io) {
   }
 }
 
-function personEnterSecretRoom(nickname, roomId, io) {
+function personEnterSecretRoom(nickname, socket, roomId, io) {
+  const secretRoomList = Room.room['비밀방'];
   let room;
-  const roomIdx = publicRoom['비밀방'].findIndex((roomObj) => roomObj.roomId === roomId);
+  const roomIdx = secretRoomList.findIndex((roomObj) => roomObj.roomId === roomId);
   if (roomIdx < 0) {
     room = makeNewRoom(roomId);
+    secretRoomList.push(room);
   } else {
-    room = publicRoom[roomIdx];
+    room = secretRoomList[roomIdx];
   }
+  socket.join(room.roomId);
+  room.people.push(User(nickname, socket));
+
+  console.log(room.people);
 }
 
 function initSocketIO(io) {
@@ -58,7 +64,7 @@ function initSocketIO(io) {
     });
 
     socket.on('make_secret', ({ nickname, roomId }) => {
-      personEnterRoom(nickname, socket, '비밀방', io);
+      personEnterSecretRoom(nickname, socket, roomId, io);
     });
 
     socket.on('exit_room', ({ nickname, roomType }) => {
