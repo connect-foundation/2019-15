@@ -5,9 +5,8 @@ import {
 } from '../globalComponents/Container/Flex.style';
 
 export const PreparationStyle = styled(FlexColumnStyle)`
-  width: 80rem;
+  width: 70rem;
   height: 40rem;
-  background-color: green;
 `;
 
 export const RoomSettingStyle = styled(FlexRowStyle)`
