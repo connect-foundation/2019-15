@@ -3,7 +3,7 @@ import {
   NicknameChangeContainerStyle,
   ResultTextStyle,
 } from './NicknameChangeContainer.style';
-import GlobalContext from '../../../global.context';
+import GlobalContext from '../../../../global.context';
 import NicknameChange from './NicknameChange';
 
 function NicknameChangeContainer() {

@@ -1,6 +1,6 @@
 import React from 'react';
 import ChangeMyInfoStyle from './ChangeMyInfo.style';
-import NicknameChangeContainer from '../NicknameChange/NicknameChangeContainer';
+import NicknameChangeContainer from './NicknameChangeContainer/NicknameChangeContainer';
 import ChangeCharacter from '../ChangeCharacter/ChangeCharacter';
 
 const ChangeMyInfo = () => {

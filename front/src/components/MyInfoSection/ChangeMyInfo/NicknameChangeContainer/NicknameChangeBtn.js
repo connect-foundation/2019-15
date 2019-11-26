@@ -1,9 +1,9 @@
 import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import { useMutation } from '@apollo/react-hooks';
-import GlobalContext from '../../../global.context';
-import SpectreButton from '../../globalComponents/SpectreButton/SpectreButton';
-import { changeNicknameMutation as changeNicknameQuery } from '../../../queries/user';
+import GlobalContext from '../../../../global.context';
+import SpectreButton from '../../../globalComponents/SpectreButton/SpectreButton';
+import { changeNicknameMutation as changeNicknameQuery } from '../../../../queries/user';
 
 NicknameChangeBtn.propTypes = {
   newNickname: PropTypes.string.isRequired,

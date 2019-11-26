@@ -1,5 +1,4 @@
 import React, { useContext } from 'react';
-import { Link } from 'react-router-dom';
 import RoomContainer from '../RoomContainer/RoomContainer';
 import { PublicRoomButton, CustomA } from './PublicRoomButton.style';
 import GlobalContext from '../../../global.context';
@@ -13,7 +12,6 @@ const PublicRoom = () => {
         nickname: user.nickname,
         roomType: room.roomType,
       });
-      changePage('gameplay');
     };
   };
 

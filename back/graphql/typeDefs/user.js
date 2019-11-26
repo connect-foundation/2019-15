@@ -13,15 +13,6 @@ module.exports = `
     cursor:String
   }
   
-  type Word{
-    id:ID!
-    word:String
-    categoryId:ID
-    userId:ID
-    createdAt:String
-    updatedAt:String
-  }
-  
   type NicknameResult{
     nickname:String,
     result:Boolean

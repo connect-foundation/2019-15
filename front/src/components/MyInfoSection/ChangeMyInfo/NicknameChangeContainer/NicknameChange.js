@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { useLazyQuery } from '@apollo/react-hooks';
-import { checkNicknameAvailableQuery } from '../../../queries/user';
-import TextInput from '../../globalComponents/TextInput/TextInput';
+import { checkNicknameAvailableQuery } from '../../../../queries/user';
+import TextInput from '../../../globalComponents/TextInput/TextInput';
 import NicknameChangeBtn from './NicknameChangeBtn';
 import { NicknameChangeStyle } from './NicknameChange.style';
 

@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Route, Switch, HashRouter } from 'react-router-dom';
 import io from './logics/socketLogic';
@@ -13,22 +12,9 @@ import GamePlay from './pages/GamePlay/GamePlay';
 import Room from './logics/room';
 import User from './logics/user';
 import RouterStyle from './Router.style';
-import GamePlay from './pages/Main/GamePlay';
 import MainPage from './pages/Main/MainPage';
 
-const routingPages = (prev, pageName) => {
-  switch (pageName) {
-    case 'mypage':
-      return <MyPage />;
-    case 'gameplay':
-      return <GamePlay />;
-    default:
-      return <MainPage />;
-  }
-};
-
 const Router = () => {
-  const [page, changePage] = useReducer(routingPages, <MainPage />);
   const [room, setRoom] = useState(Room());
   const [user, setUser] = useState(User());
   return (
