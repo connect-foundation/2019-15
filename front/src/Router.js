@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { Route, Switch, HashRouter } from 'react-router-dom';
 import io from './logics/socketLogic';
 import GlobalContext from './global.context';
 
@@ -17,15 +17,15 @@ const Router = () => {
   const [user, setUser] = useState(User());
   return (
     <RouterStyle id="Router">
-      <BrowserRouter>
+      <HashRouter>
         <Switch>
           <Route exact path="/">
             <Home />
           </Route>
-          <Route path="/mypage">
-            <MyPage />
-          </Route>
           <GlobalContext.Provider value={{ io, user, setUser, room, setRoom }}>
+            <Route path="/mypage">
+              <MyPage />
+            </Route>
             <Route path="/main">
               <Main />
             </Route>
@@ -34,7 +34,7 @@ const Router = () => {
             </Route>
           </GlobalContext.Provider>
         </Switch>
-      </BrowserRouter>
+      </HashRouter>
     </RouterStyle>
   );
 };
