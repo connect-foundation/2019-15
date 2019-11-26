@@ -1,5 +1,5 @@
 const { RoomManager, makeNewRoom } = require('./Room');
-const User = require('./User');
+const User = require('./user');
 
 function sendUserlistToRoom(list, roomId, io) {
   const userlist = list.map((v) => {
