@@ -37,8 +37,8 @@ const io = {
   async requestMakeSecretRoom({ nickname, roomId }) {
     this.socket.emit('make_secret', { nickname, roomId });
   },
-  async exitGameRoom({ nickname, roomType }) {
-    this.socket.emit('exit_room', { nickname, roomType });
+  async exitGameRoom({ nickname, roomType, roomId }) {
+    this.socket.emit('exit_room', { nickname, roomType, roomId });
   },
 };
 

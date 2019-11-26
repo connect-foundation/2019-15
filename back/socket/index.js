@@ -1,5 +1,5 @@
-const { Room, makeNewRoom } = require('./Room');
-const User = require('./user');
+const { RoomManager, makeNewRoom } = require('./Room');
+const User = require('./User');
 
 function sendUserlistToRoom(list, roomId, io) {
   const userlist = list.map((v) => {
@@ -9,48 +9,44 @@ function sendUserlistToRoom(list, roomId, io) {
 }
 
 function personEnterRoom(nickname, socket, roomName, io) {
-  const room = Room.getEnableRoom(roomName);
-  room.people.push(User(nickname, socket));
+  const roomId = RoomManager.getEnableRoomId(roomName);
+  const room = RoomManager.room[roomName][roomId];
+  room.players.push(User(nickname, socket));
 
-  socket.join(room.roomId);
+  socket.join(roomId);
   socket.emit(`connect_${roomName}`, {
-    roomId: room.roomId,
+    roomId,
     roomType: roomName,
   });
 
-  sendUserlistToRoom(room.people, room.roomId, io);
+  sendUserlistToRoom(room.players, roomId, io);
 
-  if (room.people.length === 2) {
-    io.to(room.roomId).emit('gamestart', { painter: room.people[0].socket.id });
+  if (room.players.length === 2) {
+    io.to(room.roomId).emit('gamestart', { painter: room.players[0].socket.id });
   }
 }
 
 function personEnterSecretRoom(nickname, socket, roomId, io) {
-  const secretRoomList = Room.room['비밀방'];
-  let room;
-  const roomIdx = secretRoomList.findIndex((roomObj) => roomObj.roomId === roomId);
-  if (roomIdx < 0) {
-    room = makeNewRoom(roomId);
-    secretRoomList.push(room);
-  } else {
-    room = secretRoomList[roomIdx];
-  }
-  socket.join(room.roomId);
-  room.people.push(User(nickname, socket));
+  const secretRoomList = RoomManager.room['비밀방'];
+  const room = makeNewRoom();
+  secretRoomList[roomId] = room;
 
-  console.log(room.people);
+  socket.join(roomId);
+  room.players.push(User(nickname, socket));
+
+  console.log(room.players);
 }
 
 function initSocketIO(io) {
   io.on('connection', (socket) => {
-    Room.roomList.forEach((roomName) => {
+    RoomManager.roomList.forEach((roomName) => {
       socket.on(`enter_${roomName}`, ({ nickname }) => {
         personEnterRoom(nickname, socket, roomName, io);
       });
     });
 
     socket.on('get_userlist', ({ roomType, roomId }) => {
-      const nRooms = Room.room[roomType];
+      const nRooms = RoomManager.room[roomType];
 
       const roomIdx = nRooms.findIndex((roomObject) => roomObject.roomId === roomId);
 
@@ -67,21 +63,17 @@ function initSocketIO(io) {
       personEnterSecretRoom(nickname, socket, roomId, io);
     });
 
-    socket.on('exit_room', ({ nickname, roomType }) => {
-      const roomList = Room.room[roomType];
-
-      const removeUserObj = (roomObj) => {
-        const userIdx = roomObj.people.findIndex((user) => user.nickname === nickname);
-        if (userIdx >= 0) {
-          roomObj.people.splice(userIdx, 1);
-
-          sendUserlistToRoom(roomObj.people, roomObj.roomId, io);
+    socket.on('exit_room', ({ nickname, roomType, roomId }) => {
+      const roomObject = RoomManager.room[roomType];
+      const exitUserIdx = roomObject[roomId].players.findIndex((user) => {
+        if (user.nickname === nickname) {
+          user.socket.disconnect();
           return true;
         }
         return false;
-      };
+      });
 
-      roomList.some(removeUserObj);
+      roomObject[roomId].players.splice(exitUserIdx);
     });
   });
 }
