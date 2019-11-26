@@ -33,8 +33,12 @@ const io = {
       setPainter(painter);
     });
   },
-  async exitGameRoom({ nickname, roomType }) {
-    this.socket.emit('exit_room', { nickname, roomType });
+
+  async requestMakeSecretRoom({ nickname, roomId }) {
+    this.socket.emit('make_secret', { nickname, roomId });
+  },
+  async exitGameRoom({ nickname, roomType, roomId }) {
+    this.socket.emit('exit_room', { nickname, roomType, roomId });
   },
   async sendMessage({ nickname, roomId, inputValue }) {
     this.socket.emit('send_message', { nickname, roomId, inputValue });

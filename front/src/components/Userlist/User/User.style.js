@@ -37,7 +37,7 @@ export const Ranking = styled.span`
 export const UserNickName = styled.div``;
 
 export const Text = styled.span`
-  font-size: 28px;
+  font-size: 24px;
   font-weight: 680;
   color: ${(props) => props.theme.slateGray};
 `;
