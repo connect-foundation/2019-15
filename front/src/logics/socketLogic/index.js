@@ -36,6 +36,14 @@ const io = {
   async exitGameRoom({ nickname, roomType }) {
     this.socket.emit('exit_room', { nickname, roomType });
   },
+  async sendMessage({ nickname, roomId, inputValue }) {
+    this.socket.emit('send_message', { nickname, roomId, inputValue });
+  },
+  async initChattingHandler({ setMessage }) {
+    this.socket.on('get_message', ({ message }) => {
+      setMessage(message);
+    });
+  },
 };
 
 export default io;

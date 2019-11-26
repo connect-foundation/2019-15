@@ -63,6 +63,10 @@ function initSocketIO(io) {
 
       roomList.some(removeUserObj);
     });
+
+    socket.on('send_message', ({ nickname, roomId, inputValue }) => {
+      io.in(roomId).emit('get_message', { message: `${nickname} : ${inputValue}` });
+    });
   });
 }
 
