@@ -8,9 +8,11 @@ const leftPadding = '1rem';
 const notActive = css`
   :hover,
   :focus {
-    color: ${(props) => props.theme.royalBlue};
+    color: ${(props) =>
+      props.disabled ? props.theme.ecstasy : props.theme.royalBlue};
     background-color: white;
-    border-color: ${(props) => props.theme.royalBlue};
+    border-color: ${(props) =>
+      props.disabled ? props.theme.ecstasy : props.theme.royalBlue};
   }
 `;
 
@@ -33,4 +35,8 @@ export const SpectreButtonStyle = styled.button`
 
 export const SyncIconStyle = styled(FontAwesomeIcon)`
   color: ${(props) => props.theme.royalBlue};
+`;
+
+export const BanIconStyle = styled(FontAwesomeIcon)`
+  color: ${(props) => props.theme.ecstasy};
 `;
