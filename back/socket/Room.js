@@ -43,7 +43,7 @@ const RoomManager = {
 
     if (!room) {
       room = [];
-      room.add(this.addRoom(roomName));
+      room.push(this.addRoom(roomName));
     }
     return room[0];
   },
