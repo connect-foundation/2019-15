@@ -17,7 +17,7 @@ function personEnterRoom(nickname, socket, roomName, io) {
   room.timer = new Timer();
 
   socket.join(roomId);
-  socket.emit(`connect_${roomName}`, {
+  socket.emit(`connect${roomName}`, {
     roomId,
     roomType: roomName,
   });
@@ -48,7 +48,7 @@ function initSocketIO(io) {
       });
     });
 
-    socket.on('get_userlist', ({ roomType, roomId }) => {
+    socket.on('getUserlist', ({ roomType, roomId }) => {
       const nRooms = RoomManager.room[roomType];
 
       const roomIdx = nRooms.findIndex((roomObject) => roomObject.roomId === roomId);
@@ -61,11 +61,11 @@ function initSocketIO(io) {
       socket.emit('userlist', { userlist: JSON.stringify(userlist) });
     });
 
-    socket.on('make_secret', ({ nickname, roomId }) => {
+    socket.on('makeSecret', ({ nickname, roomId }) => {
       personEnterSecretRoom(nickname, socket, roomId, io);
     });
 
-    socket.on('exit_room', ({ nickname, roomType, roomId }) => {
+    socket.on('exitRoom', ({ nickname, roomType, roomId }) => {
       const roomObject = RoomManager.room[roomType];
       const exitUserIdx = roomObject[roomId].players.findIndex((user) => {
         if (user.nickname === nickname) {
@@ -78,8 +78,8 @@ function initSocketIO(io) {
       roomObject[roomId].players.splice(exitUserIdx);
     });
 
-    socket.on('send_message', ({ nickname, roomId, inputValue }) => {
-      io.in(roomId).emit('get_message', { message: `${nickname} : ${inputValue}` });
+    socket.on('sendMessage', ({ nickname, roomId, inputValue }) => {
+      io.in(roomId).emit('getMessage', { message: `${nickname} : ${inputValue}` });
     });
 
     socket.on('questionStart', ({ answer, roomType, roomId }) => {

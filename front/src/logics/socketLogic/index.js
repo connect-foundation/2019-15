@@ -17,7 +17,7 @@ const io = {
   },
   async initConnectMsgHandler({ setRoom }) {
     roomInfo.roomList.forEach((roomName) => {
-      this.socket.on(`connect_${roomName}`, ({ roomType, roomId }) => {
+      this.socket.on(`connect${roomName}`, ({ roomType, roomId }) => {
         setRoom(Room(roomType, roomId));
       });
     });
@@ -35,16 +35,16 @@ const io = {
   },
 
   async requestMakeSecretRoom({ nickname, roomId }) {
-    this.socket.emit('make_secret', { nickname, roomId });
+    this.socket.emit('makeSecret', { nickname, roomId });
   },
   async exitGameRoom({ nickname, roomType, roomId }) {
-    this.socket.emit('exit_room', { nickname, roomType, roomId });
+    this.socket.emit('exitRoom', { nickname, roomType, roomId });
   },
   async sendMessage({ nickname, roomId, inputValue }) {
-    this.socket.emit('send_message', { nickname, roomId, inputValue });
+    this.socket.emit('sendMessage', { nickname, roomId, inputValue });
   },
   async initChattingHandler({ setMessage }) {
-    this.socket.on('get_message', ({ message }) => {
+    this.socket.on('getMessage', ({ message }) => {
       setMessage(message);
     });
   },

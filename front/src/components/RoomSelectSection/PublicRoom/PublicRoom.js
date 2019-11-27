@@ -8,7 +8,7 @@ const PublicRoom = () => {
   const { io, user, room } = useContext(GlobalContext);
   const makeGameStartBtnHandler = (capacity) => {
     return () => {
-      io.socket.emit(`enter_${capacity}`, {
+      io.socket.emit(`enter${capacity}`, {
         nickname: user.nickname,
         roomType: room.roomType,
       });
