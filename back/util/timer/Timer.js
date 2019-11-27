@@ -1,4 +1,4 @@
-const { time } = require('../config/timerConfig');
+const { time } = require('../../config/timerConfig');
 
 function Timer() {
   this.time = time;

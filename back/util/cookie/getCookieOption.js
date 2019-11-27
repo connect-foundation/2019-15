@@ -1,6 +1,6 @@
 const expiresIn = require('./getMsOfDay');
 const getDomain = require('./getDomain');
-const { REACT_URI } = require('../config/uri');
+const { REACT_URI } = require('../../config/uri');
 
 function getCookieOption(options = {}) {
   return {
