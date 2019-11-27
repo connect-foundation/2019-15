@@ -40,8 +40,8 @@ const io = {
   async exitGameRoom({ nickname, roomType, roomId }) {
     this.socket.emit('exitRoom', { nickname, roomType, roomId });
   },
-  async sendMessage({ nickname, roomId, inputValue }) {
-    this.socket.emit('sendMessage', { nickname, roomId, inputValue });
+  async sendMessage({ nickname, roomType, roomId, inputValue }) {
+    this.socket.emit('sendMessage', { nickname, roomType, roomId, inputValue });
   },
   async initChattingHandler({ setMessage }) {
     this.socket.on('getMessage', ({ message }) => {

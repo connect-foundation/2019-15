@@ -22,10 +22,10 @@ const Chatting = () => {
 
   async function pressKeyHandler(e) {
     const { nickname } = user;
-    const { roomId } = room;
+    const { roomType, roomId } = room;
 
     if (e.key === 'Enter') {
-      await io.sendMessage({ nickname, roomId, inputValue });
+      await io.sendMessage({ nickname, roomType, roomId, inputValue });
       setValue('');
     }
   }

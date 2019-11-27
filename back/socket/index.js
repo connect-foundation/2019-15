@@ -78,8 +78,15 @@ function initSocketIO(io) {
       roomObject[roomId].players.splice(exitUserIdx);
     });
 
-    socket.on('sendMessage', ({ nickname, roomId, inputValue }) => {
-      io.in(roomId).emit('getMessage', { message: `${nickname} : ${inputValue}` });
+    socket.on('sendMessage', ({ nickname, roomType, roomId, inputValue }) => {
+      const answer = RoomManager.room[roomType][roomId].word;
+      console.log(answer);
+      let returnValue;
+
+      if (inputValue === answer) returnValue = `${nickname}님이 정답을 맞췄습니다! Hooray`;
+      else returnValue = `${nickname} : ${inputValue}`;
+
+      io.in(roomId).emit('getMessage', { message: returnValue });
     });
 
     socket.on('questionStart', ({ answer, roomType, roomId }) => {
