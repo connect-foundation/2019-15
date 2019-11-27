@@ -1,5 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
+import uuid from 'uuid/v1';
 
 import { ButtonContainerStyle, NavImage, Text } from './ButtonContainer.style';
 import GlobalContext from '../../../global.context';
@@ -15,7 +16,6 @@ import Room from '../../../logics/room';
 const ButtonContainer = () => {
   const [openNotice, setOpenNotice] = useState(false);
   const { io, user, room, setRoom } = useContext(GlobalContext);
-
   // logics 로 분리예정
   function logout() {
     window.location.href = `${APP_URI.REACT_APP_API_URI}/auth/logout`;

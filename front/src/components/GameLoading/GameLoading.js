@@ -4,9 +4,9 @@ import Loading from '../globalComponents/Loading/Loading';
 import GamePlayContext from '../../pages/GamePlay/GamePlay.context';
 
 const GameLoading = () => {
-  const { userlist } = useContext(GamePlayContext);
+  const { userList } = useContext(GamePlayContext);
 
-  if (userlist.length <= 1) {
+  if (userList.length <= 1) {
     return (
       <FullScreen>
         <Loading />

@@ -22,10 +22,10 @@ const io = {
       });
     });
   },
-  async initUserlistMsgHandler({ setUserlist }) {
-    this.socket.on('userlist', ({ userlist }) => {
-      const parsedList = JSON.parse(userlist);
-      setUserlist(parsedList);
+  async initUserListMsgHandler({ setUserList }) {
+    this.socket.on('userlist', ({ userList }) => {
+      const parsedList = JSON.parse(userList);
+      setUserList(parsedList);
     });
   },
   async initGameStartMsgHandler({ setPainter }) {

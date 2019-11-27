@@ -5,7 +5,7 @@ import NavigationBar from '../../components/NavigationBar/NavigationBar';
 import GameInfo from '../../components/GameInfo/GameInfo';
 import { FlexRowStyle } from '../../components/globalComponents/Container/Flex.style';
 import GlobalContext from '../../global.context';
-import Userlist from '../../components/Userlist/Userlist';
+import UserList from '../../components/Userlist/Userlist';
 import CanvasSection from '../../components/CanvasSection/CanvasSection';
 import Chatting from '../../components/Chatting/Chatting';
 import GamePlayContext from './GamePlay.context';
@@ -14,13 +14,13 @@ import Timer from '../../components/Timer/Timer';
 
 const GamePlay = () => {
   const { io, room } = useContext(GlobalContext);
-  const [userlist, setUserlist] = useState([]);
+  const [userList, setUserList] = useState([]);
   const [painter, setPainter] = useState(null);
 
   useEffect(() => {
     const initSocket = async () => {
       if (io.socket) {
-        await io.initUserlistMsgHandler({ setUserlist });
+        await io.initUserlistMsgHandler({ setUserList });
         await io.initGameStartMsgHandler({ setPainter });
       }
     };
@@ -32,13 +32,13 @@ const GamePlay = () => {
   }
 
   return (
-    <GamePlayContext.Provider value={{ userlist, painter, setPainter }}>
+    <GamePlayContext.Provider value={{ userList, painter, setPainter }}>
       <GameLoading />
       <NavigationBar visible={room.roomType} />
       <GameInfo />
       <>
         <FlexRowStyle>
-          <Userlist />
+          <UserList />
           <div>
             <Timer />
             <CanvasSection />

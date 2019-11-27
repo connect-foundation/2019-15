@@ -7,14 +7,14 @@ const makeRoomId = () => {
 
 class Room {
   constructor() {
-    const players = [];
-    const wordSet = null;
-    const word = null;
-    const timer = null;
-    const state = null;
-    const currentExaminer = null;
-    const totalRound = null;
-    const currentRound = null;
+    this.players = [];
+    this.wordSet = null;
+    this.word = null;
+    this.timer = null;
+    this.state = null;
+    this.currentExaminer = null;
+    this.totalRound = null;
+    this.currentRound = null;
   }
 }
 

@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const UserlistStyle = styled.div`
+const UserListStyle = styled.div`
   height: 48rem;
   min-width: 320px;
   margin-left: 2rem;
@@ -10,4 +10,4 @@ const UserlistStyle = styled.div`
   border-radius: 0.3rem;
 `;
 
-export default UserlistStyle;
+export default UserListStyle;
