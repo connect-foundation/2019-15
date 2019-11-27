@@ -5,7 +5,7 @@ import {
 } from '../../globalComponents/Container/Flex.style';
 
 export const UserStyle = styled(FlexRowStyle)`
-  width: 320px;
+  width: 16rem;
   height: 7rem;
   margin: 0.3rem;
   margin-bottom: 0.6rem;
@@ -37,7 +37,7 @@ export const Ranking = styled.span`
 export const UserNickName = styled.div``;
 
 export const Text = styled.span`
-  font-size: 24px;
+  font-size: 28px;
   font-weight: 680;
   color: ${(props) => props.theme.slateGray};
 `;

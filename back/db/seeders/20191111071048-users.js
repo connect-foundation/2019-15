@@ -5,7 +5,7 @@ const getRandomInt = () => {
 };
 
 module.exports = {
-  up: (queryInterface) => {
+  up: (queryInterface, Sequelize) => {
     return queryInterface.bulkInsert(
       'Users',
       [
@@ -124,7 +124,7 @@ module.exports = {
     );
   },
 
-  down: (queryInterface) => {
+  down: (queryInterface, Sequelize) => {
     return queryInterface.bulkDelete('Users', null, {});
   },
 };

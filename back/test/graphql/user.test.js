@@ -3,7 +3,7 @@ const uuid = require('uuid/v1');
 
 const graphqlPath = require('../../config/graphqlPath');
 const { app } = require('../../app');
-const signJWT = require('../../util/jwt/signJWT');
+const signJWT = require('../../util/signJWT');
 
 let token;
 beforeAll(async () => {

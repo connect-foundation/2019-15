@@ -1,8 +1,7 @@
 import styled from 'styled-components';
 
 const UserlistStyle = styled.div`
-  height: 48rem;
-  min-width: 320px;
+  height: 46rem;
   margin-left: 2rem;
   margin-right: 2rem;
   overflow-y: auto;

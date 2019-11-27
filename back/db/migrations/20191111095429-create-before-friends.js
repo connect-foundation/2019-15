@@ -50,7 +50,7 @@ module.exports = {
       },
     );
   },
-  down: (queryInterface) => {
+  down: (queryInterface, Sequelize) => {
     return queryInterface.dropTable('BeforeFriends');
   },
 };

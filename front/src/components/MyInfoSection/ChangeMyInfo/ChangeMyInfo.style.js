@@ -1,8 +1,5 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
-const ChangeMyInfoStyle = styled.section`
-  display: flex;
-  flex-direction: column;
-`;
+const ChangeMyInfoStyle = styled.section``;
 
 export default ChangeMyInfoStyle;

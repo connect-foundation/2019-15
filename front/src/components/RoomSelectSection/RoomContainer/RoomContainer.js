@@ -6,7 +6,7 @@ import ButtonContainer from './ButtonContainer/ButtonContainer';
 
 function RoomContainer({ text, buttons }) {
   return (
-    <RoomContainerStyle id="RoomContainer">
+    <RoomContainerStyle id={'RoomContainer'}>
       <Title text={text} />
       <ButtonContainer buttons={buttons} />
     </RoomContainerStyle>

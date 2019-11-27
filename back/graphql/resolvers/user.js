@@ -1,6 +1,8 @@
 const jwt = require('jsonwebtoken');
 const Sequelize = require('sequelize');
-const getCookieOptions = require('../../util/cookie/getCookieOption');
+const { REACT_URI } = require('../../config/uri');
+const expiresIn = require('../../util/getMsOfDay');
+const getDomain = require('../../util/getDomain');
 
 const { Op } = Sequelize;
 
@@ -76,7 +78,10 @@ const userResolvers = {
             },
             process.env.JWT_SECRET,
           ),
-          getCookieOptions(),
+          {
+            expires: new Date(Date.now() + expiresIn),
+            domain: getDomain(REACT_URI),
+          },
         );
         await transaction.commit();
         return nickname;

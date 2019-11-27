@@ -4,10 +4,11 @@ import checkAuth from '../../logics/checkAuth';
 import parseCookies from '../../util/cookie';
 import User from '../../logics/user';
 
+import GamePlay from './GamePlay';
 import MainPage from './MainPage';
 
 const Main = () => {
-  const { io, setRoom, setUser } = useContext(GlobalContext);
+  const { io, room, setRoom, setUser } = useContext(GlobalContext);
 
   useEffect(() => {
     const initSocket = async () => {
@@ -20,7 +21,13 @@ const Main = () => {
     initSocket();
   }, [io, setRoom, setUser]);
 
-  return <MainPage />;
+  // 메인 화면
+  if (room.roomType === null) {
+    return <MainPage />;
+  }
+
+  // 게임 화면
+  return <GamePlay />;
 };
 
 export default Main;

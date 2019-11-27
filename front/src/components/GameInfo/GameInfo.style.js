@@ -1,13 +1,10 @@
 import styled from 'styled-components';
 import { FlexRowStyle } from '../globalComponents/Container/Flex.style';
 
-export const GameInfoStyle = styled(FlexRowStyle)`
-  width: 80%;
-  height: 4rem;
-  padding-left: 4rem;
+const GameInfoStyle = styled(FlexRowStyle)`
+  width: 100%;
+  height: 2rem;
   justify-content: flex-start;
 `;
 
-export const Text = styled(FlexRowStyle)`
-  font-size: 32px;
-`;
+export default GameInfoStyle;

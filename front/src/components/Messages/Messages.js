@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-
+import React from 'react';
+import { useState, useEffect } from 'react';
 import { useMutation } from '@apollo/react-hooks';
 import {
   findFriendRequests,
