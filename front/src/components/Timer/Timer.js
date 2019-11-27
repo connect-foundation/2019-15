@@ -1,7 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, {
+  useState,
+  useEffect,
+  forwardRef,
+  useImperativeHandle,
+} from 'react';
 import TimerStyle from './Timer.style';
 
-const Timer = () => {
+const Timer = forwardRef((props, ref) => {
   const [time, setTime] = useState(30);
   const [flag, setFlag] = useState(false);
 
@@ -34,6 +39,12 @@ const Timer = () => {
     if (flag) runTimer();
   });
 
+  useImperativeHandle(ref, () => ({
+    triggerTimer() {
+      startTimer();
+    },
+  }));
+
   return (
     <>
       <TimerStyle>
@@ -41,6 +52,6 @@ const Timer = () => {
       </TimerStyle>
     </>
   );
-};
+});
 
 export default Timer;
