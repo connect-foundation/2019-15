@@ -1,4 +1,5 @@
 const uuid = require('uuid/v1');
+const { maxPeopleNum } = require('../config/roomConfig');
 
 const makeRoomId = () => {
   return uuid();
@@ -17,18 +18,11 @@ const makeNewRoom = () => {
   };
 };
 
-const maxPeopleNum = {
-  '3명': 3,
-  '6명': 6,
-  '12명': 12,
-  '100명': 100,
-  비밀방: 100,
-};
-
 const RoomManager = {
   roomList: ['3명', '6명', '12명', '100명', '비밀방'],
   room: { '3명': {}, '6명': {}, '12명': {}, '100명': {}, 비밀방: {} },
   maxPeopleNum,
+
   // 방이 없을 때 새로운 방을 만들고 반환.
   addRoom: function(roomName) {
     const newRoom = makeNewRoom();
@@ -36,26 +30,19 @@ const RoomManager = {
     this.room[roomName][roomId] = newRoom;
     return roomId;
   },
+
   // 수용가능한 방을 하나 반환, 없으면 생성해서 반환
   getEnableRoomId: function(roomName) {
     const nRooms = this.room[roomName];
-    let roomId;
 
-    function findEnableRoomId(key) {
-      if (nRooms[key].players.length < maxPeopleNum[roomName]) {
-        roomId = key;
-        return true;
-      }
-      return false;
-    }
+    // find의 반환값이 undefined일 수 있으므로, destructuring은 불가능
+    // room[0] : key, room[1] : room
+    const room = Object.entries(nRooms).find(
+      ([roomId, _room]) => _room.players.length < maxPeopleNum[roomName],
+    );
 
-    Object.keys(nRooms).some(findEnableRoomId);
-
-    if (roomId) {
-      return roomId;
-    }
-    roomId = this.addRoom(roomName);
-    return roomId;
+    if (!room) room[0] = this.addRoom(roomName);
+    return room[0];
   },
 };
 

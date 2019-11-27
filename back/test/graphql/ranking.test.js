@@ -2,7 +2,7 @@ const request = require('supertest');
 
 const graphqlPath = require('../../config/graphqlPath');
 const { app } = require('../../app');
-const signJWT = require('../../util/signJWT');
+const signJWT = require('../../util/jwt/signJWT');
 
 const getRankingQuery = (resolverName, { order, first, after }) => {
   let query = `{

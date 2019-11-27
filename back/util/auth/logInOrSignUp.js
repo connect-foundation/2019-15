@@ -1,5 +1,5 @@
-const { Users } = require('../db/models');
-const signUp = require('../util/signUp');
+const { Users } = require('../../db/models');
+const signUp = require('./signUp');
 
 async function logInOrSignUp(accessToken, refreshToken, profile, done) {
   // 회원가입인지 로그인인지 판단한다
@@ -9,9 +9,7 @@ async function logInOrSignUp(accessToken, refreshToken, profile, done) {
     },
   });
   // 회원가입인 경우
-  if (!user) {
-      user = signUp(user, profile);
-  }
+  if (!user) user = signUp(profile);
 
   return done(null, {
     id: profile.id,
