@@ -11,7 +11,7 @@ services:
 branches:
   only:
     - master
-    # - develop
+    - develop
 
 jobs:
   include:
