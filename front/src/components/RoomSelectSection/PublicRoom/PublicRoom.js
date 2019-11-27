@@ -1,5 +1,4 @@
 import React, { useContext } from 'react';
-import { Link } from 'react-router-dom';
 import RoomContainer from '../RoomContainer/RoomContainer';
 import { PublicRoomButton, CustomA } from './PublicRoomButton.style';
 import GlobalContext from '../../../global.context';
@@ -17,7 +16,7 @@ const PublicRoom = () => {
   };
 
   const buttonComponents = roomInfo.roomList.map((roomName) => (
-    <CustomA href="/#/gameplay">
+    <CustomA href="/#/gameplay" key={roomName}>
       <PublicRoomButton
         key={roomName}
         onClick={makeGameStartBtnHandler(roomName)}

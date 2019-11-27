@@ -40,10 +40,10 @@ const DrawingPlayGround = ({ canvasSize }) => {
 };
 
 DrawingPlayGround.propTypes = {
-  canvasSize: {
+  canvasSize: PropTypes.shape({
     width: PropTypes.number,
     height: PropTypes.number,
-  },
+  }),
 };
 
 DrawingPlayGround.defaultProps = {
