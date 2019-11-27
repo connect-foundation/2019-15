@@ -1,4 +1,4 @@
-import React, { useReducer } from 'react';
+import React, { useEffect, useReducer } from 'react';
 import PropTypes from 'prop-types';
 import WordPreviewStyle from './WordPreview.style';
 
@@ -9,23 +9,39 @@ WordPreview.propTypes = {
 };
 
 function WordPreview({ wordLength, openIndex, openLetter }) {
-  function makeEmptyArr(length) {
+  function makeEmptyArray(length) {
     return new Array(length).fill('_');
   }
 
   function reducer(state, action) {
-    // 원소는 primitive(string)이므로 딥카피
-    const copiedState = [...state];
-    copiedState[action] = openLetter;
-    return copiedState;
+    switch (action.type) {
+      case 'makeNewArr': {
+        return makeEmptyArray(action.arg);
+      }
+      case 'openLetter': {
+        const copied = [...state];
+        copied[openIndex] = openLetter;
+        return copied;
+      }
+      default: {
+        return state;
+      }
+    }
   }
+  const [letters, dispatch] = useReducer(reducer, makeEmptyArray(wordLength));
 
-  const [letters, dispatch] = useReducer(reducer, makeEmptyArr(wordLength));
+  useEffect(() => {
+    dispatch({ type: 'makeNewArr', arg: wordLength });
+  }, [wordLength, openIndex, openLetter]);
+
+  function openLetterTrigger() {
+    dispatch({ type: 'openLetter' });
+  }
 
   return (
     <WordPreviewStyle>
-      {letters.reduce((acc, val) => acc.concat(' ', val))}
-      <button onClick={() => dispatch(openIndex)}>open letter</button>
+      {letters}
+      <button onClick={openLetterTrigger}>open</button>
     </WordPreviewStyle>
   );
 }
