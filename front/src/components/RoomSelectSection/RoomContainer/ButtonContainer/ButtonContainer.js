@@ -4,7 +4,7 @@ import ButtonContainerStyle from './ButtonContainer.style';
 
 const RoomContainerButtonContainer = ({ buttons }) => (
   <>
-    <ButtonContainerStyle id={'ButtonContainer'}>{buttons}</ButtonContainerStyle>
+    <ButtonContainerStyle id="ButtonContainer">{buttons}</ButtonContainerStyle>
   </>
 );
 

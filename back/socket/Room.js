@@ -1,34 +1,52 @@
 const uuid = require('uuid/v1');
+const { maxPeopleNum } = require('../config/roomConfig');
 
 const makeRoomId = () => {
   return uuid();
 };
 
-const makeNewRoom = (roomId) => {
-  return { roomId, people: [] };
+const makeNewRoom = () => {
+  return {
+    players: [],
+    wordSet: null,
+    word: null,
+    timer: null,
+    state: null,
+    currentExaminer: null,
+    totalRound: null,
+    currentRound: null,
+  };
 };
 
-const publicRoom = {
-  roomList: ['3명', '6명', '12명', '100명'],
-  room: { '3명': [], '6명': [], '12명': [], '100명': [] },
+const RoomManager = {
+  roomList: ['3명', '6명', '12명', '100명', '비밀방'],
+  room: { '3명': {}, '6명': {}, '12명': {}, '100명': {}, 비밀방: {} },
+  maxPeopleNum,
+
   // 방이 없을 때 새로운 방을 만들고 반환.
-  addRoom: function(capacity) {
-    const newRoom = makeNewRoom(makeRoomId());
-    this.room[capacity].push(newRoom);
-    return newRoom;
+  addRoom: function(roomName) {
+    const newRoom = makeNewRoom();
+    const roomId = makeRoomId();
+    this.room[roomName][roomId] = newRoom;
+    return roomId;
   },
+
   // 수용가능한 방을 하나 반환, 없으면 생성해서 반환
-  getEnableRoom: function(capacity) {
-    const nRooms = this.room[capacity];
+  getEnableRoomId: function(roomName) {
+    const nRooms = this.room[roomName];
 
-    // warn: 병목 예상
-    const idx = nRooms.findIndex((v) => v.people.length < parseInt(capacity.replace('명', ''), 0));
+    // find의 반환값이 undefined일 수 있으므로, destructuring은 불가능
+    // room[0] : key, room[1] : room
+    let room = Object.entries(nRooms).find(
+      ([roomId, _room]) => _room.players.length < maxPeopleNum[roomName],
+    );
 
-    if (idx < 0) {
-      return this.addRoom(capacity);
+    if (!room) {
+      room = [];
+      room.push(this.addRoom(roomName));
     }
-    return nRooms[idx];
+    return room[0];
   },
 };
 
-module.exports = publicRoom;
+module.exports = { RoomManager, makeNewRoom };

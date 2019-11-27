@@ -1,11 +1,10 @@
 const express = require('express');
 
 const router = express.Router();
-const passport = require('../../util/passport');
-const signJWT = require('../../util/signJWT');
-const { REACT_URI, EXPRESS_URI } = require('../../config/uri');
-const expiresIn = require('../../util/getMsOfDay');
-const getDomain = require('../../util/getDomain');
+const passport = require('../../util/auth/passport');
+const signJWT = require('../../util/jwt/signJWT');
+const { REACT_URI } = require('../../config/uri');
+const getCookieOption = require('../../util/cookie/getCookieOption');
 
 router.get(
   '/login',
@@ -26,15 +25,10 @@ router.get(
 );
 
 router.get('/login_success', async function(req, res) {
-  res.cookie('jwt', await signJWT(req), {
-    expires: new Date(Date.now() + expiresIn),
-    domain: getDomain(REACT_URI),
-  });
-  res.cookie('nickname', req.user.nickname, {
-    expires: new Date(Date.now() + expiresIn),
-    domain: getDomain(REACT_URI),
-  });
-  res.redirect(`${REACT_URI}/main`);
+  const cookieOption = getCookieOption();
+  res.cookie('jwt', await signJWT(req), cookieOption);
+  res.cookie('nickname', req.user.nickname, cookieOption);
+  res.redirect(`${REACT_URI}/#main`);
 });
 
 router.get('/login_fail', function(req, res) {
