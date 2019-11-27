@@ -1,6 +1,6 @@
 const Timer = require('../util/timer/Timer');
 
-const { RoomManager, makeNewRoom } = require('./Room');
+const { RoomManager, Room } = require('./Room');
 const User = require('./User');
 
 function sendUserlistToRoom(list, roomId, io) {
@@ -13,7 +13,7 @@ function sendUserlistToRoom(list, roomId, io) {
 function personEnterRoom(nickname, socket, roomName, io) {
   const roomId = RoomManager.getEnableRoomId(roomName);
   const room = RoomManager.room[roomName][roomId];
-  room.players.push(User(nickname, socket));
+  room.players.push(new User(nickname, socket));
   room.timer = new Timer();
 
   socket.join(roomId);
@@ -31,11 +31,11 @@ function personEnterRoom(nickname, socket, roomName, io) {
 
 function personEnterSecretRoom(nickname, socket, roomId, io) {
   const secretRoomList = RoomManager.room['비밀방'];
-  const room = makeNewRoom();
+  const room = new Room();
   secretRoomList[roomId] = room;
 
   socket.join(roomId);
-  room.players.push(User(nickname, socket));
+  room.players.push(new User(nickname, socket));
 
   console.log(room.players);
 }
