@@ -17,7 +17,7 @@ function personEnterRoom(nickname, socket, roomName, io) {
   room.timer = new Timer();
 
   socket.join(roomId);
-  socket.emit(`connect_${roomName}`, {
+  socket.emit(`connect${roomName}`, {
     roomId,
     roomType: roomName,
   });
@@ -43,12 +43,12 @@ function personEnterSecretRoom(nickname, socket, roomId, io) {
 function initSocketIO(io) {
   io.on('connection', (socket) => {
     RoomManager.roomList.forEach((roomName) => {
-      socket.on(`enter_${roomName}`, ({ nickname }) => {
+      socket.on(`enter${roomName}`, ({ nickname }) => {
         personEnterRoom(nickname, socket, roomName, io);
       });
     });
 
-    socket.on('get_userlist', ({ roomType, roomId }) => {
+    socket.on('getUserlist', ({ roomType, roomId }) => {
       const nRooms = RoomManager.room[roomType];
 
       const roomIdx = nRooms.findIndex((roomObject) => roomObject.roomId === roomId);
@@ -61,11 +61,11 @@ function initSocketIO(io) {
       socket.emit('userlist', { userlist: JSON.stringify(userlist) });
     });
 
-    socket.on('make_secret', ({ nickname, roomId }) => {
+    socket.on('makeSecret', ({ nickname, roomId }) => {
       personEnterSecretRoom(nickname, socket, roomId, io);
     });
 
-    socket.on('exit_room', ({ nickname, roomType, roomId }) => {
+    socket.on('exitRoom', ({ nickname, roomType, roomId }) => {
       const roomObject = RoomManager.room[roomType];
       const exitUserIdx = roomObject[roomId].players.findIndex((user) => {
         if (user.nickname === nickname) {
@@ -78,8 +78,20 @@ function initSocketIO(io) {
       roomObject[roomId].players.splice(exitUserIdx);
     });
 
-    socket.on('send_message', ({ nickname, roomId, inputValue }) => {
-      io.in(roomId).emit('get_message', { message: `${nickname} : ${inputValue}` });
+    socket.on('sendMessage', ({ nickname, roomId, inputValue }) => {
+      io.in(roomId).emit('getMessage', { message: `${nickname} : ${inputValue}` });
+    });
+
+    socket.on('questionStart', ({ answer, roomType, roomId }) => {
+      const room = RoomManager.room[roomType][roomId];
+      room.word = answer;
+      // 서버 타이머 트리거
+    });
+
+    // 출제자가 캔버스에 그림을 그리는 경우.
+    socket.on('drawing', ({ roomId }) => {
+      // 출제자를 제외한 참가자들에게 캔버스 정보를 전송
+      io.to(roomId).emit('drawing');
     });
   });
 }
