@@ -4,8 +4,8 @@ import { getRankingAll } from '../../../queries/ranking';
 import Loading from '../../globalComponents/Loading/Loading';
 import Alert from '../../globalComponents/Alert/Alert';
 import UserRankingList from '../UserRankingList/UserRankingList';
-import Button from '../../globalComponents/Button/Button';
 import RankingAllStyle from './RankingAll.style';
+import InfinityScroll from '../../globalComponents/InfinityScroll/InfinityScroll';
 
 const RankingAll = () => {
   const { data, loading, error, fetchMore } = useQuery(getRankingAll);
@@ -24,7 +24,7 @@ const RankingAll = () => {
     return <Alert type="noData" />;
   }
 
-  const loadMore = () =>
+  const loadMore = () => {
     fetchMore({
       query: getRankingAll,
       variables: { after: endCursor },
@@ -42,11 +42,13 @@ const RankingAll = () => {
           : prev;
       },
     });
+  };
   const users = edges.map((edge) => edge.node);
   return (
     <RankingAllStyle>
-      <UserRankingList users={users} />
-      {hasNextPage ? <Button onClick={loadMore}>more</Button> : null}
+      <InfinityScroll loadMore={loadMore} hasMore={hasNextPage}>
+        <UserRankingList users={users} />
+      </InfinityScroll>
     </RankingAllStyle>
   );
 };

@@ -6,6 +6,7 @@ import Alert from '../../globalComponents/Alert/Alert';
 import UserRankingList from '../UserRankingList/UserRankingList';
 import Button from '../../globalComponents/Button/Button';
 import RankingAllStyle from '../RankingAll/RankingAll.style';
+import InfinityScroll from '../../globalComponents/InfinityScroll/InfinityScroll';
 
 const RankingFriends = () => {
   const { data, loading, error, fetchMore } = useQuery(getRankingFriends);
@@ -45,8 +46,9 @@ const RankingFriends = () => {
   const users = edges.map((edge) => edge.node);
   return (
     <RankingAllStyle>
-      <UserRankingList users={users} />
-      {hasNextPage ? <Button onClick={loadMore}>more</Button> : null}
+      <InfinityScroll loadMore={loadMore} hasMore={hasNextPage}>
+        <UserRankingList users={users} />
+      </InfinityScroll>
     </RankingAllStyle>
   );
 };
