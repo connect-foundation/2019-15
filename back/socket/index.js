@@ -1,7 +1,7 @@
 const Timer = require('../util/timer/Timer');
-
 const { RoomManager, makeNewRoom } = require('./Room');
 const User = require('./User');
+const getRandomInt = require('../util/getRandomInt');
 
 function sendUserlistToRoom(list, roomId, io) {
   const userlist = list.map((v) => {
@@ -82,10 +82,18 @@ function initSocketIO(io) {
       io.in(roomId).emit('getMessage', { message: `${nickname} : ${inputValue}` });
     });
 
-    socket.on('questionStart', ({ answer, roomType, roomId }) => {
+    socket.on('selectWord', ({ answer, roomType, roomId }) => {
       const room = RoomManager.room[roomType][roomId];
       room.word = answer;
       // 서버 타이머 트리거
+      room.timer.start();
+      // 클라들에게 뿌려주기
+      const openIndex = getRandomInt(0, answer.length);
+      io.in(roomId).emit('startQuestion', {
+        wordLength: answer.length,
+        openLetter: answer[openIndex],
+        openIndex,
+      });
     });
 
     // 출제자가 캔버스에 그림을 그리는 경우.
