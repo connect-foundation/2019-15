@@ -16,14 +16,18 @@ const Timer = () => {
     }
   }
 
-  function triggerTimer() {
+  function startTimer() {
     setFlag(true);
     runTimer();
   }
 
   function resetTimer() {
-    setFlag(false);
     setTime(30);
+  }
+
+  function stopTimer() {
+    setFlag(false);
+    resetTimer();
   }
 
   useEffect(() => {
@@ -35,8 +39,8 @@ const Timer = () => {
       <TimerStyle>
         <span>{time}</span>
       </TimerStyle>
-      <button onClick={triggerTimer}>trigger</button>
-      <button onClick={resetTimer}>reset</button>
+      <button onClick={startTimer}>start</button>
+      <button onClick={stopTimer}>stop</button>
     </>
   );
 };

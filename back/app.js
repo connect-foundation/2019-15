@@ -7,12 +7,12 @@ const express = require('express');
 const session = require('express-session');
 const http = require('http');
 const socketIo = require('socket.io');
-const graphqlPath=require('./config/graphqlPath');
+const graphqlPath = require('./config/graphqlPath');
 
 // cors
 const corsOptions = require('./config/corsOptions');
 // passport
-const passport = require('./util/passport');
+const passport = require('./util/auth/passport');
 // router
 const apiRouter = require('./router/api');
 const authRouter = require('./router/auth/auth');
