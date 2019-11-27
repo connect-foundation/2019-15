@@ -16,14 +16,13 @@ function ChattingList({ children }) {
   const [history, setHistory] = useState({ messages: [] });
 
   useEffect(() => {
-    if (children !== null) {
-      const splitRes = children.split(' : ');
-      if (splitRes.length === 2 && splitRes[1] === '') return;
-      history.messages.push(children);
-      setHistory({ messages: history.messages });
-      scrollRef.current.scrollTop =
-        scrollRef.current.scrollHeight - scrollRef.current.clientHeight;
-    }
+    if (!children) return;
+    const splitRes = children.split(' : ');
+    if (splitRes.length === 2 && splitRes[1] === '') return;
+    history.messages.push(children);
+    setHistory({ messages: history.messages });
+    scrollRef.current.scrollTop =
+      scrollRef.current.scrollHeight - scrollRef.current.clientHeight;
   }, [children, history.messages]);
 
   return (
