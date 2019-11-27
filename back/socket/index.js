@@ -1,4 +1,4 @@
-const Timer = require('../util/Timer');
+const Timer = require('../util/timer/Timer');
 
 const { RoomManager, makeNewRoom } = require('./Room');
 const User = require('./User');

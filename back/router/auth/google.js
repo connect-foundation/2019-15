@@ -1,10 +1,10 @@
 const express = require('express');
 
 const router = express.Router();
-const passport = require('../../util/passport');
-const signJWT = require('../../util/signJWT');
+const passport = require('../../util/auth/passport');
+const signJWT = require('../../util/jwt/signJWT');
 const { REACT_URI } = require('../../config/uri');
-const getCookieOption = require('../../util/getCookieOption');
+const getCookieOption = require('../../util/cookie/getCookieOption');
 
 router.get(
   '/login',
