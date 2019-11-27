@@ -18,7 +18,7 @@ const io = {
   async initConnectMsgHandler({ setRoom }) {
     roomInfo.roomList.forEach((roomName) => {
       this.socket.on(`connect_${roomName}`, ({ roomType, roomId }) => {
-        setRoom(Room(roomType, roomId));
+        setRoom(new Room(roomId, roomType));
       });
     });
   },
