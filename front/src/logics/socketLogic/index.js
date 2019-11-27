@@ -33,7 +33,6 @@ const io = {
       setPainter(painter);
     });
   },
-
   async requestMakeSecretRoom({ nickname, roomId }) {
     this.socket.emit('makeSecret', { nickname, roomId });
   },
@@ -48,8 +47,14 @@ const io = {
       setMessage(message);
     });
   },
-  async questionStart({ answer, roomType, roomId }) {
-    this.socket.emit('questionStart', { answer, roomType, roomId });
+  async selectWord({ answer, roomType, roomId }) {
+    this.socket.emit('selectWord', { answer, roomType, roomId });
+  },
+  async setStartQuestionHandler(setQuestionWord, callback) {
+    this.socket.on('startQuestion', ({ wordLength, openLetter, openIndex }) => {
+      setQuestionWord({ wordLength, openLetter, openIndex });
+      callback();
+    });
   },
 };
 
