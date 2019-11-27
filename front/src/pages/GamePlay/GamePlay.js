@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { Redirect } from 'react-router-dom';
 
 import NavigationBar from '../../components/NavigationBar/NavigationBar';
@@ -8,31 +8,30 @@ import GlobalContext from '../../global.context';
 import UserList from '../../components/Userlist/Userlist';
 import CanvasSection from '../../components/CanvasSection/CanvasSection';
 import Chatting from '../../components/Chatting/Chatting';
-import GamePlayContext from './GamePlay.context';
+import GamePlayContext from '../../GamePlay.context';
 import GameLoading from '../../components/GameLoading/GameLoading';
 import Timer from '../../components/Timer/Timer';
 
 const GamePlay = () => {
   const { io, room } = useContext(GlobalContext);
-  const [userList, setUserList] = useState([]);
-  const [painter, setPainter] = useState(null);
+  const { setUserList, setPainter } = useContext(GamePlayContext);
 
   useEffect(() => {
     const initSocket = async () => {
       if (io.socket) {
-        await io.initUserlistMsgHandler({ setUserList });
+        await io.initUserListMsgHandler({ setUserList });
         await io.initGameStartMsgHandler({ setPainter });
       }
     };
     initSocket();
-  }, [io]);
+  }, [io, setPainter, setUserList]);
 
   if (io.socket === null) {
     return <Redirect to="main" />;
   }
 
   return (
-    <GamePlayContext.Provider value={{ userList, painter, setPainter }}>
+    <>
       <GameLoading />
       <NavigationBar visible={room.roomType} />
       <GameInfo />
@@ -46,7 +45,7 @@ const GamePlay = () => {
           <Chatting />
         </FlexRowStyle>
       </>
-    </GamePlayContext.Provider>
+    </>
   );
 };
 
