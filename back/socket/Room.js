@@ -37,11 +37,14 @@ const RoomManager = {
 
     // find의 반환값이 undefined일 수 있으므로, destructuring은 불가능
     // room[0] : key, room[1] : room
-    const room = Object.entries(nRooms).find(
+    let room = Object.entries(nRooms).find(
       ([roomId, _room]) => _room.players.length < maxPeopleNum[roomName],
     );
 
-    if (!room) room[0] = this.addRoom(roomName);
+    if (!room) {
+      room = [];
+      room.add(this.addRoom(roomName));
+    }
     return room[0];
   },
 };
