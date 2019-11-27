@@ -10,7 +10,6 @@ import CanvasSection from '../../components/CanvasSection/CanvasSection';
 import Chatting from '../../components/Chatting/Chatting';
 import GamePlayContext from './GamePlay.context';
 import GameLoading from '../../components/GameLoading/GameLoading';
-import Timer from '../../components/Timer/Timer';
 
 const GamePlay = () => {
   const { io, room } = useContext(GlobalContext);
@@ -39,10 +38,7 @@ const GamePlay = () => {
       <>
         <FlexRowStyle>
           <Userlist />
-          <div>
-            <Timer />
-            <CanvasSection />
-          </div>
+          <CanvasSection />
           <Chatting />
         </FlexRowStyle>
       </>
