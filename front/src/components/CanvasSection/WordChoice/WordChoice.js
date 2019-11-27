@@ -21,8 +21,8 @@ const WordChoice = () => {
   async function close(e) {
     setOpen(false);
     const { roomType, roomId } = room;
-    const answer = e.target.innerHTML;
-    await io.questionStart({ answer, roomType, roomId });
+    const answer = e.target.textContent;
+    await io.selectWord({ answer, roomType, roomId });
   }
 
   return (
