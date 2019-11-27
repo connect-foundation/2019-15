@@ -20,7 +20,7 @@ const Chatting = () => {
     setValue(e.target.value);
   }
 
-  async function inputKeyHandler(e) {
+  async function pressKeyHandler(e) {
     const { nickname } = user;
     const { roomId } = room;
 
@@ -36,7 +36,7 @@ const Chatting = () => {
       <TextInput
         value={inputValue}
         onChange={inputChangeHandler}
-        onKeyPress={inputKeyHandler}
+        onKeyPress={pressKeyHandler}
       />
     </ChattingStyle>
   );
