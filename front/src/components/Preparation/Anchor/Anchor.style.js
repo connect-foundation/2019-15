@@ -1,9 +1,30 @@
 import styled from 'styled-components';
+import { FlexRowStyle } from '../../globalComponents/Container/Flex.style';
+import ButtonStyle from '../../globalComponents/Button/Button.style';
 
-const AnchorStyle = styled.div`
+export const AnchorStyle = styled(FlexRowStyle)`
   width: 100%;
   height: 5rem;
-  background-color: blue;
+  justify-content: center;
+  border-radius: 0.3rem;
+  background-color: ${({ theme }) => theme.Pumice}};
 `;
 
-export default AnchorStyle;
+export const AnchorImageStyle = styled.img`
+  width: 4.5rem;
+  height: 80%;
+`;
+
+export const AnchorLinkText = styled.div`
+  width: 60%;
+  height: 100%;
+  font-size: 17px;
+  line-height: 5rem;
+  text-align: center;
+`;
+
+export const AnchorCopyButton = styled(ButtonStyle)`
+  width: 5rem;
+  height: 3rem;
+  font-size: 20px;
+`;

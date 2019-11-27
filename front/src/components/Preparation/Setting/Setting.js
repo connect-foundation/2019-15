@@ -1,8 +1,19 @@
 import React from 'react';
-import SettingStyle from './Setting.style';
+import {
+  SettingStyle,
+  RoomSettingStyle,
+  UserSettingStyle,
+  GameStartButtonStyle,
+} from './Setting.style';
 
 const Setting = () => {
-  return <SettingStyle>3</SettingStyle>;
+  return (
+    <SettingStyle>
+      <RoomSettingStyle />
+      <UserSettingStyle />
+      <GameStartButtonStyle>게임 시작</GameStartButtonStyle>
+    </SettingStyle>
+  );
 };
 
 export default Setting;

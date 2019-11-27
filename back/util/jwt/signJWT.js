@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
-const jwtOptions = require('../config/jwtOptions');
-const { Users } = require('../db/models');
+const jwtOptions = require('../../config/jwtOptions');
+const { Users } = require('../../db/models');
 
 const signJWT = async (req, options = {}) => {
   const { id, nickname } = await Users.findOne({

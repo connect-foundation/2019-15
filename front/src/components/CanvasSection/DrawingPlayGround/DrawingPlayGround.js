@@ -1,9 +1,9 @@
 import React, { useReducer } from 'react';
 import PropTypes from 'prop-types';
-import Tools from './Tools/Tools';
+import Tools from './Tools';
 import DrawingPlayGroundStyle from './DrawingPlayGround.style';
-import DrawingBoard from './DrawingBoard/DrawingBoard';
-import ToolManager from './Tools/ToolType/ToolManager';
+import DrawingBoard from './DrawingBoard';
+import ToolManager from './ToolType/ToolManager';
 
 const toolManager = new ToolManager();
 

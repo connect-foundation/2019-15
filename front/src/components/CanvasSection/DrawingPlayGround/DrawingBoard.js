@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { fabric } from 'fabric';
 import { DrawingBoardStyle, CanvasStyle } from './DrawingBoard.style';
-import Tool from '../Tools/ToolType/Tool';
+import Tool from './ToolType/Tool';
 
 const DrawingBoard = ({ drawingOptions, size }) => {
   const { tool } = drawingOptions;
