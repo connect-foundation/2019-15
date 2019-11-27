@@ -1,9 +1,11 @@
 import styled from 'styled-components';
 
 const ChattingListStyle = styled.div`
-  background-color: green;
   height: 37rem;
   width: 17rem;
+  overflow-y: auto;
+  overflow-x: hidden;
+  word-break: break-all;
 `;
 
 export default ChattingListStyle;
