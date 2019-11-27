@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import UserListStyle from './Userlist.style';
-import GamePlayContext from '../../pages/GamePlay/GamePlay.context';
+import GamePlayContext from '../../GamePlay.context';
 
 import User from './User/User';
 
