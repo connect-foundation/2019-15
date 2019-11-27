@@ -1,7 +1,8 @@
 class User {
-  constructor(nickname, socket) {
+  constructor(nickname, socket, id) {
     this.nickname = nickname;
     this.socket = socket;
+    this.id = id;
   }
 }
 

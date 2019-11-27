@@ -5,7 +5,8 @@ const User = require('./User');
 
 function sendUserListToRoom(list, roomId, io) {
   const userList = list.map((v) => {
-    return { nickname: v.nickname, socketId: v.socket.id };
+    const userName = v.nickname || '부스트캠퍼';
+    return { nickname: userName, socketId: v.socket.id };
   });
   io.in(roomId).emit('userList', { userList: JSON.stringify(userList) });
 }
@@ -25,25 +26,36 @@ function personEnterRoom(nickname, socket, roomName, io) {
   sendUserListToRoom(room.players, roomId, io);
 
   if (room.players.length === 2) {
-    io.to(room.roomId).emit('gamestart', { painter: room.players[0].socket.id });
+    io.to(roomId).emit('gamestart', { painter: room.players[0].socket.id });
   }
 }
 
 function personEnterSecretRoom(nickname, socket, roomId, io) {
   const secretRoomList = RoomManager.room['비밀방'];
-  const room = new Room();
-  secretRoomList[roomId] = room;
+
+  let room;
+  if (roomId in secretRoomList) {
+    room = secretRoomList[roomId];
+  } else {
+    room = new Room();
+    secretRoomList[roomId] = room;
+  }
+
   socket.join(roomId);
   room.players.push(new User(nickname, socket));
-
-  console.log(room.players);
+  sendUserListToRoom(room.players, roomId, io);
 }
 
 function initSocketIO(io) {
   io.on('connection', (socket) => {
+    let userName;
+    let roomInfo;
+    const socketId = socket.id;
+
     RoomManager.roomList.forEach((roomName) => {
       socket.on(`enter_${roomName}`, ({ nickname }) => {
         personEnterRoom(nickname, socket, roomName, io);
+        userName = nickname;
       });
     });
 
@@ -54,7 +66,7 @@ function initSocketIO(io) {
 
       // 방이 없는 경우
       if (roomIdx < 0) return;
-
+      roomInfo = { roomId, roomType };
       const userList = nRooms[roomIdx].people.map((v) => v.id);
 
       socket.emit('userList', { userList: JSON.stringify(userList) });
@@ -62,19 +74,34 @@ function initSocketIO(io) {
 
     socket.on('make_secret', ({ nickname, roomId }) => {
       personEnterSecretRoom(nickname, socket, roomId, io);
+      userName = nickname;
+      roomInfo = { roomId, roomType: '비밀방' };
+    });
+
+    socket.on('startSecretGame', ({ roomId, roomType }) => {
+      const room = RoomManager.room[roomType][roomId];
+      if (room.players.length >= 2) {
+        io.to(roomId).emit('startSecretGame', { painter: room.players[0].socket.id });
+      }
     });
 
     socket.on('exit_room', ({ nickname, roomType, roomId }) => {
-      const roomObject = RoomManager.room[roomType];
-      const exitUserIdx = roomObject[roomId].players.findIndex((user) => {
-        if (user.nickname === nickname) {
-          user.socket.disconnect();
-          return true;
-        }
-        return false;
-      });
+      if (!roomType || !roomId) return;
+      const room = RoomManager.room[roomType][roomId];
+      const exitUserIdx = room.players.findIndex((user) => user.socket.id === socketId);
+      room.players.splice(exitUserIdx, 1);
+      sendUserListToRoom(room.players, roomId, io);
+    });
 
-      roomObject[roomId].players.splice(exitUserIdx);
+    socket.on('disconnect', () => {
+      if (roomInfo) {
+        const userList = RoomManager.room[roomInfo.roomType][roomInfo.roomId].players;
+        const userIdx = userList.findIndex((user) => user.socket.id === socketId);
+        if (userIdx >= 0) {
+          userList.splice(userIdx, 1);
+          sendUserListToRoom(userList, roomInfo.roomId, io);
+        }
+      }
     });
   });
 
