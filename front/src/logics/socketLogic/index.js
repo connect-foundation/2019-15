@@ -47,7 +47,7 @@ const io = {
   },
 
   async requestMakeSecretRoom({ nickname, roomId }) {
-    this.socket.emit('make_secret', { nickname, roomId });
+    this.socket.emit('makeSecret', { nickname, roomId });
   },
 
   async startSecretGame({ roomId, roomType }) {
@@ -55,7 +55,18 @@ const io = {
   },
 
   async exitGameRoom({ nickname, roomType, roomId }) {
-    this.socket.emit('exit_room', { nickname, roomType, roomId });
+    this.socket.emit('exitRoom', { nickname, roomType, roomId });
+  },
+  async sendMessage({ nickname, roomId, inputValue }) {
+    this.socket.emit('sendMessage', { nickname, roomId, inputValue });
+  },
+  async initChattingHandler({ setMessage }) {
+    this.socket.on('getMessage', ({ message }) => {
+      setMessage(message);
+    });
+  },
+  async questionStart({ answer, roomType, roomId }) {
+    this.socket.emit('questionStart', { answer, roomType, roomId });
   },
 };
 

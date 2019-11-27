@@ -18,7 +18,7 @@ function personEnterRoom(nickname, socket, roomName, io) {
   room.timer = new Timer();
 
   socket.join(roomId);
-  socket.emit(`connect_${roomName}`, {
+  socket.emit(`connect${roomName}`, {
     roomId,
     roomType: roomName,
   });
@@ -53,13 +53,13 @@ function initSocketIO(io) {
     const socketId = socket.id;
 
     RoomManager.roomList.forEach((roomName) => {
-      socket.on(`enter_${roomName}`, ({ nickname }) => {
+      socket.on(`enter${roomName}`, ({ nickname }) => {
         personEnterRoom(nickname, socket, roomName, io);
         userName = nickname;
       });
     });
 
-    socket.on('get_userList', ({ roomType, roomId }) => {
+    socket.on('getUserList', ({ roomType, roomId }) => {
       const nRooms = RoomManager.room[roomType];
 
       const roomIdx = nRooms.findIndex((roomObject) => roomObject.roomId === roomId);
@@ -72,7 +72,7 @@ function initSocketIO(io) {
       socket.emit('userList', { userList: JSON.stringify(userList) });
     });
 
-    socket.on('make_secret', ({ nickname, roomId }) => {
+    socket.on('makeSecret', ({ nickname, roomId }) => {
       personEnterSecretRoom(nickname, socket, roomId, io);
       userName = nickname;
       roomInfo = { roomId, roomType: '비밀방' };
@@ -85,40 +85,43 @@ function initSocketIO(io) {
       }
     });
 
-    socket.on('exit_room', ({ nickname, roomType, roomId }) => {
-      if (!roomType || !roomId) return;
-      const room = RoomManager.room[roomType][roomId];
-      const exitUserIdx = room.players.findIndex((user) => user.socket.id === socketId);
-      room.players.splice(exitUserIdx, 1);
-      sendUserListToRoom(room.players, roomId, io);
-    });
-
-    socket.on('disconnect', () => {
-      if (roomInfo) {
-        const userList = RoomManager.room[roomInfo.roomType][roomInfo.roomId].players;
-        const userIdx = userList.findIndex((user) => user.socket.id === socketId);
-        if (userIdx >= 0) {
-          userList.splice(userIdx, 1);
-          sendUserListToRoom(userList, roomInfo.roomId, io);
+    socket.on('exitRoom', ({ nickname, roomType, roomId }) => {
+      const roomObject = RoomManager.room[roomType];
+      const exitUserIdx = roomObject[roomId].players.findIndex((user) => {
+        if (user.nickname === nickname) {
+          user.socket.disconnect();
+          return true;
         }
-      }
-    });
-  });
+        return false;
+      });
 
-  // 출제자가 단어를 선택한 경우, 문제을 시작
-  io.on('questionStart', () => {
-    // 서버 타이머 트리거
-  });
-  // 출제자가 캔버스에 그림을 그리는 경우.
-  io.on('drawing', ({ roomId }) => {
-    // 출제자를 제외한 참가자들에게 캔버스 정보를 전송
-    io.to(roomId).emit('drawing');
-  });
-  // 출제자를 포함한 참가자들이 채팅을 하는 경우.
-  // 단, 권한에 따라 다른 유저의 채팅이 안 보일 수 있다.
-  io.on('chatting', () => {
-    // 정답이 아닌 경우
-    // 정답인 경우
+      socket.on('disconnect', () => {
+        if (roomInfo) {
+          const userList = RoomManager.room[roomInfo.roomType][roomInfo.roomId].players;
+          const userIdx = userList.findIndex((user) => user.socket.id === socketId);
+          if (userIdx >= 0) {
+            userList.splice(userIdx, 1);
+            sendUserListToRoom(userList, roomInfo.roomId, io);
+          }
+        }
+      });
+
+      socket.on('sendMessage', ({ nickname, roomId, inputValue }) => {
+        io.in(roomId).emit('getMessage', { message: `${nickname} : ${inputValue}` });
+      });
+
+      socket.on('questionStart', ({ answer, roomType, roomId }) => {
+        const room = RoomManager.room[roomType][roomId];
+        room.word = answer;
+        // 서버 타이머 트리거
+      });
+
+      // 출제자가 캔버스에 그림을 그리는 경우.
+      socket.on('drawing', ({ roomId }) => {
+        // 출제자를 제외한 참가자들에게 캔버스 정보를 전송
+        io.to(roomId).emit('drawing');
+      });
+    });
   });
 }
 
