@@ -43,7 +43,7 @@ function personEnterSecretRoom(nickname, socket, roomId, io) {
 function initSocketIO(io) {
   io.on('connection', (socket) => {
     RoomManager.roomList.forEach((roomName) => {
-      socket.on(`enter_${roomName}`, ({ nickname }) => {
+      socket.on(`enter${roomName}`, ({ nickname }) => {
         personEnterRoom(nickname, socket, roomName, io);
       });
     });
@@ -87,12 +87,12 @@ function initSocketIO(io) {
       room.word = answer;
       // 서버 타이머 트리거
     });
-  });
 
-  // 출제자가 캔버스에 그림을 그리는 경우.
-  io.on('drawing', ({ roomId }) => {
-    // 출제자를 제외한 참가자들에게 캔버스 정보를 전송
-    io.to(roomId).emit('drawing');
+    // 출제자가 캔버스에 그림을 그리는 경우.
+    socket.on('drawing', ({ roomId }) => {
+      // 출제자를 제외한 참가자들에게 캔버스 정보를 전송
+      io.to(roomId).emit('drawing');
+    });
   });
 }
 
