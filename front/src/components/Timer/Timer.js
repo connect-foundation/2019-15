@@ -39,8 +39,6 @@ const Timer = () => {
       <TimerStyle>
         <span>{time}</span>
       </TimerStyle>
-      <button onClick={startTimer}>start</button>
-      <button onClick={stopTimer}>stop</button>
     </>
   );
 };
