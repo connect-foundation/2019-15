@@ -6,9 +6,10 @@ import User from './User/User';
 
 const Userlist = () => {
   const { userlist } = useContext(GamePlayContext);
-  const UserComponents = userlist.map((user, index) => (
-    <User nickname={user.nickname} index={index + 1} />
-  ));
+  const UserComponents = userlist.map((user, index) => {
+    const order = index + 1;
+    return <User nickname={user.nickname} index={order} key={order} />;
+  });
 
   return <UserlistStyle>{UserComponents}</UserlistStyle>;
 };
