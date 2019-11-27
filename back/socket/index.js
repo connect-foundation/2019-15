@@ -25,7 +25,7 @@ function personEnterRoom(nickname, socket, roomName, io) {
   sendUserlistToRoom(room.players, roomId, io);
 
   if (room.players.length === 2) {
-    io.to(room.roomId).emit('gamestart', { painter: room.players[0].socket.id });
+    io.to(roomId).emit('gamestart', { painter: room.players[0].socket.id });
   }
 }
 
