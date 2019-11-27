@@ -27,7 +27,6 @@ router.get(
 router.get('/login_success', async function(req, res) {
   const cookieOption = getCookieOption();
   res.cookie('jwt', await signJWT(req), cookieOption);
-  res.cookie('nickname', req.user.nickname, cookieOption);
   res.redirect(`${REACT_URI}/#main`);
 });
 
