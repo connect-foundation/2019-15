@@ -81,22 +81,18 @@ function initSocketIO(io) {
     socket.on('send_message', ({ nickname, roomId, inputValue }) => {
       io.in(roomId).emit('get_message', { message: `${nickname} : ${inputValue}` });
     });
+
+    socket.on('questionStart', ({ answer, roomType, roomId }) => {
+      const room = RoomManager.room[roomType][roomId];
+      room.word = answer;
+      // 서버 타이머 트리거
+    });
   });
 
-  // 출제자가 단어를 선택한 경우, 문제을 시작
-  io.on('questionStart', () => {
-    // 서버 타이머 트리거
-  });
   // 출제자가 캔버스에 그림을 그리는 경우.
   io.on('drawing', ({ roomId }) => {
     // 출제자를 제외한 참가자들에게 캔버스 정보를 전송
     io.to(roomId).emit('drawing');
-  });
-  // 출제자를 포함한 참가자들이 채팅을 하는 경우.
-  // 단, 권한에 따라 다른 유저의 채팅이 안 보일 수 있다.
-  io.on('chatting', () => {
-    // 정답이 아닌 경우
-    // 정답인 경우
   });
 }
 

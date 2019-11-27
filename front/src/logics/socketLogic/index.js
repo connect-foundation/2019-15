@@ -48,6 +48,9 @@ const io = {
       setMessage(message);
     });
   },
+  async questionStart({ answer, roomType, roomId }) {
+    this.socket.emit('questionStart', { answer, roomType, roomId });
+  },
 };
 
 export default io;
