@@ -28,7 +28,7 @@ function alarmListReducer(state, action) {
 }
 
 const ButtonContainer = () => {
-  const [alarmList, setAlarmList] = useReducer(alarmListReducer, []);
+  const [alarmList, alarmListDispatch] = useReducer(alarmListReducer, []);
   const [noticeType, setNoticeType] = useState(null);
   const { onlineSocket, io, user, room, setRoom } = useContext(GlobalContext);
 
@@ -44,7 +44,7 @@ const ButtonContainer = () => {
   useEffect(() => {
     const initEvents = async () => {
       if (onlineSocket) {
-        onRequestFriend(onlineSocket, { setAlarmList, setNoticeType });
+        onRequestFriend(onlineSocket, { alarmListDispatch, setNoticeType });
       }
     };
     initEvents();

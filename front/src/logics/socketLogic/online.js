@@ -5,18 +5,18 @@ export const connectSocket = () => {
   return socketIo.connect(`${APP_URI.REACT_APP_API_URI}/online`);
 };
 
-export const onRequestFriend = async (
+export const onRequestFriend = (
   socket,
-  { setAlarmList, setNoticeType },
+  { alarmListDispatch, setNoticeType },
 ) => {
   socket.on('requestFriend', (user) => {
-    setAlarmList({
+    alarmListDispatch({
       type: 'push',
       value: `${user.nickname}님이 친구 신청하였습니다.`,
     });
     setNoticeType('alarm');
     setTimeout(() => {
-      setAlarmList({ type: 'pop' });
+      alarmListDispatch({ type: 'pop' });
       setNoticeType(null);
     }, 2000);
   });
