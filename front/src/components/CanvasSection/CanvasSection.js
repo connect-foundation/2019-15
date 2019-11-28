@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import DrawingPlayGround from './DrawingPlayGround/DrawingPlayGround';
 import WordChoice from './WordChoice/WordChoice';
 import CanvasSectionStyle from './CanvasSection.style';
@@ -15,11 +15,19 @@ const CanvasSection = () => {
     openLetter: '',
     openIndex: 0,
   });
+  const [drawable, setDrawable] = useState(false);
+
   const [isTimerStart, setIsTimerStart] = useState(false);
 
   io.setStartQuestionHandler(setQuestionWord, () => {
     setIsTimerStart(true);
   });
+
+  useEffect(() => {
+    if (painter === io.socket.id) {
+      setDrawable(true);
+    }
+  }, [drawable, io.socket.id, painter]);
 
   return (
     <CanvasSectionStyle>
@@ -32,7 +40,10 @@ const CanvasSection = () => {
           openIndex={questionWord.openIndex}
         />
       </section>
-      <DrawingPlayGround canvasSize={{ width: 800, height: 600 }} />
+      <DrawingPlayGround
+        drawable={drawable}
+        canvasSize={{ width: 800, height: 600 }}
+      />
     </CanvasSectionStyle>
   );
 };
