@@ -1,7 +1,7 @@
 import socketIo from 'socket.io-client';
 import Room from '../room';
 import APP_URI from '../../util/uri';
-import roomInfo from '../room/roomInfo';
+import roomInfo from '../../constant/room/roomInfo';
 
 const io = {
   socket: null,
@@ -65,8 +65,14 @@ const io = {
       setMessage(message);
     });
   },
-  async questionStart({ answer, roomType, roomId }) {
-    this.socket.emit('questionStart', { answer, roomType, roomId });
+  async selectWord({ answer, roomType, roomId }) {
+    this.socket.emit('selectWord', { answer, roomType, roomId });
+  },
+  async setStartQuestionHandler(setQuestionWord, callback) {
+    this.socket.on('startQuestion', ({ wordLength, openLetter, openIndex }) => {
+      setQuestionWord({ wordLength, openLetter, openIndex });
+      callback();
+    });
   },
 };
 

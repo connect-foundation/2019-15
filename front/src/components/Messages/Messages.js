@@ -11,7 +11,7 @@ import MessageComponentStyle from './MessageComponent.style';
 import Button from '../globalComponents/Button/Button';
 import Modal from '../globalComponents/Modal/Modal';
 import Div from '../globalComponents/Modal/ContentDiv.style';
-import globalMessages from '../../logics/messages';
+import globalMessages from '../../constant/messages';
 import ButtonDiv from './ButtonDiv.style';
 
 const testId = 5;
