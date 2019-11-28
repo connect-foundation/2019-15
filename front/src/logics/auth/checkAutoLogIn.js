@@ -1,4 +1,4 @@
-import APP_URI from '../util/uri';
+import APP_URI from '../../util/uri';
 
 function checkAutoLogIn() {
   fetch(`${APP_URI.REACT_APP_API_URI}/auth/authenticate`, {

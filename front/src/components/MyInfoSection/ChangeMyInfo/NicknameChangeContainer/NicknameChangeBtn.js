@@ -4,6 +4,7 @@ import { useMutation } from '@apollo/react-hooks';
 import GlobalContext from '../../../../global.context';
 import SpectreButton from '../../../globalComponents/SpectreButton/SpectreButton';
 import { changeNicknameMutation as changeNicknameQuery } from '../../../../queries/user';
+import User from '../../../../logics/user';
 
 NicknameChangeBtn.propTypes = {
   newNickname: PropTypes.string.isRequired,
@@ -31,7 +32,7 @@ export default function NicknameChangeBtn({
           return;
         }
         setResultText(`"${nickname}"닉네임으로 변경완료!`);
-        setUser({ nickname });
+        setUser(new User(nickname));
       },
     },
   );

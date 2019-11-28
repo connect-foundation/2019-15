@@ -3,6 +3,7 @@ import { Route, Switch, HashRouter } from 'react-router-dom';
 import jwt from 'jsonwebtoken';
 import io from './logics/socketLogic';
 import GlobalContext from './global.context';
+import GamePlayContext from './GamePlay.context';
 
 import Home from './pages/Home/Home';
 import Main from './pages/Main/Main';
@@ -25,6 +26,10 @@ const Router = () => {
   const [room, setRoom] = useState(Room());
   const [user, setUser] = useReducer(changeUser, User(id, nickname));
   const [onlineSocket, setOnlineSocket] = useState(null);
+
+  const [userList, setUserList] = useState([]);
+  const [painter, setPainter] = useState(null);
+
   return (
     <RouterStyle id="Router">
       <HashRouter>
@@ -52,9 +57,16 @@ const Router = () => {
             <Route path="/main">
               <Main />
             </Route>
-            <Route path="/secret:hash">
-              <SecretGame />
-            </Route>
+            <GamePlayContext.Provider
+              value={{ userList, setUserList, painter, setPainter }}
+            >
+              <Route path="/gameplay">
+                <GamePlay />
+              </Route>
+              <Route path="/secret:hash">
+                <SecretGame />
+              </Route>
+            </GamePlayContext.Provider>
           </GlobalContext.Provider>
         </Switch>
       </HashRouter>
