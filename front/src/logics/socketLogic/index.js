@@ -74,6 +74,11 @@ const io = {
       callback();
     });
   },
+  async setEndQuestionHandler() {
+    this.socket.on('endQuestion', ({ nickname }) => {
+      console.log('endQuestion', nickname);
+    });
+  },
 };
 
 export default io;
