@@ -86,6 +86,7 @@ function initSocketIO(io) {
     });
 
     socket.on('exitRoom', ({ nickname, roomType, roomId }) => {
+      if (!roomType || !roomId) return;
       const userList = RoomManager.room[roomType][roomId].players;
       const exitUserIdx = userList.findIndex((user) => user.socket.id === socketId);
       userList.splice(exitUserIdx, 1);
