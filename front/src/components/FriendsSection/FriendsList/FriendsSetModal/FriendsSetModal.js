@@ -9,6 +9,7 @@ import ButtonSectionStyle from './ButtonSection.style';
 import message from '../../../../constant/messages';
 import { deleteFriend, sendFriendRequest } from '../../../../queries/friend';
 import GlobalContext from '../../../../global.context';
+import { emitRequestFriend } from '../../../../logics/socketLogic/online';
 
 const FriendsSetModal = ({ mode, nickname, modalOff, setRefresh }) => {
   const [content, switchContent] = useState(mode);
@@ -17,10 +18,7 @@ const FriendsSetModal = ({ mode, nickname, modalOff, setRefresh }) => {
   const [sendFriendRequestFunc] = useMutation(sendFriendRequest, {
     onCompleted({ sendFriendRequest: { user: receiver, result } }) {
       if (!result || !onlineSocket) return;
-      onlineSocket.emit('requestFriend', {
-        sender: user,
-        receiver,
-      });
+      emitRequestFriend(onlineSocket, { sender: user, receiver });
     },
   });
 

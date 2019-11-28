@@ -6,7 +6,9 @@ import { connectSocket } from '../../logics/socketLogic/online';
 import Room from '../../logics/room';
 
 const Main = () => {
-  const { setOnlineSocket, io, setRoom, setUser } = useContext(GlobalContext);
+  const { setOnlineSocket, io, setRoom, userDispatch } = useContext(
+    GlobalContext,
+  );
 
   useEffect(() => {
     const initSocket = async () => {
@@ -18,7 +20,7 @@ const Main = () => {
     };
     checkAuth();
     initSocket();
-  }, [io, setOnlineSocket, setRoom, setUser]);
+  }, [io, setOnlineSocket, setRoom, userDispatch]);
 
   return <MainPage />;
 };

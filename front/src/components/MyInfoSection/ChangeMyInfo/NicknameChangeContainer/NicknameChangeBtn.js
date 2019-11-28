@@ -22,7 +22,7 @@ export default function NicknameChangeBtn({
   setResultText,
   disabled,
 }) {
-  const { setUser } = useContext(GlobalContext);
+  const { userDispatch } = useContext(GlobalContext);
   const [changeNickname, { loading, error }] = useMutation(
     changeNicknameQuery,
     {
@@ -32,7 +32,7 @@ export default function NicknameChangeBtn({
           return;
         }
         setResultText(`"${nickname}"닉네임으로 변경완료!`);
-        setUser(new User(nickname));
+        userDispatch({ nickname });
       },
     },
   );
