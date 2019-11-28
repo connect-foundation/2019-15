@@ -47,6 +47,11 @@ const RoomManager = {
     }
     return room[0];
   },
+
+  // roomId로 room 객체를 찾은 후 반환
+  getRoomByRoomId(roomName, roomId) {
+    return this.room[roomName][roomId];
+  },
 };
 
 module.exports = { RoomManager, Room };
