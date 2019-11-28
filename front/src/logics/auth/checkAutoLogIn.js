@@ -9,8 +9,7 @@ function checkAutoLogIn() {
     secure: false,
   })
     .then((response) => {
-      if (response.status === 200)
-        window.location.href = `${APP_URI.REACT_APP_URI}/main`;
+      if (response.status === 200) window.location.href = `#/main`;
     })
     .catch((error) => console.log(error));
 }
