@@ -1,8 +1,9 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 import { ButtonContainerStyle, NavImage, Text } from './ButtonContainer.style';
 import GlobalContext from '../../../global.context';
+
 import APP_URI from '../../../util/uri';
 import Button from './Button/Button';
 import NOTICE from '../../../asset/notice.png';
@@ -29,10 +30,10 @@ const ButtonContainer = () => {
     const { nickname } = user;
     const { roomType, roomId } = room;
     await io.exitGameRoom({ nickname, roomType, roomId });
-    setRoom(Room());
+    setRoom(new Room());
   }
 
-  if (room.roomType === null) {
+  if (!room.roomType) {
     return (
       <ButtonContainerStyle>
         {Button(<NavImage src={NOTICE} onClick={switchNotice} />)}

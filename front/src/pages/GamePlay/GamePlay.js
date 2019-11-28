@@ -1,44 +1,43 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { Redirect } from 'react-router-dom';
 
 import NavigationBar from '../../components/NavigationBar/NavigationBar';
 import GameInfo from '../../components/GameInfo/GameInfo';
 import { FlexRowStyle } from '../../components/globalComponents/Container/Flex.style';
 import GlobalContext from '../../global.context';
-import Userlist from '../../components/Userlist/Userlist';
+import UserList from '../../components/Userlist/Userlist';
 import CanvasSection from '../../components/CanvasSection/CanvasSection';
 import Chatting from '../../components/Chatting/Chatting';
-import GamePlayContext from './GamePlay.context';
+import GamePlayContext from '../../GamePlay.context';
 import GameLoading from '../../components/GameLoading/GameLoading';
 import Timer from '../../components/Timer/Timer';
 
 const GamePlay = () => {
   const { io, room } = useContext(GlobalContext);
-  const [userlist, setUserlist] = useState([]);
-  const [painter, setPainter] = useState(null);
+  const { setUserList, setPainter } = useContext(GamePlayContext);
 
   useEffect(() => {
     const initSocket = async () => {
       if (io.socket) {
-        await io.initUserlistMsgHandler({ setUserlist });
+        await io.initUserListMsgHandler({ setUserList });
         await io.initGameStartMsgHandler({ setPainter });
       }
     };
     initSocket();
-  }, [io]);
+  }, [io, setPainter, setUserList]);
 
   if (io.socket === null) {
     return <Redirect to="main" />;
   }
 
   return (
-    <GamePlayContext.Provider value={{ userlist, painter, setPainter }}>
+    <>
       <GameLoading />
       <NavigationBar visible={room.roomType} />
       <GameInfo />
       <>
         <FlexRowStyle>
-          <Userlist />
+          <UserList />
           <div>
             <Timer />
             <CanvasSection />
@@ -46,7 +45,7 @@ const GamePlay = () => {
           <Chatting />
         </FlexRowStyle>
       </>
-    </GamePlayContext.Provider>
+    </>
   );
 };
 
