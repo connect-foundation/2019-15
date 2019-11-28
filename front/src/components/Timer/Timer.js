@@ -1,49 +1,48 @@
-import React, {
-  useState,
-  useEffect,
-  forwardRef,
-  useImperativeHandle,
-} from 'react';
+import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import TimerStyle from './Timer.style';
 
-const Timer = forwardRef((props, ref) => {
+Timer.propTypes = {
+  isTimerStart: PropTypes.bool.isRequired,
+  setIsTimerStart: PropTypes.func.isRequired,
+};
+
+function Timer({ isTimerStart, setIsTimerStart }) {
   const [time, setTime] = useState(30);
   const [flag, setFlag] = useState(false);
-
-  const countDown = () => {
-    if (flag) setTime(time - 1);
-  };
-
-  function runTimer() {
-    if (time > 0) setTimeout(countDown, 1000);
-    else {
-      // to do something...
-    }
-  }
-
-  function startTimer() {
-    setFlag(true);
-    runTimer();
-  }
 
   function resetTimer() {
     setTime(30);
   }
 
-  function stopTimer() {
-    setFlag(false);
-    resetTimer();
-  }
-
   useEffect(() => {
-    if (flag) runTimer();
-  });
+    // useCallback을 쓰면 hoisting이 되지 않아서 useEffect 내부에 선언함
+    const countDown = () => {
+      if (flag) setTime(time - 1);
+    };
 
-  useImperativeHandle(ref, () => ({
-    triggerTimer() {
-      startTimer();
-    },
-  }));
+    function stopTimer() {
+      setFlag(false);
+      resetTimer();
+    }
+
+    function runTimer() {
+      if (time > 0) setTimeout(countDown, 1000);
+      else {
+        stopTimer();
+        setIsTimerStart(false);
+        // to do something...
+      }
+    }
+
+    function startTimer() {
+      setFlag(true);
+      runTimer();
+    }
+
+    runTimer();
+    if (isTimerStart) startTimer();
+  }, [isTimerStart, setIsTimerStart, time, flag]);
 
   return (
     <>
@@ -52,6 +51,6 @@ const Timer = forwardRef((props, ref) => {
       </TimerStyle>
     </>
   );
-});
+}
 
 export default Timer;
