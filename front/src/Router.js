@@ -22,9 +22,13 @@ const changeUser = (prev, newUser) => {
 const Router = () => {
   const { jwt: jwtToken } = parseCookies();
 
-  const { id, nickname } = jwtToken ? jwt.decode(jwtToken) : null;
-  const [room, setRoom] = useState(Room());
-  const [user, setUser] = useReducer(changeUser, User(id, nickname));
+  let userInitial = new User();
+  if (jwtToken) {
+    const { id, nickname } = jwt.decode(jwtToken);
+    userInitial = new User(nickname, null, id);
+  }
+  const [room, setRoom] = useState(new Room());
+  const [user, setUser] = useReducer(changeUser, userInitial);
   const [onlineSocket, setOnlineSocket] = useState(null);
 
   const [userList, setUserList] = useState([]);
