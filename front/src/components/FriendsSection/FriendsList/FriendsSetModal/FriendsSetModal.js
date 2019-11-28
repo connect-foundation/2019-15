@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 
 import PropTypes from 'prop-types';
 import { useMutation } from '@apollo/react-hooks';
@@ -8,11 +8,21 @@ import Div from '../../../globalComponents/Modal/ContentDiv.style';
 import ButtonSectionStyle from './ButtonSection.style';
 import message from '../../../../constant/messages';
 import { deleteFriend, sendFriendRequest } from '../../../../queries/friend';
+import GlobalContext from '../../../../global.context';
 
 const FriendsSetModal = ({ mode, nickname, modalOff, setRefresh }) => {
   const [content, switchContent] = useState(mode);
   const [deleteFriendFunc] = useMutation(deleteFriend);
-  const [sendFriendRequestFunc] = useMutation(sendFriendRequest);
+  const { onlineSocket, user } = useContext(GlobalContext);
+  const [sendFriendRequestFunc] = useMutation(sendFriendRequest, {
+    onCompleted({ sendFriendRequest: { user: receiver, result } }) {
+      if (!result || !onlineSocket) return;
+      onlineSocket.emit('requestFriend', {
+        sender: user,
+        receiver,
+      });
+    },
+  });
 
   async function clickHandler() {
     if (content === 'empty' || content === 'addDone') modalOff();

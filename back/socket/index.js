@@ -3,6 +3,7 @@ const Timer = require('../util/timer/Timer');
 const { RoomManager, Room } = require('./Room');
 const User = require('./User');
 const getRandomInt = require('../util/getRandomInt');
+const setOnlineSockets = require('./online');
 
 function sendUserListToRoom(list, roomId, io) {
   const userList = list.map((v) => {
@@ -142,6 +143,10 @@ function initSocketIO(io) {
       io.to(roomId).emit('drawing');
     });
   });
+
+  // onlineIo
+  this.io = io;
+  this.onlineIo = io.of('/online').on('connection', setOnlineSockets.bind(this));
 }
 
 module.exports = initSocketIO;
