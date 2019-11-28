@@ -19,11 +19,11 @@ module.exports = `
   } 
 
   extend type Mutation{
-    friends(pFriendId:Int):[User]
-    deleteFriend(id:Int, nickname:String):[Friend]
-    findFriendRequests(sFriendId:Int):[User]
-    deleteFriendRequest(id:Int, nickname:String):[BeforeFriend]
-    acceptFriendRequest(id:Int, nickname:String):User
-    sendFriendRequest(id:Int, nickname:String):BeforeFriend
+    friends:[User]
+    deleteFriend(nickname:String):[Friend]
+    findFriendRequests:[User]
+    deleteFriendRequest(nickname:String):[BeforeFriend]
+    acceptFriendRequest(nickname:String):User
+    sendFriendRequest(nickname:String):BeforeFriend
   }
 `;

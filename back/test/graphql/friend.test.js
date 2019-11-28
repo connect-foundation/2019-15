@@ -17,7 +17,7 @@ describe('friend resolvers test', () => {
       .post(graphqlPath)
       .send({
         query: `mutation {
-                  friends(pFriendId:4){
+                  friends{
                     nickname
                   }
                 }`,

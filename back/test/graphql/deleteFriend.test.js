@@ -32,7 +32,7 @@ describe('deleteFriend resolvers test', () => {
       .post(graphqlPath)
       .send({
         query: `mutation deleteFriend {
-                  deleteFriend(id: 2, nickname: "이지영") {
+                  deleteFriend(nickname: "배추김치") {
                     id
                   }
                 }`,

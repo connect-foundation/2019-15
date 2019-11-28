@@ -1,48 +1,48 @@
 import gql from 'graphql-tag';
 
-export const findFriendsById = gql`
-  mutation friends($id: Int) {
-    friends(pFriendId: $id) {
+export const findFriends = gql`
+  mutation friends {
+    friends {
       nickname
     }
   }
 `;
 
 export const deleteFriend = gql`
-  mutation deleteFriend($id: Int, $nickname: String) {
-    deleteFriend(id: $id, nickname: $nickname) {
+  mutation deleteFriend($nickname: String) {
+    deleteFriend(nickname: $nickname) {
       id
     }
   }
 `;
 
 export const findFriendRequests = gql`
-  mutation findFriendRequest($id: Int) {
-    findFriendRequests(sFriendId: $id) {
+  mutation findFriendRequest {
+    findFriendRequests {
       nickname
     }
   }
 `;
 
 export const deleteFriendRequest = gql`
-  mutation deleteFriendRequest($id: Int, $nickname: String) {
-    deleteFriendRequest(id: $id, nickname: $nickname) {
+  mutation deleteFriendRequest($nickname: String) {
+    deleteFriendRequest(nickname: $nickname) {
       id
     }
   }
 `;
 
 export const acceptFriendRequest = gql`
-  mutation acceptFriendRequest($id: Int, $nickname: String) {
-    acceptFriendRequest(id: $id, nickname: $nickname) {
+  mutation acceptFriendRequest($nickname: String) {
+    acceptFriendRequest(nickname: $nickname) {
       nickname
     }
   }
 `;
 
 export const sendFriendRequest = gql`
-  mutation sendFriendRequest($id: Int, $nickname: String) {
-    sendFriendRequest(id: $id, nickname: $nickname) {
+  mutation sendFriendRequest($nickname: String) {
+    sendFriendRequest(nickname: $nickname) {
       id
     }
   }
