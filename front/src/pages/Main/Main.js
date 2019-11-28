@@ -1,6 +1,6 @@
 import React, { useEffect, useContext } from 'react';
 import GlobalContext from '../../global.context';
-import checkAuth from '../../logics/checkAuth';
+import checkAuth from '../../logics/auth/checkAuth';
 import MainPage from './MainPage';
 import Room from '../../logics/room';
 
