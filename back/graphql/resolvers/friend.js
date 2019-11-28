@@ -115,7 +115,7 @@ const friendResolvers = {
       } catch {
         console.log('already sent');
       }
-      return idFromNickname;
+      return { user: idFromNickname, result: true };
     },
   },
 };
