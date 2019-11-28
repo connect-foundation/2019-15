@@ -1,5 +1,5 @@
 const timerConfig = {
-  time: 30,
+  defaultTime: 30,
 };
 
 module.exports = timerConfig;
