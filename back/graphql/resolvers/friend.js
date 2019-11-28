@@ -5,10 +5,10 @@ const { Op } = Sequelize;
 const friendResolvers = {
   Query: {
     addFriendForTest: (obj, args, { Friends }) => {
-      Friends.create({ pFriendId: 1, sFriendId: 2 }).then({}, () => {
+      Friends.create({ pFriendId: 4, sFriendId: 22 }).then({}, () => {
         console.log('already exists');
       });
-      Friends.create({ pFriendId: 2, sFriendId: 1 }).then({}, () => {
+      Friends.create({ pFriendId: 22, sFriendId: 4 }).then({}, () => {
         console.log('already exists');
       });
       return Friends.findAll({
