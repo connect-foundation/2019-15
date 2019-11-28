@@ -4,13 +4,13 @@ const { Op } = Sequelize;
 
 const friendResolvers = {
   Query: {
-    addFriendForTest: (obj, args, { Friends }) => {
-      Friends.create({ pFriendId: 4, sFriendId: 22 }).then({}, () => {
+    addFriendForTest: async (obj, args, { Friends }) => {
+      try {
+        await Friends.create({ pFriendId: 4, sFriendId: 22 });
+        await Friends.create({ pFriendId: 22, sFriendId: 4 });
+      } catch {
         console.log('already exists');
-      });
-      Friends.create({ pFriendId: 22, sFriendId: 4 }).then({}, () => {
-        console.log('already exists');
-      });
+      }
       return Friends.findAll({
         where: {
           [Op.or]: [
@@ -79,18 +79,18 @@ const friendResolvers = {
       const idFromNickname = await Users.findOne({
         where: { nickname: nickname },
       });
-      await Friends.create({
-        pFriendId: idFromNickname.dataValues.id,
-        sFriendId: req.user.id,
-      }).then({}, () => {
+      try {
+        await Friends.create({
+          pFriendId: idFromNickname.dataValues.id,
+          sFriendId: req.user.id,
+        });
+        await Friends.create({
+          pFriendId: req.user.id,
+          sFriendId: idFromNickname.dataValues.id,
+        });
+      } catch {
         console.log('already exists');
-      });
-      await Friends.create({
-        pFriendId: req.user.id,
-        sFriendId: idFromNickname.dataValues.id,
-      }).then({}, () => {
-        console.log('already exists');
-      });
+      }
       await Friends.update(
         { friendStateId: 2 },
         {
@@ -105,13 +105,16 @@ const friendResolvers = {
       const idFromNickname = await Users.findOne({
         where: { nickname: nickname },
       });
-      await BeforeFriends.create({
-        pFriendId: req.user.id,
-        sFriendId: idFromNickname.dataValues.id,
-        friendStateId: 1,
-      }).then({}, () => {
+
+      try {
+        await BeforeFriends.create({
+          pFriendId: req.user.id,
+          sFriendId: idFromNickname.dataValues.id,
+          friendStateId: 1,
+        });
+      } catch {
         console.log('already sent');
-      });
+      }
       return idFromNickname;
     },
   },
