@@ -52,9 +52,6 @@ const Router = () => {
               setRoom,
             }}
           >
-            <Route path="/gameplay">
-              <GamePlay />
-            </Route>
             <Route path="/mypage">
               <MyPage />
             </Route>
