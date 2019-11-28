@@ -6,7 +6,7 @@ import Modal from '../../../globalComponents/Modal/Modal';
 import Button from '../../../globalComponents/Button/Button';
 import Div from '../../../globalComponents/Modal/ContentDiv.style';
 import ButtonSectionStyle from './ButtonSection.style';
-import message from '../../../../logics/messages';
+import message from '../../../../constant/messages';
 import { deleteFriend, sendFriendRequest } from '../../../../queries/friend';
 
 const FriendsSetModal = ({ mode, nickname, modalOff, setRefresh }) => {
