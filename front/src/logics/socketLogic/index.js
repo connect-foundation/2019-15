@@ -57,12 +57,13 @@ const io = {
   async exitGameRoom({ nickname, roomType, roomId }) {
     this.socket.emit('exitRoom', { nickname, roomType, roomId });
   },
-  async sendMessage({ nickname, roomType, roomId, inputValue }) {
-    this.socket.emit('sendMessage', { nickname, roomType, roomId, inputValue });
+  async sendMessage({ socketId, roomType, roomId, inputValue }) {
+    this.socket.emit('sendMessage', { socketId, roomType, roomId, inputValue });
   },
-  async initChattingHandler({ setMessage }) {
-    this.socket.on('getMessage', ({ message }) => {
-      setMessage(message);
+  async initChattingHandler({ messages, pushMessage }) {
+    this.socket.on('getMessage', ({ content, privileged }) => {
+      messages.push({ content, privileged });
+      pushMessage(messages.slice());
     });
   },
   async questionStart({ answer, roomType, roomId }) {
