@@ -1,8 +1,8 @@
-const Room = (...params) => {
-  if (params.length === 2) {
-    return { roomType: params[0], roomId: params[1] };
+class Room {
+  constructor(roomId, roomType) {
+    this.roomId = roomId;
+    this.roomType = roomType;
   }
-  return { roomType: null, roomId: null };
-};
+}
 
 export default Room;

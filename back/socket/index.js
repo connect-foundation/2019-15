@@ -1,19 +1,20 @@
 const Timer = require('../util/timer/Timer');
 
-const { RoomManager, makeNewRoom } = require('./Room');
+const { RoomManager, Room } = require('./Room');
 const User = require('./User');
 
-function sendUserlistToRoom(list, roomId, io) {
-  const userlist = list.map((v) => {
-    return { nickname: v.nickname, socketId: v.socket.id };
+function sendUserListToRoom(list, roomId, io) {
+  const userList = list.map((v) => {
+    const userName = v.nickname || '부스트캠퍼';
+    return { nickname: userName, socketId: v.socket.id };
   });
-  io.in(roomId).emit('userlist', { userlist: JSON.stringify(userlist) });
+  io.in(roomId).emit('userList', { userList: JSON.stringify(userList) });
 }
 
 function personEnterRoom(nickname, socket, roomName, io) {
   const roomId = RoomManager.getEnableRoomId(roomName);
   const room = RoomManager.room[roomName][roomId];
-  room.players.push(User(nickname, socket));
+  room.players.push(new User(nickname, socket));
   room.timer = new Timer();
 
   socket.join(roomId);
@@ -22,7 +23,7 @@ function personEnterRoom(nickname, socket, roomName, io) {
     roomType: roomName,
   });
 
-  sendUserlistToRoom(room.players, roomId, io);
+  sendUserListToRoom(room.players, roomId, io);
 
   if (room.players.length === 2) {
     room.currentExaminer = 0;
@@ -33,51 +34,76 @@ function personEnterRoom(nickname, socket, roomName, io) {
 
 function personEnterSecretRoom(nickname, socket, roomId, io) {
   const secretRoomList = RoomManager.room['비밀방'];
-  const room = makeNewRoom();
-  secretRoomList[roomId] = room;
+
+  let room;
+  if (roomId in secretRoomList) {
+    room = secretRoomList[roomId];
+  } else {
+    room = new Room();
+    secretRoomList[roomId] = room;
+  }
 
   socket.join(roomId);
-  room.players.push(User(nickname, socket));
-
-  console.log(room.players);
+  room.players.push(new User(nickname, socket));
+  sendUserListToRoom(room.players, roomId, io);
 }
 
 function initSocketIO(io) {
   io.on('connection', (socket) => {
+    let userName;
+    let roomInfo;
+    const socketId = socket.id;
+
     RoomManager.roomList.forEach((roomName) => {
       socket.on(`enter${roomName}`, ({ nickname }) => {
         personEnterRoom(nickname, socket, roomName, io);
+        userName = nickname;
       });
     });
 
-    socket.on('getUserlist', ({ roomType, roomId }) => {
+    socket.on('getUserList', ({ roomType, roomId }) => {
       const nRooms = RoomManager.room[roomType];
 
       const roomIdx = nRooms.findIndex((roomObject) => roomObject.roomId === roomId);
 
       // 방이 없는 경우
       if (roomIdx < 0) return;
+      roomInfo = { roomId, roomType };
+      const userList = nRooms[roomIdx].people.map((v) => v.id);
 
-      const userlist = nRooms[roomIdx].people.map((v) => v.id);
-
-      socket.emit('userlist', { userlist: JSON.stringify(userlist) });
+      socket.emit('userList', { userList: JSON.stringify(userList) });
     });
 
     socket.on('makeSecret', ({ nickname, roomId }) => {
       personEnterSecretRoom(nickname, socket, roomId, io);
+      userName = nickname;
+      roomInfo = { roomId, roomType: '비밀방' };
+    });
+
+    socket.on('startSecretGame', ({ roomId, roomType }) => {
+      const room = RoomManager.room[roomType][roomId];
+      if (room.players.length >= 2) {
+        io.to(roomId).emit('startSecretGame', { painter: room.players[0].socket.id });
+      }
     });
 
     socket.on('exitRoom', ({ nickname, roomType, roomId }) => {
-      const roomObject = RoomManager.room[roomType];
-      const exitUserIdx = roomObject[roomId].players.findIndex((user) => {
-        if (user.nickname === nickname) {
-          user.socket.disconnect();
-          return true;
-        }
-        return false;
-      });
+      const userList = RoomManager.room[roomType][roomId].players;
+      const exitUserIdx = userList.findIndex((user) => user.socket.id === socketId);
+      userList.splice(exitUserIdx, 1);
 
-      roomObject[roomId].players.splice(exitUserIdx);
+      sendUserListToRoom(userList, roomId, io);
+    });
+
+    socket.on('disconnect', () => {
+      if (roomInfo) {
+        const userList = RoomManager.room[roomInfo.roomType][roomInfo.roomId].players;
+        const userIdx = userList.findIndex((user) => user.socket.id === socketId);
+        if (userIdx >= 0) {
+          userList.splice(userIdx, 1);
+          sendUserListToRoom(userList, roomInfo.roomId, io);
+        }
+      }
     });
 
     socket.on('sendMessage', ({ nickname, roomType, roomId, inputValue }) => {

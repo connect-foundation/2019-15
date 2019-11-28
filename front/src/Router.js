@@ -3,6 +3,7 @@ import { Route, Switch, HashRouter } from 'react-router-dom';
 import jwt from 'jsonwebtoken';
 import io from './logics/socketLogic';
 import GlobalContext from './global.context';
+import GamePlayContext from './GamePlay.context';
 
 import Home from './pages/Home/Home';
 import Main from './pages/Main/Main';
@@ -23,8 +24,13 @@ const Router = () => {
   const { jwt: jwtToken } = parseCookies();
   let nickname;
   if (jwtToken) nickname = jwt.decode(jwtToken).nickname;
-  const [room, setRoom] = useState(Room());
-  const [user, setUser] = useReducer(changeUser, User(nickname));
+
+  const [room, setRoom] = useState(new Room());
+  const [user, setUser] = useReducer(changeUser, new User(nickname));
+
+  const [userList, setUserList] = useState([]);
+  const [painter, setPainter] = useState(null);
+
   return (
     <RouterStyle id="Router">
       <HashRouter>
@@ -33,18 +39,22 @@ const Router = () => {
             <Home />
           </Route>
           <GlobalContext.Provider value={{ io, user, setUser, room, setRoom }}>
-            <Route path="/gameplay">
-              <GamePlay />
-            </Route>
             <Route path="/mypage">
               <MyPage />
             </Route>
             <Route path="/main">
               <Main />
             </Route>
-            <Route path="/secret:hash">
-              <SecretGame />
-            </Route>
+            <GamePlayContext.Provider
+              value={{ userList, setUserList, painter, setPainter }}
+            >
+              <Route path="/gameplay">
+                <GamePlay />
+              </Route>
+              <Route path="/secret:hash">
+                <SecretGame />
+              </Route>
+            </GamePlayContext.Provider>
           </GlobalContext.Provider>
         </Switch>
       </HashRouter>

@@ -1,5 +1,10 @@
-const User = (nickname, socket) => {
-  return { nickname, privileged : false, socket };
-};
+class User {
+  constructor(nickname, socket, id) {
+    this.nickname = nickname;
+    this.privileged = false;
+    this.socket = socket;
+    this.id = id;
+  }
+}
 
 module.exports = User;

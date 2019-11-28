@@ -1,7 +1,7 @@
-const User = (nickname) => {
-  if (nickname) return { nickname };
-
-  return { nickname: null };
-};
-
+class User {
+  constructor(nickname, roomOwner) {
+    this.nickname = nickname;
+    this.roomOwner = roomOwner;
+  }
+}
 export default User;
