@@ -25,4 +25,4 @@ function setOnlineSockets(socket) {
   socket.on('disconnect', disconnect.bind(this));
 }
 
-module.exports = { setOnlineSockets };
+module.exports = setOnlineSockets;
