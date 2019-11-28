@@ -94,6 +94,10 @@ function initSocketIO(io) {
       io.to(roomId).emit('drawing');
     });
   });
+
+  // onlineIo
+  this.io = io;
+  this.onlineIo = io.of('/online').on('connection', setOnlineSockets.bind(this));
 }
 
 module.exports = initSocketIO;
