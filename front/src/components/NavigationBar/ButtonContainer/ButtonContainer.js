@@ -57,7 +57,7 @@ const ButtonContainer = () => {
     setRoom(new Room());
   }
 
-  if (room.roomType === null) {
+  if (!room.roomType) {
     let notice;
     if (noticeType === 'alarm') notice = <Alarm alarmList={alarmList} />;
     else if (noticeType === 'messages') notice = <Messages />;

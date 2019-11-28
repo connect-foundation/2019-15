@@ -3,6 +3,7 @@ const Timer = require('../util/timer/Timer');
 const { RoomManager, Room } = require('./Room');
 const User = require('./User');
 const getRandomInt = require('../util/getRandomInt');
+const setOnlineSockets = require('./online');
 
 function sendUserListToRoom(list, roomId, io) {
   const userList = list.map((v) => {
@@ -87,6 +88,7 @@ function initSocketIO(io) {
     });
 
     socket.on('exitRoom', ({ nickname, roomType, roomId }) => {
+      if (!roomType || !roomId) return;
       const userList = RoomManager.room[roomType][roomId].players;
       const exitUserIdx = userList.findIndex((user) => user.socket.id === socketId);
       userList.splice(exitUserIdx, 1);
