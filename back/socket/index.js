@@ -25,6 +25,8 @@ function personEnterRoom(nickname, socket, roomName, io) {
   sendUserlistToRoom(room.players, roomId, io);
 
   if (room.players.length === 2) {
+    room.currentExaminer = 0;
+    room.players[0].privileged = true;
     io.to(roomId).emit('gamestart', { painter: room.players[0].socket.id });
   }
 }
@@ -80,13 +82,17 @@ function initSocketIO(io) {
 
     socket.on('sendMessage', ({ nickname, roomType, roomId, inputValue }) => {
       const answer = RoomManager.room[roomType][roomId].word;
-      console.log(answer);
-      let returnValue;
-
-      if (inputValue === answer) returnValue = `${nickname}님이 정답을 맞췄습니다! Hooray`;
-      else returnValue = `${nickname} : ${inputValue}`;
-
-      io.in(roomId).emit('getMessage', { message: returnValue });
+      RoomManager.room[roomType][roomId].players.findIndex((user)=>{  ////////////////////////////////////////////
+        if (user.nickname === nickname){
+          console.log(user.privileged);
+        }
+      });
+      if (inputValue === answer){
+        io.in(roomId).emit('getMessage', { message: `${nickname}님이 정답을 맞췄습니다! Hooray` });
+      }
+      else{
+        io.in(roomId).emit('getMessage', { message: `${nickname} : ${inputValue}` });
+      }
     });
 
     socket.on('questionStart', ({ answer, roomType, roomId }) => {
