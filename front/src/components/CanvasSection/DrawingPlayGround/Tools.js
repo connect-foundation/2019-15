@@ -8,11 +8,13 @@ import Tool from './ToolType/Tool';
 const Tools = ({ drawingOptions, setDrawingOptions }) => {
   const { tool, strokeColor } = drawingOptions;
   const changeTool = (toolName) => {
-    setDrawingOptions({ type: 'tool', value: toolName });
+    if (tool.getName() !== 'cursor')
+      setDrawingOptions({ type: 'tool', value: toolName });
   };
 
   const changeColor = (rgb) => {
-    setDrawingOptions({ type: 'strokeColor', value: rgb });
+    if (tool.getName() !== 'cursor')
+      setDrawingOptions({ type: 'strokeColor', value: rgb });
   };
 
   return (
