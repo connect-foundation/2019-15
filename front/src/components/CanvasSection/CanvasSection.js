@@ -1,4 +1,4 @@
-import React, { useState, useContext, useRef } from 'react';
+import React, { useState, useContext } from 'react';
 import DrawingPlayGround from './DrawingPlayGround/DrawingPlayGround';
 import WordChoice from './WordChoice/WordChoice';
 import CanvasSectionStyle from './CanvasSection.style';
@@ -15,17 +15,17 @@ const CanvasSection = () => {
     openLetter: '',
     openIndex: 0,
   });
-  const timerRef = useRef(null);
+  const [isTimerStart, setIsTimerStart] = useState(false);
 
   io.setStartQuestionHandler(setQuestionWord, () => {
-    timerRef.current.triggerTimer();
+    setIsTimerStart(true);
   });
 
   return (
     <CanvasSectionStyle>
       {io.socket.id === painter ? <WordChoice /> : null}
       <section>
-        <Timer ref={timerRef} />
+        <Timer isTimerStart={isTimerStart} setIsTimerStart={setIsTimerStart} />
         <WordPreview
           openLetter={questionWord.openLetter}
           wordLength={questionWord.wordLength}
