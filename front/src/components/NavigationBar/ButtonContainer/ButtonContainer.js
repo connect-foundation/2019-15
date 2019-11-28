@@ -13,7 +13,7 @@ import LOGOUT from '../../../asset/logout.png';
 import Messages from '../../Messages/Messages';
 import Room from '../../../logics/room';
 import Alarm from '../../Alarm/Alarm';
-import { initRequestEvent } from '../../../logics/socketLogic/online';
+import { onRequestFriend } from '../../../logics/socketLogic/online';
 
 function alarmListReducer(state, action) {
   switch (action.type) {
@@ -44,7 +44,7 @@ const ButtonContainer = () => {
   useEffect(() => {
     const initEvents = async () => {
       if (onlineSocket) {
-        await initRequestEvent(onlineSocket, { setAlarmList, setNoticeType });
+        onRequestFriend(onlineSocket, { setAlarmList, setNoticeType });
       }
     };
     initEvents();
