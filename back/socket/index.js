@@ -86,41 +86,38 @@ function initSocketIO(io) {
     });
 
     socket.on('exitRoom', ({ nickname, roomType, roomId }) => {
-      const roomObject = RoomManager.room[roomType];
-      const exitUserIdx = roomObject[roomId].players.findIndex((user) => {
-        if (user.nickname === nickname) {
-          user.socket.disconnect();
-          return true;
+      const userList = RoomManager.room[roomType][roomId].players;
+      const exitUserIdx = userList.findIndex((user) => user.socket.id === socketId);
+      userList.splice(exitUserIdx, 1);
+
+      sendUserListToRoom(userList, roomId, io);
+    });
+
+    socket.on('disconnect', () => {
+      if (roomInfo) {
+        const userList = RoomManager.room[roomInfo.roomType][roomInfo.roomId].players;
+        const userIdx = userList.findIndex((user) => user.socket.id === socketId);
+        if (userIdx >= 0) {
+          userList.splice(userIdx, 1);
+          sendUserListToRoom(userList, roomInfo.roomId, io);
         }
-        return false;
-      });
+      }
+    });
 
-      socket.on('disconnect', () => {
-        if (roomInfo) {
-          const userList = RoomManager.room[roomInfo.roomType][roomInfo.roomId].players;
-          const userIdx = userList.findIndex((user) => user.socket.id === socketId);
-          if (userIdx >= 0) {
-            userList.splice(userIdx, 1);
-            sendUserListToRoom(userList, roomInfo.roomId, io);
-          }
-        }
-      });
+    socket.on('sendMessage', ({ nickname, roomId, inputValue }) => {
+      io.in(roomId).emit('getMessage', { message: `${nickname} : ${inputValue}` });
+    });
 
-      socket.on('sendMessage', ({ nickname, roomId, inputValue }) => {
-        io.in(roomId).emit('getMessage', { message: `${nickname} : ${inputValue}` });
-      });
+    socket.on('questionStart', ({ answer, roomType, roomId }) => {
+      const room = RoomManager.room[roomType][roomId];
+      room.word = answer;
+      // 서버 타이머 트리거
+    });
 
-      socket.on('questionStart', ({ answer, roomType, roomId }) => {
-        const room = RoomManager.room[roomType][roomId];
-        room.word = answer;
-        // 서버 타이머 트리거
-      });
-
-      // 출제자가 캔버스에 그림을 그리는 경우.
-      socket.on('drawing', ({ roomId }) => {
-        // 출제자를 제외한 참가자들에게 캔버스 정보를 전송
-        io.to(roomId).emit('drawing');
-      });
+    // 출제자가 캔버스에 그림을 그리는 경우.
+    socket.on('drawing', ({ roomId }) => {
+      // 출제자를 제외한 참가자들에게 캔버스 정보를 전송
+      io.to(roomId).emit('drawing');
     });
   });
 }
