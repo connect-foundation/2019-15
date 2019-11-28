@@ -1,6 +1,7 @@
 import React, { useEffect, useReducer } from 'react';
 import PropTypes from 'prop-types';
 import WordPreviewStyle from './WordPreview.style';
+import makeEmptyArray from '../../../logics/wordPreview/makeEmptyArray';
 
 WordPreview.propTypes = {
   wordLength: PropTypes.number.isRequired,
@@ -8,34 +9,40 @@ WordPreview.propTypes = {
   openLetter: PropTypes.string.isRequired,
 };
 
-function WordPreview({ wordLength, openIndex, openLetter }) {
-  function makeEmptyArray(length) {
-    return new Array(length).fill('_');
-  }
-
-  function reducer(state, action) {
-    switch (action.type) {
-      case 'makeNewArr': {
-        return makeEmptyArray(action.arg);
-      }
-      case 'openLetter': {
-        const copied = [...state];
-        copied[openIndex] = openLetter;
-        return copied;
-      }
-      default: {
-        return state;
-      }
+function lettersReducer(state, action) {
+  switch (action.type) {
+    case 'makeNewArray': {
+      return makeEmptyArray(action.arg);
+    }
+    case 'openLetter': {
+      const copied = [...state];
+      copied[action.arg.openIndex] = action.arg.openLetter;
+      return copied;
+    }
+    default: {
+      return state;
     }
   }
-  const [letters, dispatch] = useReducer(reducer, makeEmptyArray(wordLength));
+}
+
+function WordPreview({ wordLength, openIndex, openLetter }) {
+  const [letters, dispatch] = useReducer(
+    lettersReducer,
+    makeEmptyArray(wordLength),
+  );
 
   useEffect(() => {
-    dispatch({ type: 'makeNewArr', arg: wordLength });
+    dispatch({ type: 'makeNewArray', arg: wordLength });
   }, [wordLength, openIndex, openLetter]);
 
   function openLetterTrigger() {
-    dispatch({ type: 'openLetter' });
+    dispatch({
+      type: 'openLetter',
+      arg: {
+        openIndex,
+        openLetter,
+      },
+    });
   }
 
   return (
