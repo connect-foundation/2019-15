@@ -1,5 +1,4 @@
 const Timer = require('../util/timer/Timer');
-
 const { RoomManager, Room } = require('./Room');
 const User = require('./User');
 const getRandomInt = require('../util/getRandomInt');
@@ -16,7 +15,7 @@ function personEnterRoom(nickname, socket, roomName, io) {
   const roomId = RoomManager.getEnableRoomId(roomName);
   const room = RoomManager.room[roomName][roomId];
   room.players.push(new User(nickname, socket));
-  room.timer = new Timer();
+  room.timer = new Timer(roomId, roomName, io);
 
   socket.join(roomId);
   socket.emit(`connect${roomName}`, {
@@ -27,6 +26,7 @@ function personEnterRoom(nickname, socket, roomName, io) {
   sendUserListToRoom(room.players, roomId, io);
 
   if (room.players.length === 2) {
+    room.currentExaminer = room.players.length - 1;
     io.to(roomId).emit('gamestart', { painter: room.players[0].socket.id });
   }
 }
@@ -62,7 +62,6 @@ function initSocketIO(io) {
 
     socket.on('getUserList', ({ roomType, roomId }) => {
       const nRooms = RoomManager.room[roomType];
-
       const roomIdx = nRooms.findIndex((roomObject) => roomObject.roomId === roomId);
 
       // 방이 없는 경우
@@ -82,7 +81,9 @@ function initSocketIO(io) {
     socket.on('startSecretGame', ({ roomId, roomType }) => {
       const room = RoomManager.room[roomType][roomId];
       if (room.players.length >= 2) {
-        io.to(roomId).emit('startSecretGame', { painter: room.players[0].socket.id });
+        io.to(roomId).emit('startSecretGame', {
+          painter: room.players[room.players.length - 1].socket.id,
+        });
       }
     });
 
@@ -106,7 +107,9 @@ function initSocketIO(io) {
     });
 
     socket.on('sendMessage', ({ nickname, roomId, inputValue }) => {
+      // 클라에게 뿌려주기
       io.in(roomId).emit('getMessage', { message: `${nickname} : ${inputValue}` });
+      // 정답 판단하기
     });
 
     socket.on('selectWord', ({ answer, roomType, roomId }) => {
