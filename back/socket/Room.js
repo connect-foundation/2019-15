@@ -5,18 +5,18 @@ const makeRoomId = () => {
   return uuid();
 };
 
-const makeNewRoom = () => {
-  return {
-    players: [],
-    wordSet: null,
-    word: null,
-    timer: null,
-    state: null,
-    currentExaminer: null,
-    totalRound: null,
-    currentRound: null,
-  };
-};
+class Room {
+  constructor() {
+    this.players = [];
+    this.wordSet = null;
+    this.word = null;
+    this.timer = null;
+    this.state = null;
+    this.currentExaminer = null;
+    this.totalRound = null;
+    this.currentRound = null;
+  }
+}
 
 const RoomManager = {
   roomList: ['3명', '6명', '12명', '100명', '비밀방'],
@@ -25,7 +25,7 @@ const RoomManager = {
 
   // 방이 없을 때 새로운 방을 만들고 반환.
   addRoom: function(roomName) {
-    const newRoom = makeNewRoom();
+    const newRoom = new Room();
     const roomId = makeRoomId();
     this.room[roomName][roomId] = newRoom;
     return roomId;
@@ -49,4 +49,4 @@ const RoomManager = {
   },
 };
 
-module.exports = { RoomManager, makeNewRoom };
+module.exports = { RoomManager, Room };

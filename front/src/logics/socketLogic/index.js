@@ -5,9 +5,11 @@ import roomInfo from '../../constant/room/roomInfo';
 
 const io = {
   socket: null,
+
   async connectSocket() {
     this.socket = await socketIo.connect(`${APP_URI.REACT_APP_API_URI}`);
   },
+
   async getSocket() {
     if (this.socket !== null) {
       return this.socket;
@@ -15,27 +17,43 @@ const io = {
     await this.connectSocket();
     return this.socket;
   },
+
   async initConnectMsgHandler({ setRoom }) {
     roomInfo.roomList.forEach((roomName) => {
       this.socket.on(`connect${roomName}`, ({ roomType, roomId }) => {
-        setRoom(Room(roomType, roomId));
+        setRoom(new Room(roomId, roomType));
       });
     });
   },
-  async initUserlistMsgHandler({ setUserlist }) {
-    this.socket.on('userlist', ({ userlist }) => {
-      const parsedList = JSON.parse(userlist);
-      setUserlist(parsedList);
+
+  async initUserListMsgHandler({ setUserList }) {
+    this.socket.on('userList', ({ userList }) => {
+      const parsedList = JSON.parse(userList);
+      setUserList(parsedList);
     });
   },
+
   async initGameStartMsgHandler({ setPainter }) {
     this.socket.on('gamestart', ({ painter }) => {
       setPainter(painter);
     });
   },
+
+  async initStartSecretGameHandler({ setPainter, setIsGamePlaying }) {
+    this.socket.on('startSecretGame', ({ painter }) => {
+      setPainter(painter);
+      setIsGamePlaying(true);
+    });
+  },
+
   async requestMakeSecretRoom({ nickname, roomId }) {
     this.socket.emit('makeSecret', { nickname, roomId });
   },
+
+  async startSecretGame({ roomId, roomType }) {
+    this.socket.emit('startSecretGame', { roomId, roomType });
+  },
+
   async exitGameRoom({ nickname, roomType, roomId }) {
     this.socket.emit('exitRoom', { nickname, roomType, roomId });
   },

@@ -2,7 +2,7 @@ import React, { useState, useContext, useRef } from 'react';
 import DrawingPlayGround from './DrawingPlayGround/DrawingPlayGround';
 import WordChoice from './WordChoice/WordChoice';
 import CanvasSectionStyle from './CanvasSection.style';
-import GamePlayContext from '../../pages/GamePlay/GamePlay.context';
+import GamePlayContext from '../../GamePlay.context';
 import GlobalContext from '../../global.context';
 import WordPreview from './WordPreview/WordPreview';
 import Timer from '../Timer/Timer';
