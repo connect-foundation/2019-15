@@ -1,7 +1,5 @@
-const User = (nickname) => {
-  if (nickname) return { nickname };
-
-  return { nickname: null };
+const User = (id, nickname) => {
+  return { id, nickname };
 };
 
 export default User;

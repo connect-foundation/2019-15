@@ -9,7 +9,6 @@ import Main from './pages/Main/Main';
 import MyPage from './pages/MyPage/MyPage';
 import SecretGame from './pages/SecretGame/SecretGame';
 import GamePlay from './pages/GamePlay/GamePlay';
-
 import Room from './logics/room';
 import User from './logics/user';
 import RouterStyle from './Router.style';
@@ -21,10 +20,11 @@ const changeUser = (prev, newUser) => {
 
 const Router = () => {
   const { jwt: jwtToken } = parseCookies();
-  let nickname;
-  if (jwtToken) nickname = jwt.decode(jwtToken).nickname;
+
+  const { id, nickname } = jwtToken ? jwt.decode(jwtToken) : null;
   const [room, setRoom] = useState(Room());
-  const [user, setUser] = useReducer(changeUser, User(nickname));
+  const [user, setUser] = useReducer(changeUser, User(id, nickname));
+  const [onlineSocket, setOnlineSocket] = useState(null);
   return (
     <RouterStyle id="Router">
       <HashRouter>
@@ -32,7 +32,17 @@ const Router = () => {
           <Route exact path="/">
             <Home />
           </Route>
-          <GlobalContext.Provider value={{ io, user, setUser, room, setRoom }}>
+          <GlobalContext.Provider
+            value={{
+              onlineSocket,
+              setOnlineSocket,
+              io,
+              user,
+              setUser,
+              room,
+              setRoom,
+            }}
+          >
             <Route path="/gameplay">
               <GamePlay />
             </Route>
