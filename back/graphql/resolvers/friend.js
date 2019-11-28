@@ -4,13 +4,13 @@ const { Op } = Sequelize;
 
 const friendResolvers = {
   Query: {
-    addFriendForTest: (obj, args, { Friends }) => {
-      Friends.create({ pFriendId: 1, sFriendId: 2 }).then({}, (err) => {
+    addFriendForTest: async (obj, args, { Friends }) => {
+      try {
+        await Friends.create({ pFriendId: 4, sFriendId: 22 });
+        await Friends.create({ pFriendId: 22, sFriendId: 4 });
+      } catch {
         console.log('already exists');
-      });
-      Friends.create({ pFriendId: 2, sFriendId: 1 }).then({}, (err) => {
-        console.log('already exists');
-      });
+      }
       return Friends.findAll({
         where: {
           [Op.or]: [
@@ -22,28 +22,28 @@ const friendResolvers = {
     },
   },
   Mutation: {
-    friends: (obj, { pFriendId }, { Friends, Users }) => {
+    friends: (obj, args, { Friends, Users, req }) => {
       return Users.findAll({
         type: Sequelize.QueryTypes.SELECT,
         include: [
           {
             model: Friends,
             where: {
-              [Op.and]: [{ sFriendId: Sequelize.col('Users.id') }, { pFriendId: pFriendId }],
+              [Op.and]: [{ sFriendId: Sequelize.col('Users.id') }, { pFriendId: req.user.id }],
             },
           },
         ],
       });
     },
-    findFriendRequests: async (obj, { sFriendId }, { BeforeFriends, Users }) => {
+    findFriendRequests: async (obj, args, { BeforeFriends, Users, req }) => {
       const sFriendRows = await BeforeFriends.findAll({
-        where: { [Op.and]: [{ sFriendId: sFriendId }, { friendStateId: 1 }] },
+        where: { [Op.and]: [{ sFriendId: req.user.id }, { friendStateId: 1 }] },
       });
       return Users.findAll({
         where: { id: sFriendRows.map((acc) => acc.dataValues.pFriendId) },
       });
     },
-    deleteFriend: async (obj, { id, nickname }, { Friends, Users }) => {
+    deleteFriend: async (obj, { nickname }, { Friends, Users, req }) => {
       const idFromNickname = await Users.findOne({
         where: { nickname: nickname },
       });
@@ -51,10 +51,10 @@ const friendResolvers = {
         where: {
           [Op.or]: [
             {
-              [Op.and]: [{ pFriendId: idFromNickname.dataValues.id }, { sFriendId: id }],
+              [Op.and]: [{ pFriendId: idFromNickname.dataValues.id }, { sFriendId: req.user.id }],
             },
             {
-              [Op.and]: [{ sFriendId: idFromNickname.dataValues.id }, { pFriendId: id }],
+              [Op.and]: [{ sFriendId: idFromNickname.dataValues.id }, { pFriendId: req.user.id }],
             },
           ],
         },
@@ -62,54 +62,59 @@ const friendResolvers = {
       await Friends.destroy(conditionColumns);
       return Friends.findAll(conditionColumns);
     },
-    deleteFriendRequest: async (obj, { id, nickname }, { BeforeFriends, Users }) => {
+    deleteFriendRequest: async (obj, { nickname }, { BeforeFriends, Users, req }) => {
       const idFromNickname = await Users.findOne({
         where: { nickname: nickname },
       });
       const conditionColumns = {
         where: {
-          [Op.and]: [{ pFriendId: idFromNickname.dataValues.id }, { sFriendId: id }],
+          [Op.and]: [{ pFriendId: idFromNickname.dataValues.id }, { sFriendId: req.user.id }],
         },
       };
       await BeforeFriends.destroy(conditionColumns);
       return BeforeFriends.findAll(conditionColumns);
     },
-    acceptFriendRequest: async (obj, { id, nickname }, { Users, Friends }) => {
+    acceptFriendRequest: async (obj, { nickname }, { Users, Friends, req }) => {
       // this.deleteFriendRequest({id:id, nickname:nickname}); resolver 안에서 resolver 호출하는법.....
       const idFromNickname = await Users.findOne({
         where: { nickname: nickname },
       });
-      await Friends.create({ pFriendId: idFromNickname.dataValues.id, sFriendId: id }).then(
-        {},
-        (err) => {
-          console.log('already exists');
-        },
-      );
-      await Friends.create({ pFriendId: id, sFriendId: idFromNickname.dataValues.id }).then(
-        {},
-        (err) => {
-          console.log('already exists');
-        },
-      );
+      try {
+        await Friends.create({
+          pFriendId: idFromNickname.dataValues.id,
+          sFriendId: req.user.id,
+        });
+        await Friends.create({
+          pFriendId: req.user.id,
+          sFriendId: idFromNickname.dataValues.id,
+        });
+      } catch {
+        console.log('already exists');
+      }
       await Friends.update(
         { friendStateId: 2 },
         {
-          where: { [Op.and]: [{ pFriendId: idFromNickname.dataValues.id }, { sFriendId: id }] },
+          where: {
+            [Op.and]: [{ pFriendId: idFromNickname.dataValues.id }, { sFriendId: req.user.id }],
+          },
         },
       );
       return idFromNickname;
     },
-    sendFriendRequest: async (obj, { id, nickname }, { BeforeFriends, Users }) => {
+    sendFriendRequest: async (obj, { nickname }, { BeforeFriends, Users, req }) => {
       const idFromNickname = await Users.findOne({
         where: { nickname: nickname },
       });
-      await BeforeFriends.create({
-        pFriendId: id,
-        sFriendId: idFromNickname.dataValues.id,
-        friendStateId: 1,
-      }).then({}, (err) => {
+
+      try {
+        await BeforeFriends.create({
+          pFriendId: req.user.id,
+          sFriendId: idFromNickname.dataValues.id,
+          friendStateId: 1,
+        });
+      } catch {
         console.log('already sent');
-      });
+      }
       return idFromNickname;
     },
   },
