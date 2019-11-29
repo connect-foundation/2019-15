@@ -43,7 +43,11 @@ export const acceptFriendRequest = gql`
 export const sendFriendRequest = gql`
   mutation sendFriendRequest($nickname: String) {
     sendFriendRequest(nickname: $nickname) {
-      id
+      user {
+        id
+        nickname
+      }
+      result
     }
   }
 `;

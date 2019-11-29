@@ -1,37 +1,31 @@
-import React, { useRef, useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
+import React, { useRef, useState, useEffect, useContext } from 'react';
 import ChattingListStyle from './ChattingList.style';
 import Div from './Div.style';
+import GlobalContext from '../../../global.context';
 
-ChattingList.propTypes = {
-  children: PropTypes.node,
-};
+function ChattingList() {
+  const { io } = useContext(GlobalContext);
 
-ChattingList.defaultProps = {
-  children: null,
-};
-
-function ChattingList({ children }) {
   const scrollRef = useRef(null);
-  const [history, setHistory] = useState({ messages: [] });
+  const [messages, pushMessage] = useState([]);
 
   useEffect(() => {
-    if (!children) return;
-    const splitRes = children.split(' : ');
-    if (splitRes.length === 2 && splitRes[1] === '') return;
-    history.messages.push(children);
-    setHistory({ messages: history.messages });
+    const initSocket = async () => {
+      await io.initChattingHandler({ messages, pushMessage });
+    };
+    initSocket();
+
     scrollRef.current.scrollTop =
       scrollRef.current.scrollHeight - scrollRef.current.clientHeight;
-  }, [children, history.messages]);
+  }, [io, messages]);
 
   return (
     <ChattingListStyle ref={scrollRef}>
-      {history.messages.map((value, idx) => {
+      {messages.map((value, idx) => {
         const order = idx + 1;
         return (
-          <Div key={order} order={order}>
-            {value}
+          <Div key={order} order={order} privileged={value.privileged}>
+            {value.content}
           </Div>
         );
       })}

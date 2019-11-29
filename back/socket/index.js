@@ -3,6 +3,7 @@ const Timer = require('../util/timer/Timer');
 const { RoomManager, Room } = require('./Room');
 const User = require('./User');
 const getRandomInt = require('../util/getRandomInt');
+const setOnlineSockets = require('./online');
 
 function sendUserListToRoom(list, roomId, io) {
   const userList = list.map((v) => {
@@ -27,6 +28,8 @@ function personEnterRoom(nickname, socket, roomName, io) {
   sendUserListToRoom(room.players, roomId, io);
 
   if (room.players.length === 2) {
+    room.currentExaminer = 0;
+    room.players[0].privileged = true;
     io.to(roomId).emit('gamestart', { painter: room.players[0].socket.id });
   }
 }
@@ -87,6 +90,7 @@ function initSocketIO(io) {
     });
 
     socket.on('exitRoom', ({ nickname, roomType, roomId }) => {
+      if (!roomType || !roomId) return;
       const userList = RoomManager.room[roomType][roomId].players;
       const exitUserIdx = userList.findIndex((user) => user.socket.id === socketId);
       userList.splice(exitUserIdx, 1);
@@ -105,8 +109,29 @@ function initSocketIO(io) {
       }
     });
 
-    socket.on('sendMessage', ({ nickname, roomId, inputValue }) => {
-      io.in(roomId).emit('getMessage', { message: `${nickname} : ${inputValue}` });
+    socket.on('sendMessage', ({ socketId, roomType, roomId, inputValue }) => {
+      let answer;
+      try {
+        answer = RoomManager.room[roomType][roomId].word;
+      } catch {
+        answer = null;
+      }
+      RoomManager.room[roomType][roomId].players.findIndex((user) => {
+        if (user.socket.id === socketId) {
+          if (inputValue === answer) {
+            user.privileged = true;
+            io.in(roomId).emit('getMessage', {
+              content: `${user.nickname}님이 정답을 맞췄습니다! Hooray`,
+              privileged: user.privileged,
+            });
+          } else {
+            io.in(roomId).emit('getMessage', {
+              content: `${user.nickname} : ${inputValue}`,
+              privileged: user.privileged,
+            });
+          }
+        }
+      });
     });
 
     socket.on('selectWord', ({ answer, roomType, roomId }) => {
@@ -129,6 +154,10 @@ function initSocketIO(io) {
       io.to(roomId).emit('drawing');
     });
   });
+
+  // onlineIo
+  this.io = io;
+  this.onlineIo = io.of('/online').on('connection', setOnlineSockets.bind(this));
 }
 
 module.exports = initSocketIO;

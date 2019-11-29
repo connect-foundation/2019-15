@@ -5,9 +5,10 @@ import TimerStyle from './Timer.style';
 Timer.propTypes = {
   isTimerStart: PropTypes.bool.isRequired,
   setIsTimerStart: PropTypes.func.isRequired,
+  setIsOpen: PropTypes.func.isRequired,
 };
 
-function Timer({ isTimerStart, setIsTimerStart }) {
+function Timer({ isTimerStart, setIsTimerStart, setIsOpen }) {
   const [time, setTime] = useState(30);
   const [flag, setFlag] = useState(false);
 
@@ -27,6 +28,7 @@ function Timer({ isTimerStart, setIsTimerStart }) {
     }
 
     function runTimer() {
+      if (time === 10) setIsOpen(true);
       if (time > 0) setTimeout(countDown, 1000);
       else {
         stopTimer();
@@ -42,7 +44,7 @@ function Timer({ isTimerStart, setIsTimerStart }) {
 
     runTimer();
     if (isTimerStart) startTimer();
-  }, [isTimerStart, setIsTimerStart, time, flag]);
+  }, [isTimerStart, setIsTimerStart, time, flag, setIsOpen]);
 
   return (
     <>
