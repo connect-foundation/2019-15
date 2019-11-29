@@ -14,9 +14,9 @@ function ChattingList() {
     const initSocket = async () => {
       await io.initChattingHandler({ messages, pushMessage });
     };
-    if (init){
+    if (init) {
       setInit(false);
-    initSocket();
+      initSocket();
     }
 
     scrollRef.current.scrollTop =
