@@ -8,16 +8,20 @@ function ChattingList() {
 
   const scrollRef = useRef(null);
   const [messages, pushMessage] = useState([]);
+  const [init, setInit] = useState(true);
 
   useEffect(() => {
     const initSocket = async () => {
       await io.initChattingHandler({ messages, pushMessage });
     };
-    initSocket();
+    if (init) {
+      setInit(false);
+      initSocket();
+    }
 
     scrollRef.current.scrollTop =
       scrollRef.current.scrollHeight - scrollRef.current.clientHeight;
-  }, [io, messages]);
+  }, [io, messages, init]);
 
   return (
     <ChattingListStyle ref={scrollRef}>

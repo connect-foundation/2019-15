@@ -118,11 +118,11 @@ function initSocketIO(io) {
       }
       RoomManager.room[roomType][roomId].players.findIndex((user) => {
         if (user.socket.id === socketId) {
-          if (inputValue === answer) {
+          if (inputValue === answer && !user.privileged) {
             user.privileged = true;
             io.in(roomId).emit('getMessage', {
               content: `${user.nickname}님이 정답을 맞췄습니다! Hooray`,
-              privileged: user.privileged,
+              privileged: 'notice',
             });
           } else {
             io.in(roomId).emit('getMessage', {
