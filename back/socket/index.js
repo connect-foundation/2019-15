@@ -92,6 +92,15 @@ function initSocketIO(io) {
       // 리뷰: 유저리스트를 다보내지 말고 제외된 유저 아이디만 보내자
       sendUserListToRoom(userList, roomId, io);
     });
+    socket.on('disconnect', () => {
+      if (roomInfo) {
+        const userList = RoomManager.room[roomInfo.roomType][roomInfo.roomId].players;
+        const userIdx = userList.findIndex((user) => user.socket.id === socketId);
+        if (userIdx >= 0) {
+          userList.splice(userIdx, 1);
+          sendUserListToRoom(userList, roomInfo.roomId, io);
+        }
+      }
   });
 }
 
