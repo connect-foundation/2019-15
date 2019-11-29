@@ -29,7 +29,7 @@ function lettersReducer(state, action) {
       return Array.from(action.arg);
     }
     default: {
-      return state;
+      throw Error('please check action type');
     }
   }
 }
