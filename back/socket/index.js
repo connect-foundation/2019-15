@@ -28,6 +28,8 @@ function personEnterRoom(nickname, socket, roomName, io) {
   sendUserListToRoom(room.players, roomId, io);
 
   if (room.players.length === 2) {
+    room.currentExaminer = 0;
+    room.players[0].privileged = true;
     io.to(roomId).emit('gamestart', { painter: room.players[0].socket.id });
   }
 }
@@ -107,8 +109,29 @@ function initSocketIO(io) {
       }
     });
 
-    socket.on('sendMessage', ({ nickname, roomId, inputValue }) => {
-      io.in(roomId).emit('getMessage', { message: `${nickname} : ${inputValue}` });
+    socket.on('sendMessage', ({ socketId, roomType, roomId, inputValue }) => {
+      let answer;
+      try {
+        answer = RoomManager.room[roomType][roomId].word;
+      } catch {
+        answer = null;
+      }
+      RoomManager.room[roomType][roomId].players.findIndex((user) => {
+        if (user.socket.id === socketId) {
+          if (inputValue === answer) {
+            user.privileged = true;
+            io.in(roomId).emit('getMessage', {
+              content: `${user.nickname}님이 정답을 맞췄습니다! Hooray`,
+              privileged: user.privileged,
+            });
+          } else {
+            io.in(roomId).emit('getMessage', {
+              content: `${user.nickname} : ${inputValue}`,
+              privileged: user.privileged,
+            });
+          }
+        }
+      });
     });
 
     socket.on('selectWord', ({ answer, roomType, roomId }) => {
