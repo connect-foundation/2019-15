@@ -2,6 +2,8 @@ const Timer = require('../util/timer/Timer');
 
 const { RoomManager, Room } = require('./Room');
 const User = require('./User');
+const getRandomInt = require('../util/getRandomInt');
+const setOnlineSockets = require('./online');
 
 function sendUserListToRoom(list, roomId, io) {
   const userList = list.map((v) => {
@@ -88,6 +90,7 @@ function initSocketIO(io) {
     });
 
     socket.on('exitRoom', ({ nickname, roomType, roomId }) => {
+      if (!roomType || !roomId) return;
       const userList = RoomManager.room[roomType][roomId].players;
       const exitUserIdx = userList.findIndex((user) => user.socket.id === socketId);
       userList.splice(exitUserIdx, 1);
@@ -131,10 +134,18 @@ function initSocketIO(io) {
       });
     });
 
-    socket.on('questionStart', ({ answer, roomType, roomId }) => {
+    socket.on('selectWord', ({ answer, roomType, roomId }) => {
       const room = RoomManager.room[roomType][roomId];
       room.word = answer;
       // 서버 타이머 트리거
+      room.timer.start();
+      // 클라들에게 뿌려주기
+      const openIndex = getRandomInt(0, answer.length);
+      io.in(roomId).emit('startQuestion', {
+        wordLength: answer.length,
+        openLetter: answer[openIndex],
+        openIndex,
+      });
     });
 
     // 출제자가 캔버스에 그림을 그리는 경우.
@@ -143,6 +154,10 @@ function initSocketIO(io) {
       io.to(roomId).emit('drawing');
     });
   });
+
+  // onlineIo
+  this.io = io;
+  this.onlineIo = io.of('/online').on('connection', setOnlineSockets.bind(this));
 }
 
 module.exports = initSocketIO;

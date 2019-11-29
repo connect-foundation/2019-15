@@ -1,12 +1,17 @@
 import React, { useState, useContext } from 'react';
 import { useQuery } from '@apollo/react-hooks';
+import PropTypes from 'prop-types';
 import Background from './Background.style';
 import WordSet from './WordSet.style';
 import { WordCard, P } from './WordCard.style';
 import getRandomWords from '../../../queries/word';
 import GlobalContext from '../../../global.context';
 
-const WordChoice = () => {
+WordChoice.propTypes = {
+  setSelectedWord: PropTypes.func.isRequired,
+};
+
+function WordChoice({ setSelectedWord }) {
   const { io, room } = useContext(GlobalContext);
   const [open, setOpen] = useState(true);
   const { data, loading, error } = useQuery(getRandomWords);
@@ -21,8 +26,9 @@ const WordChoice = () => {
   async function close(e) {
     setOpen(false);
     const { roomType, roomId } = room;
-    const answer = e.target.innerHTML;
-    await io.questionStart({ answer, roomType, roomId });
+    const answer = e.target.textContent;
+    setSelectedWord(answer);
+    await io.selectWord({ answer, roomType, roomId });
   }
 
   return (
@@ -40,6 +46,6 @@ const WordChoice = () => {
       ) : null}
     </>
   );
-};
+}
 
 export default WordChoice;
