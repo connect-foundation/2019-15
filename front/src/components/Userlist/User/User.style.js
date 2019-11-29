@@ -12,6 +12,10 @@ export const UserStyle = styled(FlexRowStyle)`
   background-color: ${(props) => props.theme.surfCrest};
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   border-radius: 0.3rem;
+
+  &.you {
+    border: 3px solid ${({ theme }) => theme.slateGray};
+  }
 `;
 
 export const UserInfoStyle = styled(FlexColumnStyle)`
@@ -42,6 +46,7 @@ export const Text = styled.span`
   color: ${(props) => props.theme.slateGray};
 `;
 export const Drawer = styled.img`
+  display: ${({ drawer }) => (drawer ? 'span' : 'none')};
   width: 20px;
   height: 20px;
   margin-left: 10px;
