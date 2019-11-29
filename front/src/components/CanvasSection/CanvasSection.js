@@ -18,6 +18,8 @@ const CanvasSection = () => {
   const [drawable, setDrawable] = useState(false);
 
   const [isTimerStart, setIsTimerStart] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const [selectedWord, setSelectedWord] = useState('');
 
   io.setStartQuestionHandler(setQuestionWord, () => {
     setIsTimerStart(true);
@@ -31,13 +33,21 @@ const CanvasSection = () => {
 
   return (
     <CanvasSectionStyle>
-      {io.socket.id === painter ? <WordChoice /> : null}
+      {io.socket.id === painter ? (
+        <WordChoice setSelectedWord={setSelectedWord} />
+      ) : null}
       <section>
-        <Timer isTimerStart={isTimerStart} setIsTimerStart={setIsTimerStart} />
+        <Timer
+          isTimerStart={isTimerStart}
+          setIsTimerStart={setIsTimerStart}
+          setIsOpen={setIsOpen}
+        />
         <WordPreview
           openLetter={questionWord.openLetter}
           wordLength={questionWord.wordLength}
           openIndex={questionWord.openIndex}
+          isOpen={isOpen}
+          selectedWord={selectedWord}
         />
       </section>
       <DrawingPlayGround

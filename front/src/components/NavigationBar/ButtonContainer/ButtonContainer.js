@@ -13,7 +13,7 @@ import LOGOUT from '../../../asset/logout.png';
 import Messages from '../../Messages/Messages';
 import Room from '../../../logics/room';
 import Alarm from '../../Alarm/Alarm';
-import { initRequestEvent } from '../../../logics/socketLogic/online';
+import { onRequestFriend } from '../../../logics/socketLogic/online';
 
 function alarmListReducer(state, action) {
   switch (action.type) {
@@ -28,7 +28,7 @@ function alarmListReducer(state, action) {
 }
 
 const ButtonContainer = () => {
-  const [alarmList, setAlarmList] = useReducer(alarmListReducer, []);
+  const [alarmList, alarmListDispatch] = useReducer(alarmListReducer, []);
   const [noticeType, setNoticeType] = useState(null);
   const { onlineSocket, io, user, room, setRoom } = useContext(GlobalContext);
 
@@ -44,7 +44,7 @@ const ButtonContainer = () => {
   useEffect(() => {
     const initEvents = async () => {
       if (onlineSocket) {
-        await initRequestEvent(onlineSocket, { setAlarmList, setNoticeType });
+        onRequestFriend(onlineSocket, { alarmListDispatch, setNoticeType });
       }
     };
     initEvents();

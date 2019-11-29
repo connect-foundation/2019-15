@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer } from 'react';
+import React, { useEffect, useReducer, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import WordPreviewStyle from './WordPreview.style';
 import makeEmptyArray from '../../../logics/wordPreview/makeEmptyArray';
@@ -7,6 +7,12 @@ WordPreview.propTypes = {
   wordLength: PropTypes.number.isRequired,
   openIndex: PropTypes.number.isRequired,
   openLetter: PropTypes.string.isRequired,
+  isOpen: PropTypes.bool.isRequired,
+  selectedWord: PropTypes.string,
+};
+
+WordPreview.defaultProps = {
+  selectedWord: '',
 };
 
 function lettersReducer(state, action) {
@@ -19,38 +25,54 @@ function lettersReducer(state, action) {
       copied[action.arg.openIndex] = action.arg.openLetter;
       return copied;
     }
+    case 'openWord': {
+      return Array.from(action.arg);
+    }
     default: {
-      return state;
+      throw Error('please check action type');
     }
   }
 }
 
-function WordPreview({ wordLength, openIndex, openLetter }) {
-  const [letters, dispatch] = useReducer(
+function WordPreview({
+  wordLength,
+  openIndex,
+  openLetter,
+  isOpen,
+  selectedWord,
+}) {
+  const [letters, lettersDispatch] = useReducer(
     lettersReducer,
     makeEmptyArray(wordLength),
   );
 
-  useEffect(() => {
-    dispatch({ type: 'makeNewArray', arg: wordLength });
-  }, [wordLength, openIndex, openLetter]);
-
-  function openLetterTrigger() {
-    dispatch({
+  const openLetterTrigger = useCallback(() => {
+    lettersDispatch({
       type: 'openLetter',
       arg: {
         openIndex,
         openLetter,
       },
     });
-  }
+  }, [lettersDispatch, openIndex, openLetter]);
 
-  return (
-    <WordPreviewStyle>
-      {letters}
-      <button onClick={openLetterTrigger}>open</button>
-    </WordPreviewStyle>
-  );
+  useEffect(() => {
+    if (selectedWord.length > 0)
+      lettersDispatch({ type: 'openWord', arg: selectedWord });
+    else {
+      lettersDispatch({ type: 'makeNewArray', arg: wordLength });
+      if (isOpen) openLetterTrigger();
+    }
+  }, [
+    wordLength,
+    openIndex,
+    openLetter,
+    isOpen,
+    selectedWord,
+    openLetterTrigger,
+  ]);
+
+  return <WordPreviewStyle>{letters}</WordPreviewStyle>;
 }
 
 export default WordPreview;

@@ -28,7 +28,7 @@ const Router = () => {
     userInitial = new User(nickname, null, id);
   }
   const [room, setRoom] = useState(new Room());
-  const [user, setUser] = useReducer(changeUser, userInitial);
+  const [user, userDispatch] = useReducer(changeUser, userInitial);
   const [onlineSocket, setOnlineSocket] = useState(null);
 
   const [userList, setUserList] = useState([]);
@@ -47,7 +47,7 @@ const Router = () => {
               setOnlineSocket,
               io,
               user,
-              setUser,
+              userDispatch,
               room,
               setRoom,
             }}
