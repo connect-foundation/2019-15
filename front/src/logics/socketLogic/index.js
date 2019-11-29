@@ -62,6 +62,8 @@ const io = {
   },
   async initChattingHandler({ messages, pushMessage }) {
     this.socket.on('getMessage', ({ content, privileged }) => {
+      const splitRes = content.split(' : ');
+      if (splitRes.length === 2 && splitRes[1] === '') return;
       messages.push({ content, privileged });
       pushMessage(messages.slice());
     });
