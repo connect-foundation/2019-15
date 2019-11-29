@@ -28,6 +28,7 @@ function Timer({ isTimerStart, setIsTimerStart, setIsOpen }) {
     }
 
     function runTimer() {
+        // 남은 시간이 10초가 되면 글자를 공개함
       if (time === 10) setIsOpen(true);
       if (time > 0) setTimeout(countDown, 1000);
       else {
