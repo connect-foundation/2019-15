@@ -14,6 +14,11 @@ module.exports = `
     friendStateid:Int!
   }
   
+  type FriendRequestResult{
+    user:User!
+    result:Boolean!
+  }
+  
   extend type Query{
     addFriendForTest:[Friend]
   } 
@@ -24,6 +29,6 @@ module.exports = `
     findFriendRequests:[User]
     deleteFriendRequest(nickname:String):[BeforeFriend]
     acceptFriendRequest(nickname:String):User
-    sendFriendRequest(nickname:String):BeforeFriend
+    sendFriendRequest(nickname:String):FriendRequestResult
   }
 `;
