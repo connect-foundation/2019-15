@@ -1,4 +1,4 @@
-import React, { useReducer } from 'react';
+import React, { useReducer, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Tools from './Tools';
 import DrawingPlayGroundStyle from './DrawingPlayGround.style';
@@ -18,11 +18,16 @@ const setDrawingOptions = (prev, { type, value }) => {
   }
 };
 
-const DrawingPlayGround = ({ canvasSize }) => {
+const DrawingPlayGround = ({ drawable, canvasSize }) => {
   const defaultDrawingOptions = {
     tool: toolManager.pen,
     strokeColor: '#000000',
   };
+
+  useEffect(() => {
+    if (!drawable) drawingOptionsDispatcher({ type: 'tool', value: 'cursor' });
+    else drawingOptionsDispatcher({ type: 'tool', value: 'pen' });
+  }, [drawable]);
   const [drawingOptions, drawingOptionsDispatcher] = useReducer(
     setDrawingOptions,
     defaultDrawingOptions,
@@ -32,6 +37,7 @@ const DrawingPlayGround = ({ canvasSize }) => {
     <DrawingPlayGroundStyle>
       <DrawingBoard drawingOptions={drawingOptions} size={canvasSize} />
       <Tools
+        drawable={drawable}
         drawingOptions={drawingOptions}
         setDrawingOptions={drawingOptionsDispatcher}
       />
@@ -40,6 +46,7 @@ const DrawingPlayGround = ({ canvasSize }) => {
 };
 
 DrawingPlayGround.propTypes = {
+  drawable: PropTypes.bool.isRequired,
   canvasSize: PropTypes.shape({
     width: PropTypes.number,
     height: PropTypes.number,

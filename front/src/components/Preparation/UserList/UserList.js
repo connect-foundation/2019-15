@@ -17,9 +17,7 @@ const UserList = () => {
     initSocket();
   });
   const UserComponents = userList.map((user) => (
-    <div style={{ width: '40px', height: '40px', backgroundColor: 'yellow' }}>
-      {user.nickname}
-    </div>
+    <div style={{ width: '40px', height: '40px' }}>{user.nickname}</div>
   ));
 
   return <UserListStyle>{UserComponents}</UserListStyle>;

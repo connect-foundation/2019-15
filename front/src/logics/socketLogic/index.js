@@ -77,6 +77,16 @@ const io = {
       callback();
     });
   },
+
+  async initImageSendHandler({ setCanvasImage }) {
+    this.socket.on('gameImage', ({ image }) => {
+      setCanvasImage({ image });
+    });
+  },
+
+  async sendImage({ roomId, image }) {
+    await this.socket.emit('gameImage', { roomId, image });
+  },
 };
 
 export default io;
