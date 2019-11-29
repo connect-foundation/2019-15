@@ -1,20 +1,18 @@
-import React from 'react';
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
+
 import { useMutation } from '@apollo/react-hooks';
 import { faMinusCircle } from '@fortawesome/free-solid-svg-icons';
 import PropTypes from 'prop-types';
-import { findFriendsById } from '../../../../queries/friend';
+import { findFriends } from '../../../../queries/friend';
 import FriendComponentStyle from '../FriendComponent.style';
 import Icon from '../Icons.style';
 
-const testId = 4;
-
 function FriendComponents({ modalOnOff, configMode, refresh, setRefresh }) {
-  const [findFriends] = useMutation(findFriendsById);
+  const [findFriendsFunc] = useMutation(findFriends);
   const [data, setData] = useState({ friends: [{ nickname: null }] });
 
   const fetchItems = async () => {
-    const newItems = await findFriends({ variables: { id: testId } });
+    const newItems = await findFriendsFunc();
     await setData(newItems.data);
   };
   useEffect(() => {

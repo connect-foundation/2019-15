@@ -1,8 +1,6 @@
 const jwt = require('jsonwebtoken');
 const Sequelize = require('sequelize');
-const { REACT_URI } = require('../../config/uri');
-const expiresIn = require('../../util/getMsOfDay');
-const getDomain = require('../../util/getDomain');
+const getCookieOptions = require('../../util/cookie/getCookieOption');
 
 const { Op } = Sequelize;
 
@@ -11,14 +9,16 @@ const userResolvers = {
     users: (obj, args, { Users }) => {
       return Users.findAll();
     },
-    checkNicknameAvailable: async (obj, { nickname }, { Words, req }) => {
-      if (req.user.nickname === nickname) return false;
-      const wordFound = await userResolvers.Query.getWordByNickname(
-        obj,
-        { nickname },
-        { Words, req },
-      );
-      return !wordFound || !wordFound.dataValues.userId;
+    checkNicknameAvailable: async (obj, { nickname }, { Users, req }) => {
+      const user = await Users.findOne({
+        where: {
+          nickname,
+        },
+      });
+      return {
+        nickname,
+        result: !user,
+      };
     },
     getWordByNickname: (obj, { nickname }, { Words }) => {
       return Words.findOne({
@@ -32,32 +32,27 @@ const userResolvers = {
   },
   Mutation: {
     changeNickname: async (obj, { nickname }, { Users, Words, req, res, sequelize }) => {
-      const wordFound = await userResolvers.Query.getWordByNickname(obj, { nickname }, { Words });
-
-      if (wordFound && wordFound.dataValues.userId) throw new Error('duplicated');
+      const user = await Users.findOne({
+        where: {
+          nickname,
+        },
+      });
+      if (user) return { nickname, result: false };
 
       let transaction;
       try {
         transaction = await sequelize.transaction();
-        if (!wordFound) {
-          await Words.create(
-            { word: nickname, categoryId: null, userId: req.user.id },
-            { transaction },
-          );
-        } else if (!wordFound.dataValues.userId) {
-          await Words.update(
-            {
-              userId: req.user.id,
+        await Words.update(
+          {
+            userId: req.user.id,
+          },
+          {
+            where: {
+              word: nickname,
             },
-            {
-              where: {
-                id: wordFound.dataValues.id,
-              },
-              transaction,
-            },
-          );
-        }
-
+            transaction,
+          },
+        );
         const [changedRows] = await Users.update(
           { nickname },
           {
@@ -67,7 +62,7 @@ const userResolvers = {
             transaction,
           },
         );
-        if (!changedRows) throw new Error(`fails updating ${req.user.id} nickname to ${nickname}`);
+        if (!changedRows) return { nickname, result: false };
 
         res.cookie(
           'jwt',
@@ -78,13 +73,10 @@ const userResolvers = {
             },
             process.env.JWT_SECRET,
           ),
-          {
-            expires: new Date(Date.now() + expiresIn),
-            domain: getDomain(REACT_URI),
-          },
+          getCookieOptions(),
         );
         await transaction.commit();
-        return nickname;
+        return { nickname, result: true };
       } catch (e) {
         if (transaction) await transaction.rollback();
         throw new Error(e);

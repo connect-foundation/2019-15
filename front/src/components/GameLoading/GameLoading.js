@@ -1,12 +1,12 @@
 import React, { useContext } from 'react';
 import FullScreen from './GameLoading.style';
 import Loading from '../globalComponents/Loading/Loading';
-import GamePlayContext from '../../pages/Main/GamePlay.context';
+import GamePlayContext from '../../GamePlay.context';
 
 const GameLoading = () => {
-  const { userlist } = useContext(GamePlayContext);
+  const { userList } = useContext(GamePlayContext);
 
-  if (userlist.length <= 1) {
+  if (userList.length <= 1) {
     return (
       <FullScreen>
         <Loading />

@@ -2,7 +2,7 @@ const request = require('supertest');
 
 const graphqlPath = require('../../config/graphqlPath');
 const { app } = require('../../app');
-const signJWT = require('../../util/signJWT');
+const signJWT = require('../../util/jwt/signJWT');
 
 let token;
 beforeAll(async (done) => {
@@ -17,7 +17,7 @@ describe('friend resolvers test', () => {
       .post(graphqlPath)
       .send({
         query: `mutation {
-                  friends(pFriendId:4){
+                  friends{
                     nickname
                   }
                 }`,

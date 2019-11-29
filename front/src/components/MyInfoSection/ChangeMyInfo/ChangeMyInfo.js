@@ -1,11 +1,15 @@
 import React from 'react';
 import ChangeMyInfoStyle from './ChangeMyInfo.style';
-import ChangeNickname from '../ChangeNickname/ChangeNickname';
+import NicknameChangeContainer from './NicknameChangeContainer/NicknameChangeContainer';
+import ChangeCharacter from '../ChangeCharacter/ChangeCharacter';
 
 const ChangeMyInfo = () => {
   return (
-    <ChangeMyInfoStyle>
-      <ChangeNickname />
+    <ChangeMyInfoStyle id="ChangeMyInfo">
+      <ChangeCharacter />
+      <div>
+        <NicknameChangeContainer />
+      </div>
     </ChangeMyInfoStyle>
   );
 };

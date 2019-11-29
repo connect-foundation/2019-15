@@ -2,7 +2,7 @@ const request = require('supertest');
 
 const graphqlPath = require('../../config/graphqlPath');
 const { app } = require('../../app');
-const signJWT = require('../../util/signJWT');
+const signJWT = require('../../util/jwt/signJWT');
 
 let token;
 beforeAll(async (done) => {
@@ -32,7 +32,7 @@ describe('deleteFriend resolvers test', () => {
       .post(graphqlPath)
       .send({
         query: `mutation deleteFriend {
-                  deleteFriend(id: 2, nickname: "이지영") {
+                  deleteFriend(nickname: "배추김치") {
                     id
                   }
                 }`,

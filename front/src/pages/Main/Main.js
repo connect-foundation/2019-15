@@ -1,33 +1,28 @@
 import React, { useEffect, useContext } from 'react';
 import GlobalContext from '../../global.context';
-import checkAuth from '../../logics/checkAuth';
-import parseCookies from '../../util/cookie';
-import User from '../../logics/user';
-
-import GamePlay from './GamePlay';
+import checkAuth from '../../logics/auth/checkAuth';
 import MainPage from './MainPage';
+import { connectSocket } from '../../logics/socketLogic/online';
+import Room from '../../logics/room';
 
 const Main = () => {
-  const { io, room, setRoom, setUser } = useContext(GlobalContext);
+  const { setOnlineSocket, io, setRoom, userDispatch } = useContext(
+    GlobalContext,
+  );
 
   useEffect(() => {
     const initSocket = async () => {
       await io.connectSocket();
+      const socket = await connectSocket();
       await io.initConnectMsgHandler({ setRoom });
-      const { nickname } = parseCookies();
-      setUser(User(nickname));
+      setOnlineSocket(socket);
+      setRoom(new Room());
     };
     checkAuth();
     initSocket();
-  }, [io, setRoom, setUser]);
+  }, [io, setOnlineSocket, setRoom, userDispatch]);
 
-  // 메인 화면
-  if (room.roomType === null) {
-    return <MainPage />;
-  }
-
-  // 게임 화면
-  return <GamePlay />;
+  return <MainPage />;
 };
 
 export default Main;

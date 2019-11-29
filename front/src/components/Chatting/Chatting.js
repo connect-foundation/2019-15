@@ -1,10 +1,16 @@
 import React from 'react';
+import ChattingStyle from './Chatting.style';
+import ChattingList from './ChattingList/ChattingList';
+import TextInput from './TextInput';
 
 const Chatting = () => {
   return (
-    <div>
-      <div>채팅</div>
-    </div>
+    <>
+      <ChattingStyle>
+        <ChattingList />
+        <TextInput />
+      </ChattingStyle>
+    </>
   );
 };
 
