@@ -7,7 +7,26 @@ import { findFriends } from 'queries/friend';
 import FriendComponentStyle from '../FriendComponent.style';
 import Icon from '../Icons.style';
 
-function FriendComponents({ modalOnOff, configMode, refresh, setRefresh }) {
+FriendComponents.propTypes = {
+  modalOnOff: PropTypes.func,
+  configMode: PropTypes.bool,
+  refresh: PropTypes.bool,
+  setRefresh: PropTypes.func,
+};
+
+FriendComponents.defaultProps = {
+  modalOnOff: null,
+  configMode: null,
+  refresh: null,
+  setRefresh: null,
+};
+
+export default function FriendComponents({
+  modalOnOff,
+  configMode,
+  refresh,
+  setRefresh,
+}) {
   const [findFriendsFunc] = useMutation(findFriends);
   const [data, setData] = useState({ friends: [{ nickname: null }] });
 
@@ -38,19 +57,3 @@ function FriendComponents({ modalOnOff, configMode, refresh, setRefresh }) {
     </>
   );
 }
-
-export default FriendComponents;
-
-FriendComponents.propTypes = {
-  modalOnOff: PropTypes.func,
-  configMode: PropTypes.bool,
-  refresh: PropTypes.bool,
-  setRefresh: PropTypes.func,
-};
-
-FriendComponents.defaultProps = {
-  modalOnOff: null,
-  configMode: null,
-  refresh: null,
-  setRefresh: null,
-};

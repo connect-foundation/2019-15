@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import FriendsList from './FriendsList/FriendsList';
 import ListPopUpButton from './ListPopUpButton.style';
 
-const FriendsSection = () => {
+export default function FriendsSection() {
   const [open, setOpen] = useState(false);
 
   function changeOpen() {
@@ -18,6 +18,4 @@ const FriendsSection = () => {
       </ListPopUpButton>
     </>
   );
-};
-
-export default FriendsSection;
+}

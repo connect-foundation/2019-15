@@ -5,13 +5,32 @@ import { useMutation } from '@apollo/react-hooks';
 import Modal from 'components/globalComponents/Modal/Modal';
 import Button from 'components/globalComponents/Button/Button';
 import Div from 'components/globalComponents/Modal/ContentDiv.style';
-import ButtonSectionStyle from './ButtonSection.style';
 import message from 'constant/messages';
 import { deleteFriend, sendFriendRequest } from 'queries/friend';
 import GlobalContext from 'global.context';
 import { emitRequestFriend } from 'logics/socketLogic/online';
+import ButtonSectionStyle from './ButtonSection.style';
 
-const FriendsSetModal = ({ mode, nickname, modalOff, setRefresh }) => {
+FriendsSetModal.propTypes = {
+  mode: PropTypes.string,
+  nickname: PropTypes.string,
+  modalOff: PropTypes.func,
+  setRefresh: PropTypes.func,
+};
+
+FriendsSetModal.defaultProps = {
+  mode: null,
+  nickname: null,
+  modalOff: null,
+  setRefresh: null,
+};
+
+export default function FriendsSetModal({
+  mode,
+  nickname,
+  modalOff,
+  setRefresh,
+}) {
   const [content, switchContent] = useState(mode);
   const [deleteFriendFunc] = useMutation(deleteFriend);
   const { onlineSocket, user } = useContext(GlobalContext);
@@ -53,20 +72,4 @@ const FriendsSetModal = ({ mode, nickname, modalOff, setRefresh }) => {
       </Div>
     </Modal>
   );
-};
-
-FriendsSetModal.propTypes = {
-  mode: PropTypes.string,
-  nickname: PropTypes.string,
-  modalOff: PropTypes.func,
-  setRefresh: PropTypes.func,
-};
-
-FriendsSetModal.defaultProps = {
-  mode: null,
-  nickname: null,
-  modalOff: null,
-  setRefresh: null,
-};
-
-export default FriendsSetModal;
+}

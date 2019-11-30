@@ -3,7 +3,7 @@ import UserListStyle from './UserList.style';
 import GamePlayContext from 'GamePlay.context';
 import GlobalContext from 'global.context';
 
-const UserList = () => {
+export default function UserList() {
   const { userList, setUserList } = useContext(GamePlayContext);
   const { io } = useContext(GlobalContext);
 
@@ -20,6 +20,4 @@ const UserList = () => {
   ));
 
   return <UserListStyle>{UserComponents}</UserListStyle>;
-};
-
-export default UserList;
+}

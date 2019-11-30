@@ -1,11 +1,11 @@
 import React, { useState, useContext } from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import PropTypes from 'prop-types';
+import getRandomWords from 'queries/word';
+import GlobalContext from 'global.context';
 import Background from './Background.style';
 import WordSet from './WordSet.style';
 import { WordCard, P } from './WordCard.style';
-import getRandomWords from 'queries/word';
-import GlobalContext from 'global.context';
 
 WordChoice.propTypes = {
   setSelectedWord: PropTypes.func.isRequired,

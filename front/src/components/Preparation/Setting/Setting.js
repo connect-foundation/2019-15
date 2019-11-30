@@ -8,7 +8,7 @@ import {
   GameStartButtonStyle,
 } from './Setting.style';
 
-const Setting = () => {
+export default function Setting() {
   const { io, room, user } = useContext(GlobalContext);
   const { userList } = useContext(GamePlayContext);
 
@@ -30,6 +30,4 @@ const Setting = () => {
       </GameStartButtonStyle>
     </SettingStyle>
   );
-};
-
-export default Setting;
+}

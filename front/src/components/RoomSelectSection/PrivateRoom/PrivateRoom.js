@@ -5,7 +5,7 @@ import GlobalContext from 'global.context';
 import RoomContainer from '../RoomContainer/RoomContainer';
 import PrivateRoomButton from './privateRoomButton.style';
 
-const PrivateRoom = () => {
+export default function PrivateRoom() {
   const { user } = useContext(GlobalContext);
   const secretRoomId = uuid();
   const buttons = ['방 만들기'];
@@ -19,5 +19,4 @@ const PrivateRoom = () => {
   ));
 
   return <RoomContainer text="비밀 게임" buttons={buttonComponents} />;
-};
-export default PrivateRoom;
+}

@@ -1,13 +1,13 @@
 import React from 'react';
+import AnchorImage from 'asset/anchor.png';
 import {
   AnchorStyle,
   AnchorImageStyle,
   AnchorLinkText,
   AnchorCopyButton,
 } from './Anchor.style';
-import AnchorImage from 'asset/anchor.png';
 
-const Anchor = () => {
+export default function Anchor() {
   function onClickCopyButton() {
     const tempElem = document.createElement('textarea');
     tempElem.value = window.location.href;
@@ -24,6 +24,4 @@ const Anchor = () => {
       <AnchorCopyButton onClick={onClickCopyButton}>복사</AnchorCopyButton>
     </AnchorStyle>
   );
-};
-
-export default Anchor;
+}

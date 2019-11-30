@@ -26,7 +26,7 @@ DrawingBoard.defaultProps = {
   },
 };
 
-function DrawingBoard({ drawingOptions, size }) {
+export default function DrawingBoard({ drawingOptions, size }) {
   const { tool } = drawingOptions;
   const { width, height } = size;
   const canvas = useRef(null);
@@ -83,5 +83,3 @@ function DrawingBoard({ drawingOptions, size }) {
     </DrawingBoardStyle>
   );
 }
-
-export default DrawingBoard;

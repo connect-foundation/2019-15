@@ -3,7 +3,7 @@ import GamePlayContext from 'GamePlay.context';
 import FullScreen from './GameLoading.style';
 import Loading from '../globalComponents/Loading/Loading';
 
-const GameLoading = () => {
+export default function GameLoading() {
   const { userList } = useContext(GamePlayContext);
 
   if (userList.length <= 1) {
@@ -15,6 +15,4 @@ const GameLoading = () => {
   }
 
   return <></>;
-};
-
-export default GameLoading;
+}

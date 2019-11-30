@@ -1,7 +1,7 @@
 import React, { useEffect, useReducer, useCallback } from 'react';
 import PropTypes from 'prop-types';
-import WordPreviewStyle from './WordPreview.style';
 import makeEmptyArray from 'logics/wordPreview/makeEmptyArray';
+import WordPreviewStyle from './WordPreview.style';
 
 WordPreview.propTypes = {
   wordLength: PropTypes.number.isRequired,
@@ -34,7 +34,7 @@ function lettersReducer(state, action) {
   }
 }
 
-function WordPreview({
+export default function WordPreview({
   wordLength,
   openIndex,
   openLetter,
@@ -74,5 +74,3 @@ function WordPreview({
 
   return <WordPreviewStyle>{letters}</WordPreviewStyle>;
 }
-
-export default WordPreview;

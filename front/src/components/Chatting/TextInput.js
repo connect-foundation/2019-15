@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react';
 import GlobalContext from 'global.context';
 import TextInputStyle from './TextInput.style';
 
-const Chatting = () => {
+export default function Chatting() {
   const { io, room } = useContext(GlobalContext);
   const [inputValue, setValue] = useState('');
 
@@ -27,6 +27,4 @@ const Chatting = () => {
       onKeyPress={pressKeyHandler}
     />
   );
-};
-
-export default Chatting;
+}

@@ -1,9 +1,9 @@
 import React, { useRef, useState, useEffect, useContext } from 'react';
+import GlobalContext from 'global.context';
 import ChattingListStyle from './ChattingList.style';
 import Div from './Div.style';
-import GlobalContext from 'global.context';
 
-function ChattingList() {
+export default function ChattingList() {
   const { io } = useContext(GlobalContext);
 
   const scrollRef = useRef(null);
@@ -36,5 +36,3 @@ function ChattingList() {
     </ChattingListStyle>
   );
 }
-
-export default ChattingList;

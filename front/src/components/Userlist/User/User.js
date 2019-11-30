@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import faker from 'faker';
+import PENCIL from 'asset/pencil.png';
 import {
   UserStyle,
   UserInfoStyle,
@@ -11,7 +12,6 @@ import {
   Score,
   Ranking,
 } from './User.style';
-import PENCIL from 'asset/pencil.png';
 
 User.defaultProps = {
   className: '',
@@ -23,7 +23,7 @@ User.propTypes = {
   index: PropTypes.number.isRequired,
 };
 
-function User({ className, nickname, index }) {
+export default function User({ className, nickname, index }) {
   const drawer = className.split('painter').length > 1;
 
   return (
@@ -44,5 +44,3 @@ function User({ className, nickname, index }) {
     </UserStyle>
   );
 }
-
-export default User;

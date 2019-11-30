@@ -1,21 +1,21 @@
 import React from 'react';
-import AutoLoginStyle from './AutoLogin.style';
 import {
   autoLoginCheckboxEventHandler,
   getAutoLogIn,
 } from 'logics/auth/autoLogIn';
+import AutoLoginStyle from './AutoLogin.style';
 
-const AutoLogin = () => (
-  <>
-    <label>
-      <AutoLoginStyle
-        type="checkbox"
-        onClick={autoLoginCheckboxEventHandler}
-        defaultChecked={getAutoLogIn()}
-      />
-      자동 로그인
-    </label>
-  </>
-);
-
-export default AutoLogin;
+export default function AutoLogin() {
+  return (
+    <>
+      <label>
+        <AutoLoginStyle
+          type="checkbox"
+          onClick={autoLoginCheckboxEventHandler}
+          defaultChecked={getAutoLogIn()}
+        />
+        자동 로그인
+      </label>
+    </>
+  );
+}

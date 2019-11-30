@@ -4,7 +4,7 @@ import roomInfo from 'constant/room/roomInfo';
 import RoomContainer from '../RoomContainer/RoomContainer';
 import { PublicRoomButton, CustomA } from './PublicRoomButton.style';
 
-const PublicRoom = () => {
+export default function PublicRoom() {
   const { io, user, room } = useContext(GlobalContext);
   const makeGameStartBtnHandler = (capacity) => {
     return () => {
@@ -27,6 +27,4 @@ const PublicRoom = () => {
   ));
 
   return <RoomContainer text="랜덤 게임" buttons={buttonComponents} />;
-};
-
-export default PublicRoom;
+}

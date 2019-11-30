@@ -27,7 +27,7 @@ function alarmListReducer(state, action) {
   }
 }
 
-const ButtonContainer = () => {
+export default function ButtonContainer() {
   const [alarmList, alarmListDispatch] = useReducer(alarmListReducer, []);
   const [noticeType, setNoticeType] = useState(null);
   const { onlineSocket, io, user, room, setRoom } = useContext(GlobalContext);
@@ -82,6 +82,4 @@ const ButtonContainer = () => {
       </ButtonContainerStyle>
     </Link>
   );
-};
-
-export default ButtonContainer;
+}

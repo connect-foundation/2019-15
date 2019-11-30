@@ -1,7 +1,7 @@
 import React from 'react';
-import GLogoStyle from './GLogo.style';
 import gLogoImg from 'asset/g-logo.png';
+import GLogoStyle from './GLogo.style';
 
-const GLogo = () => <GLogoStyle src={gLogoImg} />;
-
-export default GLogo;
+export default function GLogo() {
+  return <GLogoStyle src={gLogoImg} />;
+}
