@@ -1,11 +1,11 @@
 import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
-import GlobalContext from '../../global.context';
-import Room from '../../logics/room';
+import GlobalContext from 'global.context';
+import Room from 'logics/room';
 
 import { LogoImage, NavigationBarStyle } from './NavigationBar.style';
 import ButtonContainer from './ButtonContainer/ButtonContainer';
-import mainlogo from '../../asset/mainlogo4.png';
+import mainlogo from 'asset/mainlogo4.png';
 
 const NavigationBar = () => {
   const { io, user, room, setRoom } = useContext(GlobalContext);

@@ -1,11 +1,11 @@
 import React from 'react';
 import { useQuery } from '@apollo/react-hooks';
-import { getRankingAll } from '../../../queries/ranking';
-import Loading from '../../globalComponents/Loading/Loading';
-import Alert from '../../globalComponents/Alert/Alert';
+import { getRankingAll } from 'queries/ranking';
+import Loading from 'components/globalComponents/Loading/Loading';
+import Alert from 'components/globalComponents/Alert/Alert';
 import UserRankingList from '../UserRankingList/UserRankingList';
 import RankingAllStyle from './RankingAll.style';
-import InfinityScroll from '../../globalComponents/InfinityScroll/InfinityScroll';
+import InfinityScroll from 'components/globalComponents/InfinityScroll/InfinityScroll';
 
 const RankingAll = () => {
   const { data, loading, error, fetchMore } = useQuery(getRankingAll);

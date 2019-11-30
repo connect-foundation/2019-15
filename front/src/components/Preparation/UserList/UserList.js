@@ -1,9 +1,8 @@
 import React, { useContext, useEffect } from 'react';
 import UserListStyle from './UserList.style';
-import GamePlayContext from '../../../GamePlay.context';
-import GlobalContext from '../../../global.context';
+import GamePlayContext from 'GamePlay.context';
+import GlobalContext from 'global.context';
 
-// import GameContext from '../../'
 const UserList = () => {
   const { userList, setUserList } = useContext(GamePlayContext);
   const { io } = useContext(GlobalContext);

@@ -2,8 +2,8 @@ import React, { useState, useContext, useEffect } from 'react';
 import DrawingPlayGround from './DrawingPlayGround/DrawingPlayGround';
 import WordChoice from './WordChoice/WordChoice';
 import CanvasSectionStyle from './CanvasSection.style';
-import GamePlayContext from '../../GamePlay.context';
-import GlobalContext from '../../global.context';
+import GamePlayContext from 'GamePlay.context';
+import GlobalContext from 'global.context';
 import WordPreview from './WordPreview/WordPreview';
 import Timer from '../Timer/Timer';
 

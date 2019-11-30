@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import types from '../../../logics/alert';
+import types from 'logics/alert';
 import AlertStyle from './Alert.style';
 
 const Alert = ({ type }) => {

@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import Image from '../../globalComponents/Image/Image.style';
-import { FlexRowStyle } from '../../globalComponents/Container/Flex.style';
+import Image from 'components/globalComponents/Image/Image.style';
+import { FlexRowStyle } from 'components/globalComponents/Container/Flex.style';
 
 export const NavImage = styled(Image)`
   margin-top: 10px;

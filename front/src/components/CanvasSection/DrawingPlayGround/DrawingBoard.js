@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useContext } from 'react';
 import PropTypes from 'prop-types';
 import { fabric } from 'fabric';
+import GlobalContext from 'global.context';
 import { DrawingBoardStyle, CanvasStyle } from './DrawingBoard.style';
 import Tool from './ToolType/Tool';
-import GlobalContext from '../../../global.context';
 
 DrawingBoard.propTypes = {
   drawingOptions: PropTypes.shape({

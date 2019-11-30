@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import SpectreButton from 'components/globalComponents/SpectreButton/SpectreButton';
 import ToolManager from './ToolManager';
-import SpectreButton from '../../../globalComponents/SpectreButton/SpectreButton';
 import Tool from './Tool';
 import ToolTypeStyle from './ToolType.style';
 

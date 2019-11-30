@@ -1,7 +1,7 @@
 import React, { useEffect, useReducer, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import WordPreviewStyle from './WordPreview.style';
-import makeEmptyArray from '../../../logics/wordPreview/makeEmptyArray';
+import makeEmptyArray from 'logics/wordPreview/makeEmptyArray';
 
 WordPreview.propTypes = {
   wordLength: PropTypes.number.isRequired,

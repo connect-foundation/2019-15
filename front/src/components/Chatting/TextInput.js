@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import GlobalContext from '../../global.context';
+import GlobalContext from 'global.context';
 import TextInputStyle from './TextInput.style';
 
 const Chatting = () => {

@@ -11,7 +11,7 @@ import {
   Score,
   Ranking,
 } from './User.style';
-import PENCIL from '../../../asset/pencil.png';
+import PENCIL from 'asset/pencil.png';
 
 User.defaultProps = {
   className: '',

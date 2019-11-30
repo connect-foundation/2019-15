@@ -1,8 +1,8 @@
 import React, { useContext } from 'react';
+import GlobalContext from 'global.context';
+import roomInfo from 'constant/room/roomInfo';
 import RoomContainer from '../RoomContainer/RoomContainer';
 import { PublicRoomButton, CustomA } from './PublicRoomButton.style';
-import GlobalContext from '../../../global.context';
-import roomInfo from '../../../constant/room/roomInfo';
 
 const PublicRoom = () => {
   const { io, user, room } = useContext(GlobalContext);

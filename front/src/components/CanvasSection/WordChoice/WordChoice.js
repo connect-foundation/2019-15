@@ -4,8 +4,8 @@ import PropTypes from 'prop-types';
 import Background from './Background.style';
 import WordSet from './WordSet.style';
 import { WordCard, P } from './WordCard.style';
-import getRandomWords from '../../../queries/word';
-import GlobalContext from '../../../global.context';
+import getRandomWords from 'queries/word';
+import GlobalContext from 'global.context';
 
 WordChoice.propTypes = {
   setSelectedWord: PropTypes.func.isRequired,

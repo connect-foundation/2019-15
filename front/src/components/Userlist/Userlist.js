@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import UserListStyle from './Userlist.style';
-import GamePlayContext from '../../GamePlay.context';
-import GlobalContext from '../../global.context';
+import GamePlayContext from 'GamePlay.context';
+import GlobalContext from 'global.context';
 
 import User from './User/User';
 

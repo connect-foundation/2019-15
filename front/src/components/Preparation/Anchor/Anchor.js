@@ -5,7 +5,7 @@ import {
   AnchorLinkText,
   AnchorCopyButton,
 } from './Anchor.style';
-import AnchorImage from '../../../asset/anchor.png';
+import AnchorImage from 'asset/anchor.png';
 
 const Anchor = () => {
   function onClickCopyButton() {

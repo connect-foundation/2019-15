@@ -2,14 +2,14 @@ import React, { useState, useContext } from 'react';
 
 import PropTypes from 'prop-types';
 import { useMutation } from '@apollo/react-hooks';
-import Modal from '../../../globalComponents/Modal/Modal';
-import Button from '../../../globalComponents/Button/Button';
-import Div from '../../../globalComponents/Modal/ContentDiv.style';
+import Modal from 'components/globalComponents/Modal/Modal';
+import Button from 'components/globalComponents/Button/Button';
+import Div from 'components/globalComponents/Modal/ContentDiv.style';
 import ButtonSectionStyle from './ButtonSection.style';
-import message from '../../../../constant/messages';
-import { deleteFriend, sendFriendRequest } from '../../../../queries/friend';
-import GlobalContext from '../../../../global.context';
-import { emitRequestFriend } from '../../../../logics/socketLogic/online';
+import message from 'constant/messages';
+import { deleteFriend, sendFriendRequest } from 'queries/friend';
+import GlobalContext from 'global.context';
+import { emitRequestFriend } from 'logics/socketLogic/online';
 
 const FriendsSetModal = ({ mode, nickname, modalOff, setRefresh }) => {
   const [content, switchContent] = useState(mode);

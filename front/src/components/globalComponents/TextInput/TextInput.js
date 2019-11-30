@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import TextInputStyle from './TextInput.style';
-import regex from '../../../constant/TextInput';
+import regex from 'constant/TextInput';
 
 const TextInput = ({ onChange, value, onChangeComplete }) => {
   const [input, setInput] = useState(value);

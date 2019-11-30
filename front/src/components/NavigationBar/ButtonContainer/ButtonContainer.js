@@ -1,19 +1,19 @@
 import React, { useState, useContext, useReducer, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { onRequestFriend } from 'logics/socketLogic/online';
+import Room from 'logics/room';
 
-import { ButtonContainerStyle, NavImage, Text } from './ButtonContainer.style';
-import GlobalContext from '../../../global.context';
+import GlobalContext from 'global.context';
 
-import APP_URI from '../../../util/uri';
+import APP_URI from 'util/uri';
+import NOTICE from 'asset/notice.png';
+import MYPAGE from 'asset/mypage.png';
+import LOGOUT from 'asset/logout.png';
 import Button from './Button/Button';
-import NOTICE from '../../../asset/notice.png';
-import MYPAGE from '../../../asset/mypage.png';
-import LOGOUT from '../../../asset/logout.png';
+import { ButtonContainerStyle, NavImage, Text } from './ButtonContainer.style';
 
 import Messages from '../../Messages/Messages';
-import Room from '../../../logics/room';
 import Alarm from '../../Alarm/Alarm';
-import { onRequestFriend } from '../../../logics/socketLogic/online';
 
 function alarmListReducer(state, action) {
   switch (action.type) {

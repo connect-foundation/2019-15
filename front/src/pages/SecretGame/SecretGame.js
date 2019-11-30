@@ -1,12 +1,11 @@
 import React, { useEffect, useContext, useState } from 'react';
-import GlobalContext from '../../global.context';
-import SecretGameContext from './SecretGame.context';
+import GlobalContext from 'global.context';
+import SecretGameContext from 'pages/SecretGame/SecretGame.context';
+import GamePlay from 'pages/GamePlay/GamePlay';
+import GamePlayContext from 'GamePlay.context';
 
-import GamePlay from '../GamePlay/GamePlay';
-import GamePlayContext from '../../GamePlay.context';
-
-import GamePreparation from './GamePreparation';
-import Room from '../../logics/room';
+import GamePreparation from 'pages/SecretGame/GamePreparation';
+import Room from 'logics/room/index';
 
 const roomType = '비밀방';
 

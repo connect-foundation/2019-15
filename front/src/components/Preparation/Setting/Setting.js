@@ -1,12 +1,12 @@
 import React, { useContext } from 'react';
+import GlobalContext from 'global.context';
+import GamePlayContext from 'GamePlay.context';
 import {
   SettingStyle,
   RoomSettingStyle,
   UserSettingStyle,
   GameStartButtonStyle,
 } from './Setting.style';
-import GlobalContext from '../../../global.context';
-import GamePlayContext from '../../../GamePlay.context';
 
 const Setting = () => {
   const { io, room, user } = useContext(GlobalContext);

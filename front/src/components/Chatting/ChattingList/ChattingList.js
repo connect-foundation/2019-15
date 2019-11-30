@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect, useContext } from 'react';
 import ChattingListStyle from './ChattingList.style';
 import Div from './Div.style';
-import GlobalContext from '../../../global.context';
+import GlobalContext from 'global.context';
 
 function ChattingList() {
   const { io } = useContext(GlobalContext);

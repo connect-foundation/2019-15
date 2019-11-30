@@ -3,7 +3,7 @@ import AutoLoginStyle from './AutoLogin.style';
 import {
   autoLoginCheckboxEventHandler,
   getAutoLogIn,
-} from '../../../logics/auth/autoLogIn';
+} from 'logics/auth/autoLogIn';
 
 const AutoLogin = () => (
   <>

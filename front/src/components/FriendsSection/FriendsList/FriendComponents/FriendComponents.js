@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useMutation } from '@apollo/react-hooks';
 import { faMinusCircle } from '@fortawesome/free-solid-svg-icons';
 import PropTypes from 'prop-types';
-import { findFriends } from '../../../../queries/friend';
+import { findFriends } from 'queries/friend';
 import FriendComponentStyle from '../FriendComponent.style';
 import Icon from '../Icons.style';
 
