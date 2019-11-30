@@ -1,4 +1,4 @@
-import APP_URI from '../util/uri';
+import APP_URI from '../../util/uri';
 
 function checkAuth() {
   fetch(`${APP_URI.REACT_APP_API_URI}/auth/authenticate`, {
@@ -10,7 +10,7 @@ function checkAuth() {
   })
     .then((response) => {
       if (response.status === 401 || response.status === 403) {
-        window.location.href = `${APP_URI.REACT_APP_URI}`;
+        window.location.href = `#/`;
       }
     })
     .catch((error) => console.log(error));

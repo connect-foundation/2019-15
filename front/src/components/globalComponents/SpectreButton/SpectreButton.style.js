@@ -1,4 +1,5 @@
 import styled, { css } from 'styled-components';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const height = '2rem';
 
@@ -7,13 +8,15 @@ const leftPadding = '1rem';
 const notActive = css`
   :hover,
   :focus {
-    color: ${(props) => props.theme.royalBlue};
+    color: ${(props) =>
+      props.disabled ? props.theme.ecstasy : props.theme.royalBlue};
     background-color: white;
-    border-color: ${(props) => props.theme.royalBlue};
+    border-color: ${(props) =>
+      props.disabled ? props.theme.ecstasy : props.theme.royalBlue};
   }
 `;
 
-const SButtonStyle = styled.button`
+export const SpectreButtonStyle = styled.button`
   white-space: nowrap;
   text-align: center;
   border: 1px solid transparent;
@@ -30,4 +33,10 @@ const SButtonStyle = styled.button`
   ${(props) => (props.active ? '' : notActive)};
 `;
 
-export default SButtonStyle;
+export const SyncIconStyle = styled(FontAwesomeIcon)`
+  color: ${(props) => props.theme.royalBlue};
+`;
+
+export const BanIconStyle = styled(FontAwesomeIcon)`
+  color: ${(props) => props.theme.ecstasy};
+`;

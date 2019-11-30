@@ -44,23 +44,27 @@ describe('유저 닉네임 중복검사 및 변경 테스트', () => {
       .post(graphqlPath)
       .send({
         query: `{
-          checkNicknameAvailable(nickname:"${nicknameDuplicated}")
+          checkNicknameAvailable(nickname:"${nicknameDuplicated}"){
+            result
+          }
         }`,
       })
       .expect(200);
-    expect(res.body.data.checkNicknameAvailable).toBeFalsy();
+    expect(res.body.data.checkNicknameAvailable.result).toBeFalsy();
     done();
   });
 
   it('비사용중인 닉네임 중복검사 테스트', async (done) => {
-    const nicknameDuplicated = '고릴라';
+    const nicknameDuplicated = uuid();
     const res = await request
       .agent(app)
       .set('Cookie', [`jwt=${token}`])
       .post(graphqlPath)
       .send({
         query: `query {
-          checkNicknameAvailable(nickname:"${nicknameDuplicated}")
+          checkNicknameAvailable(nickname:"${nicknameDuplicated}"){
+            result
+          }
         }`,
       })
       .expect(200);
@@ -76,11 +80,13 @@ describe('유저 닉네임 중복검사 및 변경 테스트', () => {
       .post(graphqlPath)
       .send({
         query: `mutation {
-          changeNickname(nickname:"${nicknameToChange}")
+          changeNickname(nickname:"${nicknameToChange}"){
+            result
+          }
         }`,
       })
       .expect(200);
-    expect(res.body.data.changeNickname).toBe(nicknameToChange);
+    expect(res.body.data.changeNickname.result).toBeTruthy();
     done();
   });
 });

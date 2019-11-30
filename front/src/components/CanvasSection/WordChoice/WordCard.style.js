@@ -9,7 +9,6 @@ export const WordCard = styled.div`
   border-radius: 1rem;
   cursor: pointer;
   z-index: 1;
-
 `;
 
 export const P = styled.p`

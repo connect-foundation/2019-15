@@ -11,10 +11,8 @@ import MessageComponentStyle from './MessageComponent.style';
 import Button from '../globalComponents/Button/Button';
 import Modal from '../globalComponents/Modal/Modal';
 import Div from '../globalComponents/Modal/ContentDiv.style';
-import globalMessages from '../../logics/messages';
+import globalMessages from '../../constant/messages';
 import ButtonDiv from './ButtonDiv.style';
-
-const testId = 5;
 
 function MessageList() {
   const [openModal, setOpenModal] = useState(false);
@@ -26,29 +24,29 @@ function MessageList() {
   });
   const [deleteFriendRequestFunc] = useMutation(deleteFriendRequest, {
     onCompleted() {
-      findFriendRequestsFunc({ variables: { id: testId } });
+      findFriendRequestsFunc();
     },
   });
   const [acceptFriendRequestFunc] = useMutation(acceptFriendRequest, {
     onCompleted(data) {
       deleteFriendRequestFunc({
-        variables: { id: testId, nickname: data.acceptFriendRequest.nickname },
+        variables: { nickname: data.acceptFriendRequest.nickname },
       });
     },
   });
 
   async function declineRequest(nickname) {
-    await deleteFriendRequestFunc({ variables: { id: testId, nickname } });
+    await deleteFriendRequestFunc({ variables: { nickname } });
   }
 
   async function acceptRequest(nickname) {
-    await acceptFriendRequestFunc({ variables: { id: testId, nickname } });
+    await acceptFriendRequestFunc({ variables: { nickname } });
     setOpenModal(true);
   }
 
   useEffect(() => {
     const fetch = async () => {
-      await findFriendRequestsFunc({ variables: { id: testId } });
+      await findFriendRequestsFunc();
     };
     fetch();
   }, [findFriendRequestsFunc]);

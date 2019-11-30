@@ -1,6 +1,6 @@
 import React from 'react';
 import ChangeMyInfoStyle from './ChangeMyInfo.style';
-import ChangeNickname from '../ChangeNickname/ChangeNickname';
+import NicknameChangeContainer from './NicknameChangeContainer/NicknameChangeContainer';
 import ChangeCharacter from '../ChangeCharacter/ChangeCharacter';
 
 const ChangeMyInfo = () => {
@@ -8,7 +8,7 @@ const ChangeMyInfo = () => {
     <ChangeMyInfoStyle id="ChangeMyInfo">
       <ChangeCharacter />
       <div>
-        <ChangeNickname />
+        <NicknameChangeContainer />
       </div>
     </ChangeMyInfoStyle>
   );

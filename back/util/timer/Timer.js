@@ -26,3 +26,5 @@ Timer.prototype.reset = function() {
   this.intervalId = 0;
   this.time = time;
 };
+
+module.exports = Timer;
