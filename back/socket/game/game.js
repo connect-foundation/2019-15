@@ -49,4 +49,14 @@ function personEnterSecretRoom(nickname, socket, roomId, io) {
   sendUserListToRoom(room.players, roomId, io);
 }
 
-module.exports = { sendUserListToRoom, personEnterRoom, personEnterSecretRoom };
+function isExistRoom({ roomId, roomType }) {
+  const rooms = RoomManager.room;
+  if (!roomType) return false;
+
+  const room = rooms[roomType];
+  if (!roomId || !(roomId in room)) return false;
+
+  return true;
+}
+
+module.exports = { sendUserListToRoom, personEnterRoom, personEnterSecretRoom, isExistRoom };
