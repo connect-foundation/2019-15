@@ -21,7 +21,7 @@ export const getRankingAll = gql`
 export const getRankingFriends = gql`
   query getRankingFriends(
     $order: Order = DESC
-    $first: Int = 5
+    $first: Int = 10
     $after: String
   ) {
     rankingFriends(order: $order, first: $first, after: $after) {
