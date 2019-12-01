@@ -7,28 +7,28 @@ import { changeNicknameMutation as changeNicknameQuery } from 'queries/user';
 
 NicknameChangeBtn.propTypes = {
   newNickname: PropTypes.string.isRequired,
-  setResultText: PropTypes.func,
+  resultTextDispatch: PropTypes.func,
   disabled: PropTypes.bool,
 };
 
 NicknameChangeBtn.defaultProps = {
-  setResultText: () => {},
+  resultTextDispatch: () => {},
   disabled: false,
 };
 
 export default function NicknameChangeBtn({
   newNickname,
-  setResultText,
+  resultTextDispatch,
   disabled,
 }) {
   const { userDispatch } = useContext(GlobalContext);
 
   const onCompleted = ({ changeNickname: { nickname, result } }) => {
     if (!result) {
-      setResultText(`"${nickname}" 닉네임은 사용이 불가능합니다`);
+      resultTextDispatch({ type: 'notUsable', nickname });
       return;
     }
-    setResultText(`"${nickname}"닉네임으로 변경완료!`);
+    resultTextDispatch({ type: 'completeChange', nickname });
     userDispatch({ nickname });
   };
 
@@ -40,16 +40,16 @@ export default function NicknameChangeBtn({
   );
 
   if (error) {
-    setResultText('에러가 발생하였습니다.');
+    resultTextDispatch({ type: 'error' });
   }
 
-  const changeNicknameByClick = () => {
+  const changeNicknameByClick = useCallback(() => {
     changeNickname({
       variables: {
         nickname: newNickname,
       },
     });
-  };
+  }, [changeNickname, newNickname]);
 
   return (
     <SpectreButton
