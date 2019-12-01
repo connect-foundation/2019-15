@@ -59,4 +59,13 @@ function isExistRoom({ roomId, roomType }) {
   return true;
 }
 
-module.exports = { sendUserListToRoom, personEnterRoom, personEnterSecretRoom, isExistRoom };
+function sendImageToUser({ roomId, image }) {
+  this.socket.to(roomId).emit('gameImage', { image });
+}
+module.exports = {
+  sendUserListToRoom,
+  personEnterRoom,
+  personEnterSecretRoom,
+  isExistRoom,
+  sendImageToUser,
+};

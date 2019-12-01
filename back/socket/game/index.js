@@ -1,5 +1,10 @@
 const { RoomManager } = require('../Room');
-const { sendUserListToRoom, personEnterRoom, personEnterSecretRoom } = require('./game');
+const {
+  sendUserListToRoom,
+  personEnterRoom,
+  personEnterSecretRoom,
+  sendImageToUser,
+} = require('./game');
 const disconnect = require('./disconnect');
 const getRandomInt = require('../../util/getRandomInt');
 
@@ -24,14 +29,11 @@ function setGameSocket(socket) {
   });
 
   socket.on('startSecretGame', ({ roomId, roomType }) => {
+    // 난입 시나리오 추가해야됨
     const room = RoomManager.room[roomType][roomId];
     if (room.players.length >= 2) {
       this.gameIo.to(roomId).emit('startSecretGame', { painter: room.players[0].socket.id });
     }
-  });
-
-  socket.on('gameImage', ({ roomId, image }) => {
-    socket.to(roomId).emit('gameImage', { image });
   });
 
   socket.on('exitRoom', ({ nickname, roomType, roomId }) => {
@@ -95,6 +97,7 @@ function setGameSocket(socket) {
     this.gameIo.to(roomId).emit('drawing');
   });
 
+  socket.on('gameImage', sendImageToUser.bind(this));
   socket.on('disconnect', disconnect.bind(this));
 }
 module.exports = setGameSocket;
