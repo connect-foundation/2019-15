@@ -17,20 +17,6 @@ function setGameSocket(socket) {
     });
   });
 
-  socket.on('getUserList', ({ roomType, roomId }) => {
-    const nRooms = RoomManager.room[roomType];
-
-    const roomIdx = nRooms.findIndex((roomObject) => roomObject.roomId === roomId);
-
-    // 방이 없는 경우
-    if (roomIdx < 0) return;
-
-    roomInfo = { roomId, roomType };
-    const userList = nRooms[roomIdx].people.map((v) => v.id);
-
-    socket.emit('userList', { userList: JSON.stringify(userList) });
-  });
-
   socket.on('makeSecret', ({ nickname, roomId }) => {
     personEnterSecretRoom(nickname, socket, roomId, this.gameIo);
     userName = nickname;
@@ -40,7 +26,7 @@ function setGameSocket(socket) {
   socket.on('startSecretGame', ({ roomId, roomType }) => {
     const room = RoomManager.room[roomType][roomId];
     if (room.players.length >= 2) {
-      io.to(roomId).emit('startSecretGame', { painter: room.players[0].socket.id });
+      this.gameIo.to(roomId).emit('startSecretGame', { painter: room.players[0].socket.id });
     }
   });
 
