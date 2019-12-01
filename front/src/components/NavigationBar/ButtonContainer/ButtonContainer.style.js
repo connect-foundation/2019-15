@@ -1,14 +1,18 @@
 import styled from 'styled-components';
 import Image from 'components/globalComponents/Image/Image.style';
 import { FlexRowStyle } from 'components/globalComponents/Container/Flex.style';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-export const NavImage = styled(Image)`
+export const NavImage = styled(FontAwesomeIcon).attrs({
+  size: '2x',
+})`
   margin-top: 10px;
   margin-right: 1rem;
   width: 2.8rem;
   height: 2.8rem;
   cursor: pointer;
   opacity: 0.8;
+  color: black;
 `;
 
 export const ButtonContainerStyle = styled.div`

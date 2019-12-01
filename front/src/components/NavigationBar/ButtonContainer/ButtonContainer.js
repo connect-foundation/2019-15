@@ -6,9 +6,7 @@ import Room from 'logics/room';
 import GlobalContext from 'global.context';
 
 import APP_URI from 'util/uri';
-import NOTICE from 'asset/notice.png';
-import MYPAGE from 'asset/mypage.png';
-import LOGOUT from 'asset/logout.png';
+import { faUserAlt, faBell, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
 import Button from './Button/Button';
 import { ButtonContainerStyle, NavImage, Text } from './ButtonContainer.style';
 
@@ -63,14 +61,14 @@ export default function ButtonContainer() {
     else if (noticeType === 'messages') notice = <Messages />;
     return (
       <ButtonContainerStyle>
-        {Button(<NavImage src={NOTICE} onClick={setNoticeMessages} />)}
+        {Button(<NavImage icon={faBell} onClick={setNoticeMessages} />)}
         {notice}
         {Button(
           <Link to="mypage">
-            <NavImage src={MYPAGE} />
-          </Link>,
+            <NavImage icon={faUserAlt} />
+          </Link>
         )}
-        {Button(<NavImage src={LOGOUT} onClick={logout} />)}
+        {Button(<NavImage icon={faSignOutAlt} onClick={logout} />)}
       </ButtonContainerStyle>
     );
   }
