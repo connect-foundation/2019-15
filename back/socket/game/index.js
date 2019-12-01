@@ -10,10 +10,8 @@ function setGameSocket(socket) {
   this.socket = socket;
   this.socketId = socket.id;
 
-  RoomManager.roomList.forEach((roomName) => {
-    socket.on(`enter${roomName}`, ({ nickname }) => {
-      this.roomInfo = personEnterRoom(nickname, socket, roomName, this.gameIo);
-    });
+  socket.on(`enterRandom`, ({ nickname, roomType }) => {
+    this.roomInfo = personEnterRoom(nickname, socket, roomType, this.gameIo);
   });
 
   socket.on('makeSecret', ({ nickname, roomId }) => {

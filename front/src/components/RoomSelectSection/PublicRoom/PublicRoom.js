@@ -5,12 +5,12 @@ import GlobalContext from '../../../global.context';
 import roomInfo from '../../../constant/room/roomInfo';
 
 const PublicRoom = () => {
-  const { io, user, room } = useContext(GlobalContext);
-  const makeGameStartBtnHandler = (capacity) => {
+  const { io, user } = useContext(GlobalContext);
+  const makeGameStartBtnHandler = (roomType) => {
     return () => {
-      io.socket.emit(`enter${capacity}`, {
+      io.socket.emit('enterRandom', {
         nickname: user.nickname,
-        roomType: room.roomType,
+        roomType,
       });
     };
   };
