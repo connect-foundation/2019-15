@@ -8,7 +8,7 @@ Timer.propTypes = {
   setIsOpen: PropTypes.func.isRequired,
 };
 
-function Timer({ isTimerStart, setIsTimerStart, setIsOpen }) {
+export default function Timer({ isTimerStart, setIsTimerStart, setIsOpen }) {
   const [time, setTime] = useState(30);
   const [flag, setFlag] = useState(false);
 
@@ -54,5 +54,3 @@ function Timer({ isTimerStart, setIsTimerStart, setIsOpen }) {
     </>
   );
 }
-
-export default Timer;

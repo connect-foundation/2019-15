@@ -1,9 +1,9 @@
 import React, { useContext, useState } from 'react';
+import GlobalContext from 'global.context';
 import {
   NicknameChangeContainerStyle,
   ResultTextStyle,
 } from './NicknameChangeContainer.style';
-import GlobalContext from '../../../../global.context';
 import NicknameChange from './NicknameChange';
 
 function NicknameChangeContainer() {

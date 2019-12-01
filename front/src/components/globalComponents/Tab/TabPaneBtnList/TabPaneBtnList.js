@@ -2,30 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { TabButton, TabPaneBtnListStyle } from './TabPaneBtnList.style';
 
-const TabPaneBtnList = ({
-  paneNameList,
-  tabSelected,
-  selectTab,
-  activeTabColor,
-  inActiveTabColor,
-}) => {
-  return (
-    <TabPaneBtnListStyle>
-      {paneNameList.map((paneName, idx) => (
-        <TabButton
-          activeTabColor={activeTabColor}
-          inActiveTabColor={inActiveTabColor}
-          active={idx === tabSelected}
-          key={paneName}
-          onClick={() => selectTab(idx)}
-        >
-          {paneName}
-        </TabButton>
-      ))}
-    </TabPaneBtnListStyle>
-  );
-};
-
 TabPaneBtnList.propTypes = {
   activeTabColor: PropTypes.string,
   inActiveTabColor: PropTypes.string,
@@ -42,4 +18,26 @@ TabPaneBtnList.defaultProps = {
   paneNameList: [],
 };
 
-export default TabPaneBtnList;
+export default function TabPaneBtnList({
+  paneNameList,
+  tabSelected,
+  selectTab,
+  activeTabColor,
+  inActiveTabColor,
+}) {
+  return (
+    <TabPaneBtnListStyle>
+      {paneNameList.map((paneName, idx) => (
+        <TabButton
+          activeTabColor={activeTabColor}
+          inActiveTabColor={inActiveTabColor}
+          active={idx === tabSelected}
+          key={paneName}
+          onClick={() => selectTab(idx)}
+        >
+          {paneName}
+        </TabButton>
+      ))}
+    </TabPaneBtnListStyle>
+  );
+}

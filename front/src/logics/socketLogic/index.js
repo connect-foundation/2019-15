@@ -1,7 +1,7 @@
 import socketIo from 'socket.io-client';
+import APP_URI from 'util/uri';
+import roomInfo from 'constant/room/roomInfo';
 import Room from '../room';
-import APP_URI from '../../util/uri';
-import roomInfo from '../../constant/room/roomInfo';
 
 const io = {
   socket: null,

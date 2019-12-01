@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import Button from '../../globalComponents/Button/Button.style';
+import Button from 'components/globalComponents/Button/Button.style';
 
 const PrivateRoomButton = styled(Button)`
   width: 50%;

@@ -3,10 +3,10 @@ import ReactDOM from 'react-dom';
 import { ThemeProvider } from 'styled-components';
 import ApolloClient from 'apollo-boost';
 import { ApolloProvider } from '@apollo/react-hooks';
-import globalStyle from './themes/globalStyle';
-import * as serviceWorker from './serviceWorker';
-import Router from './Router';
-import APP_URI from './util/uri';
+import globalStyle from 'themes/globalStyle';
+import * as serviceWorker from 'serviceWorker';
+import Router from 'Router';
+import APP_URI from 'util/uri';
 
 const graphqlPath = '/api/';
 const client = new ApolloClient({

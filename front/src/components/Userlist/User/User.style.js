@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import {
   FlexRowStyle,
   FlexColumnStyle,
-} from '../../globalComponents/Container/Flex.style';
+} from 'components/globalComponents/Container/Flex.style';
 
 export const UserStyle = styled(FlexRowStyle)`
   width: 320px;

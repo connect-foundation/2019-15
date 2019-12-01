@@ -1,13 +1,13 @@
 import React, { useState, useContext, useEffect } from 'react';
+import GamePlayContext from 'GamePlay.context';
+import GlobalContext from 'global.context';
 import DrawingPlayGround from './DrawingPlayGround/DrawingPlayGround';
 import WordChoice from './WordChoice/WordChoice';
 import CanvasSectionStyle from './CanvasSection.style';
-import GamePlayContext from '../../GamePlay.context';
-import GlobalContext from '../../global.context';
 import WordPreview from './WordPreview/WordPreview';
 import Timer from '../Timer/Timer';
 
-const CanvasSection = () => {
+export default function CanvasSection() {
   const { painter } = useContext(GamePlayContext);
   const { io } = useContext(GlobalContext);
   const [questionWord, setQuestionWord] = useState({
@@ -56,6 +56,4 @@ const CanvasSection = () => {
       />
     </CanvasSectionStyle>
   );
-};
-
-export default CanvasSection;
+}

@@ -1,13 +1,10 @@
-import React from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import { getRankingAll } from 'queries/ranking';
 import Loading from 'components/globalComponents/Loading/Loading';
 import Alert from 'components/globalComponents/Alert/Alert';
-import InfinityScroll from 'components/globalComponents/InfinityScroll/InfinityScroll';
-import UserRankingList from '../UserRankingList/UserRankingList';
-import RankingAllStyle from './RankingAll.style';
+import React from 'react';
 
-export default function RankingAll() {
+const useGetRankingAll = () => {
   const { data, loading, error, fetchMore } = useQuery(getRankingAll);
   if (loading) {
     return <Loading />;
@@ -43,12 +40,6 @@ export default function RankingAll() {
       },
     });
   };
-  const users = edges.map((edge) => edge.node);
-  return (
-    <RankingAllStyle>
-      <InfinityScroll loadMore={loadMore} hasMore={hasNextPage}>
-        <UserRankingList users={users} />
-      </InfinityScroll>
-    </RankingAllStyle>
-  );
-}
+};
+
+export default useGetRankingAll;
