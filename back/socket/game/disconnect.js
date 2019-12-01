@@ -10,7 +10,9 @@ function disconnect() {
   const userIdx = userList.findIndex((user) => user.socket.id === this.socketId);
   if (userIdx >= 0) {
     userList.splice(userIdx, 1);
-    sendUserListToRoom(userList, roomId, this.gameIo);
+
+    const sendUserList = sendUserListToRoom.bind(this);
+    sendUserList(userList, roomId, this.gameIo);
     this.socket.leave(roomId);
   }
 }

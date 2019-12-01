@@ -1,31 +1,24 @@
 const { RoomManager } = require('../Room');
-const {
-  sendUserListToRoom,
-  personEnterRoom,
-  personEnterSecretRoom,
-  sendImageToUser,
-} = require('./game');
+const { personEnterRoom, personEnterSecretRoom } = require('./game');
 const disconnect = require('./disconnect');
 const getRandomInt = require('../../util/getRandomInt');
+const exitRoom = require('./exitRoom');
 
 function setGameSocket(socket) {
   this.RoomManager = RoomManager;
-  let userName;
-  let roomInfo;
+  this.roomInfo = null;
   this.socket = socket;
-  const socketId = socket.id;
+  this.socketId = socket.id;
 
   RoomManager.roomList.forEach((roomName) => {
     socket.on(`enter${roomName}`, ({ nickname }) => {
-      roomInfo = personEnterRoom(nickname, socket, roomName, this.gameIo);
-      userName = nickname;
+      this.roomInfo = personEnterRoom(nickname, socket, roomName, this.gameIo);
     });
   });
 
   socket.on('makeSecret', ({ nickname, roomId }) => {
     personEnterSecretRoom(nickname, socket, roomId, this.gameIo);
-    userName = nickname;
-    roomInfo = { roomId, roomType: '비밀방' };
+    this.roomInfo = { roomId, roomType: '비밀방' };
   });
 
   socket.on('startSecretGame', ({ roomId, roomType }) => {
@@ -34,22 +27,6 @@ function setGameSocket(socket) {
     if (room.players.length >= 2) {
       this.gameIo.to(roomId).emit('startSecretGame', { painter: room.players[0].socket.id });
     }
-  });
-
-  socket.on('exitRoom', ({ nickname, roomType, roomId }) => {
-    const rooms = RoomManager.room;
-    if (!roomType) return;
-
-    const room = rooms[roomType];
-    if (!roomId || !(roomId in room)) return;
-
-    const userList = room[roomId].players;
-
-    const exitUserIdx = userList.findIndex((user) => user.socket.id === socketId);
-    userList.splice(exitUserIdx, 1);
-
-    // 리뷰: 유저리스트를 다보내지 말고 제외된 유저 아이디만 보내자
-    sendUserListToRoom(userList, roomId, this.gameIo);
   });
 
   socket.on('sendMessage', ({ socketId, roomType, roomId, inputValue }) => {
@@ -97,7 +74,11 @@ function setGameSocket(socket) {
     this.gameIo.to(roomId).emit('drawing');
   });
 
-  socket.on('gameImage', sendImageToUser.bind(this));
+  socket.on('gameImage', ({ roomId, image }) => {
+    socket.to(roomId).emit('gameImage', { image });
+  });
+
+  socket.on('exitRoom', exitRoom.bind(this));
   socket.on('disconnect', disconnect.bind(this));
 }
 module.exports = setGameSocket;
