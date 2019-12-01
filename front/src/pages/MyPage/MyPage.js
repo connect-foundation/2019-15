@@ -7,13 +7,14 @@ import RankingFriends from 'components/Ranking/RankingFriends/RankingFriends';
 import MyInfoSection from 'components/MyInfoSection/MyInfoSection';
 import ContentSection from 'components/globalComponents/ContentSection/ContentSection';
 import Background from 'components/globalComponents/Container/Background.style';
+import NavigationBar from 'components/NavigationBar/NavigationBar';
 
 const MyPage = () => {
   const themeContext = useContext(ThemeContext);
 
   return (
     <>
-      {/* <NavigationBar /> */}
+      <NavigationBar />
       <Background id="MyPage">
         <ContentSection title="랭킹">
           <Tab
