@@ -2,6 +2,8 @@ import styled from 'styled-components';
 import Button from 'components/globalComponents/Button/Button.style';
 
 export const PublicRoomButton = styled(Button)`
+  white-space: nowrap;
+  min-width: 9rem;
   width: 100%;
   height: 100%;
   font-size: 3rem;

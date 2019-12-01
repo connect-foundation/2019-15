@@ -10,9 +10,9 @@ ContentSection.propTypes = {
   children: PropTypes.element.isRequired,
 };
 
-export default function ContentSection({ title, children }) {
+export default function ContentSection({ title, children, height }) {
   return (
-    <ContentSectionStyle id="ContentSection">
+    <ContentSectionStyle id="ContentSection" height={height}>
       <ContentSectionTitleStyle>{title}</ContentSectionTitleStyle>
       {children}
     </ContentSectionStyle>

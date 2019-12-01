@@ -16,7 +16,7 @@ const MyPage = () => {
     <>
       <NavigationBar />
       <Background id="MyPage">
-        <ContentSection title="랭킹">
+        <ContentSection title="랭킹" height="33rem">
           <Tab
             activeTabColor={themeContext.amour}
             inActiveTabColor={themeContext.wePeep}
@@ -30,7 +30,7 @@ const MyPage = () => {
           </Tab>
         </ContentSection>
 
-        <ContentSection title="내 정보">
+        <ContentSection title="내 정보" height="33rem">
           <MyInfoSection />
         </ContentSection>
       </Background>
