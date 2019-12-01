@@ -1,7 +1,10 @@
 const { RoomManager } = require('../Room');
 const { sendUserListToRoom, personEnterRoom, personEnterSecretRoom } = require('./game');
+const disconnect = require('./disconnect');
+const getRandomInt = require('../../util/getRandomInt');
 
 function setGameSocket(socket) {
+  this.RoomManager = RoomManager;
   let userName;
   let roomInfo;
   this.socket = socket;
@@ -61,17 +64,6 @@ function setGameSocket(socket) {
     sendUserListToRoom(userList, roomId, this.gameIo);
   });
 
-  // socket.on('disconnect', () => {
-  //   if (roomInfo) {
-  //     const userList = RoomManager.room[roomInfo.roomType][roomInfo.roomId].players;
-  //     const userIdx = userList.findIndex((user) => user.socket.id === socketId);
-  //     if (userIdx >= 0) {
-  //       userList.splice(userIdx, 1);
-  //       sendUserListToRoom(userList, roomInfo.roomId, this.gameIo);
-  //     }
-  //   }
-  // });
-
   socket.on('sendMessage', ({ socketId, roomType, roomId, inputValue }) => {
     let answer;
     try {
@@ -116,5 +108,7 @@ function setGameSocket(socket) {
     // 출제자를 제외한 참가자들에게 캔버스 정보를 전송
     this.gameIo.to(roomId).emit('drawing');
   });
+
+  socket.on('disconnect', disconnect.bind(this));
 }
 module.exports = setGameSocket;
