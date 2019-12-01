@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import Image from 'components/globalComponents/Image/Image.style';
 import { FlexRowStyle } from 'components/globalComponents/Container/Flex.style';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
