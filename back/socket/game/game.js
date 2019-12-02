@@ -10,8 +10,7 @@ function sendUserListToRoom(list, roomId, io) {
   io.in(roomId).emit('userList', { userList: JSON.stringify(userList) });
 }
 
-function personEnterRoom(nickname, socket, roomType, io) {
-  const roomId = RoomManager.getEnableRoomId(roomType);
+function personEnterRoom(nickname, socket, roomType, io, roomId) {
   const room = RoomManager.room[roomType][roomId];
   room.players.push(new User(nickname, socket));
   room.timer = new Timer();
