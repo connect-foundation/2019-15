@@ -1,5 +1,4 @@
-import { useState } from React from 'react';
-
+import React, { useState } from 'react';
 import Button from '../Button/Button';
 import Modal from './Modal';
 
