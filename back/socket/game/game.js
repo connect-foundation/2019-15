@@ -1,7 +1,6 @@
 const Timer = require('../../util/timer/Timer');
-
-const { RoomManager, Room } = require('../Room');
 const User = require('../User');
+const { RoomManager, Room } = require('../Room');
 
 function sendUserListToRoom(list, roomId, io) {
   const userList = list.map((v) => {
@@ -11,16 +10,16 @@ function sendUserListToRoom(list, roomId, io) {
   io.in(roomId).emit('userList', { userList: JSON.stringify(userList) });
 }
 
-function personEnterRoom(nickname, socket, roomName, io) {
-  const roomId = RoomManager.getEnableRoomId(roomName);
-  const room = RoomManager.room[roomName][roomId];
+function personEnterRoom(nickname, socket, roomType, io) {
+  const roomId = RoomManager.getEnableRoomId(roomType);
+  const room = RoomManager.room[roomType][roomId];
   room.players.push(new User(nickname, socket));
   room.timer = new Timer();
 
   socket.join(roomId);
-  socket.emit(`connect${roomName}`, {
+  socket.emit(`connect${roomType}`, {
     roomId,
-    roomType: roomName,
+    roomType,
   });
 
   sendUserListToRoom(room.players, roomId, io);
@@ -30,7 +29,7 @@ function personEnterRoom(nickname, socket, roomName, io) {
     room.players[0].privileged = true;
     io.to(roomId).emit('gamestart', { painter: room.players[0].socket.id });
   }
-  return { roomId, roomType: roomName };
+  return { roomId, roomType };
 }
 
 function personEnterSecretRoom(nickname, socket, roomId, io) {
