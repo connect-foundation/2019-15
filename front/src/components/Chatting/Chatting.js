@@ -3,7 +3,7 @@ import ChattingStyle from './Chatting.style';
 import ChattingList from './ChattingList/ChattingList';
 import TextInput from './TextInput';
 
-const Chatting = () => {
+export default function Chatting() {
   return (
     <>
       <ChattingStyle>
@@ -12,6 +12,4 @@ const Chatting = () => {
       </ChattingStyle>
     </>
   );
-};
-
-export default Chatting;
+}

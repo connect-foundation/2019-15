@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import faker from 'faker';
+import PENCIL from 'asset/pencil.png';
 import {
   UserStyle,
   UserInfoStyle,
@@ -11,11 +12,22 @@ import {
   Score,
   Ranking,
 } from './User.style';
-import PENCIL from '../../../asset/pencil.png';
 
-const User = ({ nickname, index }) => {
+User.defaultProps = {
+  className: '',
+};
+
+User.propTypes = {
+  className: PropTypes.string,
+  nickname: PropTypes.string.isRequired,
+  index: PropTypes.number.isRequired,
+};
+
+export default function User({ className, nickname, index }) {
+  const drawer = className.split('painter').length > 1;
+
   return (
-    <UserStyle>
+    <UserStyle className={className}>
       <UserImage
         src={`${faker.image.animals(parseInt(Math.random() * 1000, 0))}`}
         alt="avatar"
@@ -24,18 +36,11 @@ const User = ({ nickname, index }) => {
         <UserNickName>
           <Ranking>#{index}</Ranking>
           <Text>{nickname}</Text>
-          <Drawer src={PENCIL} />
+          <Drawer drawer={drawer} src={PENCIL} />
         </UserNickName>
         <Score>1200</Score>
         <div>그리는 순서가 n 차례 남았습니다.</div>
       </UserInfoStyle>
     </UserStyle>
   );
-};
-
-User.propTypes = {
-  nickname: PropTypes.string.isRequired,
-  index: PropTypes.number.isRequired,
-};
-
-export default User;
+}

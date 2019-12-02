@@ -1,22 +1,24 @@
 import React, { useContext } from 'react';
+import GlobalContext from 'global.context';
+import GamePlayContext from 'GamePlay.context';
 import {
   SettingStyle,
   RoomSettingStyle,
   UserSettingStyle,
   GameStartButtonStyle,
 } from './Setting.style';
-import GlobalContext from '../../../global.context';
-import GamePlayContext from '../../../GamePlay.context';
 
-const Setting = () => {
-  const { io, room } = useContext(GlobalContext);
+export default function Setting() {
+  const { io, room, user } = useContext(GlobalContext);
   const { userList } = useContext(GamePlayContext);
 
   function onClickGameStart() {
     const { roomType, roomId } = room;
-    if (userList.length >= 2) {
-      io.startSecretGame({ roomType, roomId });
-    }
+    if (userList.length < 2) return;
+
+    if (!user.roomOwner) return;
+
+    io.startSecretGame({ roomType, roomId });
   }
 
   return (
@@ -28,6 +30,4 @@ const Setting = () => {
       </GameStartButtonStyle>
     </SettingStyle>
   );
-};
-
-export default Setting;
+}

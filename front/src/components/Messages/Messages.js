@@ -5,16 +5,16 @@ import {
   findFriendRequests,
   deleteFriendRequest,
   acceptFriendRequest,
-} from '../../queries/friend';
+} from 'queries/friend';
+import globalMessages from 'constant/messages';
 import MessagesStyle from './Messages.style';
 import MessageComponentStyle from './MessageComponent.style';
 import Button from '../globalComponents/Button/Button';
 import Modal from '../globalComponents/Modal/Modal';
 import Div from '../globalComponents/Modal/ContentDiv.style';
-import globalMessages from '../../constant/messages';
 import ButtonDiv from './ButtonDiv.style';
 
-function MessageList() {
+export default function MessageList() {
   const [openModal, setOpenModal] = useState(false);
   const [friendRequests, setFriendRequests] = useState([]);
   const [findFriendRequestsFunc] = useMutation(findFriendRequests, {
@@ -80,5 +80,3 @@ function MessageList() {
     </>
   );
 }
-
-export default MessageList;

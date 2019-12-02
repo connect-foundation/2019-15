@@ -4,7 +4,7 @@ import CurrentMyInfo from './CurrentMyInfo/CurrentMyInfo';
 import ChangeMyInfo from './ChangeMyInfo/ChangeMyInfo';
 import ContentSection from '../globalComponents/ContentSection/ContentSection';
 
-const MyInfoSection = () => {
+export default function MyInfoSection() {
   return (
     <>
       <ContentSection title="현재 정보">
@@ -18,6 +18,4 @@ const MyInfoSection = () => {
       </ContentSection>
     </>
   );
-};
-
-export default MyInfoSection;
+}

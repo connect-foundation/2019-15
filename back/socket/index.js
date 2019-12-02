@@ -31,6 +31,7 @@ function personEnterRoom(nickname, socket, roomName, io) {
     room.players[0].privileged = true;
     io.to(roomId).emit('gamestart', { painter: room.players[0].socket.id });
   }
+  return { roomId, roomType: roomName };
 }
 
 function personEnterSecretRoom(nickname, socket, roomId, io) {
@@ -43,7 +44,7 @@ function personEnterSecretRoom(nickname, socket, roomId, io) {
     room = new Room();
     secretRoomList[roomId] = room;
   }
-
+  room.timer = new Timer();
   socket.join(roomId);
   room.players.push(new User(nickname, socket));
   sendUserListToRoom(room.players, roomId, io);
@@ -57,7 +58,7 @@ function initSocketIO(io) {
 
     RoomManager.roomList.forEach((roomName) => {
       socket.on(`enter${roomName}`, ({ nickname }) => {
-        personEnterRoom(nickname, socket, roomName, io);
+        roomInfo = personEnterRoom(nickname, socket, roomName, io);
         userName = nickname;
       });
     });
@@ -68,6 +69,7 @@ function initSocketIO(io) {
 
       // 방이 없는 경우
       if (roomIdx < 0) return;
+
       roomInfo = { roomId, roomType };
       const userList = nRooms[roomIdx].people.map((v) => v.id);
 
@@ -89,12 +91,23 @@ function initSocketIO(io) {
       }
     });
 
+    socket.on('gameImage', ({ roomId, image }) => {
+      socket.to(roomId).emit('gameImage', { image });
+    });
+
     socket.on('exitRoom', ({ nickname, roomType, roomId }) => {
-      if (!roomType || !roomId) return;
-      const userList = RoomManager.room[roomType][roomId].players;
+      const rooms = RoomManager.room;
+      if (!roomType) return;
+
+      const room = rooms[roomType];
+      if (!roomId || !(roomId in room)) return;
+
+      const userList = room[roomId].players;
+
       const exitUserIdx = userList.findIndex((user) => user.socket.id === socketId);
       userList.splice(exitUserIdx, 1);
 
+      // 리뷰: 유저리스트를 다보내지 말고 제외된 유저 아이디만 보내자
       sendUserListToRoom(userList, roomId, io);
     });
 

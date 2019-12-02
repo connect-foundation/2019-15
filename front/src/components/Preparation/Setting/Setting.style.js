@@ -1,11 +1,10 @@
 import styled from 'styled-components';
-import { FlexColumnStyle } from '../../globalComponents/Container/Flex.style';
-import ButtonStyle from '../../globalComponents/Button/Button.style';
+import { FlexColumnStyle } from 'components/globalComponents/Container/Flex.style';
+import ButtonStyle from 'components/globalComponents/Button/Button.style';
 
 export const SettingStyle = styled(FlexColumnStyle)`
   width: 50%;
   height: 90%;
-  background-color: orange;
   margin: 2rem;
   justify-content: space-around;
   align-items: center;
@@ -14,13 +13,11 @@ export const SettingStyle = styled(FlexColumnStyle)`
 export const RoomSettingStyle = styled(FlexColumnStyle)`
   width: 100%;
   height: 40%;
-  background-color: yellow;
 `;
 
 export const UserSettingStyle = styled(FlexColumnStyle)`
   width: 100%;
   height: 40%;
-  background-color: yellow;
 `;
 
 export const GameStartButtonStyle = styled(ButtonStyle)`

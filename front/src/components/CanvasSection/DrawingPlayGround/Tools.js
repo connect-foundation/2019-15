@@ -5,28 +5,6 @@ import ColorPicker from './ColorPicker/ColorPicker';
 import ToolType from './ToolType/ToolType';
 import Tool from './ToolType/Tool';
 
-const Tools = ({ drawingOptions, setDrawingOptions }) => {
-  const { tool, strokeColor } = drawingOptions;
-  const changeTool = (toolName) => {
-    setDrawingOptions({ type: 'tool', value: toolName });
-  };
-
-  const changeColor = (rgb) => {
-    setDrawingOptions({ type: 'strokeColor', value: rgb });
-  };
-
-  return (
-    <ToolsStyle>
-      <div>
-        <ToolType tool={tool} changeTool={changeTool} />
-      </div>
-      <div>
-        <ColorPicker color={strokeColor} changeColor={changeColor} />
-      </div>
-    </ToolsStyle>
-  );
-};
-
 Tools.propTypes = {
   drawingOptions: PropTypes.shape({
     tool: PropTypes.instanceOf(Tool).isRequired,
@@ -41,4 +19,26 @@ Tools.defaultProps = {
   }),
 };
 
-export default Tools;
+export default function Tools({ drawingOptions, setDrawingOptions }) {
+  const { tool, strokeColor } = drawingOptions;
+  const changeTool = (toolName) => {
+    if (tool.getName() !== 'cursor')
+      setDrawingOptions({ type: 'tool', value: toolName });
+  };
+
+  const changeColor = (rgb) => {
+    if (tool.getName() !== 'cursor')
+      setDrawingOptions({ type: 'strokeColor', value: rgb });
+  };
+
+  return (
+    <ToolsStyle>
+      <div>
+        <ToolType tool={tool} changeTool={changeTool} />
+      </div>
+      <div>
+        <ColorPicker color={strokeColor} changeColor={changeColor} />
+      </div>
+    </ToolsStyle>
+  );
+}

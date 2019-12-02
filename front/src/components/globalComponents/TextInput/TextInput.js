@@ -1,9 +1,21 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
+import regex from 'constant/TextInput';
 import TextInputStyle from './TextInput.style';
-import regex from '../../../constant/TextInput';
 
-const TextInput = ({ onChange, value, onChangeComplete }) => {
+TextInput.propTypes = {
+  onChange: PropTypes.func,
+  value: PropTypes.string,
+  onChangeComplete: PropTypes.func,
+};
+
+TextInput.defaultProps = {
+  onChange: () => {},
+  value: '',
+  onChangeComplete: () => {},
+};
+
+export default function TextInput({ onChange, value, onChangeComplete }) {
   const [input, setInput] = useState(value);
   const onInputChange = useCallback(
     (e) => {
@@ -32,18 +44,4 @@ const TextInput = ({ onChange, value, onChangeComplete }) => {
       maxLength="12"
     />
   );
-};
-
-TextInput.propTypes = {
-  onChange: PropTypes.func,
-  value: PropTypes.string,
-  onChangeComplete: PropTypes.func,
-};
-
-TextInput.defaultProps = {
-  onChange: () => {},
-  value: '',
-  onChangeComplete: () => {},
-};
-
-export default TextInput;
+}
