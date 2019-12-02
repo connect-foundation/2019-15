@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import GlobalContext from '../../global.context';
 import checkAuth from '../../logics/auth/checkAuth';
 import MainPage from './MainPage';
@@ -9,6 +9,7 @@ const Main = () => {
   const { setOnlineSocket, io, setRoom, userDispatch } = useContext(
     GlobalContext,
   );
+  const [nickName, setNickName] = useState('');
 
   useEffect(() => {
     const initSocket = async () => {
@@ -18,11 +19,11 @@ const Main = () => {
       setOnlineSocket(socket);
       setRoom(new Room());
     };
-    checkAuth();
+    checkAuth(setNickName);
     initSocket();
   }, [io, setOnlineSocket, setRoom, userDispatch]);
 
-  return <MainPage />;
+  return <MainPage nickName={nickName} />;
 };
 
 export default Main;
