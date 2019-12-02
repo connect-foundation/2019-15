@@ -5,7 +5,7 @@ const setGameSocket = require('./game');
 
 function initSocketIO(io) {
   this.io = io;
-  this.gameIo = io.of('/').on('connection', setGameSocket.bind(this));
+  this.gameIo = io.of('/game').on('connection', setGameSocket.bind(this));
   this.onlineIo = io.of('/online').on('connection', setOnlineSockets.bind(this));
 }
 

@@ -7,7 +7,7 @@ const io = {
   socket: null,
 
   async connectSocket() {
-    this.socket = await socketIo.connect(`${APP_URI.REACT_APP_API_URI}`);
+    this.socket = await socketIo.connect(`${APP_URI.REACT_APP_API_URI}/game`);
   },
 
   async getSocket() {
