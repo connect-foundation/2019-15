@@ -1,14 +1,14 @@
 import React, { useContext } from 'react';
+import GlobalContext from 'global.context';
+import GamePlayContext from 'GamePlay.context';
 import {
   SettingStyle,
   RoomSettingStyle,
   UserSettingStyle,
   GameStartButtonStyle,
 } from './Setting.style';
-import GlobalContext from '../../../global.context';
-import GamePlayContext from '../../../GamePlay.context';
 
-const Setting = () => {
+export default function Setting() {
   const { io, room, user } = useContext(GlobalContext);
   const { userList } = useContext(GamePlayContext);
 
@@ -30,6 +30,4 @@ const Setting = () => {
       </GameStartButtonStyle>
     </SettingStyle>
   );
-};
-
-export default Setting;
+}

@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useContext } from 'react';
 import PropTypes from 'prop-types';
 import { fabric } from 'fabric';
+import GlobalContext from 'global.context';
 import { DrawingBoardStyle, CanvasStyle } from './DrawingBoard.style';
 import Tool from './ToolType/Tool';
-import GlobalContext from '../../../global.context';
 
 DrawingBoard.propTypes = {
   drawingOptions: PropTypes.shape({
@@ -26,7 +26,7 @@ DrawingBoard.defaultProps = {
   },
 };
 
-function DrawingBoard({ drawingOptions, size }) {
+export default function DrawingBoard({ drawingOptions, size }) {
   const { tool } = drawingOptions;
   const { width, height } = size;
   const canvas = useRef(null);
@@ -83,5 +83,3 @@ function DrawingBoard({ drawingOptions, size }) {
     </DrawingBoardStyle>
   );
 }
-
-export default DrawingBoard;

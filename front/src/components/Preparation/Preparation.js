@@ -5,7 +5,7 @@ import Setting from './Setting/Setting';
 import UserList from './UserList/UserList';
 import Anchor from './Anchor/Anchor';
 
-const Preparation = () => {
+export default function Preparation() {
   return (
     <>
       <PreparationStyle>
@@ -17,6 +17,4 @@ const Preparation = () => {
       </PreparationStyle>
     </>
   );
-};
-
-export default Preparation;
+}

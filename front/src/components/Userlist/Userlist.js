@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
+import GamePlayContext from 'GamePlay.context';
+import GlobalContext from 'global.context';
 import UserListStyle from './Userlist.style';
-import GamePlayContext from '../../GamePlay.context';
-import GlobalContext from '../../global.context';
 
 import User from './User/User';
 
@@ -13,7 +13,7 @@ function createClassName(myId, comapreId, painterId) {
   return ret;
 }
 
-const UserList = () => {
+export default function UserList() {
   const { io } = useContext(GlobalContext);
   const { userList, painter } = useContext(GamePlayContext);
   const UserComponents = userList.map((user, index) => {
@@ -25,6 +25,4 @@ const UserList = () => {
   });
 
   return <UserListStyle>{UserComponents}</UserListStyle>;
-};
-
-export default UserList;
+}
