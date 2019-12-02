@@ -7,10 +7,9 @@ const ButtonStyle = styled.button`
   width: 4rem;
   height: 2rem;
   color: ${(props) => props.theme.grayNurse};
-  background-color: ${(props) => props.theme.brightGray};
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  background-color: ${(props) => props.theme.mustard};
   &:hover {
-    background-color: #15062c;
+    background-color: ${(props) => props.theme.wattle};
     cursor: pointer;
   }
 `;

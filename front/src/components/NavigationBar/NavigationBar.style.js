@@ -6,12 +6,12 @@ export const NavigationBarStyle = styled.div`
   top: 0;
   left: 0;
   width: 100%;
-  height: 4rem;
-  background-color: ${(props) => props.theme.slateGray};
+  height: 5rem;
+  background-color: ${(props) => props.theme.pink};
 `;
 
 export const LogoImage = styled(Image)`
   margin-top: 5px;
-  width: 12rem;
-  height: 3.3rem;
+  width: 11rem;
+  height: 4rem;
 `;

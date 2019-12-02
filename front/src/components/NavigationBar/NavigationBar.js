@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import GlobalContext from 'global.context';
 import Room from 'logics/room';
 
-import mainlogo from 'asset/mainlogo4.png';
+import mainlogo from 'asset/mainlogo_yellowpink.png';
 import { LogoImage, NavigationBarStyle } from './NavigationBar.style';
 import ButtonContainer from './ButtonContainer/ButtonContainer';
 
