@@ -5,7 +5,21 @@ import ColorPicker from './ColorPicker/ColorPicker';
 import ToolType from './ToolType/ToolType';
 import Tool from './ToolType/Tool';
 
-const Tools = ({ drawingOptions, setDrawingOptions }) => {
+Tools.propTypes = {
+  drawingOptions: PropTypes.shape({
+    tool: PropTypes.instanceOf(Tool).isRequired,
+    strokeColor: PropTypes.string,
+  }),
+  setDrawingOptions: PropTypes.func.isRequired,
+};
+
+Tools.defaultProps = {
+  drawingOptions: PropTypes.shape({
+    strokeColor: '#000000',
+  }),
+};
+
+export default function Tools({ drawingOptions, setDrawingOptions }) {
   const { tool, strokeColor } = drawingOptions;
   const changeTool = (toolName) => {
     if (tool.getName() !== 'cursor')
@@ -27,20 +41,4 @@ const Tools = ({ drawingOptions, setDrawingOptions }) => {
       </div>
     </ToolsStyle>
   );
-};
-
-Tools.propTypes = {
-  drawingOptions: PropTypes.shape({
-    tool: PropTypes.instanceOf(Tool).isRequired,
-    strokeColor: PropTypes.string,
-  }),
-  setDrawingOptions: PropTypes.func.isRequired,
-};
-
-Tools.defaultProps = {
-  drawingOptions: PropTypes.shape({
-    strokeColor: '#000000',
-  }),
-};
-
-export default Tools;
+}

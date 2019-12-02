@@ -1,12 +1,12 @@
 import React, { useContext } from 'react';
 import { ThemeContext } from 'styled-components';
-import Tab from '../../components/globalComponents/Tab/Tab';
-import TabPane from '../../components/globalComponents/Tab/TabPane/TabPane';
-import RankingAll from '../../components/Ranking/RankingAll/RankingAll';
-import RankingFriends from '../../components/Ranking/RankingFriends/RankingFriends';
-import MyInfoSection from '../../components/MyInfoSection/MyInfoSection';
-import ContentSection from '../../components/globalComponents/ContentSection/ContentSection';
-import Background from '../../components/globalComponents/Container/Background.style';
+import Tab from 'components/globalComponents/Tab/Tab';
+import TabPane from 'components/globalComponents/Tab/TabPane/TabPane';
+import RankingAll from 'components/Ranking/RankingAll/RankingAll';
+import RankingFriends from 'components/Ranking/RankingFriends/RankingFriends';
+import MyInfoSection from 'components/MyInfoSection/MyInfoSection';
+import ContentSection from 'components/globalComponents/ContentSection/ContentSection';
+import Background from 'components/globalComponents/Container/Background.style';
 
 const MyPage = () => {
   const themeContext = useContext(ThemeContext);

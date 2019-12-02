@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import ButtonStyle from '../../globalComponents/Button/Button.style';
+import ButtonStyle from 'components/globalComponents/Button/Button.style';
 
 const DoneButtonStyle = styled(ButtonStyle)`
   width: 3rem;

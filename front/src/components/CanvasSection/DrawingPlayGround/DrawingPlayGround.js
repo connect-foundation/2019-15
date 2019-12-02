@@ -7,6 +7,21 @@ import ToolManager from './ToolType/ToolManager';
 
 const toolManager = new ToolManager();
 
+DrawingPlayGround.propTypes = {
+  drawable: PropTypes.bool.isRequired,
+  canvasSize: PropTypes.shape({
+    width: PropTypes.number,
+    height: PropTypes.number,
+  }),
+};
+
+DrawingPlayGround.defaultProps = {
+  canvasSize: {
+    width: 500,
+    height: 500,
+  },
+};
+
 const setDrawingOptions = (prev, { type, value }) => {
   switch (type) {
     case 'tool':
@@ -18,7 +33,7 @@ const setDrawingOptions = (prev, { type, value }) => {
   }
 };
 
-const DrawingPlayGround = ({ drawable, canvasSize }) => {
+export default function DrawingPlayGround({ drawable, canvasSize }) {
   const defaultDrawingOptions = {
     tool: toolManager.pen,
     strokeColor: '#000000',
@@ -43,21 +58,4 @@ const DrawingPlayGround = ({ drawable, canvasSize }) => {
       />
     </DrawingPlayGroundStyle>
   );
-};
-
-DrawingPlayGround.propTypes = {
-  drawable: PropTypes.bool.isRequired,
-  canvasSize: PropTypes.shape({
-    width: PropTypes.number,
-    height: PropTypes.number,
-  }),
-};
-
-DrawingPlayGround.defaultProps = {
-  canvasSize: {
-    width: 500,
-    height: 500,
-  },
-};
-
-export default DrawingPlayGround;
+}

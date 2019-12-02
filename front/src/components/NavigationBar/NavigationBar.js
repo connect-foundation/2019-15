@@ -1,13 +1,13 @@
 import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
-import GlobalContext from '../../global.context';
-import Room from '../../logics/room';
+import GlobalContext from 'global.context';
+import Room from 'logics/room';
 
+import mainlogo from 'asset/mainlogo4.png';
 import { LogoImage, NavigationBarStyle } from './NavigationBar.style';
 import ButtonContainer from './ButtonContainer/ButtonContainer';
-import mainlogo from '../../asset/mainlogo4.png';
 
-const NavigationBar = () => {
+export default function NavigationBar() {
   const { io, user, room, setRoom } = useContext(GlobalContext);
 
   async function onClickExit() {
@@ -25,6 +25,4 @@ const NavigationBar = () => {
       <ButtonContainer />
     </NavigationBarStyle>
   );
-};
-
-export default NavigationBar;
+}

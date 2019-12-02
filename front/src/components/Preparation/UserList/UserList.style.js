@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { FlexRowStyle } from '../../globalComponents/Container/Flex.style';
+import { FlexRowStyle } from 'components/globalComponents/Container/Flex.style';
 
 const UserListStyle = styled(FlexRowStyle)`
   width: 50%;

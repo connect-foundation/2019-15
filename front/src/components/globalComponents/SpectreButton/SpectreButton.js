@@ -7,22 +7,6 @@ import {
   SyncIconStyle,
 } from './SpectreButton.style';
 
-const SpectreButton = ({ onClick, children, active, loading, disabled }) => {
-  let icon;
-  if (disabled) {
-    icon = <BanIconStyle icon={faBan} size="1x" />;
-  } else if (loading) {
-    icon = <SyncIconStyle icon={faSync} spin size="1x" />;
-  } else {
-    icon = children;
-  }
-  return (
-    <SpectreButtonStyle disabled={disabled} onClick={onClick} active={active}>
-      <span style={{ width: '1rem' }}>{icon}</span>
-    </SpectreButtonStyle>
-  );
-};
-
 SpectreButton.propTypes = {
   onClick: PropTypes.func,
   children: PropTypes.node,
@@ -39,4 +23,24 @@ SpectreButton.defaultProps = {
   disabled: false,
 };
 
-export default SpectreButton;
+export default function SpectreButton({
+  onClick,
+  children,
+  active,
+  loading,
+  disabled,
+}) {
+  let icon;
+  if (disabled) {
+    icon = <BanIconStyle icon={faBan} size="1x" />;
+  } else if (loading) {
+    icon = <SyncIconStyle icon={faSync} spin size="1x" />;
+  } else {
+    icon = children;
+  }
+  return (
+    <SpectreButtonStyle disabled={disabled} onClick={onClick} active={active}>
+      <span style={{ width: '1rem' }}>{icon}</span>
+    </SpectreButtonStyle>
+  );
+}
