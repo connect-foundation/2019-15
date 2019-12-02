@@ -3,11 +3,12 @@ const { personEnterRoom, personEnterSecretRoom } = require('./game');
 const disconnect = require('./disconnect');
 const getRandomInt = require('../../util/getRandomInt');
 const exitRoom = require('./exitRoom');
+const sendGameImage = require('./gameImage');
 
 function setGameSocket(socket) {
   this.RoomManager = RoomManager;
   this.roomInfo = null;
-  this.socket = socket;
+  this.gameSocket = socket;
   this.socketId = socket.id;
 
   socket.on(`enterRandom`, ({ nickname, roomType }) => {
@@ -72,10 +73,7 @@ function setGameSocket(socket) {
     this.gameIo.to(roomId).emit('drawing');
   });
 
-  socket.on('gameImage', ({ roomId, image }) => {
-    socket.to(roomId).emit('gameImage', { image });
-  });
-
+  socket.on('gameImage', sendGameImage.bind(this));
   socket.on('exitRoom', exitRoom.bind(this));
   socket.on('disconnect', disconnect.bind(this));
 }

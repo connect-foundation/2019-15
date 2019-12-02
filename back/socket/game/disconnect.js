@@ -13,7 +13,7 @@ function disconnect() {
 
     const sendUserList = sendUserListToRoom.bind(this);
     sendUserList(userList, roomId, this.gameIo);
-    this.socket.leave(roomId);
+    this.gameSocket.leave(roomId);
   }
 }
 
