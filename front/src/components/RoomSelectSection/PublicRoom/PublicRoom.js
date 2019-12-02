@@ -16,7 +16,7 @@ const PublicRoom = () => {
   };
 
   const buttonComponents = roomInfo.roomList.map((roomName) => (
-    <CustomA href="/#/gameplay" key={roomName}>
+    <CustomA to="gameplay" key={roomName}>
       <PublicRoomButton
         key={roomName}
         onClick={makeGameStartBtnHandler(roomName)}
