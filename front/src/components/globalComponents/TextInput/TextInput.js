@@ -24,7 +24,7 @@ export default function TextInput({ onChange, value, onChangeComplete }) {
         onChange(e);
       }
     },
-    [onChange],
+    [onChange, setInput],
   );
 
   useEffect(() => {
