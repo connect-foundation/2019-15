@@ -30,16 +30,10 @@ function setGameSocket(socket) {
     }
   });
 
-  // 출제자가 캔버스에 그림을 그리는 경우.
-  socket.on('drawing', ({ roomId }) => {
-    // 출제자를 제외한 참가자들에게 캔버스 정보를 전송
-    this.gameIo.to(roomId).emit('drawing');
-  });
-
   socket.on('selectWord', selectWord.bind(this, gameSocket));
   socket.on('sendMessage', sendMessage.bind(this, gameSocket));
   socket.on('enterRandom', enterRandom.bind(this, gameSocket, roomInfo));
-  socket.on('gameImage', sendGameImage.bind(this, gameSocket));
+  socket.on('drawing', sendGameImage.bind(this, gameSocket));
   socket.on('exitRoom', exitRoom.bind(this, gameSocket));
   socket.on('disconnect', () => {
     if (!roomInfo) return;

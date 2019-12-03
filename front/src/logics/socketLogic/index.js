@@ -79,13 +79,13 @@ const io = {
   },
 
   async initImageSendHandler({ setCanvasImage }) {
-    this.socket.on('gameImage', ({ image }) => {
+    this.socket.on('drawing', ({ image }) => {
       setCanvasImage({ image });
     });
   },
 
   async sendImage({ roomId, image }) {
-    await this.socket.emit('gameImage', { roomId, image });
+    await this.socket.emit('drawing', { roomId, image });
   },
 };
 
