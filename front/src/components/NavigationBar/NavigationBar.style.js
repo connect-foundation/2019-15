@@ -8,12 +8,12 @@ export const NavigationBarStyle = styled.div`
   width: 100%;
   height: 4.5rem;
     // background-color: ${(props) => props.theme.pink};
-
 `;
 
 export const LogoImage = styled(Image)`
   margin-top: 5px;
   width: 20rem;
   height: 10rem;
-  margin-left: 40%;
+  margin-left: 50%;
+  transform: translateX(-50%);
 `;

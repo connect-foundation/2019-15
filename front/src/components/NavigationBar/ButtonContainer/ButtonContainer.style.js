@@ -15,8 +15,10 @@ export const NavImage = styled(FontAwesomeIcon).attrs({
 `;
 
 export const ButtonContainerStyle = styled.div`
+  position: absolute;
+  top: 0;
+  right: 0;
   height: 100%;
-  float: right;
 `;
 
 export const Text = styled(FlexRowStyle)`
