@@ -2,9 +2,8 @@ import React, { useState, useContext } from 'react';
 
 import PropTypes from 'prop-types';
 import { useMutation } from '@apollo/react-hooks';
-import Modal from 'components/globalComponents/Modal/Modal';
+import makeModal from 'components/globalComponents/Modal/Modal';
 import Button from 'components/globalComponents/Button/Button';
-import Div from 'components/globalComponents/Modal/ContentDiv.style';
 import message from 'constant/messages';
 import { deleteFriend, sendFriendRequest } from 'queries/friend';
 import GlobalContext from 'global.context';
@@ -58,18 +57,20 @@ export default function FriendsSetModal({
     }
   }
 
-  return (
-    <Modal>
-      <Div>
-        <span>
-          {nickname}
-          {message[content]}
-        </span>
-        <ButtonSectionStyle>
-          <Button onClick={clickHandler}>확인</Button>
-          <Button onClick={modalOff}>취소</Button>
-        </ButtonSectionStyle>
-      </Div>
-    </Modal>
+  const Body = () => (
+    <span>
+      {nickname}
+      {message[content]}
+    </span>
   );
+  const Footer = () => (
+    <ButtonSectionStyle>
+      <Button onClick={clickHandler}>확인</Button>
+      <Button onClick={modalOff}>취소</Button>
+    </ButtonSectionStyle>
+  );
+
+  const Modal = makeModal(null, Body, Footer);
+
+  return <Modal />;
 }
