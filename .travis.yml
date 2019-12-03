@@ -15,75 +15,75 @@ branches:
 
 jobs:
   include:
-    - stage: "TEST"
-      name: "FRONT TEST"
-      before_install:
-        - openssl aes-256-cbc -K $encrypted_95dd47aaf502_key -iv $encrypted_95dd47aaf502_iv -in env.tar.enc -out env.tar -d
-        - tar xvf env.tar
-        - cp .front.env ./front/.env
-        - cd ./front
-      install:
-        - npm install
-      before_script:
-        - cat .env
-      script:
-        - |
-          if [ $TRAVIS_BRANCH == "master" ]; then
-            npm run test:prod
-          else
-            npm run test:dev
-          fi
+    # - stage: "TEST"
+    #   name: "FRONT TEST"
+    #   before_install:
+    #     - openssl aes-256-cbc -K $encrypted_95dd47aaf502_key -iv $encrypted_95dd47aaf502_iv -in env.tar.enc -out env.tar -d
+    #     - tar xvf env.tar
+    #     - cp .front.env ./front/.env
+    #     - cd ./front
+    #   install:
+    #     - npm install
+    #   before_script:
+    #     - cat .env
+    #   script:
+    #     - |
+    #       if [ $TRAVIS_BRANCH == "master" ]; then
+    #         npm run test:prod
+    #       else
+    #         npm run test:dev
+    #       fi
 
-    - name: "BACK TEST"
-      before_install:
-        - openssl aes-256-cbc -K $encrypted_95dd47aaf502_key -iv $encrypted_95dd47aaf502_iv -in env.tar.enc -out env.tar -d
-        - tar xvf env.tar
-        - cp .back.env ./back/.env
-        - cd ./back
-      install:
-        - npm install
-      before_script:
-        - cat .env
-      script:
-        - |
-          if [ $TRAVIS_BRANCH == "master" ]; then
-            npm run test:prod
-          else
-            npm run test:dev
-          fi
+    # - name: "BACK TEST"
+    #   before_install:
+    #     - openssl aes-256-cbc -K $encrypted_95dd47aaf502_key -iv $encrypted_95dd47aaf502_iv -in env.tar.enc -out env.tar -d
+    #     - tar xvf env.tar
+    #     - cp .back.env ./back/.env
+    #     - cd ./back
+    #   install:
+    #     - npm install
+    #   before_script:
+    #     - cat .env
+    #   script:
+    #     - |
+    #       if [ $TRAVIS_BRANCH == "master" ]; then
+    #         npm run test:prod
+    #       else
+    #         npm run test:dev
+    #       fi
 
-    - stage: "DEV DEPLOY"
-      name: "DEPLOY FRONT"
-      if: type = push AND branch = develop
-      before_install:
-        - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-        - openssl aes-256-cbc -K $encrypted_95dd47aaf502_key -iv $encrypted_95dd47aaf502_iv -in env.tar.enc -out env.tar -d
-        - tar xvf env.tar
-        - cp .front.env ./front/.env
-        - cd ./front
-        - sudo apt-get install sshpass
-      before_script:
-        - cat .env
-      script:
-        - docker build -f ./Dockerfile.dev -t "$DOCKER_USERNAME"/"$DOCKER_FRONT_DEV_REPO":latest .
-        - docker push "$DOCKER_USERNAME"/"$DOCKER_FRONT_DEV_REPO":latest
-        - sshpass -p "$DEVELOPER_PASSWORD" ssh -o StrictHostKeyChecking=no developer@"$DEV_FRONT_IP" "/home/execute.sh"
+    # - stage: "DEV DEPLOY"
+    #   name: "DEPLOY FRONT"
+    #   if: type = push AND branch = develop
+    #   before_install:
+    #     - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+    #     - openssl aes-256-cbc -K $encrypted_95dd47aaf502_key -iv $encrypted_95dd47aaf502_iv -in env.tar.enc -out env.tar -d
+    #     - tar xvf env.tar
+    #     - cp .front.env ./front/.env
+    #     - cd ./front
+    #     - sudo apt-get install sshpass
+    #   before_script:
+    #     - cat .env
+    #   script:
+    #     - docker build -f ./Dockerfile.dev -t "$DOCKER_USERNAME"/"$DOCKER_FRONT_DEV_REPO":latest .
+    #     - docker push "$DOCKER_USERNAME"/"$DOCKER_FRONT_DEV_REPO":latest
+    #     - sshpass -p "$DEVELOPER_PASSWORD" ssh -o StrictHostKeyChecking=no developer@"$DEV_FRONT_IP" "/home/execute.sh"
 
-    - name: "DEPLOY BACK"
-      if: type = push AND branch = develop
-      before_install:
-        - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-        - openssl aes-256-cbc -K $encrypted_95dd47aaf502_key -iv $encrypted_95dd47aaf502_iv -in env.tar.enc -out env.tar -d
-        - tar xvf env.tar
-        - cp .back.env ./back/.env
-        - cd ./back
-        - sudo apt-get install sshpass
-      before_script:
-        - cat .env
-      script:
-        - docker build -f ./Dockerfile.dev -t "$DOCKER_USERNAME"/"$DOCKER_BACK_DEV_REPO":latest .
-        - docker push "$DOCKER_USERNAME"/"$DOCKER_BACK_DEV_REPO":latest
-        - sshpass -p "$DEVELOPER_PASSWORD" ssh -o StrictHostKeyChecking=no developer@"$DEV_BACK_IP" "/home/execute.sh"
+    # - name: "DEPLOY BACK"
+    #   if: type = push AND branch = develop
+    #   before_install:
+    #     - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+    #     - openssl aes-256-cbc -K $encrypted_95dd47aaf502_key -iv $encrypted_95dd47aaf502_iv -in env.tar.enc -out env.tar -d
+    #     - tar xvf env.tar
+    #     - cp .back.env ./back/.env
+    #     - cd ./back
+    #     - sudo apt-get install sshpass
+    #   before_script:
+    #     - cat .env
+    #   script:
+    #     - docker build -f ./Dockerfile.dev -t "$DOCKER_USERNAME"/"$DOCKER_BACK_DEV_REPO":latest .
+    #     - docker push "$DOCKER_USERNAME"/"$DOCKER_BACK_DEV_REPO":latest
+    #     - sshpass -p "$DEVELOPER_PASSWORD" ssh -o StrictHostKeyChecking=no developer@"$DEV_BACK_IP" "/home/execute.sh"
 
     - stage: "MASTER DEPLOY"
       name: "DEPLOY FRONT"
