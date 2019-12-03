@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import RGB_LIST from 'constant/Tools';
-import { ColorPickerStyle, ColorBoxList, ColorInfo } from './ColorPicker.style';
-import ColorBox from './ColorBox';
+import { ColorPickerStyle, ColorBoxList, ColorInfo } from 'components/CanvasSection/DrawingPlayGround/Tools/ColorPicker/ColorPicker.style';
+import ColorBox from 'components/CanvasSection/DrawingPlayGround/Tools/ColorPicker/ColorBox';
 
 ColorPicker.propTypes = {
   rgbList: PropTypes.arrayOf(String),
