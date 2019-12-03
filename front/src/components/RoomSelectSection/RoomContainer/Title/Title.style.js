@@ -7,7 +7,12 @@ const TitleStyle = styled.div`
   font-weight: 600;
   text-align: center;
   margin-top: 1rem;
-  // color: ${(props) => props.theme.stormBrain};
+  white-space: nowrap;
+  @media (max-width: 700px) {
+    margin-top: 2rem;
+    margin-bottom: -1rem;
+    font-size: 38px;
+  }
 `;
 
 export default TitleStyle;

@@ -7,6 +7,9 @@ const ButtonContainerStyle = styled.div`
   justify-content: center;
   align-items: center;
   margin-top: 1rem;
+  @media (max-width: 700px) {
+    flex-direction: column;
+  }
 `;
 
 export default ButtonContainerStyle;
