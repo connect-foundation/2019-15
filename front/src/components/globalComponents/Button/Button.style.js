@@ -7,7 +7,7 @@ const ButtonStyle = styled.button`
   width: 4rem;
   height: 2rem;
   color: ${(props) => props.theme.grayNurse};
-  background-color: ${(props) => props.theme.mustard};
+  background-color: ${(props) => props.theme.pink};
   &:hover {
     background-color: ${(props) => props.theme.wattle};
     cursor: pointer;

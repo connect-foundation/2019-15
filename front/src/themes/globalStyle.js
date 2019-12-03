@@ -13,9 +13,10 @@ export default {
   royalBlue: '#5755D9',
   alto: '#d9d9d9',
   dimStormBrain: '#50525D80',
+  seaPink: '#EEA4A8',
   pink: '#FFC4C8',
-  paleRose: '#FFE1E6',
-  wattle: '#D8C34E',
+  paleRose: '#F7EFEE',
+  wattle: '#DDC61D',
   mustard: '#FFE65D',
   scotchMist: '#FDFAD9',
 };

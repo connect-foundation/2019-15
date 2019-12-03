@@ -2,7 +2,6 @@ import React, { useContext, useEffect } from 'react';
 import { Redirect } from 'react-router-dom';
 
 import NavigationBar from 'components/NavigationBar/NavigationBar';
-import GameInfo from 'components/GameInfo/GameInfo';
 import { FlexRowStyle } from 'components/globalComponents/Container/Flex.style';
 import GlobalContext from 'global.context';
 import UserList from 'components/Userlist/Userlist';
@@ -33,7 +32,6 @@ const GamePlay = () => {
     <>
       <GameLoading />
       <NavigationBar visible={room.roomType} />
-      <GameInfo />
       <>
         <FlexRowStyle>
           <UserList />
