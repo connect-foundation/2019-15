@@ -87,7 +87,7 @@ jobs:
 
     - stage: "MASTER DEPLOY"
       name: "DEPLOY FRONT"
-      if: type = push AND branch = master
+      # if: type = push AND branch = master
       before_install:
         - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
         - openssl aes-256-cbc -K $encrypted_95dd47aaf502_key -iv $encrypted_95dd47aaf502_iv -in env.tar.enc -out env.tar -d
@@ -103,7 +103,7 @@ jobs:
         - sshpass -p "$DEVELOPER_PASSWORD" ssh -o StrictHostKeyChecking=no developer@"$FRONT_IP" "/home/execute.sh"
 
     - name: "DEPLOY BACK"
-      if: type = push AND branch = master
+      # if: type = push AND branch = master
       before_install:
         - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
         - openssl aes-256-cbc -K $encrypted_95dd47aaf502_key -iv $encrypted_95dd47aaf502_iv -in env.tar.enc -out env.tar -d
