@@ -4,11 +4,8 @@
     "jest": true,
     "browser": true
   },
-  "extends": ["airbnb","prettier","prettier/react"],
-  "plugins": [
-    "prettier",
-    "react-hooks"
-  ],
+  "extends": ["airbnb", "prettier", "prettier/react"],
+  "plugins": ["prettier", "react-hooks"],
   "rules": {
     "prettier/prettier": ["error"],
     "linebreak-style": 0,
@@ -17,7 +14,8 @@
     "react-hooks/rules-of-hooks": "error",
     "react-hooks/exhaustive-deps": "warn",
     "no-use-before-define": "off",
-    "import/prefer-default-export": "off"
+    "import/prefer-default-export": "off",
+    "no-prototype-builtins": "off"
   },
   "settings": {
     "import/resolver": {

@@ -1,5 +1,6 @@
 import styled from 'styled-components';
-import Button from 'components/globalComponents/Button/Button.style';
+import { Link } from 'react-router-dom';
+import Button from '../../globalComponents/Button/Button.style';
 
 export const PublicRoomButton = styled(Button)`
   white-space: nowrap;
@@ -15,4 +16,5 @@ export const PublicRoomButton = styled(Button)`
   }
 `;
 
-export const CustomA = styled.a``;
+export const CustomA = styled(Link)`
+`;

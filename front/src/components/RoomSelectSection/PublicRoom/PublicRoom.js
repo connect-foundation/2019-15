@@ -5,18 +5,18 @@ import RoomContainer from '../RoomContainer/RoomContainer';
 import { PublicRoomButton, CustomA } from './PublicRoomButton.style';
 
 export default function PublicRoom() {
-  const { io, user, room } = useContext(GlobalContext);
-  const makeGameStartBtnHandler = (capacity) => {
+  const { io, user } = useContext(GlobalContext);
+  const makeGameStartBtnHandler = (roomType) => {
     return () => {
-      io.socket.emit(`enter${capacity}`, {
+      io.socket.emit('enterRandom', {
         nickname: user.nickname,
-        roomType: room.roomType,
+        roomType,
       });
     };
   };
 
   const buttonComponents = roomInfo.roomList.map((roomName) => (
-    <CustomA href="/#/gameplay" key={roomName}>
+    <CustomA to="gameplay" key={roomName}>
       <PublicRoomButton
         key={roomName}
         onClick={makeGameStartBtnHandler(roomName)}

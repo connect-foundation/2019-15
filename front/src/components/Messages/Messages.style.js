@@ -1,7 +1,7 @@
 import styled from 'styled-components';
-import ModalStyle from '../globalComponents/Modal/Modal.style';
+import { AlarmModalStyle } from '../globalComponents/Modal/Modal.style';
 
-const MessagesStyle = styled(ModalStyle)`
+const MessagesStyle = styled(AlarmModalStyle)`
   transform: translate3d(0, 0, 0);
   position: absolute;
   top: 4rem;

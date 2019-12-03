@@ -1,8 +1,9 @@
+/* eslint no-param-reassign:0 */
 import { fabric } from 'fabric';
-import Tool from './Tool';
+import Tool from 'components/CanvasSection/DrawingPlayGround/Tools/ToolType/Tool';
 
 class Line extends Tool {
-  setCanvas(fabricCanvas, options) {
+  setCanvas(fabricCanvas, { strokeWidth, strokeColor }) {
     super.setCanvas(fabricCanvas);
     this.fc.isDrawingMode = false;
     this.fc.selection = false;
@@ -12,15 +13,14 @@ class Line extends Tool {
     });
     this.options = {
       ...Line.defaultOptions(),
-      stroke: options.strokeColor,
+      stroke: strokeColor,
+      fill: strokeColor,
+      strokeWidth,
     };
   }
 
   static defaultOptions() {
     return {
-      strokeWidth: 5,
-      fill: '#000',
-      stroke: '#000',
       originX: 'center',
       originY: 'center',
       selectable: false,
@@ -28,16 +28,14 @@ class Line extends Tool {
     };
   }
 
-  onMouseDown({ e }) {
+  onMouseDown({ x, y }) {
     this.isDown = true;
-    const { x, y } = this.fc.getPointer(e);
     this.line = new fabric.Line([x, y, x, y], this.options);
     this.fc.add(this.line);
   }
 
-  onMouseMove({ e }) {
+  onMouseMove({ x, y }) {
     if (!this.isDown) return;
-    const { x, y } = this.fc.getPointer(e);
     this.line.set({ x2: x, y2: y });
     this.line.setCoords();
     this.fc.renderAll();

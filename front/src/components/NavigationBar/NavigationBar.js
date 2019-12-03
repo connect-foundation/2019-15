@@ -8,12 +8,11 @@ import { SmallLogoImage, LogoImage, NavigationBarStyle } from './NavigationBar.s
 import ButtonContainer from './ButtonContainer/ButtonContainer';
 
 export default function NavigationBar() {
-  const { io, user, room, setRoom } = useContext(GlobalContext);
+  const { io, room, setRoom } = useContext(GlobalContext);
 
   async function onClickExit() {
-    const { nickname } = user;
     const { roomType, roomId } = room;
-    await io.exitGameRoom({ nickname, roomType, roomId });
+    await io.exitGameRoom({ roomType, roomId });
     setRoom(new Room());
   }
 

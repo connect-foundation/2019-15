@@ -49,9 +49,8 @@ export default function ButtonContainer() {
   }, [onlineSocket, setNoticeType]);
 
   async function onClickExit() {
-    const { nickname } = user;
     const { roomType, roomId } = room;
-    await io.exitGameRoom({ nickname, roomType, roomId });
+    await io.exitGameRoom({ roomType, roomId });
     setRoom(new Room());
   }
 

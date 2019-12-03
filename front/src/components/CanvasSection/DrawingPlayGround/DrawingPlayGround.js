@@ -1,11 +1,9 @@
 import React, { useReducer, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import Tools from './Tools';
+import Tools from 'components/CanvasSection/DrawingPlayGround/Tools/Tools';
+import PainterBoard from 'components/CanvasSection/DrawingPlayGround/PainterBoard/PainterBoard';
+import NonPainterBoard from 'components/CanvasSection/DrawingPlayGround/NonPainterBoard/NonPainterBoard';
 import DrawingPlayGroundStyle from './DrawingPlayGround.style';
-import DrawingBoard from './DrawingBoard';
-import ToolManager from './ToolType/ToolManager';
-
-const toolManager = new ToolManager();
 
 DrawingPlayGround.propTypes = {
   drawable: PropTypes.bool.isRequired,
@@ -25,7 +23,7 @@ DrawingPlayGround.defaultProps = {
 const setDrawingOptions = (prev, { type, value }) => {
   switch (type) {
     case 'tool':
-      return { ...prev, tool: toolManager[value] };
+      return { ...prev, tool: value };
     case 'strokeColor':
       return { ...prev, strokeColor: value };
     default:
@@ -35,13 +33,14 @@ const setDrawingOptions = (prev, { type, value }) => {
 
 export default function DrawingPlayGround({ drawable, canvasSize }) {
   const defaultDrawingOptions = {
-    tool: toolManager.pen,
+    tool: 'pen',
     strokeColor: '#000000',
+    strokeWidth: 10,
+    fillColor: '#000000',
   };
 
   useEffect(() => {
-    if (!drawable) drawingOptionsDispatcher({ type: 'tool', value: 'cursor' });
-    else drawingOptionsDispatcher({ type: 'tool', value: 'pen' });
+    drawingOptionsDispatcher({ type: 'tool', value: 'pen' });
   }, [drawable]);
   const [drawingOptions, drawingOptionsDispatcher] = useReducer(
     setDrawingOptions,
@@ -50,12 +49,17 @@ export default function DrawingPlayGround({ drawable, canvasSize }) {
 
   return (
     <DrawingPlayGroundStyle>
-      <DrawingBoard drawingOptions={drawingOptions} size={canvasSize} />
-      <Tools
-        drawable={drawable}
-        drawingOptions={drawingOptions}
-        setDrawingOptions={drawingOptionsDispatcher}
-      />
+      {drawable ? (
+        <>
+          <PainterBoard drawingOptions={drawingOptions} size={canvasSize} />
+          <Tools
+            drawingOptions={drawingOptions}
+            setDrawingOptions={drawingOptionsDispatcher}
+          />
+        </>
+      ) : (
+        <NonPainterBoard size={canvasSize} />
+      )}
     </DrawingPlayGroundStyle>
   );
 }
