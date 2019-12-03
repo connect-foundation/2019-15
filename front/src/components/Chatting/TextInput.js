@@ -12,10 +12,9 @@ export default function Chatting() {
 
   async function pressKeyHandler(e) {
     const { roomType, roomId } = room;
-    const socketId = io.socket.id;
 
     if (e.key === 'Enter') {
-      await io.sendMessage({ socketId, roomType, roomId, inputValue });
+      await io.sendMessage({ roomType, roomId, inputValue });
       setValue('');
     }
   }

@@ -75,7 +75,7 @@ function setGameSocket(socket) {
     this.gameIo.to(roomId).emit('drawing');
   });
 
-  socket.on('sendMeessage', sendMessage.bind(this));
+  socket.on('sendMessage', sendMessage.bind(this, gameSocket));
   socket.on('enterRandom', enterRandom.bind(this, gameSocket, roomInfo));
   socket.on('gameImage', sendGameImage.bind(this, gameSocket));
   socket.on('exitRoom', exitRoom.bind(this, gameSocket));

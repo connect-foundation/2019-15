@@ -1,26 +1,29 @@
-function sendMessage({ socketId, roomType, roomId, inputValue }) {
+function sendMessage(gameSocket, { roomType, roomId, inputValue }) {
   let answer;
   try {
     answer = this.RoomManager.room[roomType][roomId].word;
   } catch {
     answer = null;
   }
-  this.RoomManager.room[roomType][roomId].players.findIndex((user) => {
-    if (user.socket.id === socketId) {
-      if (inputValue === answer && !user.privileged) {
-        user.privileged = true;
-        this.gameIo.in(roomId).emit('getMessage', {
-          content: `${user.nickname}님이 정답을 맞췄습니다! Hooray`,
-          privileged: 'notice',
-        });
-      } else {
-        this.gameIo.in(roomId).emit('getMessage', {
-          content: `${user.nickname} : ${inputValue}`,
-          privileged: user.privileged,
-        });
-      }
-    }
-  });
+
+  const room = this.RoomManager.room[roomType][roomId];
+  const idx = room.players.findIndex((user) => user.socket.id === gameSocket.id);
+  if (idx <= 0) return;
+
+  const player = room.players[idx];
+
+  if (inputValue === answer && !player.privileged) {
+    player.privileged = true;
+    this.gameIo.in(roomId).emit('getMessage', {
+      content: `${player.nickname}님이 정답을 맞췄습니다! Hooray`,
+      privileged: 'notice',
+    });
+  } else {
+    this.gameIo.in(roomId).emit('getMessage', {
+      content: `${player.nickname} : ${inputValue}`,
+      privileged: player.privileged,
+    });
+  }
 }
 
 module.exports = { sendMessage };
