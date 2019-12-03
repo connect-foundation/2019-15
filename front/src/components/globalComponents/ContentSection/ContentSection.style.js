@@ -11,7 +11,6 @@ const ContentSectionStyle = styled.section`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-
 `;
 
 const ContentSectionTitleStyle = styled.span`

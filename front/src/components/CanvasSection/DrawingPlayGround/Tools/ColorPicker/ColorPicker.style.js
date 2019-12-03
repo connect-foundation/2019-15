@@ -9,8 +9,7 @@ export const ColorPickerStyle = styled.div`
   display: flex;
   align-items: center;
   width: ${colorPickerWidth};
-    transform: translateY(-20%);
-
+  transform: translateY(-20%);
 `;
 
 export const ColorBoxList = styled.div`
