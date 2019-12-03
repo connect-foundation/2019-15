@@ -55,7 +55,7 @@ export default function CanvasSection() {
       </Section>
       <DrawingPlayGround
         drawable={drawable}
-        canvasSize={{ width: 800, height: 500 }}
+        canvasSize={{ width: 800, height: 490 }}
       />
     </CanvasSectionStyle>
   );

@@ -27,13 +27,10 @@ body:after{
   width: 100%;
   height: 100%;
   z-index: -1;
-  /* background-image: url("https://i.pinimg.com/564x/74/e4/79/74e479dd3b03b0b800ec04071d682041.jpg"); */
-  /* background-image: url("https://i.pinimg.com/564x/ef/ea/8a/efea8aea1cdcb273246e414e1ac474ad.jpg"); */
-  /* background-image: url("https://i.pinimg.com/564x/86/7b/e9/867be9c5acbce22bee5489bbfcc71dd9.jpg"); */
   background-image: url("https://i.pinimg.com/564x/c3/d5/91/c3d5915454b45c07a517c82f5122d36e.jpg");
-  /* background-image: url("https://i.pinimg.com/564x/8d/b7/5d/8db75d47da6b948ad3d4a4a2d8899339.jpg"); */
   position: absolute;
   opacity: 0.3;
+  background-attachment: fixed;
 }
 
 #root {
