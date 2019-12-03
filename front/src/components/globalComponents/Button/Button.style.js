@@ -6,10 +6,9 @@ const ButtonStyle = styled.button`
   border-radius: 1rem;
   width: 4rem;
   height: 2rem;
-  color: ${(props) => props.theme.grayNurse};
   background-color: ${(props) => props.theme.pink};
   &:hover {
-    background-color: ${(props) => props.theme.wattle};
+    background-color: ${(props) => props.theme.seaPink};
     cursor: pointer;
   }
 `;

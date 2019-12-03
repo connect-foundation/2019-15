@@ -8,10 +8,6 @@ const ListPopUpButtonStyle = styled(ButtonStyle)`
   width: 8rem;
   height: 3rem;
   font-size: 15px;
-  background-color: ${(props) => props.theme.pink};
-  &:hover {
-    background-color: ${(props) => props.theme.seaPink};
-  }
 `;
 
 export default ListPopUpButtonStyle;
