@@ -10,31 +10,31 @@ NicknameChange.propTypes = {
   userNickname: PropTypes.string,
   nickname: PropTypes.string.isRequired,
   setNickname: PropTypes.func,
-  setResultText: PropTypes.func,
+  resultTextDispatch: PropTypes.func,
 };
 
 NicknameChange.defaultProps = {
   userNickname: null,
   setNickname: () => {},
-  setResultText: () => {},
+  resultTextDispatch: () => {},
 };
 
 export default function NicknameChange({
   nickname,
   setNickname,
   userNickname,
-  setResultText,
+  resultTextDispatch,
 }) {
-  const [disabled, setDisabled] = useState(true);
+  const [disabled, setDisabled] = useState(false);
   const [checkNicknameAvailable, { loading, data, error }] = useLazyQuery(
     checkNicknameAvailableQuery,
   );
 
   if (loading) {
-    setResultText('잠시만 기다려주세요');
+    resultTextDispatch({ type: 'loading' });
   }
   if (error) {
-    setResultText('에러가 발생했어요');
+    resultTextDispatch({ type: 'error' });
   }
 
   useEffect(() => {
@@ -43,23 +43,32 @@ export default function NicknameChange({
     }
     const { nickname: nicknameChecked, result } = data.checkNicknameAvailable;
 
-    setResultText(
-      result
-        ? `"${nicknameChecked}" 닉네임은 사용가능해요!`
-        : `"${nicknameChecked}" 닉네임은 누군가가 사용중이에요`,
-    );
-  }, [data, setResultText]);
+    resultTextDispatch({
+      type: `${result ? 'usable' : 'notUsable'}`,
+      nickname: nicknameChecked,
+    });
+  }, [data, resultTextDispatch]);
 
   useEffect(() => {
     if (!data || !data.checkNicknameAvailable) {
-      return;
+      setDisabled(true);
+    } else {
+      const { result } = data.checkNicknameAvailable;
+      if (result) setDisabled(false);
+      else setDisabled(true);
     }
-    const { result } = data.checkNicknameAvailable;
-    if (result && nickname !== userNickname) setDisabled(false);
-    else setDisabled(true);
+
+    return () => {
+      setDisabled(true);
+    };
   }, [data, nickname, userNickname]);
 
-  const checkNickname = useCallback(
+  const checkNickname = (input) => {
+    checkInputNicknameAvailable(input);
+    checkSelfNickname(input);
+  };
+
+  const checkInputNicknameAvailable = useCallback(
     (input) => {
       if (input && input !== userNickname) {
         checkNicknameAvailable({
@@ -70,6 +79,16 @@ export default function NicknameChange({
       }
     },
     [checkNicknameAvailable, userNickname],
+  );
+
+  const checkSelfNickname = useCallback(
+    (input) => {
+      if (input === userNickname) {
+        setDisabled(true);
+        resultTextDispatch({ type: 'init' });
+      }
+    },
+    [resultTextDispatch, userNickname],
   );
 
   const onInputChange = useCallback(
@@ -90,7 +109,7 @@ export default function NicknameChange({
       />
       <NicknameChangeBtn
         newNickname={nickname}
-        setResultText={setResultText}
+        resultTextDispatch={resultTextDispatch}
         loading={loading}
         disabled={disabled}
       />

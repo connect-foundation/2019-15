@@ -10,6 +10,8 @@ class Tool {
 
   onMouseUp() {}
 
+  onMouseOut() {}
+
   getName() {
     return this.constructor.name.toLowerCase();
   }
