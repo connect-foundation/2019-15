@@ -7,7 +7,7 @@ function sendMessage(gameSocket, { roomType, roomId, inputValue }) {
   }
 
   const room = this.RoomManager.room[roomType][roomId];
-  const idx = room.players.findIndex((user) => user.socket.id === gameSocket.id);
+  const idx = room.getUserIndexBySocketId(gameSocket);
   if (idx <= 0) return;
 
   const player = room.players[idx];
