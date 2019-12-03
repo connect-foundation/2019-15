@@ -1,8 +1,8 @@
 import { useQuery } from '@apollo/react-hooks';
-import { getRankingAll } from 'queries/ranking';
+import { getRankingFriends } from 'queries/ranking';
 
 const useGetRankingAll = () => {
-  const { data, loading, error, fetchMore } = useQuery(getRankingAll);
+  const { data, loading, error, fetchMore } = useQuery(getRankingFriends);
 
   const {
     pageInfo: { endCursor, hasNextPage },
@@ -14,14 +14,14 @@ const useGetRankingAll = () => {
   const loadMore = () => {
     if (!hasNextPage) return;
     fetchMore({
-      query: getRankingAll,
+      query: getRankingFriends,
       variables: { after: endCursor },
       updateQuery: (prev, { fetchMoreResult }) => {
         const newEdges = fetchMoreResult.rankingAll.edges;
         const { pageInfo } = fetchMoreResult.rankingAll;
         return newEdges.length
           ? {
-              rankingAll: {
+              getRankingFriends: {
                 __typename: prev.rankingAll.__typename,
                 edges: [...prev.rankingAll.edges, ...newEdges],
                 pageInfo,
