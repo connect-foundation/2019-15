@@ -20,6 +20,7 @@ const GamePlay = () => {
       if (io.socket) {
         await io.initUserListMsgHandler({ setUserList });
         await io.initGameStartMsgHandler({ setPainter });
+        await io.setEndQuestionHandler();
       }
     };
     initSocket();

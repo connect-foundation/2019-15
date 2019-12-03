@@ -87,6 +87,11 @@ const io = {
   async sendImage({ roomId, canvasData }) {
     await this.socket.emit('drawing', { roomId, canvasData });
   },
+  async setEndQuestionHandler() {
+    this.socket.on('endQuestion', ({ nickname }) => {
+      console.log('endQuestion', nickname);
+    });
+  },
 };
 
 export default io;

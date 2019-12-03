@@ -12,18 +12,17 @@ function sendMessage(gameSocket, { roomType, roomId, inputValue }) {
 
   const player = room.players[idx];
 
+  const returnMessage = {
+    content: `${player.nickname} : ${inputValue}`,
+    privileged: player.privileged,
+  };
+
   if (inputValue === answer && !player.privileged) {
     player.privileged = true;
-    this.gameIo.in(roomId).emit('getMessage', {
-      content: `${player.nickname}님이 정답을 맞췄습니다! Hooray`,
-      privileged: 'notice',
-    });
-  } else {
-    this.gameIo.in(roomId).emit('getMessage', {
-      content: `${player.nickname} : ${inputValue}`,
-      privileged: player.privileged,
-    });
+    returnMessage.content = `${player.nickname}님이 정답을 맞췄습니다! Hooray`;
+    returnMessage.privileged = 'notice';
   }
+  this.gameIo.in(roomId).emit('getMessage', returnMessage);
 }
 
 module.exports = { sendMessage };
