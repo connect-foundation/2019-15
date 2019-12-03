@@ -1,6 +1,4 @@
-const getRandomInt = require('../util/getRandomInt');
 const setOnlineSockets = require('./online');
-
 const setGameSocket = require('./game');
 
 function initSocketIO(io) {

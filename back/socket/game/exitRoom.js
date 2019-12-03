@@ -1,17 +1,16 @@
 const { sendUserListToRoom, isExistRoom } = require('./game');
+const { RoomManager } = require('../Room');
 
 function exitRoom(gameSocket, { roomType, roomId }) {
   if (!isExistRoom({ roomId, roomType })) return;
-  const rooms = this.RoomManager.room;
-  const room = rooms[roomType];
-  const userList = room[roomId].players;
 
-  const exitUserIdx = userList.findIndex((user) => user.socket.id === gameSocket.id);
-  userList.splice(exitUserIdx, 1);
+  const room = RoomManager.room[roomType][roomId];
+  const userIndex = room.getUserIndexBySocketId(gameSocket);
+  room.removePlayer(userIndex);
 
   gameSocket.leave(roomId);
   // 리뷰: 유저리스트를 다보내지 말고 제외된 유저 아이디만 보내자
-  sendUserListToRoom(userList, roomId, this.gameIo);
+  sendUserListToRoom(room.players, roomId, this.gameIo);
 }
 
 module.exports = exitRoom;

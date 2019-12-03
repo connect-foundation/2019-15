@@ -25,8 +25,10 @@ function setGameSocket(socket) {
   socket.on('startSecretGame', ({ roomId, roomType }) => {
     // 난입 시나리오 추가해야됨
     const room = RoomManager.room[roomType][roomId];
-    if (room.players.length >= 2) {
-      this.gameIo.to(roomId).emit('startSecretGame', { painter: room.players[0].socket.id });
+    if (room.isPlayable()) {
+      this.gameIo
+        .to(roomId)
+        .emit('startSecretGame', { painter: room.players[room.players.length - 1].socket.id });
     }
   });
 
@@ -40,13 +42,14 @@ function setGameSocket(socket) {
     if (!isExistRoom(roomInfo)) return;
 
     const { roomType, roomId } = roomInfo;
-    const userList = RoomManager.room[roomType][roomId].players;
-    const userIdx = userList.findIndex((user) => user.socket.id === gameSocket.id);
+    const room = RoomManager.room[roomType][roomId];
+    const userIdx = room.getUserIndexBySocketId(gameSocket);
     if (userIdx >= 0) {
-      userList.splice(userIdx, 1);
-      sendUserListToRoom(userList, roomId, this.gameIo);
+      room.removePlayer(userIdx);
+      sendUserListToRoom(room.players, roomId, this.gameIo);
       gameSocket.leave();
     }
   });
 }
+
 module.exports = setGameSocket;
