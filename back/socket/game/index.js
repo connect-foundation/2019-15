@@ -1,10 +1,10 @@
 const { RoomManager } = require('../Room');
 const { personEnterSecretRoom, sendUserListToRoom, isExistRoom } = require('./game');
-const getRandomInt = require('../../util/getRandomInt');
 const exitRoom = require('./exitRoom');
 const sendGameImage = require('./gameImage');
 const enterRandom = require('./enterRandom');
 const { sendMessage } = require('./message');
+const selectWord = require('./selectWord');
 
 function setGameSocket(socket) {
   this.RoomManager = RoomManager;
@@ -30,51 +30,13 @@ function setGameSocket(socket) {
     }
   });
 
-  // socket.on('sendMessage', ({ socketId, roomType, roomId, inputValue }) => {
-  //   let answer;
-  //   try {
-  //     answer = RoomManager.room[roomType][roomId].word;
-  //   } catch {
-  //     answer = null;
-  //   }
-  //   RoomManager.room[roomType][roomId].players.findIndex((user) => {
-  //     if (user.socket.id === socketId) {
-  //       if (inputValue === answer && !user.privileged) {
-  //         user.privileged = true;
-  //         this.gameIo.in(roomId).emit('getMessage', {
-  //           content: `${user.nickname}님이 정답을 맞췄습니다! Hooray`,
-  //           privileged: 'notice',
-  //         });
-  //       } else {
-  //         this.gameIo.in(roomId).emit('getMessage', {
-  //           content: `${user.nickname} : ${inputValue}`,
-  //           privileged: user.privileged,
-  //         });
-  //       }
-  //     }
-  //   });
-  // });
-
-  socket.on('selectWord', ({ answer, roomType, roomId }) => {
-    const room = RoomManager.room[roomType][roomId];
-    room.word = answer;
-    // 서버 타이머 트리거
-    room.timer.start();
-    // 클라들에게 뿌려주기
-    const openIndex = getRandomInt(0, answer.length);
-    this.gameIo.in(roomId).emit('startQuestion', {
-      wordLength: answer.length,
-      openLetter: answer[openIndex],
-      openIndex,
-    });
-  });
-
   // 출제자가 캔버스에 그림을 그리는 경우.
   socket.on('drawing', ({ roomId }) => {
     // 출제자를 제외한 참가자들에게 캔버스 정보를 전송
     this.gameIo.to(roomId).emit('drawing');
   });
 
+  socket.on('selectWord', selectWord.bind(this, gameSocket));
   socket.on('sendMessage', sendMessage.bind(this, gameSocket));
   socket.on('enterRandom', enterRandom.bind(this, gameSocket, roomInfo));
   socket.on('gameImage', sendGameImage.bind(this, gameSocket));
