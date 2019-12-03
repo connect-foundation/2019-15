@@ -87,6 +87,9 @@ const RoomManager = {
   isExistRoom(roomType, roomId) {
     return roomType && roomId && this.room[roomType].hasOwnProperty(roomId);
   },
+  getRoomByRoomId(roomName, roomId) {
+    return this.room[roomName][roomId];
+  },
 };
 
 module.exports = { RoomManager, Room };
