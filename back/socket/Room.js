@@ -1,5 +1,6 @@
 const uuid = require('uuid/v1');
 const { maxPeopleNum } = require('../config/roomConfig');
+const Timer = require('../util/timer/Timer');
 
 const makeRoomId = () => {
   return uuid();
@@ -10,11 +11,40 @@ class Room {
     this.players = [];
     this.wordSet = null;
     this.word = null;
-    this.timer = null;
+    this.timer = new Timer();
     this.state = null;
-    this.currentExaminer = null;
+    this.examinerIndex = null;
     this.totalRound = null;
     this.currentRound = null;
+    this.answererCount = 0;
+  }
+
+  prepareFirstQuestion() {
+    this.examinerIndex = this.players.length - 1;
+    this.players[this.examinerIndex].privileged = true;
+  }
+
+  prepareNextQuestion() {
+    this.word = null;
+    this.timer.stop();
+    this.examinerIndex -= 1;
+    this.answererCount = 0;
+  }
+
+  addPlayer(user) {
+    this.players.push(user);
+  }
+
+  removePlayer(userIndex) {
+    this.players.splice(userIndex, 1);
+  }
+
+  isPlayable() {
+    return this.players.length >= 2;
+  }
+
+  getUserIndexBySocketId(gameSocket) {
+    return this.players.findIndex((user) => user.socket.id === gameSocket.id);
   }
 }
 
@@ -47,10 +77,15 @@ const RoomManager = {
     }
     return room[0];
   },
+  getEnableSecretRoom(roomId) {
+    const secretRoomList = this.room['비밀방'];
 
-  // roomId로 room 객체를 찾은 후 반환
-  getRoomByRoomId(roomName, roomId) {
-    return this.room[roomName][roomId];
+    if (!secretRoomList.hasOwnProperty(roomId)) secretRoomList[roomId] = new Room();
+
+    return secretRoomList[roomId];
+  },
+  isExistRoom(roomType, roomId) {
+    return roomType && roomId && this.room[roomType].hasOwnProperty(roomId);
   },
 };
 

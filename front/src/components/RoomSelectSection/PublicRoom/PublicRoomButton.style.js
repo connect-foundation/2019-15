@@ -1,5 +1,6 @@
 import styled from 'styled-components';
-import Button from 'components/globalComponents/Button/Button.style';
+import { Link } from 'react-router-dom';
+import Button from '../../globalComponents/Button/Button.style';
 
 export const PublicRoomButton = styled(Button)`
   width: 100%;
@@ -8,7 +9,7 @@ export const PublicRoomButton = styled(Button)`
   margin: 0 1rem;
 `;
 
-export const CustomA = styled.a`
+export const CustomA = styled(Link)`
   width: 40%;
   height: 30%;
   margin: 0 1rem;

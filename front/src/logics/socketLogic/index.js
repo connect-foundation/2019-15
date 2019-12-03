@@ -7,7 +7,7 @@ const io = {
   socket: null,
 
   async connectSocket() {
-    this.socket = await socketIo.connect(`${APP_URI.REACT_APP_API_URI}`);
+    this.socket = await socketIo.connect(`${APP_URI.REACT_APP_API_URI}/game`);
   },
 
   async getSocket() {
@@ -54,8 +54,8 @@ const io = {
     this.socket.emit('startSecretGame', { roomId, roomType });
   },
 
-  async exitGameRoom({ nickname, roomType, roomId }) {
-    this.socket.emit('exitRoom', { nickname, roomType, roomId });
+  async exitGameRoom({ roomType, roomId }) {
+    this.socket.emit('exitRoom', { roomType, roomId });
   },
   async sendMessage({ socketId, roomType, roomId, inputValue }) {
     this.socket.emit('sendMessage', { socketId, roomType, roomId, inputValue });
@@ -79,13 +79,13 @@ const io = {
   },
 
   async initImageSendHandler({ setCanvasImage }) {
-    this.socket.on('gameImage', ({ image }) => {
+    this.socket.on('drawing', ({ image }) => {
       setCanvasImage({ image });
     });
   },
 
   async sendImage({ roomId, image }) {
-    await this.socket.emit('gameImage', { roomId, image });
+    await this.socket.emit('drawing', { roomId, image });
   },
   async setEndQuestionHandler() {
     this.socket.on('endQuestion', ({ nickname }) => {
