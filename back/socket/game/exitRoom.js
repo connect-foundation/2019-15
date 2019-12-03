@@ -1,6 +1,6 @@
 const { sendUserListToRoom, isExistRoom } = require('./game');
 
-function exitRoom(gameSocket, { nickname, roomType, roomId }) {
+function exitRoom(gameSocket, { roomType, roomId }) {
   if (!isExistRoom({ roomId, roomType })) return;
   const rooms = this.RoomManager.room;
   const room = rooms[roomType];

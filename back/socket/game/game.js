@@ -3,9 +3,9 @@ const User = require('../User');
 const { RoomManager, Room } = require('../Room');
 
 function sendUserListToRoom(list, roomId, io) {
-  const userList = list.map((v) => {
-    const userName = v.nickname || '부스트캠퍼';
-    return { nickname: userName, socketId: v.socket.id };
+  const userList = list.map((user) => {
+    const userName = user.nickname || '부스트캠퍼';
+    return { nickname: userName, socketId: user.socket.id };
   });
   io.in(roomId).emit('userList', { userList: JSON.stringify(userList) });
 }
@@ -35,7 +35,7 @@ function personEnterSecretRoom(nickname, socket, roomId, io) {
   const secretRoomList = RoomManager.room['비밀방'];
 
   let room;
-  if (roomId in secretRoomList) {
+  if (secretRoomList.hasOwnProperty(roomId)) {
     room = secretRoomList[roomId];
   } else {
     room = new Room();
@@ -52,7 +52,7 @@ function isExistRoom({ roomId, roomType }) {
   if (!roomType) return false;
 
   const room = rooms[roomType];
-  if (!roomId || !(roomId in room)) return false;
+  if (!roomId || !room.hasOwnProperty(roomId)) return false;
 
   return true;
 }

@@ -54,8 +54,8 @@ const io = {
     this.socket.emit('startSecretGame', { roomId, roomType });
   },
 
-  async exitGameRoom({ nickname, roomType, roomId }) {
-    this.socket.emit('exitRoom', { nickname, roomType, roomId });
+  async exitGameRoom({ roomType, roomId }) {
+    this.socket.emit('exitRoom', { roomType, roomId });
   },
   async sendMessage({ socketId, roomType, roomId, inputValue }) {
     this.socket.emit('sendMessage', { socketId, roomType, roomId, inputValue });
