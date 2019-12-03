@@ -78,14 +78,14 @@ const io = {
     });
   },
 
-  async initImageSendHandler({ setCanvasImage }) {
-    this.socket.on('drawing', ({ image }) => {
-      setCanvasImage({ image });
+  async initImageSendHandler(setCanvasImage) {
+    this.socket.on('drawing', ({ canvasData }) => {
+      setCanvasImage(canvasData);
     });
   },
 
-  async sendImage({ roomId, image }) {
-    await this.socket.emit('drawing', { roomId, image });
+  async sendImage({ roomId, canvasData }) {
+    await this.socket.emit('drawing', { roomId, canvasData });
   },
 };
 
