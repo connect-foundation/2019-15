@@ -1,6 +1,5 @@
 import socketIo from 'socket.io-client';
 import APP_URI from 'util/uri';
-import roomInfo from 'constant/room/roomInfo';
 import Room from '../room';
 
 const io = {
@@ -19,10 +18,8 @@ const io = {
   },
 
   async initConnectMsgHandler({ setRoom }) {
-    roomInfo.roomList.forEach((roomName) => {
-      this.socket.on(`connect${roomName}`, ({ roomType, roomId }) => {
-        setRoom(new Room(roomId, roomType));
-      });
+    this.socket.on(`connectRandom`, ({ roomType, roomId }) => {
+      setRoom(new Room(roomId, roomType));
     });
   },
 
