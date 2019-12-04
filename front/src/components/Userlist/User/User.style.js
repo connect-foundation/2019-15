@@ -9,12 +9,12 @@ export const UserStyle = styled(FlexRowStyle)`
   height: 5.5rem;
   margin: 0.3rem;
   margin-bottom: 0.6rem;
-  background-color: ${(props) => props.theme.surfCrest};
+  background-color: white;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   border-radius: 0.3rem;
 
   &.you {
-    border: 3px solid ${({ theme }) => theme.slateGray};
+    border: 3px solid black;
   }
 `;
 
@@ -29,7 +29,6 @@ export const UserImage = styled.img`
   min-width: 5rem;
   min-height: 5rem;
   border-radius: 0.3rem;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 `;
 
 export const Ranking = styled.span`
