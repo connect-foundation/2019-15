@@ -8,6 +8,7 @@ import WordPreview from './WordPreview/WordPreview';
 import Timer from '../Timer/Timer';
 import GameInfo from '../GameInfo/GameInfo';
 import Section from './Section.style';
+import GameLoading from 'components/GameLoading/GameLoading';
 
 export default function CanvasSection() {
   const { painter } = useContext(GamePlayContext);
@@ -35,6 +36,7 @@ export default function CanvasSection() {
 
   return (
     <CanvasSectionStyle>
+      <GameLoading />
       {io.socket.id === painter ? (
         <WordChoice setSelectedWord={setSelectedWord} />
       ) : null}
