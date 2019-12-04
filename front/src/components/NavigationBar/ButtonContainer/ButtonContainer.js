@@ -74,9 +74,7 @@ export default function ButtonContainer() {
 
   return (
     <Link to="main" onClick={onClickExit}>
-      <ButtonContainerStyle>
         <Text>나가기</Text>
-      </ButtonContainerStyle>
     </Link>
   );
 }
