@@ -6,7 +6,7 @@ const DoneButtonStyle = styled(ButtonStyle)`
   height: 1.5rem;
   margin-left: auto;
   margin-right: 1rem;
-  border: 1px solid ${(props) => props.theme.grayNurse};
+  border: 1px solid white;
 `;
 
 export default DoneButtonStyle;

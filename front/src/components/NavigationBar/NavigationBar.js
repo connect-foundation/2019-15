@@ -3,8 +3,12 @@ import { Link } from 'react-router-dom';
 import GlobalContext from 'global.context';
 import Room from 'logics/room';
 
-import mainlogo from 'asset/mainlogo4.png';
-import { LogoImage, NavigationBarStyle } from './NavigationBar.style';
+import mainlogo from 'asset/mainlogo_yellowpink.png';
+import {
+  SmallLogoImage,
+  LogoImage,
+  NavigationBarStyle,
+} from './NavigationBar.style';
 import ButtonContainer from './ButtonContainer/ButtonContainer';
 
 export default function NavigationBar() {
@@ -19,7 +23,11 @@ export default function NavigationBar() {
   return (
     <NavigationBarStyle id="NavigationBar">
       <Link to="/main" onClick={onClickExit}>
-        <LogoImage src={mainlogo} />
+        {window.location.hash === '#/main' ? (
+          <LogoImage src={mainlogo} />
+        ) : (
+          <SmallLogoImage src={mainlogo} />
+        )}
       </Link>
       <ButtonContainer />
     </NavigationBarStyle>

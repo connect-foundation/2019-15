@@ -7,7 +7,7 @@ export const AnchorStyle = styled(FlexRowStyle)`
   height: 5rem;
   justify-content: center;
   border-radius: 0.3rem;
-  background-color: ${({ theme }) => theme.Pumice}};
+  background-color: ${({ theme }) => theme.paleRose}};
 `;
 
 export const AnchorImageStyle = styled.img`
