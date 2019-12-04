@@ -37,7 +37,12 @@ export const Ranking = styled.span`
   margin-right: 10px;
 `;
 
-export const UserNickName = styled.div``;
+export const UserNickName = styled.div`
+  width: 8.5rem;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+`;
 
 export const Text = styled.span`
   font-size: 15px;
