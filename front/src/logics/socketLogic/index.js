@@ -2,97 +2,100 @@ import socketIo from 'socket.io-client';
 import APP_URI from 'util/uri';
 import Room from '../room';
 
-const io = {
-  socket: null,
+export function connectGameSocket() {
+  return socketIo.connect(`${APP_URI.REACT_APP_API_URI}/game`, {
+    reconnectionAttempts: 5,
+  });
+}
 
-  async connectSocket() {
-    this.socket = await socketIo.connect(`${APP_URI.REACT_APP_API_URI}/game`);
-  },
+export function initConnectMsgHandler(socket, { setRoom }) {
+  socket.on(`connectRandom`, ({ roomType, roomId }) => {
+    setRoom(new Room(roomId, roomType));
+  });
+}
 
-  async getSocket() {
-    if (this.socket !== null) {
-      return this.socket;
-    }
-    await this.connectSocket();
-    return this.socket;
-  },
+export function initUserListMsgHandler(socket, { setUserList }) {
+  socket.on('userList', ({ userList }) => {
+    const parsedList = JSON.parse(userList);
+    setUserList(parsedList);
+  });
+}
 
-  async initConnectMsgHandler({ setRoom }) {
-    this.socket.on(`connectRandom`, ({ roomType, roomId }) => {
-      setRoom(new Room(roomId, roomType));
-    });
-  },
+export function initGameStartMsgHandler(socket, { setPainter }) {
+  socket.on('gamestart', ({ painter }) => {
+    setPainter(painter);
+  });
+}
 
-  async initUserListMsgHandler({ setUserList }) {
-    this.socket.on('userList', ({ userList }) => {
-      const parsedList = JSON.parse(userList);
-      setUserList(parsedList);
-    });
-  },
+export function initStartSecretGameHandler(
+  socket,
+  { setPainter, setIsGamePlaying },
+) {
+  socket.on('startSecretGame', ({ painter }) => {
+    setPainter(painter);
+    setIsGamePlaying(true);
+  });
+}
 
-  async initGameStartMsgHandler({ setPainter }) {
-    this.socket.on('gamestart', ({ painter }) => {
-      setPainter(painter);
-    });
-  },
+export function requestMakeSecretRoom(socket, { nickname, roomId }) {
+  socket.emit('makeSecret', { nickname, roomId });
+}
 
-  async initStartSecretGameHandler({ setPainter, setIsGamePlaying }) {
-    this.socket.on('startSecretGame', ({ painter }) => {
-      setPainter(painter);
-      setIsGamePlaying(true);
-    });
-  },
+export function startSecretGame(socket, { roomId, roomType }) {
+  socket.emit('startSecretGame', { roomId, roomType });
+}
 
-  async requestMakeSecretRoom({ nickname, roomId }) {
-    this.socket.emit('makeSecret', { nickname, roomId });
-  },
+export function exitGameRoom(socket, { roomType, roomId }) {
+  socket.emit('exitRoom', { roomType, roomId });
+}
 
-  async startSecretGame({ roomId, roomType }) {
-    this.socket.emit('startSecretGame', { roomId, roomType });
-  },
+export function sendMessage(
+  socket,
+  { socketId, roomType, roomId, inputValue },
+) {
+  socket.emit('sendMessage', { socketId, roomType, roomId, inputValue });
+}
 
-  async exitGameRoom({ roomType, roomId }) {
-    this.socket.emit('exitRoom', { roomType, roomId });
-  },
-  async sendMessage({ socketId, roomType, roomId, inputValue }) {
-    this.socket.emit('sendMessage', { socketId, roomType, roomId, inputValue });
-  },
-  async initChattingHandler({ messages, pushMessage }) {
-    this.socket.on('getMessage', ({ content, privileged }) => {
-      const splitRes = content.split(' : ');
-      if (splitRes.length === 2 && splitRes[1] === '') return;
-      messages.push({ content, privileged });
-      pushMessage(messages.slice());
-    });
-  },
-  async selectWord({ answer, roomType, roomId }) {
-    this.socket.emit('selectWord', { answer, roomType, roomId });
-  },
-  async setStartQuestionHandler(setQuestionWord, callback) {
-    this.socket.on('startQuestion', ({ wordLength, openLetter, openIndex }) => {
-      setQuestionWord({ wordLength, openLetter, openIndex });
-      callback();
-    });
-  },
+export function initChattingHandler(socket, { messages, pushMessage }) {
+  socket.on('getMessage', ({ content, privileged }) => {
+    const splitRes = content.split(' : ');
+    if (splitRes.length === 2 && splitRes[1] === '') return;
+    messages.push({ content, privileged });
+    pushMessage(messages.slice());
+  });
+}
 
-  onCanvasData(setCanvas) {
-    this.socket.on('drawing', ({ eventList }) => {
-      setCanvas(eventList);
-    });
-  },
+export function selectWord(socket, { answer, roomType, roomId }) {
+  socket.emit('selectWord', { answer, roomType, roomId });
+}
 
-  offCanvasData() {
-    this.socket.off('drawing');
-  },
+export function setStartQuestionHandler(socket, setQuestionWord, callback) {
+  socket.on('startQuestion', ({ wordLength, openLetter, openIndex }) => {
+    setQuestionWord({ wordLength, openLetter, openIndex });
+    callback();
+  });
+}
 
-  emitCanvasData({ roomId, eventList }) {
-    this.socket.emit('drawing', { roomId, eventList });
-  },
-  async setEndQuestionHandler() {
-    this.socket.on('endQuestion', ({ nickname, scores, answer }) => {
-      console.log('[socketLogic/index.js]', nickname, scores, answer);
-    });
-  },
-};
+export function onCanvasData(socket, setCanvas) {
+  socket.on('drawing', ({ eventList }) => {
+    setCanvas(eventList);
+  });
+}
 
-export default io;
+export function offCanvasData(socket) {
+  socket.off('drawing');
+}
+
+export function sendCanvasData(socket, { roomId, eventList }) {
+  socket.emit('drawing', { roomId, eventList });
+}
+
+export function setEndQuestionHandler(socket) {
+  socket.on('endQuestion', ({ nickname, scores, answer }) => {
+    console.log('[socketLogic/index.js]', nickname, scores, answer);
+  });
+}
+
+export function enterRandom(socket, { nickname, roomType }) {
+  socket.emit('enterRandom', { nickname, roomType });
+}
