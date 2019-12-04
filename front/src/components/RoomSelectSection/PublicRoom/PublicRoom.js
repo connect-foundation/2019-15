@@ -1,17 +1,15 @@
 import React, { useContext } from 'react';
 import GlobalContext from 'global.context';
 import roomInfo from 'constant/room/roomInfo';
+import { enterRandom } from 'logics/socketLogic';
 import RoomContainer from '../RoomContainer/RoomContainer';
 import { PublicRoomButton, CustomA } from './PublicRoomButton.style';
 
 export default function PublicRoom() {
-  const { io, user } = useContext(GlobalContext);
+  const { gameSocket, user } = useContext(GlobalContext);
   const makeGameStartBtnHandler = (roomType) => {
     return () => {
-      io.socket.emit('enterRandom', {
-        nickname: user.nickname,
-        roomType,
-      });
+      enterRandom(gameSocket, { nickname: user.nickname, roomType });
     };
   };
 

@@ -1,6 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react';
 import GamePlayContext from 'components/GamePlay/GamePlay.context';
 import GlobalContext from 'global.context';
+import { setStartQuestionHandler } from 'logics/socketLogic';
 import GameLoading from 'components/GamePlay/GameLoading/GameLoading';
 import DrawingPlayGround from './DrawingPlayGround/DrawingPlayGround';
 import WordChoice from './WordChoice/WordChoice';
@@ -11,7 +12,7 @@ import GameInfo from '../../GameInfo/GameInfo';
 
 export default function CanvasSection() {
   const { painter } = useContext(GamePlayContext);
-  const { io } = useContext(GlobalContext);
+  const { gameSocket } = useContext(GlobalContext);
   const [questionWord, setQuestionWord] = useState({
     wordLength: 0,
     openLetter: '',
@@ -23,20 +24,20 @@ export default function CanvasSection() {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedWord, setSelectedWord] = useState('');
 
-  io.setStartQuestionHandler(setQuestionWord, () => {
+  setStartQuestionHandler(gameSocket, setQuestionWord, () => {
     setIsTimerGetReady(true);
   });
 
   useEffect(() => {
-    if (painter === io.socket.id) {
+    if (painter === gameSocket.id) {
       setDrawable(true);
     }
-  }, [drawable, io.socket.id, painter]);
+  }, [drawable, gameSocket.id, painter]);
 
   return (
     <CanvasSectionStyle>
       <GameLoading />
-      {io.socket.id === painter ? (
+      {gameSocket.id === painter ? (
         <WordChoice setSelectedWord={setSelectedWord} />
       ) : null}
       <section>

@@ -2,6 +2,7 @@ import React, { useState, useContext, useReducer, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { onRequestFriend } from 'logics/socketLogic/online';
 import Room from 'logics/room';
+import { exitGameRoom } from 'logics/socketLogic';
 
 import GlobalContext from 'global.context';
 
@@ -33,7 +34,7 @@ function alarmListReducer(state, action) {
 export default function ButtonContainer() {
   const [alarmList, alarmListDispatch] = useReducer(alarmListReducer, []);
   const [noticeType, setNoticeType] = useState(null);
-  const { onlineSocket, io, room, setRoom } = useContext(GlobalContext);
+  const { onlineSocket, gameSocket, room, setRoom } = useContext(GlobalContext);
 
   // logics 로 분리예정
   function logout() {
@@ -55,7 +56,7 @@ export default function ButtonContainer() {
 
   async function onClickExit() {
     const { roomType, roomId } = room;
-    await io.exitGameRoom({ roomType, roomId });
+    exitGameRoom(gameSocket, { roomType, roomId });
     setRoom(new Room());
   }
 
