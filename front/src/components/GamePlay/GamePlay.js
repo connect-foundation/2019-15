@@ -7,7 +7,6 @@ import UserList from 'components/GamePlay/Userlist/Userlist';
 import CanvasSection from 'components/GamePlay/CanvasSection/CanvasSection';
 import Chatting from 'components/GamePlay/Chatting/Chatting';
 import GamePlayContext from 'components/GamePlay/GamePlay.context';
-import GameLoading from 'components/GamePlay/GameLoading/GameLoading';
 
 const GamePlay = () => {
   const { io, room } = useContext(GlobalContext);
@@ -39,7 +38,6 @@ const GamePlay = () => {
         setPainter,
       }}
     >
-      <GameLoading />
       <NavigationBar visible={room.roomType} />
       <>
         <FlexRowStyle>

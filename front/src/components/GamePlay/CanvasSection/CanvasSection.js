@@ -1,13 +1,13 @@
 import React, { useState, useContext, useEffect } from 'react';
 import GamePlayContext from 'components/GamePlay/GamePlay.context';
 import GlobalContext from 'global.context';
+import GameLoading from 'components/GamePlay/GameLoading/GameLoading';
 import DrawingPlayGround from './DrawingPlayGround/DrawingPlayGround';
 import WordChoice from './WordChoice/WordChoice';
 import CanvasSectionStyle from './CanvasSection.style';
 import WordPreview from './WordPreview/WordPreview';
 import Timer from '../../Timer/Timer';
 import GameInfo from '../../GameInfo/GameInfo';
-import Section from './Section.style';
 
 export default function CanvasSection() {
   const { painter } = useContext(GamePlayContext);
@@ -35,16 +35,17 @@ export default function CanvasSection() {
 
   return (
     <CanvasSectionStyle>
+      <GameLoading />
       {io.socket.id === painter ? (
         <WordChoice setSelectedWord={setSelectedWord} />
       ) : null}
-      <Section>
-        <GameInfo />
+      <section>
         <Timer
           isTimerGetReady={isTimerGetReady}
           setIsTimerGetReady={setIsTimerGetReady}
           setIsOpen={setIsOpen}
         />
+        <GameInfo />
         <WordPreview
           openLetter={questionWord.openLetter}
           wordLength={questionWord.wordLength}
@@ -52,10 +53,10 @@ export default function CanvasSection() {
           isOpen={isOpen}
           selectedWord={selectedWord}
         />
-      </Section>
+      </section>
       <DrawingPlayGround
         drawable={drawable}
-        canvasSize={{ width: 800, height: 490 }}
+        canvasSize={{ width: 800, height: 480 }}
       />
     </CanvasSectionStyle>
   );
