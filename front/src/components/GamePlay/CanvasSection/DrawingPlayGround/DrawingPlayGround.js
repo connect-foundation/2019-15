@@ -1,11 +1,11 @@
 import React, { useReducer, useState, useEffect, useContext } from 'react';
 import PropTypes from 'prop-types';
-import Tools from 'components/CanvasSection/DrawingPlayGround/Tools/Tools';
-import PainterBoard from 'components/CanvasSection/DrawingPlayGround/PainterBoard/PainterBoard';
-import NonPainterBoard from 'components/CanvasSection/DrawingPlayGround/NonPainterBoard/NonPainterBoard';
+import Tools from 'components/GamePlay/CanvasSection/DrawingPlayGround/Tools/Tools';
+import PainterBoard from 'components/GamePlay/CanvasSection/DrawingPlayGround/PainterBoard/PainterBoard';
+import NonPainterBoard from 'components/GamePlay/CanvasSection/DrawingPlayGround/NonPainterBoard/NonPainterBoard';
 import DrawingPlayGroundStyle from './DrawingPlayGround.style';
 import Shield from './Shield.style';
-import GamePlayContext from 'GamePlay.context';
+import GamePlayContext from 'components/GamePlay/GamePlay.context';
 
 DrawingPlayGround.propTypes = {
   drawable: PropTypes.bool.isRequired,

@@ -1,13 +1,13 @@
 /* eslint no-param-reassign:0 */
-import React, { useCallback, useEffect, useRef, useContext } from 'react';
+import React, { useCallback, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { fabric } from 'fabric';
-import GlobalContext from 'global.context';
 import {
   NonPainterBoardStyle,
   CanvasStyle,
-} from 'components/CanvasSection/DrawingPlayGround/NonPainterBoard/NonPainterBoard.style';
-import NonPainterPen from 'components/CanvasSection/DrawingPlayGround/Tools/ToolType/NonPainterPen';
+} from 'components/GamePlay/CanvasSection/DrawingPlayGround/NonPainterBoard/NonPainterBoard.style';
+import NonPainterPen from 'components/GamePlay/CanvasSection/DrawingPlayGround/Tools/ToolType/NonPainterPen';
+import useCanvasDataReceive from 'hooks/DrawingPlayGround/useCanvasDataReceive';
 
 NonPainterBoard.propTypes = {
   size: PropTypes.shape({
@@ -30,7 +30,6 @@ export default function NonPainterBoard({ size }) {
   const canvas = useRef(null);
   const ctx = useRef(null);
   const fabricCanvas = useRef(null);
-  const { io } = useContext(GlobalContext);
 
   const setCanvasFromJson = (data) => {
     fabricCanvas.current.loadFromJSON(data);
@@ -53,25 +52,22 @@ export default function NonPainterBoard({ size }) {
     }
   };
 
-  const setCanvasImage = useCallback(
-    (canvasData) => {
-      if (canvasData.drawingOptions.tool !== 'pen') {
-        setCanvasFromJson(canvasData.data);
-        return;
-      }
+  const setCanvas = useCallback(
+    (eventList) => {
+      eventList.forEach((e) => {
+        if (e.drawingOptions.tool !== 'pen') {
+          setCanvasFromJson(e.data);
+          return;
+        }
 
-      pen.setCanvas(fabricCanvas.current, canvasData.drawingOptions);
-      handleEvents(canvasData);
+        pen.setCanvas(fabricCanvas.current, e.drawingOptions);
+        handleEvents(e);
+      });
     },
     [handleEvents],
   );
 
-  useEffect(() => {
-    async function init() {
-      await io.initImageSendHandler(setCanvasImage);
-    }
-    init();
-  }, [io, setCanvasImage]);
+  useCanvasDataReceive(setCanvas);
 
   useEffect(() => {
     ctx.current = canvas.current.getContext('2d');

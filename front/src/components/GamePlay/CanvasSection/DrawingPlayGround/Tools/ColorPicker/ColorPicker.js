@@ -5,8 +5,8 @@ import {
   ColorPickerStyle,
   ColorBoxList,
   ColorInfo,
-} from 'components/CanvasSection/DrawingPlayGround/Tools/ColorPicker/ColorPicker.style';
-import ColorBox from 'components/CanvasSection/DrawingPlayGround/Tools/ColorPicker/ColorBox';
+} from 'components/GamePlay/CanvasSection/DrawingPlayGround/Tools/ColorPicker/ColorPicker.style';
+import ColorBox from 'components/GamePlay/CanvasSection/DrawingPlayGround/Tools/ColorPicker/ColorBox';
 
 ColorPicker.propTypes = {
   rgbList: PropTypes.arrayOf(String),

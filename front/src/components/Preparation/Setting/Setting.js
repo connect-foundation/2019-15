@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import GlobalContext from 'global.context';
-import GamePlayContext from 'GamePlay.context';
+import GamePlayContext from 'components/GamePlay/GamePlay.context';
 import {
   SettingStyle,
   RoomSettingStyle,

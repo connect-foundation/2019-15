@@ -1,17 +1,18 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { Redirect } from 'react-router-dom';
-
 import NavigationBar from 'components/NavigationBar/NavigationBar';
 import { FlexRowStyle } from 'components/globalComponents/Container/Flex.style';
 import GlobalContext from 'global.context';
-import UserList from 'components/Userlist/Userlist';
-import CanvasSection from 'components/CanvasSection/CanvasSection';
-import Chatting from 'components/Chatting/Chatting';
-import GamePlayContext from 'GamePlay.context';
+import UserList from 'components/GamePlay/Userlist/Userlist';
+import CanvasSection from 'components/GamePlay/CanvasSection/CanvasSection';
+import Chatting from 'components/GamePlay/Chatting/Chatting';
+import GamePlayContext from 'components/GamePlay/GamePlay.context';
 
 const GamePlay = () => {
   const { io, room } = useContext(GlobalContext);
-  const { setUserList, setPainter } = useContext(GamePlayContext);
+
+  const [userList, setUserList] = useState([]);
+  const [painter, setPainter] = useState(null);
 
   useEffect(() => {
     const initSocket = async () => {
@@ -29,7 +30,14 @@ const GamePlay = () => {
   }
 
   return (
-    <>
+    <GamePlayContext.Provider
+      value={{
+        userList,
+        setUserList,
+        painter,
+        setPainter,
+      }}
+    >
       <NavigationBar visible={room.roomType} />
       <>
         <FlexRowStyle>
@@ -38,7 +46,7 @@ const GamePlay = () => {
           <Chatting />
         </FlexRowStyle>
       </>
-    </>
+    </GamePlayContext.Provider>
   );
 };
 

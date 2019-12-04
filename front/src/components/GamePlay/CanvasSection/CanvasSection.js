@@ -1,13 +1,13 @@
 import React, { useState, useContext, useEffect } from 'react';
-import GamePlayContext from 'GamePlay.context';
+import GamePlayContext from 'components/GamePlay/GamePlay.context';
 import GlobalContext from 'global.context';
 import DrawingPlayGround from './DrawingPlayGround/DrawingPlayGround';
 import WordChoice from './WordChoice/WordChoice';
 import CanvasSectionStyle from './CanvasSection.style';
 import WordPreview from './WordPreview/WordPreview';
-import Timer from '../Timer/Timer';
-import GameInfo from '../GameInfo/GameInfo';
-import GameLoading from 'components/GameLoading/GameLoading';
+import GameLoading from 'components/GamePlay/GameLoading/GameLoading';
+import Timer from '../../Timer/Timer';
+import GameInfo from '../../GameInfo/GameInfo';
 
 export default function CanvasSection() {
   const { painter } = useContext(GamePlayContext);
@@ -19,12 +19,12 @@ export default function CanvasSection() {
   });
   const [drawable, setDrawable] = useState(false);
 
-  const [isTimerStart, setIsTimerStart] = useState(false);
+  const [isTimerGetReady, setIsTimerGetReady] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [selectedWord, setSelectedWord] = useState('');
 
   io.setStartQuestionHandler(setQuestionWord, () => {
-    setIsTimerStart(true);
+    setIsTimerGetReady(true);
   });
 
   useEffect(() => {
@@ -41,8 +41,8 @@ export default function CanvasSection() {
       ) : null}
       <section>
         <Timer
-          isTimerStart={isTimerStart}
-          setIsTimerStart={setIsTimerStart}
+          isTimerGetReady={isTimerGetReady}
+          setIsTimerGetReady={setIsTimerGetReady}
           setIsOpen={setIsOpen}
         />        
         <GameInfo />

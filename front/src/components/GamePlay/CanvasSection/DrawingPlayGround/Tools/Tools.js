@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { ToolsStyle } from 'components/CanvasSection/DrawingPlayGround/Tools/Tools.style';
-import ColorPicker from 'components/CanvasSection/DrawingPlayGround/Tools/ColorPicker/ColorPicker';
-import ToolType from 'components/CanvasSection/DrawingPlayGround/Tools/ToolType/ToolType';
-import ToolManager from 'components/CanvasSection/DrawingPlayGround/Tools/ToolType/ToolManager';
+import { ToolsStyle } from 'components/GamePlay/CanvasSection/DrawingPlayGround/Tools/Tools.style';
+import ColorPicker from 'components/GamePlay/CanvasSection/DrawingPlayGround/Tools/ColorPicker/ColorPicker';
+import ToolType from 'components/GamePlay/CanvasSection/DrawingPlayGround/Tools/ToolType/ToolType';
+import ToolManager from 'components/GamePlay/CanvasSection/DrawingPlayGround/Tools/ToolType/ToolManager';
 
 Tools.propTypes = {
   drawingOptions: PropTypes.shape({

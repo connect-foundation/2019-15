@@ -1,5 +1,5 @@
 const { RoomManager } = require('../Room');
-const { personEnterSecretRoom, sendUserListToRoom, isExistRoom } = require('./game');
+const { personEnterSecretRoom, sendUserListToRoom } = require('./game');
 const exitRoom = require('./exitRoom');
 const sendGameImage = require('./gameImage');
 const enterRandom = require('./enterRandom');
@@ -13,7 +13,7 @@ function setGameSocket(socket) {
 
   socket.on('enterRandom', ({ nickname, roomType }) => {
     roomInfo.roomType = roomType;
-    roomInfo.roomId = RoomManager.getEnableRoomId(roomType);
+    roomInfo.roomId = RoomManager.getEnableRoomId(roomType, this.gameIo);
   });
 
   socket.on('makeSecret', ({ nickname, roomId }) => {

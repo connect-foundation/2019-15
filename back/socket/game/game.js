@@ -14,7 +14,7 @@ function personEnterRoom(nickname, socket, roomType, io, roomId) {
   room.addPlayer(new User(nickname, socket));
 
   socket.join(roomId);
-  socket.emit(`connect${roomType}`, {
+  socket.emit(`connectRandom`, {
     roomId,
     roomType,
   });
