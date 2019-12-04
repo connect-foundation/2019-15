@@ -9,6 +9,7 @@ const ChattingStyle = styled.div`
   justify-content: center;
   height: 38rem;
   width: 16rem;
+  margin-left: 0.5rem;
 `;
 
 export default ChattingStyle;
