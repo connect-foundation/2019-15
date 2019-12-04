@@ -7,7 +7,8 @@ const makeRoomId = () => {
 };
 
 class Room {
-  constructor() {
+  constructor(gameIo) {
+    this.roomId = null;
     this.players = [];
     this.wordSet = null;
     this.word = null;
@@ -17,6 +18,7 @@ class Room {
     this.totalRound = null;
     this.currentRound = null;
     this.answererCount = 0;
+    this.timer.setTimeOutCallback(this.timeOutCallback.bind(this, gameIo));
   }
 
   prepareFirstQuestion() {
@@ -46,6 +48,23 @@ class Room {
   getUserIndexBySocketId(gameSocket) {
     return this.players.findIndex((user) => user.socket.id === gameSocket.id);
   }
+
+  isQuestionEnd() {
+    return this.answererCount === this.players.length - 1;
+  }
+
+  timeOutCallback(gameIo) {
+    this.examinerIndex -= 1;
+    // this.room.currentExaminer가 -1이라면 한 라운드가 종료된 것
+    const nextExaminer = this.players[this.examinerIndex];
+    // 클라에게 해당 문제를 끝내라는 시그널을 전송한다
+    // todo: 다음 출제자를 구별하기 위해 nickname이 나은가? 아니면 id?
+    gameIo.in(this.roomId).emit('endQuestion', {
+      nickname: nextExaminer.nickname,
+      scores: this.players.map((player) => [player.nickname, player.score]),
+      answer: this.word,
+    });
+  }
 }
 
 const RoomManager = {
@@ -54,15 +73,17 @@ const RoomManager = {
   maxPeopleNum,
 
   // 방이 없을 때 새로운 방을 만들고 반환.
-  addRoom: function(roomName) {
-    const newRoom = new Room();
+  addRoom: function(roomName, gameIo) {
+    const newRoom = new Room(gameIo);
     const roomId = makeRoomId();
+    newRoom.roomId = roomId;
     this.room[roomName][roomId] = newRoom;
+
     return roomId;
   },
 
   // 수용가능한 방을 하나 반환, 없으면 생성해서 반환
-  getEnableRoomId: function(roomName) {
+  getEnableRoomId: function(roomName, gameIo) {
     const nRooms = this.room[roomName];
 
     // find의 반환값이 undefined일 수 있으므로, destructuring은 불가능
@@ -73,7 +94,7 @@ const RoomManager = {
 
     if (!room) {
       room = [];
-      room.push(this.addRoom(roomName));
+      room.push(this.addRoom(roomName, gameIo));
     }
     return room[0];
   },
@@ -84,8 +105,11 @@ const RoomManager = {
 
     return secretRoomList[roomId];
   },
-  isExistRoom({roomType, roomId}) {
+  isExistRoom({ roomType, roomId }) {
     return roomType && roomId && this.room[roomType].hasOwnProperty(roomId);
+  },
+  getRoomByRoomId(roomName, roomId) {
+    return this.room[roomName][roomId];
   },
 };
 

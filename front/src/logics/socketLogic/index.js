@@ -75,18 +75,22 @@ const io = {
     });
   },
 
-  async initImageSendHandler(setCanvasImage) {
-    this.socket.on('drawing', ({ canvasData }) => {
-      setCanvasImage(canvasData);
+  onCanvasData(setCanvas) {
+    this.socket.on('drawing', ({ eventList }) => {
+      setCanvas(eventList);
     });
   },
 
-  async sendImage({ roomId, canvasData }) {
-    await this.socket.emit('drawing', { roomId, canvasData });
+  offCanvasData() {
+    this.socket.off('drawing');
+  },
+
+  emitCanvasData({ roomId, eventList }) {
+    this.socket.emit('drawing', { roomId, eventList });
   },
   async setEndQuestionHandler() {
-    this.socket.on('endQuestion', ({ nickname }) => {
-      console.log('endQuestion', nickname);
+    this.socket.on('endQuestion', ({ nickname, scores, answer }) => {
+      console.log('[socketLogic/index.js]', nickname, scores, answer);
     });
   },
 };

@@ -1,4 +1,4 @@
-const { sendUserListToRoom, isExistRoom } = require('./game');
+const { sendUserListToRoom } = require('./game');
 const { RoomManager } = require('../Room');
 
 function exitRoom(gameSocket, { roomType, roomId }) {

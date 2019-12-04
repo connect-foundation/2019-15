@@ -1,12 +1,12 @@
-import React, { useEffect, useRef, useContext, useCallback } from 'react';
+import React, { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { fabric } from 'fabric';
-import GlobalContext from 'global.context';
 import {
   PainterBoardStyle,
   CanvasStyle,
 } from 'components/CanvasSection/DrawingPlayGround/PainterBoard/PainterBoard.style';
 import ToolManager from 'components/CanvasSection/DrawingPlayGround/Tools/ToolType/ToolManager';
+import useCanvasDataCaching from 'hooks/DrawingPlayGround/useCanvasDataCaching';
 
 PainterBoard.propTypes = {
   drawingOptions: PropTypes.shape({
@@ -34,9 +34,8 @@ export default function PainterBoard({ drawingOptions, size }) {
   const { tool: toolName } = drawingOptions;
   const { width, height } = size;
   const canvas = useRef(null);
-  const { io, room } = useContext(GlobalContext);
-
   const fabricCanvas = useRef(null);
+  const emitable = useRef(false);
 
   useEffect(() => {
     fabricCanvas.current = new fabric.Canvas(canvas.current, {
@@ -47,15 +46,7 @@ export default function PainterBoard({ drawingOptions, size }) {
     });
   }, [height, width]);
 
-  const emitCanvasData = useCallback(
-    (canvasData) => {
-      io.sendImage({
-        roomId: room.roomId,
-        canvasData,
-      });
-    },
-    [io, room],
-  );
+  const eventListDispatch = useCanvasDataCaching();
 
   useEffect(() => {
     const tool = ToolManager[toolName];
@@ -64,31 +55,45 @@ export default function PainterBoard({ drawingOptions, size }) {
     const setCanvasEvents = () => {
       fabricCanvas.current.on('mouse:down', ({ pointer }) => {
         tool.onMouseDown(pointer);
-        if (toolName === 'pen') {
-          emitCanvasData({ drawingOptions, pointer, event: 'mouseDown' });
-        }
+        if (toolName !== 'pen') return;
+        emitable.current = true;
+        eventListDispatch({
+          type: 'push',
+          value: { drawingOptions, pointer, event: 'mouseDown' },
+        });
       });
       fabricCanvas.current.on('mouse:move', ({ pointer }) => {
         tool.onMouseMove(pointer);
-        if (toolName === 'pen')
-          emitCanvasData({ drawingOptions, pointer, event: 'mouseMove' });
+        if (toolName !== 'pen' || !emitable.current) return;
+        eventListDispatch({
+          type: 'push',
+          value: { drawingOptions, pointer, event: 'mouseMove' },
+        });
       });
       fabricCanvas.current.on('mouse:up', ({ pointer }) => {
         tool.onMouseUp(pointer);
-        emitCanvasData({
-          drawingOptions,
-          data: fabricCanvas.current.toJSON(),
-          event: 'mouseUp',
+        eventListDispatch({
+          type: 'push',
+          value: {
+            drawingOptions,
+            data: fabricCanvas.current.toJSON(),
+            event: 'mouseUp',
+          },
         });
+        emitable.current = false;
       });
       fabricCanvas.current.on('mouse:out', () => {
         tool.onMouseOut();
-        if (toolName === 'pen')
-          emitCanvasData({
+        if (toolName !== 'pen') return;
+        eventListDispatch({
+          type: 'push',
+          value: {
             drawingOptions,
             pointer: { x: null, y: null },
             event: 'mouseOut',
-          });
+          },
+        });
+        emitable.current = false;
       });
     };
 
@@ -101,7 +106,7 @@ export default function PainterBoard({ drawingOptions, size }) {
 
     setCanvasEvents();
     return removeCanvasEvents;
-  }, [drawingOptions, emitCanvasData, toolName]);
+  }, [drawingOptions, eventListDispatch, toolName]);
 
   return (
     <PainterBoardStyle>

@@ -3,14 +3,18 @@ import PropTypes from 'prop-types';
 import TimerStyle from './Timer.style';
 
 Timer.propTypes = {
-  isTimerStart: PropTypes.bool.isRequired,
-  setIsTimerStart: PropTypes.func.isRequired,
+  isTimerGetReady: PropTypes.bool.isRequired,
+  setIsTimerGetReady: PropTypes.func.isRequired,
   setIsOpen: PropTypes.func.isRequired,
 };
 
-export default function Timer({ isTimerStart, setIsTimerStart, setIsOpen }) {
+export default function Timer({
+  isTimerGetReady,
+  setIsTimerGetReady,
+  setIsOpen,
+}) {
   const [time, setTime] = useState(30);
-  const [flag, setFlag] = useState(false);
+  const [isRunnable, setIsRunnable] = useState(false);
 
   function resetTimer() {
     setTime(30);
@@ -19,32 +23,33 @@ export default function Timer({ isTimerStart, setIsTimerStart, setIsOpen }) {
   useEffect(() => {
     // useCallback을 쓰면 hoisting이 되지 않아서 useEffect 내부에 선언함
     const countDown = () => {
-      if (flag) setTime(time - 1);
+      if (isRunnable) setTime(time - 1);
     };
 
     function stopTimer() {
-      setFlag(false);
+      setIsRunnable(false);
+      setIsTimerGetReady(false);
       resetTimer();
     }
 
+    function notifyOpeningLetter() {
+      setIsOpen(true);
+    }
+
     function runTimer() {
-      if (time === 10) setIsOpen(true);
+      if (time === 10) notifyOpeningLetter();
       if (time > 0) setTimeout(countDown, 1000);
-      else {
-        stopTimer();
-        setIsTimerStart(false);
-        // to do something...
-      }
+      else stopTimer();
     }
 
     function startTimer() {
-      setFlag(true);
+      setIsRunnable(true);
       runTimer();
     }
 
     runTimer();
-    if (isTimerStart) startTimer();
-  }, [isTimerStart, setIsTimerStart, time, flag, setIsOpen]);
+    if (isTimerGetReady) startTimer();
+  }, [isTimerGetReady, setIsTimerGetReady, time, isRunnable, setIsOpen]);
 
   return (
     <>

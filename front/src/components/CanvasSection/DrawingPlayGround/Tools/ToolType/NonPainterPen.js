@@ -12,7 +12,6 @@ class NonPainterPen extends Tool {
   }
 
   onMouseDown({ x, y }) {
-    this.isDown = true;
     this.ctx.lineCap = 'round';
     this.ctx.lineJoin = 'round';
     this.ctx.strokeStyle = this.options.strokeColor;
@@ -22,14 +21,11 @@ class NonPainterPen extends Tool {
   }
 
   onMouseMove({ x, y }) {
-    if (!this.isDown) return;
     this.ctx.lineTo(x, y);
     this.ctx.stroke();
   }
 
   onMouseUp() {
-    if (!this.isDown) return;
-    this.isDown = false;
     this.ctx.closePath();
   }
 

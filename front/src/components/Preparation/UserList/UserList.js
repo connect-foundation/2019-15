@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from 'react';
-import UserListStyle from './UserList.style';
-import GamePlayContext from 'GamePlay.context';
+import GamePlayContext from 'pages/GamePlay/GamePlay.context';
 import GlobalContext from 'global.context';
+import UserListStyle from './UserList.style';
 
 export default function UserList() {
   const { userList, setUserList } = useContext(GamePlayContext);

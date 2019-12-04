@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
-import GamePlayContext from 'GamePlay.context';
+import GamePlayContext from 'pages/GamePlay/GamePlay.context';
 import GlobalContext from 'global.context';
 import DrawingPlayGround from './DrawingPlayGround/DrawingPlayGround';
 import WordChoice from './WordChoice/WordChoice';
@@ -19,12 +19,12 @@ export default function CanvasSection() {
   });
   const [drawable, setDrawable] = useState(false);
 
-  const [isTimerStart, setIsTimerStart] = useState(false);
+  const [isTimerGetReady, setIsTimerGetReady] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [selectedWord, setSelectedWord] = useState('');
 
   io.setStartQuestionHandler(setQuestionWord, () => {
-    setIsTimerStart(true);
+    setIsTimerGetReady(true);
   });
 
   useEffect(() => {
@@ -41,8 +41,8 @@ export default function CanvasSection() {
       <Section>
         <GameInfo />
         <Timer
-          isTimerStart={isTimerStart}
-          setIsTimerStart={setIsTimerStart}
+          isTimerGetReady={isTimerGetReady}
+          setIsTimerGetReady={setIsTimerGetReady}
           setIsOpen={setIsOpen}
         />
         <WordPreview
