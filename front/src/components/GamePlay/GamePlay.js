@@ -14,12 +14,23 @@ const GamePlay = () => {
 
   const [userList, setUserList] = useState([]);
   const [painter, setPainter] = useState(null);
+  const [questionWord, setQuestionWord] = useState({
+    wordLength: 0,
+    openLetter: '',
+    openIndex: 0,
+  });
+  const [isTimerGetReady, setIsTimerGetReady] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const [selectedWord, setSelectedWord] = useState('');
 
   useEffect(() => {
     const initSocket = async () => {
       if (io.socket) {
         await io.initUserListMsgHandler({ setUserList });
         await io.initGameStartMsgHandler({ setPainter });
+        io.setStartQuestionHandler(setQuestionWord, () => {
+          setIsTimerGetReady(true);
+        });
         await io.setEndQuestionHandler();
       }
     };
@@ -30,15 +41,23 @@ const GamePlay = () => {
     return <Redirect to="main" />;
   }
 
+  const contextValue = {
+    userList,
+    setUserList,
+    painter,
+    setPainter,
+    questionWord,
+    setQuestionWord,
+    isTimerGetReady,
+    setIsTimerGetReady,
+    isOpen,
+    setIsOpen,
+    selectedWord,
+    setSelectedWord,
+  };
+
   return (
-    <GamePlayContext.Provider
-      value={{
-        userList,
-        setUserList,
-        painter,
-        setPainter,
-      }}
-    >
+    <GamePlayContext.Provider value={contextValue}>
       <GameLoading />
       <NavigationBar visible={room.roomType} />
       <>

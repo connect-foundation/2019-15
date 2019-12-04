@@ -10,22 +10,19 @@ import GameInfo from '../../GameInfo/GameInfo';
 import Section from './Section.style';
 
 export default function CanvasSection() {
-  const { painter } = useContext(GamePlayContext);
+  const {
+    painter,
+    questionWord,
+    isTimerGetReady,
+    setIsTimerGetReady,
+    isOpen,
+    setIsOpen,
+    selectedWord,
+    setSelectedWord,
+  } = useContext(GamePlayContext);
   const { io } = useContext(GlobalContext);
-  const [questionWord, setQuestionWord] = useState({
-    wordLength: 0,
-    openLetter: '',
-    openIndex: 0,
-  });
+
   const [drawable, setDrawable] = useState(false);
-
-  const [isTimerGetReady, setIsTimerGetReady] = useState(false);
-  const [isOpen, setIsOpen] = useState(false);
-  const [selectedWord, setSelectedWord] = useState('');
-
-  io.setStartQuestionHandler(setQuestionWord, () => {
-    setIsTimerGetReady(true);
-  });
 
   useEffect(() => {
     if (painter === io.socket.id) {
