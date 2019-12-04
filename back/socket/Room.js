@@ -84,7 +84,7 @@ const RoomManager = {
 
     return secretRoomList[roomId];
   },
-  isExistRoom(roomType, roomId) {
+  isExistRoom({roomType, roomId}) {
     return roomType && roomId && this.room[roomType].hasOwnProperty(roomId);
   },
 };

@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import ImageStyle from './Image.style';
+import ImageStyle from 'components/globalComponents/Image/Image.style';
 
 Image.propTypes = {
   src: PropTypes.string,

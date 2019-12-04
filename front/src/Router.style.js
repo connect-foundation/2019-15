@@ -1,10 +1,8 @@
 import styled from 'styled-components';
 
 const RouterStyle = styled.div`
-  height: 100%;
+  height: calc(100% - 4.5rem);
   width: 100%;
-  display: flex;
-  flex-direction: column;
 `;
 
 export default RouterStyle;

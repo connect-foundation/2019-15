@@ -20,6 +20,18 @@ body {
   font-family: 'Cookierun Bold', sans-serif;
 }
 
+body:after{
+  content: "";
+  top:0;
+  left:0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  background-image: url("https://i.pinimg.com/564x/c3/d5/91/c3d5915454b45c07a517c82f5122d36e.jpg");
+  position: fixed;
+  opacity: 0.3;
+}
+
 #root {
   height: 100%;
 }
@@ -30,7 +42,7 @@ a:visited,
 a:hover,
 a:link {
   text-decoration: none;
-  color: white;
+  color: black;
 }
 
 button {
