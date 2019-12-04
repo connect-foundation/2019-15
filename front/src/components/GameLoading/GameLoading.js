@@ -1,5 +1,4 @@
 import React, { useContext } from 'react';
-import GamePlayContext from 'GamePlay.context';
 import FullScreen from './GameLoading.style';
 import Loading from '../globalComponents/Loading/Loading';
 

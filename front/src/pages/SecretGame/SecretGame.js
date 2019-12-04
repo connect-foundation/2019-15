@@ -2,7 +2,7 @@ import React, { useEffect, useContext, useState } from 'react';
 import GlobalContext from 'global.context';
 import SecretGameContext from 'pages/SecretGame/SecretGame.context';
 import GamePlay from 'pages/GamePlay/GamePlay';
-import GamePlayContext from 'GamePlay.context';
+import GamePlayContext from 'pages/GamePlay/GamePlay.context';
 
 import GamePreparation from 'pages/SecretGame/GamePreparation';
 import Room from 'logics/room/index';

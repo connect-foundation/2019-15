@@ -4,8 +4,6 @@ import jwt from 'jsonwebtoken';
 import Home from 'pages/Home/Home';
 import io from 'logics/socketLogic';
 import GlobalContext from 'global.context';
-import GamePlayContext from 'GamePlay.context';
-
 import Main from 'pages/Main/Main';
 import MyPage from 'pages/MyPage/MyPage';
 import SecretGame from 'pages/SecretGame/SecretGame';
@@ -31,9 +29,6 @@ const Router = () => {
   const [user, userDispatch] = useReducer(changeUser, userInitial);
   const [onlineSocket, setOnlineSocket] = useState(null);
 
-  const [userList, setUserList] = useState([]);
-  const [painter, setPainter] = useState(null);
-
   return (
     <RouterStyle id="Router">
       <HashRouter>
@@ -58,16 +53,12 @@ const Router = () => {
             <Route path="/main">
               <Main />
             </Route>
-            <GamePlayContext.Provider
-              value={{ userList, setUserList, painter, setPainter }}
-            >
-              <Route path="/gameplay">
-                <GamePlay />
-              </Route>
-              <Route path="/secret:hash">
-                <SecretGame />
-              </Route>
-            </GamePlayContext.Provider>
+            <Route path="/gameplay">
+              <GamePlay />
+            </Route>
+            <Route path="/secret:hash">
+              <SecretGame />
+            </Route>
           </GlobalContext.Provider>
         </Switch>
       </HashRouter>

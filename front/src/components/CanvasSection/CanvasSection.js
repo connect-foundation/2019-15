@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
-import GamePlayContext from 'GamePlay.context';
+import GamePlayContext from 'pages/GamePlay/GamePlay.context';
 import GlobalContext from 'global.context';
 import DrawingPlayGround from './DrawingPlayGround/DrawingPlayGround';
 import WordChoice from './WordChoice/WordChoice';
