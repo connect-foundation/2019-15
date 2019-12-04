@@ -4,6 +4,7 @@ class User {
     this.privileged = false;
     this.socket = socket;
     this.id = id;
+    this.score = 0;
   }
 }
 

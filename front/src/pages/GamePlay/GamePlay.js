@@ -1,18 +1,19 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { Redirect } from 'react-router-dom';
-
 import NavigationBar from 'components/NavigationBar/NavigationBar';
 import { FlexRowStyle } from 'components/globalComponents/Container/Flex.style';
 import GlobalContext from 'global.context';
 import UserList from 'components/Userlist/Userlist';
 import CanvasSection from 'components/CanvasSection/CanvasSection';
 import Chatting from 'components/Chatting/Chatting';
-import GamePlayContext from 'GamePlay.context';
+import GamePlayContext from 'pages/GamePlay/GamePlay.context';
 import GameLoading from 'components/GameLoading/GameLoading';
 
 const GamePlay = () => {
   const { io, room } = useContext(GlobalContext);
-  const { setUserList, setPainter } = useContext(GamePlayContext);
+
+  const [userList, setUserList] = useState([]);
+  const [painter, setPainter] = useState(null);
 
   useEffect(() => {
     const initSocket = async () => {
@@ -30,7 +31,14 @@ const GamePlay = () => {
   }
 
   return (
-    <>
+    <GamePlayContext.Provider
+      value={{
+        userList,
+        setUserList,
+        painter,
+        setPainter,
+      }}
+    >
       <GameLoading />
       <NavigationBar visible={room.roomType} />
       <>
@@ -40,7 +48,7 @@ const GamePlay = () => {
           <Chatting />
         </FlexRowStyle>
       </>
-    </>
+    </GamePlayContext.Provider>
   );
 };
 
