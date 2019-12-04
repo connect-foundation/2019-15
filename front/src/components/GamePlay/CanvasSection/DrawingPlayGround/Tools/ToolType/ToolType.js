@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import SpectreButton from 'components/globalComponents/SpectreButton/SpectreButton';
-import ToolManager from 'components/CanvasSection/DrawingPlayGround/Tools/ToolType/ToolManager';
-import ToolTypeStyle from 'components/CanvasSection/DrawingPlayGround/Tools/ToolType/ToolType.style';
+import ToolManager from 'components/GamePlay/CanvasSection/DrawingPlayGround/Tools/ToolType/ToolManager';
+import ToolTypeStyle from 'components/GamePlay/CanvasSection/DrawingPlayGround/Tools/ToolType/ToolType.style';
 
 ToolType.propTypes = {
   tool: PropTypes.oneOf(ToolManager.TOOL_LIST).isRequired,

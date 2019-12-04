@@ -4,8 +4,8 @@ import { fabric } from 'fabric';
 import {
   PainterBoardStyle,
   CanvasStyle,
-} from 'components/CanvasSection/DrawingPlayGround/PainterBoard/PainterBoard.style';
-import ToolManager from 'components/CanvasSection/DrawingPlayGround/Tools/ToolType/ToolManager';
+} from 'components/GamePlay/CanvasSection/DrawingPlayGround/PainterBoard/PainterBoard.style';
+import ToolManager from 'components/GamePlay/CanvasSection/DrawingPlayGround/Tools/ToolType/ToolManager';
 import useCanvasDataCaching from 'hooks/DrawingPlayGround/useCanvasDataCaching';
 
 PainterBoard.propTypes = {

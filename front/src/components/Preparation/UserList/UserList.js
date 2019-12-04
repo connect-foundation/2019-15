@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from 'react';
-import GamePlayContext from 'pages/GamePlay/GamePlay.context';
+import GamePlayContext from 'components/GamePlay/GamePlay.context';
 import GlobalContext from 'global.context';
 import UserListStyle from './UserList.style';
 

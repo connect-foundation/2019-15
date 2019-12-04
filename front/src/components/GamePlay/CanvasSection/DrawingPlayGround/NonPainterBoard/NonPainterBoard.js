@@ -5,8 +5,8 @@ import { fabric } from 'fabric';
 import {
   NonPainterBoardStyle,
   CanvasStyle,
-} from 'components/CanvasSection/DrawingPlayGround/NonPainterBoard/NonPainterBoard.style';
-import NonPainterPen from 'components/CanvasSection/DrawingPlayGround/Tools/ToolType/NonPainterPen';
+} from 'components/GamePlay/CanvasSection/DrawingPlayGround/NonPainterBoard/NonPainterBoard.style';
+import NonPainterPen from 'components/GamePlay/CanvasSection/DrawingPlayGround/Tools/ToolType/NonPainterPen';
 import useCanvasDataReceive from 'hooks/DrawingPlayGround/useCanvasDataReceive';
 
 NonPainterBoard.propTypes = {

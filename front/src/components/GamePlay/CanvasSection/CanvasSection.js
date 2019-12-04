@@ -1,12 +1,12 @@
 import React, { useState, useContext, useEffect } from 'react';
-import GamePlayContext from 'pages/GamePlay/GamePlay.context';
+import GamePlayContext from 'components/GamePlay/GamePlay.context';
 import GlobalContext from 'global.context';
 import DrawingPlayGround from './DrawingPlayGround/DrawingPlayGround';
 import WordChoice from './WordChoice/WordChoice';
 import CanvasSectionStyle from './CanvasSection.style';
 import WordPreview from './WordPreview/WordPreview';
-import Timer from '../Timer/Timer';
-import GameInfo from '../GameInfo/GameInfo';
+import Timer from '../../Timer/Timer';
+import GameInfo from '../../GameInfo/GameInfo';
 import Section from './Section.style';
 
 export default function CanvasSection() {

@@ -1,6 +1,6 @@
 /* eslint no-param-reassign:0 */
 import { fabric } from 'fabric';
-import Tool from 'components/CanvasSection/DrawingPlayGround/Tools/ToolType/Tool';
+import Tool from 'components/GamePlay/CanvasSection/DrawingPlayGround/Tools/ToolType/Tool';
 
 class Line extends Tool {
   setCanvas(fabricCanvas, { strokeWidth, strokeColor }) {
