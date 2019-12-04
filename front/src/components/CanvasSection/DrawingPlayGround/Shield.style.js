@@ -1,14 +1,15 @@
 import styled from 'styled-components';
 
 const ShieldStyle = styled.div`
- background-color: rgba(0, 0, 0, 0.50);
+ background-color: white;
  width: 50rem;
- height: 4rem;
+ height: 3rem;
  position: absolute;
  margin-top: 0;
  z-index: 1;
+ padding-top: 1rem;
  text-align: center;
- color: white;
+ color: black;
 `;
 
 export default ShieldStyle;

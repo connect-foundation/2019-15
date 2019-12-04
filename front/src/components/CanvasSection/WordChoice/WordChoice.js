@@ -6,7 +6,6 @@ import GlobalContext from 'global.context';
 import Background from './Background.style';
 import WordSet from './WordSet.style';
 import { WordCard, P } from './WordCard.style';
-import Loading from 'components/globalComponents/Loading/Loading';
 
 WordChoice.propTypes = {
   setSelectedWord: PropTypes.func.isRequired,
