@@ -1,5 +1,5 @@
-function sendGameImage(gameSocket, { roomId, canvasData }) {
-  gameSocket.to(roomId).emit('drawing', { canvasData });
+function sendGameImage(gameSocket, { roomId, eventList }) {
+  gameSocket.to(roomId).emit('drawing', { eventList });
 }
 
 module.exports = sendGameImage;
