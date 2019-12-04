@@ -17,6 +17,7 @@ class Room {
     this.totalRound = null;
     this.currentRound = null;
     this.answererCount = 0;
+    this.timer.setTimeOutCallback(this.timeOutCallback.bind(this));
   }
 
   prepareFirstQuestion() {
@@ -45,6 +46,21 @@ class Room {
 
   getUserIndexBySocketId(gameSocket) {
     return this.players.findIndex((user) => user.socket.id === gameSocket.id);
+  }
+
+  isQuestionEnd() {
+    return this.answererCount === this.players.length - 1;
+  }
+
+  timeOutCallback() {
+    this.currentExaminer -= 1;
+    // this.room.currentExaminer가 -1이라면 한 라운드가 종료된 것
+    const nextExaminer = this.players[this.currentExaminer];
+    // 클라에게 해당 문제를 끝내라는 시그널을 전송한다
+    // todo: 소켓을 주입받아야 한다
+    this.io.in(this.roomId).emit('endQuestion', {
+      nickname: nextExaminer.nickname,
+    });
   }
 }
 
