@@ -64,7 +64,7 @@ export default function DrawingPlayGround({ drawable, canvasSize }) {
       : (
         <>
           <NonPainterBoard size={canvasSize} />
-          <Shield>{painterNickname?`${painterNickname}님이 그림을 그리고 있습니다.`:null}</Shield>
+          {painterNickname?<Shield>{painterNickname}님이 그림을 그리고 있습니다.</Shield>:null}
         </>
       )}
       <Tools
