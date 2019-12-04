@@ -23,6 +23,8 @@ const alarmListReducer = (state, action) => {
     case 'pop':
       state.pop();
       return [...state];
+    case 'reset':
+      return [];
     default:
       throw new Error('wrong action type');
   }
@@ -33,9 +35,11 @@ export default function Notice() {
   useAlarm(alarmListDispatch);
 
   useEffect(() => {
+    if (!alarmList.length) return () => {};
     noticeDispatch({ open: true, type: 'alarm' });
     const timeoutToCloseAlarm = setTimeout(() => {
       noticeDispatch({ open: false, type: 'alarm' });
+      alarmListDispatch({ type: 'reset' });
     }, 2000);
     return () => {
       clearTimeout(timeoutToCloseAlarm);

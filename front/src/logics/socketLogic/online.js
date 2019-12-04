@@ -9,11 +9,8 @@ export const onRequestFriend = (socket, { alarmListDispatch }) => {
   socket.on('requestFriend', (user) => {
     alarmListDispatch({
       type: 'push',
-      value: `${user.nickname}님이 친구 신청하였습니다.`,
+      value: `${user.nickname}님이 친구가 되고 싶어 해요`,
     });
-    setTimeout(() => {
-      alarmListDispatch({ type: 'pop' });
-    }, 10000);
   });
 };
 
