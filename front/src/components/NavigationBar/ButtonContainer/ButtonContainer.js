@@ -28,7 +28,7 @@ function alarmListReducer(state, action) {
 export default function ButtonContainer() {
   const [alarmList, alarmListDispatch] = useReducer(alarmListReducer, []);
   const [noticeType, setNoticeType] = useState(null);
-  const { onlineSocket, io, user, room, setRoom } = useContext(GlobalContext);
+  const { onlineSocket, io, room, setRoom } = useContext(GlobalContext);
 
   // logics 로 분리예정
   function logout() {
