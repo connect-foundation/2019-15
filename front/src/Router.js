@@ -7,7 +7,7 @@ import GlobalContext from 'global.context';
 import Main from 'pages/Main/Main';
 import MyPage from 'pages/MyPage/MyPage';
 import SecretGame from 'pages/SecretGame/SecretGame';
-import GamePlay from 'pages/GamePlay/GamePlay';
+import GamePlay from 'components/GamePlay/GamePlay';
 import Room from 'logics/room';
 import User from 'logics/user';
 import RouterStyle from 'Router.style';

@@ -1,5 +1,5 @@
 /* eslint no-param-reassign:0 */
-import Tool from 'components/CanvasSection/DrawingPlayGround/Tools/ToolType/Tool';
+import Tool from 'components/GamePlay/CanvasSection/DrawingPlayGround/Tools/ToolType/Tool';
 
 class NonPainterPen extends Tool {
   setCanvas(fabricCanvas, { strokeWidth, strokeColor }) {

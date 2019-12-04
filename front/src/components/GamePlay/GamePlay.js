@@ -4,10 +4,10 @@ import NavigationBar from 'components/NavigationBar/NavigationBar';
 import { FlexRowStyle } from 'components/globalComponents/Container/Flex.style';
 import GlobalContext from 'global.context';
 import UserList from 'components/Userlist/Userlist';
-import CanvasSection from 'components/CanvasSection/CanvasSection';
+import CanvasSection from 'components/GamePlay/CanvasSection/CanvasSection';
 import Chatting from 'components/Chatting/Chatting';
-import GamePlayContext from 'pages/GamePlay/GamePlay.context';
-import GameLoading from 'components/GameLoading/GameLoading';
+import GamePlayContext from 'components/GamePlay/GamePlay.context';
+import GameLoading from 'components/GamePlay/GameLoading/GameLoading';
 
 const GamePlay = () => {
   const { io, room } = useContext(GlobalContext);
