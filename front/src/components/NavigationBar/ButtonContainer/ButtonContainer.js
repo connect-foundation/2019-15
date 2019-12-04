@@ -6,7 +6,12 @@ import Room from 'logics/room';
 import GlobalContext from 'global.context';
 
 import APP_URI from 'util/uri';
-import { faUserAlt, faBell, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
+import {
+  faUserAlt,
+  faBell,
+  faSignOutAlt,
+  faHome,
+} from '@fortawesome/free-solid-svg-icons';
 import Button from './Button/Button';
 import { ButtonContainerStyle, NavImage, Text } from './ButtonContainer.style';
 
@@ -62,11 +67,18 @@ export default function ButtonContainer() {
       <ButtonContainerStyle>
         {Button(<NavImage icon={faBell} onClick={setNoticeMessages} />)}
         {notice}
-        {Button(
-          <Link to="mypage">
-            <NavImage icon={faUserAlt} />
-          </Link>
-        )}
+        {window.location.hash === '#/mypage'
+          ? Button(
+              <Link to="main">
+                <NavImage icon={faHome} />
+              </Link>,
+            )
+          : Button(
+              <Link to="mypage">
+                <NavImage icon={faUserAlt} />
+              </Link>,
+            )}
+
         {Button(<NavImage icon={faSignOutAlt} onClick={logout} />)}
       </ButtonContainerStyle>
     );
@@ -74,7 +86,7 @@ export default function ButtonContainer() {
 
   return (
     <Link to="main" onClick={onClickExit}>
-        <Text>나가기</Text>
+      <Text>나가기</Text>
     </Link>
   );
 }
