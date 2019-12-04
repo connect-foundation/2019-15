@@ -2,11 +2,16 @@ import React, { useState, useContext, useReducer, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { onRequestFriend } from 'logics/socketLogic/online';
 import Room from 'logics/room';
+import { exitGameRoom } from 'logics/socketLogic';
 
 import GlobalContext from 'global.context';
 
 import APP_URI from 'util/uri';
-import { faUserAlt, faBell, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
+import {
+  faUserAlt,
+  faBell,
+  faSignOutAlt,
+} from '@fortawesome/free-solid-svg-icons';
 import Button from './Button/Button';
 import { ButtonContainerStyle, NavImage, Text } from './ButtonContainer.style';
 
@@ -28,7 +33,7 @@ function alarmListReducer(state, action) {
 export default function ButtonContainer() {
   const [alarmList, alarmListDispatch] = useReducer(alarmListReducer, []);
   const [noticeType, setNoticeType] = useState(null);
-  const { onlineSocket, io, user, room, setRoom } = useContext(GlobalContext);
+  const { onlineSocket, gameSocket, room, setRoom } = useContext(GlobalContext);
 
   // logics 로 분리예정
   function logout() {
@@ -50,7 +55,7 @@ export default function ButtonContainer() {
 
   async function onClickExit() {
     const { roomType, roomId } = room;
-    await io.exitGameRoom({ roomType, roomId });
+    exitGameRoom(gameSocket, { roomType, roomId });
     setRoom(new Room());
   }
 
@@ -65,7 +70,7 @@ export default function ButtonContainer() {
         {Button(
           <Link to="mypage">
             <NavImage icon={faUserAlt} />
-          </Link>
+          </Link>,
         )}
         {Button(<NavImage icon={faSignOutAlt} onClick={logout} />)}
       </ButtonContainerStyle>

@@ -3,6 +3,7 @@ import { useQuery } from '@apollo/react-hooks';
 import PropTypes from 'prop-types';
 import getRandomWords from 'queries/word';
 import GlobalContext from 'global.context';
+import { selectWord } from 'logics/socketLogic';
 import Background from './Background.style';
 import WordSet from './WordSet.style';
 import { WordCard, P } from './WordCard.style';
@@ -12,7 +13,7 @@ WordChoice.propTypes = {
 };
 
 function WordChoice({ setSelectedWord }) {
-  const { io, room } = useContext(GlobalContext);
+  const { gameSocket, room } = useContext(GlobalContext);
   const [open, setOpen] = useState(true);
   const { data, loading, error } = useQuery(getRandomWords);
 
@@ -28,7 +29,7 @@ function WordChoice({ setSelectedWord }) {
     const { roomType, roomId } = room;
     const answer = e.target.textContent;
     setSelectedWord(answer);
-    await io.selectWord({ answer, roomType, roomId });
+    selectWord(gameSocket, { answer, roomType, roomId });
   }
 
   return (

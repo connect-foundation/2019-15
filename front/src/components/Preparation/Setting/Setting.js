@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import GlobalContext from 'global.context';
 import GamePlayContext from 'components/GamePlay/GamePlay.context';
+import { startSecretGame } from 'logics/socketLogic';
 import {
   SettingStyle,
   RoomSettingStyle,
@@ -9,7 +10,7 @@ import {
 } from './Setting.style';
 
 export default function Setting() {
-  const { io, room, user } = useContext(GlobalContext);
+  const { gameSocket, room, user } = useContext(GlobalContext);
   const { userList } = useContext(GamePlayContext);
 
   function onClickGameStart() {
@@ -18,7 +19,7 @@ export default function Setting() {
 
     if (!user.roomOwner) return;
 
-    io.startSecretGame({ roomType, roomId });
+    startSecretGame(gameSocket, { roomType, roomId });
   }
 
   return (

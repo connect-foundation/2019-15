@@ -8,25 +8,29 @@ import CanvasSection from 'components/GamePlay/CanvasSection/CanvasSection';
 import Chatting from 'components/GamePlay/Chatting/Chatting';
 import GamePlayContext from 'components/GamePlay/GamePlay.context';
 import GameLoading from 'components/GamePlay/GameLoading/GameLoading';
+import {
+  initUserListMsgHandler,
+  initGameStartMsgHandler,
+  setEndQuestionHandler,
+} from 'logics/socketLogic';
 
 const GamePlay = () => {
-  const { io, room } = useContext(GlobalContext);
+  const { gameSocket, room } = useContext(GlobalContext);
 
   const [userList, setUserList] = useState([]);
   const [painter, setPainter] = useState(null);
 
   useEffect(() => {
     const initSocket = async () => {
-      if (io.socket) {
-        await io.initUserListMsgHandler({ setUserList });
-        await io.initGameStartMsgHandler({ setPainter });
-        await io.setEndQuestionHandler();
-      }
+      if (!gameSocket) return;
+      initUserListMsgHandler(gameSocket, { setUserList });
+      initGameStartMsgHandler(gameSocket, { setPainter });
+      setEndQuestionHandler(gameSocket);
     };
     initSocket();
-  }, [io, setPainter, setUserList]);
+  }, [gameSocket, setPainter, setUserList]);
 
-  if (io.socket === null) {
+  if (!gameSocket || gameSocket.connected === false) {
     return <Redirect to="main" />;
   }
 

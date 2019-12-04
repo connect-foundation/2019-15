@@ -1,10 +1,11 @@
 import React, { useRef, useState, useEffect, useContext } from 'react';
 import GlobalContext from 'global.context';
+import { initChattingHandler } from 'logics/socketLogic';
 import ChattingListStyle from './ChattingList.style';
 import Div from './Div.style';
 
 export default function ChattingList() {
-  const { io } = useContext(GlobalContext);
+  const { gameSocket } = useContext(GlobalContext);
 
   const scrollRef = useRef(null);
   const [messages, pushMessage] = useState([]);
@@ -12,7 +13,7 @@ export default function ChattingList() {
 
   useEffect(() => {
     const initSocket = async () => {
-      await io.initChattingHandler({ messages, pushMessage });
+      initChattingHandler(gameSocket, { messages, pushMessage });
     };
     if (init) {
       setInit(false);
@@ -21,7 +22,7 @@ export default function ChattingList() {
 
     scrollRef.current.scrollTop =
       scrollRef.current.scrollHeight - scrollRef.current.clientHeight;
-  }, [io, messages, init]);
+  }, [messages, init, gameSocket]);
 
   return (
     <ChattingListStyle ref={scrollRef}>
