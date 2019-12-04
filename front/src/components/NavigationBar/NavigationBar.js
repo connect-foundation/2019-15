@@ -4,6 +4,7 @@ import GlobalContext from 'global.context';
 import Room from 'logics/room';
 
 import mainlogo from 'asset/mainlogo_yellowpink.png';
+import { exitGameRoom } from 'logics/socketLogic';
 import {
   SmallLogoImage,
   LogoImage,
@@ -12,11 +13,11 @@ import {
 import ButtonContainer from './ButtonContainer/ButtonContainer';
 
 export default function NavigationBar() {
-  const { io, room, setRoom } = useContext(GlobalContext);
+  const { gameSocket, room, setRoom } = useContext(GlobalContext);
 
   async function onClickExit() {
     const { roomType, roomId } = room;
-    await io.exitGameRoom({ roomType, roomId });
+    exitGameRoom(gameSocket, { roomType, roomId });
     setRoom(new Room());
   }
 

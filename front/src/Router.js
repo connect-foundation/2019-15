@@ -2,7 +2,6 @@ import React, { useState, useReducer } from 'react';
 import { Route, Switch, HashRouter } from 'react-router-dom';
 import jwt from 'jsonwebtoken';
 import Home from 'pages/Home/Home';
-import io from 'logics/socketLogic';
 import GlobalContext from 'global.context';
 import Main from 'pages/Main/Main';
 import MyPage from 'pages/MyPage/MyPage';
@@ -28,6 +27,7 @@ const Router = () => {
   const [room, setRoom] = useState(new Room());
   const [user, userDispatch] = useReducer(changeUser, userInitial);
   const [onlineSocket, setOnlineSocket] = useState(null);
+  const [gameSocket, setGameSocket] = useState(null);
 
   return (
     <RouterStyle id="Router">
@@ -40,11 +40,12 @@ const Router = () => {
             value={{
               onlineSocket,
               setOnlineSocket,
-              io,
               user,
               userDispatch,
               room,
               setRoom,
+              gameSocket,
+              setGameSocket,
             }}
           >
             <Route path="/mypage">

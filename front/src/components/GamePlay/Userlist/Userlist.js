@@ -14,11 +14,11 @@ function createClassName(myId, comapreId, painterId) {
 }
 
 export default function UserList() {
-  const { io } = useContext(GlobalContext);
+  const { gameSocket } = useContext(GlobalContext);
   const { userList, painter } = useContext(GamePlayContext);
   const UserComponents = userList.map((user, index) => {
     const order = index + 1;
-    const className = createClassName(user.socketId, io.socket.id, painter);
+    const className = createClassName(user.socketId, gameSocket.id, painter);
     return (
       <User className={className} nickname={user.nickname} index={order} />
     );
