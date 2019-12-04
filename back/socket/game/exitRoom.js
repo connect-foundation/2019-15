@@ -2,7 +2,7 @@ const { sendUserListToRoom, isExistRoom } = require('./game');
 const { RoomManager } = require('../Room');
 
 function exitRoom(gameSocket, { roomType, roomId }) {
-  if (!isExistRoom({ roomId, roomType })) return;
+  if (!RoomManager.isExistRoom({ roomId, roomType })) return;
 
   const room = RoomManager.room[roomType][roomId];
   const userIndex = room.getUserIndexBySocketId(gameSocket);

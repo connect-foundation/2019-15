@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
 const CurrentMyInfoStyle = styled.section`
+  padding-left: 1rem;
   display: flex;
   flex-direction: row;
   height: 40%;
@@ -14,6 +15,7 @@ const CurrentMyInfoStyle = styled.section`
   }
   & > div > span {
     margin: 0.5rem;
+    white-space: nowrap;
   }
   & > div > span.nickname {
     font-size: 1.2rem;

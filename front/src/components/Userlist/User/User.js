@@ -39,7 +39,7 @@ export default function User({ className, nickname, index }) {
           <Drawer drawer={drawer} src={PENCIL} />
         </UserNickName>
         <Score>1200</Score>
-        <div>그리는 순서가 n 차례 남았습니다.</div>
+        <small>그리는 순서가 n 차례 남았습니다.</small>
       </UserInfoStyle>
     </UserStyle>
   );

@@ -1,8 +1,9 @@
 import styled from 'styled-components';
 
-const childrenMargin = '1rem';
+const childrenMargin = '0.5rem';
 
 const DrawingPlayGroundStyle = styled.div`
+  background-color: white;
   > * {
     margin: ${childrenMargin};
   }
