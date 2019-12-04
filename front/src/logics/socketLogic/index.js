@@ -99,3 +99,9 @@ export function setEndQuestionHandler(socket) {
 export function enterRandom(socket, { nickname, roomType }) {
   socket.emit('enterRandom', { nickname, roomType });
 }
+
+export function closeSocket(socket, { setGameSocket }) {
+  if (!socket) return;
+  socket.close();
+  setGameSocket(null);
+}

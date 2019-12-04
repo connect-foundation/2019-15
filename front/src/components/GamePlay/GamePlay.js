@@ -12,10 +12,11 @@ import {
   initUserListMsgHandler,
   initGameStartMsgHandler,
   setEndQuestionHandler,
+  closeSocket,
 } from 'logics/socketLogic';
 
 const GamePlay = () => {
-  const { gameSocket, room } = useContext(GlobalContext);
+  const { gameSocket, setGameSocket, room } = useContext(GlobalContext);
 
   const [userList, setUserList] = useState([]);
   const [painter, setPainter] = useState(null);
@@ -28,7 +29,9 @@ const GamePlay = () => {
       setEndQuestionHandler(gameSocket);
     };
     initSocket();
-  }, [gameSocket, setPainter, setUserList]);
+
+    return closeSocket(gameSocket, { setGameSocket });
+  }, [gameSocket, setGameSocket, setPainter, setUserList]);
 
   if (!gameSocket || gameSocket.connected === false) {
     return <Redirect to="main" />;
