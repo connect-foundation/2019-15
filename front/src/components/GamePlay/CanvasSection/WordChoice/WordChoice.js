@@ -18,7 +18,7 @@ function WordChoice({ setSelectedWord }) {
   const { data, loading, error } = useQuery(getRandomWords);
 
   if (loading) {
-    return 'loading';
+    return <></>;
   }
   if (error) {
     return 'error';

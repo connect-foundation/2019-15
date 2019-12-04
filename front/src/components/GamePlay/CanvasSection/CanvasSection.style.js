@@ -2,11 +2,18 @@ import styled from 'styled-components';
 
 const CanvasSectionStyle = styled.div`
   position: relative;
+  margin-top: 0.5rem;
   & > section {
+    box-shadow: rgba(0, 0, 0, 0.12) 0px 2px 10px,
+      rgba(0, 0, 0, 0.16) 0px 2px 5px;
     display: flex;
     flex-direction: row;
-    justify-content: space-around;
-    width: 100%;
+    align-items: center;
+    width: 790px;
+    margin-left: 0.5rem;
+    padding-left: 10px;
+    background-color: ${(props) => props.theme.pink};
+    border-radius: 0.5rem;
   }
 `;
 

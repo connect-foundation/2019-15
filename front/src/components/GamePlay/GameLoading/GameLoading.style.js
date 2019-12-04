@@ -5,7 +5,7 @@ const FullScreen = styled.div`
   top: 4rem;
   left: 0;
   width: 100%;
-  height: 50rem;
+  height: 480px;
   display: flex;
   justify-content: center;
   align-items: center;

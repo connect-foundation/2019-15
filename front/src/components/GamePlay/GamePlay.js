@@ -46,7 +46,6 @@ const GamePlay = () => {
         setPainter,
       }}
     >
-      <GameLoading />
       <NavigationBar visible={room.roomType} />
       <>
         <FlexRowStyle>
