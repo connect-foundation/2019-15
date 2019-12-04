@@ -1,11 +1,11 @@
 import React, { useState, useContext, useEffect } from 'react';
 import GamePlayContext from 'components/GamePlay/GamePlay.context';
 import GlobalContext from 'global.context';
+import GameLoading from 'components/GamePlay/GameLoading/GameLoading';
 import DrawingPlayGround from './DrawingPlayGround/DrawingPlayGround';
 import WordChoice from './WordChoice/WordChoice';
 import CanvasSectionStyle from './CanvasSection.style';
 import WordPreview from './WordPreview/WordPreview';
-import GameLoading from 'components/GamePlay/GameLoading/GameLoading';
 import Timer from '../../Timer/Timer';
 import GameInfo from '../../GameInfo/GameInfo';
 
@@ -44,7 +44,7 @@ export default function CanvasSection() {
           isTimerGetReady={isTimerGetReady}
           setIsTimerGetReady={setIsTimerGetReady}
           setIsOpen={setIsOpen}
-        />        
+        />
         <GameInfo />
         <WordPreview
           openLetter={questionWord.openLetter}

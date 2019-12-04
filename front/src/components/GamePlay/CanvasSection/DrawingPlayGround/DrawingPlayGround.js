@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import Tools from 'components/GamePlay/CanvasSection/DrawingPlayGround/Tools/Tools';
 import PainterBoard from 'components/GamePlay/CanvasSection/DrawingPlayGround/PainterBoard/PainterBoard';
 import NonPainterBoard from 'components/GamePlay/CanvasSection/DrawingPlayGround/NonPainterBoard/NonPainterBoard';
+import GamePlayContext from 'components/GamePlay/GamePlay.context';
 import DrawingPlayGroundStyle from './DrawingPlayGround.style';
 import Shield from './Shield.style';
-import GamePlayContext from 'components/GamePlay/GamePlay.context';
 
 DrawingPlayGround.propTypes = {
   drawable: PropTypes.bool.isRequired,
@@ -45,10 +45,10 @@ export default function DrawingPlayGround({ drawable, canvasSize }) {
   };
 
   useEffect(() => {
-    const painterInfo = userList.filter(user => {
-      if (user.socketId === painter)
-        return user;
-      });
+    const painterInfo = userList.filter((user) => {
+      if (user.socketId === painter) return user;
+      return false;
+    });
     if (painterInfo.length > 0) setPainterNickname(painterInfo[0].nickname);
     drawingOptionsDispatcher({ type: 'tool', value: 'pen' });
   }, [drawable, painter, userList]);
@@ -59,18 +59,20 @@ export default function DrawingPlayGround({ drawable, canvasSize }) {
 
   return (
     <DrawingPlayGroundStyle>
-      {drawable ?
+      {drawable ? (
         <PainterBoard drawingOptions={drawingOptions} size={canvasSize} />
-      : (
+      ) : (
         <>
           <NonPainterBoard size={canvasSize} />
-          {painterNickname?<Shield>{painterNickname}님이 그림을 그리고 있습니다.</Shield>:null}
+          {painterNickname ? (
+            <Shield>{painterNickname}님이 그림을 그리고 있습니다.</Shield>
+          ) : null}
         </>
       )}
       <Tools
-            drawingOptions={drawingOptions}
-            setDrawingOptions={drawingOptionsDispatcher}
-          />
+        drawingOptions={drawingOptions}
+        setDrawingOptions={drawingOptionsDispatcher}
+      />
     </DrawingPlayGroundStyle>
   );
 }
