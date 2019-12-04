@@ -8,7 +8,7 @@ const AlertStyle = styled.div`
   background-color: transparent;
 
   > svg {
-    color: ${(props) => props.theme.ecstasy};
+    color: ${(props) => props.theme.mustard};
   }
 `;
 

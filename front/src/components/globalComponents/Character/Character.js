@@ -1,5 +1,14 @@
 import React from 'react';
-import CharacterStyle from './Character.sytle';
+import PropTypes from 'prop-types';
+import CharacterStyle from 'components/globalComponents/Character/Character.sytle';
+
+Character.propTypes = {
+  src: PropTypes.string,
+};
+
+Character.defaultProps = {
+  src: null,
+};
 
 export default function Character({ src }) {
   return <CharacterStyle id="Character" src={src} />;

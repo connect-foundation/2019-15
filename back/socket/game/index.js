@@ -39,7 +39,7 @@ function setGameSocket(socket) {
   socket.on('exitRoom', exitRoom.bind(this, gameSocket));
   socket.on('disconnect', () => {
     if (!roomInfo) return;
-    if (!isExistRoom(roomInfo)) return;
+    if (!RoomManager.isExistRoom(roomInfo)) return;
 
     const { roomType, roomId } = roomInfo;
     const room = RoomManager.room[roomType][roomId];

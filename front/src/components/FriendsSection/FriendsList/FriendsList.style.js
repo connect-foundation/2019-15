@@ -9,7 +9,7 @@ const FriendsListStyle = styled.div`
   right: ${friendsBtnRight}rem;
   width: 8rem;
   height: auto;
-  background-color: ${(props) => props.theme.brightGray};
+  background-color: ${(props) => props.theme.pink};
 `;
 
 export default FriendsListStyle;

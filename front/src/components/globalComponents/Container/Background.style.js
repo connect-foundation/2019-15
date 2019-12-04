@@ -6,7 +6,6 @@ const Background = styled.div`
   justify-content: center;
   align-items: center;
   height: 100%;
-  background-color: ${(props) => props.theme.bodyColor};
 `;
 
 export default Background;
