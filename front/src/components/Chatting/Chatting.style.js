@@ -10,6 +10,7 @@ const ChattingStyle = styled.div`
   height: 38rem;
   width: 16rem;
   margin-left: 0.5rem;
+  border-radius: 0.5rem;
 `;
 
 export default ChattingStyle;

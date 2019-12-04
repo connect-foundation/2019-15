@@ -11,6 +11,7 @@ const BackgroundStyle = styled.div`
   justify-content: center;
   align-items: center;
   z-index: 1;
+  border-radius: 0.5rem;
 `;
 
 export default BackgroundStyle;

@@ -10,6 +10,7 @@ const ShieldStyle = styled.div`
  padding-top: 1rem;
  text-align: center;
  color: black;
+ border-radius: 0.5rem;
 `;
 
 export default ShieldStyle;

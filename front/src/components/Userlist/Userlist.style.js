@@ -8,7 +8,7 @@ const UserListStyle = styled.div`
   margin-left: 6rem;
   margin-right: 0.5rem;
   overflow-y: auto;
-  border-radius: 0.3rem;
+  border-radius: 0.5rem;
 `;
 
 export default UserListStyle;

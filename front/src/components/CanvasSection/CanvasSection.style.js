@@ -12,6 +12,7 @@ const CanvasSectionStyle = styled.div`
     margin-left: 0.5rem;
     padding-left: 10px;
     background-color: ${props=>props.theme.pink};
+    border-radius: 0.5rem;
   }
 `;
 
