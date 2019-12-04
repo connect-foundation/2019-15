@@ -21,5 +21,5 @@ export const SmallLogoImage = styled(Image)`
   margin-top: 5px;
   width: 9rem;
   height: 3.8rem;
-  margin-left: 6.5rem;
+  margin-left: ${props=>((window.location.hash === '#/mypage') ? '1rem' : '6.5rem')};
 `;
