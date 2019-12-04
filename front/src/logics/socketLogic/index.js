@@ -88,8 +88,8 @@ const io = {
     await this.socket.emit('drawing', { roomId, canvasData });
   },
   async setEndQuestionHandler() {
-    this.socket.on('endQuestion', ({ nickname }) => {
-      console.log('endQuestion', nickname);
+    this.socket.on('endQuestion', ({ nickname, scores, answer }) => {
+      console.log('[socketLogic/index.js]', nickname, scores, answer);
     });
   },
 };
