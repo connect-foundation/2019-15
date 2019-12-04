@@ -10,6 +10,8 @@ const TextInputStyle = styled.input.attrs(() => ({
   height: 0.5rem;
   font-size: 20px;
   padding: 1rem;
+  position: relative;
+  bottom: 0.5rem;
 `;
 
 export default TextInputStyle;
