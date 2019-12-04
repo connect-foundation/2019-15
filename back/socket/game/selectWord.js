@@ -1,7 +1,6 @@
 const getRandomInt = require('../../util/getRandomInt');
 
 function selectWord(gameSocket, { answer, roomType, roomId }) {
-  gameSocket.on('selectWord', () => {
     const room = this.RoomManager.room[roomType][roomId];
     room.word = answer;
     // 서버 타이머 트리거
@@ -13,6 +12,5 @@ function selectWord(gameSocket, { answer, roomType, roomId }) {
       openLetter: answer[openIndex],
       openIndex,
     });
-  });
 }
 module.exports = selectWord;
