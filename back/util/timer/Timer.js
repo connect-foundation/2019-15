@@ -36,4 +36,12 @@ Timer.prototype.setTimeOutCallback = function(callback) {
   this.timeOutCallback = callback;
 };
 
+Timer.prototype.getRemainTime = function() {
+  return this.time;
+};
+
+Timer.prototype.getDefaultTime = function() {
+  return defaultTime;
+};
+
 module.exports = Timer;

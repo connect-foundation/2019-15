@@ -1,3 +1,5 @@
+const getScore = require('../../util/getScore');
+
 function sendMessage(gameSocket, { roomType, roomId, inputValue }) {
   let answer;
   try {
@@ -23,7 +25,15 @@ function sendMessage(gameSocket, { roomType, roomId, inputValue }) {
     returnMessage.privileged = 'notice';
     room.answererCount += 1;
 
+    // 점수 계산
+    const defaultScore = 100;
+    const score = getScore(room.timer.getRemainTime(), room.timer.getDefaultTime(), defaultScore);
+    player.score += score;
+
     // 모든 플레이어가 답을 맞춘 경우
+    if (room.answererCount === room.players.length - 1) {
+      console.log('[message.js] all players answered!');
+    }
   }
 
   this.gameIo.in(roomId).emit('getMessage', returnMessage);
