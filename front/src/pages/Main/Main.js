@@ -10,9 +10,10 @@ import Modal from 'components/globalComponents/Modal/Modal';
 import DivStyle from 'components/globalComponents/Modal/ContentDiv.style';
 import Button from 'components/globalComponents/Button/Button';
 import parseCookies from 'util/cookie';
+import { connectGameSocket, initConnectMsgHandler } from 'logics/socketLogic';
 
 const Main = () => {
-  const { setOnlineSocket, io, setRoom, userDispatch } = useContext(
+  const { setOnlineSocket, setGameSocket, setRoom, userDispatch } = useContext(
     GlobalContext,
   );
   const [nickName, setNickName] = useState('');
@@ -21,16 +22,17 @@ const Main = () => {
   );
 
   useEffect(() => {
-    const initSocket = async () => {
-      await io.connectSocket();
-      const socket = await connectSocket();
-      await io.initConnectMsgHandler({ setRoom });
-      setOnlineSocket(socket);
+    const initSocket = () => {
+      const onlineSocket = connectSocket();
+      const gameSocket = connectGameSocket();
+      setGameSocket(gameSocket);
+      initConnectMsgHandler(gameSocket, { setRoom });
+      setOnlineSocket(onlineSocket);
       setRoom(null);
     };
     checkAuth(setNickName);
     initSocket();
-  }, [io, setOnlineSocket, setRoom, userDispatch]);
+  }, [setGameSocket, setOnlineSocket, setRoom, userDispatch]);
 
   function closeModal() {
     setIsSignUp(false);

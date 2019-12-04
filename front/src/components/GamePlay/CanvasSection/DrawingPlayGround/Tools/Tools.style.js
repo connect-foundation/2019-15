@@ -7,6 +7,7 @@ export const ToolsStyle = styled.div`
   display: flex;
   background-color: white;
   height: 4rem;
+  border-radius: 0.5rem;
   > * {
     margin: ${childrenMargin};
   }
