@@ -17,12 +17,12 @@ export default function CanvasSection() {
   });
   const [drawable, setDrawable] = useState(false);
 
-  const [isTimerStart, setIsTimerStart] = useState(false);
+  const [isTimerGetReady, setIsTimerGetReady] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [selectedWord, setSelectedWord] = useState('');
 
   io.setStartQuestionHandler(setQuestionWord, () => {
-    setIsTimerStart(true);
+    setIsTimerGetReady(true);
   });
 
   useEffect(() => {
@@ -38,8 +38,8 @@ export default function CanvasSection() {
       ) : null}
       <section>
         <Timer
-          isTimerStart={isTimerStart}
-          setIsTimerStart={setIsTimerStart}
+          isTimerGetReady={isTimerGetReady}
+          setIsTimerGetReady={setIsTimerGetReady}
           setIsOpen={setIsOpen}
         />
         <WordPreview

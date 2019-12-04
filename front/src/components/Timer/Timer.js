@@ -3,12 +3,16 @@ import PropTypes from 'prop-types';
 import TimerStyle from './Timer.style';
 
 Timer.propTypes = {
-  isTimerStart: PropTypes.bool.isRequired,
-  setIsTimerStart: PropTypes.func.isRequired,
+  isTimerGetReady: PropTypes.bool.isRequired,
+  setIsTimerGetReady: PropTypes.func.isRequired,
   setIsOpen: PropTypes.func.isRequired,
 };
 
-export default function Timer({ isTimerStart, setIsTimerStart, setIsOpen }) {
+export default function Timer({
+  isTimerGetReady,
+  setIsTimerGetReady,
+  setIsOpen,
+}) {
   const [time, setTime] = useState(30);
   const [isRunnable, setIsRunnable] = useState(false);
 
@@ -24,6 +28,7 @@ export default function Timer({ isTimerStart, setIsTimerStart, setIsOpen }) {
 
     function stopTimer() {
       setIsRunnable(false);
+      setIsTimerGetReady(false);
       resetTimer();
     }
 
@@ -34,11 +39,7 @@ export default function Timer({ isTimerStart, setIsTimerStart, setIsOpen }) {
     function runTimer() {
       if (time === 10) notifyOpeningLetter();
       if (time > 0) setTimeout(countDown, 1000);
-      else {
-        stopTimer();
-        setIsTimerStart(false);
-        // to do something...
-      }
+      else stopTimer();
     }
 
     function startTimer() {
@@ -47,8 +48,8 @@ export default function Timer({ isTimerStart, setIsTimerStart, setIsOpen }) {
     }
 
     runTimer();
-    if (isTimerStart) startTimer();
-  }, [isTimerStart, setIsTimerStart, time, isRunnable, setIsOpen]);
+    if (isTimerGetReady) startTimer();
+  }, [isTimerGetReady, setIsTimerGetReady, time, isRunnable, setIsOpen]);
 
   return (
     <>
