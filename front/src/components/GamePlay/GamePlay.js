@@ -40,7 +40,7 @@ const GamePlay = () => {
       }}
     >
       <GameLoading />
-      <NavigationBar visible={room.roomType} />
+      <NavigationBar />
       <>
         <FlexRowStyle>
           <UserList />

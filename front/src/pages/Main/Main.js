@@ -2,7 +2,6 @@ import React, { useState, useEffect, useContext } from 'react';
 import GlobalContext from 'global.context';
 import checkAuth from 'logics/auth/checkAuth';
 import { connectSocket } from 'logics/socketLogic/online';
-import Room from 'logics/room';
 import NavigationBar from 'components/NavigationBar/NavigationBar';
 import Background from 'components/globalComponents/Container/Background.style';
 import RoomSelectSection from 'components/RoomSelectSection/RoomSelectSection';
@@ -27,7 +26,7 @@ const Main = () => {
       const socket = await connectSocket();
       await io.initConnectMsgHandler({ setRoom });
       setOnlineSocket(socket);
-      setRoom(new Room());
+      setRoom(null);
     };
     checkAuth(setNickName);
     initSocket();
