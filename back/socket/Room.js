@@ -7,9 +7,8 @@ const makeRoomId = () => {
 };
 
 class Room {
-  constructor() {
+  constructor(gameIo) {
     this.roomId = null;
-    this.gameSocket = null;
     this.players = [];
     this.wordSet = null;
     this.word = null;
@@ -19,7 +18,7 @@ class Room {
     this.totalRound = null;
     this.currentRound = null;
     this.answererCount = 0;
-    this.timer.setTimeOutCallback(this.timeOutCallback.bind(this));
+    this.timer.setTimeOutCallback(this.timeOutCallback.bind(this, gameIo));
   }
 
   prepareFirstQuestion() {
@@ -54,13 +53,13 @@ class Room {
     return this.answererCount === this.players.length - 1;
   }
 
-  timeOutCallback() {
+  timeOutCallback(gameIo) {
     this.examinerIndex -= 1;
     // this.room.currentExaminer가 -1이라면 한 라운드가 종료된 것
     const nextExaminer = this.players[this.examinerIndex];
     // 클라에게 해당 문제를 끝내라는 시그널을 전송한다
     // todo: 다음 출제자를 구별하기 위해 nickname이 나은가? 아니면 id?
-    this.gameSocket.in(this.roomId).emit('endQuestion', {
+    gameIo.in(this.roomId).emit('endQuestion', {
       nickname: nextExaminer.nickname,
       scores: this.players.map((player) => [player.nickname, player.score]),
       answer: this.word,
@@ -74,9 +73,8 @@ const RoomManager = {
   maxPeopleNum,
 
   // 방이 없을 때 새로운 방을 만들고 반환.
-  addRoom: function(roomName, gameSocket) {
-    const newRoom = new Room();
-    newRoom.gameSocket = gameSocket;
+  addRoom: function(roomName, gameIo) {
+    const newRoom = new Room(gameIo);
     const roomId = makeRoomId();
     newRoom.roomId = roomId;
     this.room[roomName][roomId] = newRoom;
@@ -85,7 +83,7 @@ const RoomManager = {
   },
 
   // 수용가능한 방을 하나 반환, 없으면 생성해서 반환
-  getEnableRoomId: function(roomName, gameSocket) {
+  getEnableRoomId: function(roomName, gameIo) {
     const nRooms = this.room[roomName];
 
     // find의 반환값이 undefined일 수 있으므로, destructuring은 불가능
@@ -96,7 +94,7 @@ const RoomManager = {
 
     if (!room) {
       room = [];
-      room.push(this.addRoom(roomName, gameSocket));
+      room.push(this.addRoom(roomName, gameIo));
     }
     return room[0];
   },
