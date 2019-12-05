@@ -25,7 +25,9 @@ const UserRankingListStyle = styled.div`
     width: 9rem;
   }
   overflow: scroll;
-  background-color: ${(props) => props.theme.amour};
+  border: solid 2px white;
+  border-radius: 0 1rem 1rem 1rem;
+  background-color: white;
 `;
 
 export default UserRankingListStyle;

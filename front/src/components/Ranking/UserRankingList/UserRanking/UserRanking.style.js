@@ -2,20 +2,21 @@ import styled from 'styled-components';
 
 const UserRankingStyle = styled.div`
   height: 5rem;
-  width: 10rem;
+  width: 13rem;
   display: flex;
-  align-items: center;
   > * {
-    margin: 1rem;
+    margin-left: 2rem;
   }
   > div > p {
-    width: 9rem;
+    font-size: 13px;
+    width: 8rem;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
   }
+  @media (max-width: 1100px) {
+    width: 9rem;
 
-  @media (max-width: 700px) {
     > * {
       margin-left: 0.6rem;
     }
@@ -24,10 +25,7 @@ const UserRankingStyle = styled.div`
     }
     > div > p {
       font-size: 13px;
-      width: 3rem;
-      overflow: hidden;
-      white-space: nowrap;
-      text-overflow: ellipsis;
+      width: 6rem;
     }
   }
 `;
