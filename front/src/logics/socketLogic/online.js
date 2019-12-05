@@ -5,21 +5,17 @@ export const connectSocket = () => {
   return socketIo.connect(`${APP_URI.REACT_APP_API_URI}/online`);
 };
 
-export const onRequestFriend = (
-  socket,
-  { alarmListDispatch, setNoticeType },
-) => {
+export const onRequestFriend = (socket, { alarmListDispatch }) => {
   socket.on('requestFriend', (user) => {
     alarmListDispatch({
       type: 'push',
-      value: `${user.nickname}님이 친구 신청하였습니다.`,
+      value: `${user.nickname}님이 친구가 되고 싶어 해요`,
     });
-    setNoticeType('alarm');
-    setTimeout(() => {
-      alarmListDispatch({ type: 'pop' });
-      setNoticeType(null);
-    }, 2000);
   });
+};
+
+export const offRequestFriend = (socket) => {
+  socket.off('requestFriend');
 };
 
 export const emitRequestFriend = (socket, { sender, receiver }) => {
