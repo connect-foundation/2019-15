@@ -3,6 +3,7 @@ import gql from 'graphql-tag';
 export const findFriends = gql`
   mutation friends {
     friends {
+      id
       nickname
     }
   }
