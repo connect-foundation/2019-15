@@ -14,4 +14,8 @@ const roomState = {
   END_GAME: 4,
 };
 
-module.exports = { maxPeopleNum, roomState };
+const defaultRoomSetting = {
+  totalRound: 3,
+};
+
+module.exports = { maxPeopleNum, roomState, defaultRoomSetting };
