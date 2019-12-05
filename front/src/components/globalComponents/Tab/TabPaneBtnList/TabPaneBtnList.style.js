@@ -8,14 +8,7 @@ const tabBtnRightPadding = '16px';
 
 export const TabPaneBtnListStyle = styled.div`
   list-style: none;
-  margin-left: 2rem;
-  @media (max-width: 1000px) {
-    margin-left: 1rem;
-  }
-  @media (max-width: 800px) {
-    margin-left: 0;
-  }
-  margin-top: -2.5rem;
+  margin-top: -1.7rem;
 `;
 
 export const TabButton = styled.button`

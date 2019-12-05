@@ -13,7 +13,7 @@ ContentSection.propTypes = {
 };
 
 ContentSection.defaultProps = {
-  height: '30rem',
+  height: '33rem',
   width: '20rem',
 };
 
