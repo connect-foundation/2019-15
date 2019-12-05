@@ -26,7 +26,7 @@ export const emitRequestFriend = (socket, { receiver }) => {
 
 export const onFriendsOnline = (socket, onlineFriendsDispatch) => {
   socket.on('friendsOnline', (friends) => {
-    onlineFriendsDispatch({ type: 'concat', friends });
+    onlineFriendsDispatch({ type: 'concat', value: friends });
   });
 };
 

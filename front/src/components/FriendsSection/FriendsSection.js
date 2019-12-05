@@ -1,7 +1,4 @@
-import React, { useState, useEffect, useContext, useReducer } from 'react';
-
-import { offFriendsOnline, onFriendsOnline } from 'logics/socketLogic/online';
-import GlobalContext from 'global.context';
+import React, { useState, useReducer } from 'react';
 import FriendsSectionContext from 'components/FriendsSection/FriendsSection.context';
 import useFriendsOnline from 'hooks/Online/useFriendsOnline';
 import FriendsList from './FriendsList/FriendsList';
@@ -10,7 +7,7 @@ import ListPopUpButton from './ListPopUpButton.style';
 const friendsOnlineReducer = (state, action) => {
   switch (action.type) {
     case 'concat':
-      return [...state, ...action.friends];
+      return { ...state, ...action.value };
     default:
       throw new Error('wrong action type');
   }

@@ -48,11 +48,7 @@ export default function FriendComponents({
       {data.friends.map((friend) => (
         <FriendComponentStyle key={friend.nickname}>
           <span>{friend.nickname}</span>
-          {onlineFriends.some(
-            (onlineFriend) => onlineFriend.id === friend.id,
-          ) ? (
-            <CircleStyle icon={faCircle} />
-          ) : null}
+          {onlineFriends[friend.id] ? <CircleStyle icon={faCircle} /> : null}
           {configMode ? (
             <IconStyle
               icon={faMinusCircle}
