@@ -20,12 +20,18 @@ function personEnterRoom(nickname, socket, roomType, io, roomId) {
   });
 
   sendUserListToRoom(room.players, roomId, io);
+
+  const gameStartData = {
+    painter: room.getExaminerSocketId(),
+    currentRound: room.currentRound,
+    totalRound: room.totalRound,
+  };
   if (room.isPlayable()) {
     room.prepareFirstQuestion();
-    io.to(roomId).emit('gamestart', { painter: room.getExaminerSocketId() });
+    io.to(roomId).emit('gamestart', gameStartData);
   }
   if (room.isPlaying()) {
-    socket.emit('gamestart', { painter: room.getExaminerSocketId() });
+    socket.emit('gamestart', gameStartData);
   }
 
   return { roomId, roomType };

@@ -1,7 +1,7 @@
 const uuid = require('uuid/v1');
 const { maxPeopleNum } = require('../config/roomConfig');
 const Timer = require('../util/timer/Timer');
-const roomState = require('../config/roomState');
+const { roomState } = require('../config/roomConfig');
 
 const makeRoomId = () => {
   return uuid();

@@ -1,9 +1,9 @@
 const getRandomInt = require('../../util/getRandomInt');
-const { PLAYING_QUESTION } = require('../../config/roomState');
+const { roomState } = require('../../config/roomConfig');
 
 function selectWord(gameSocket, { answer, roomType, roomId }) {
   const room = this.RoomManager.room[roomType][roomId];
-  room.state = PLAYING_QUESTION;
+  room.state = roomState.PLAYING_QUESTION;
   room.word = answer;
   room.timer.start();
   const openIndex = getRandomInt(0, answer.length);
