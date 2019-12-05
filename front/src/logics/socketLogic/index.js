@@ -76,16 +76,21 @@ export function setStartQuestionHandler(socket, setQuestionWord, callback) {
   });
 }
 
-export function setEndQuestionHandler(socket, setShowQuestionResult, setScores, setSelectedWord) {
-    socket.on('endQuestion', ({ nickname, scores, answer }) => {
-        // 결과 화면 띄우기
-        setSelectedWord(answer);
-        setScores(scores);
-        setShowQuestionResult(true);
-        setTimeout(() => setShowQuestionResult(false), 3000);
-        // 단어 선택 창 띄우기
-        // 각종 상태 초기화하기
-    });
+export function setEndQuestionHandler(
+  socket,
+  setShowQuestionResult,
+  setScores,
+  setSelectedWord,
+) {
+  socket.on('endQuestion', ({ nickname, scores, answer }) => {
+    // 결과 화면 띄우기
+    setSelectedWord(answer);
+    setScores(scores);
+    setShowQuestionResult(true);
+    setTimeout(() => setShowQuestionResult(false), 3000);
+    // 단어 선택 창 띄우기
+    // 각종 상태 초기화하기
+  });
 }
 
 export function onCanvasData(socket, setCanvas) {
@@ -100,12 +105,6 @@ export function offCanvasData(socket) {
 
 export function sendCanvasData(socket, { roomId, eventList }) {
   socket.emit('drawing', { roomId, eventList });
-}
-
-export function setEndQuestionHandler(socket) {
-  socket.on('endQuestion', ({ nickname, scores, answer }) => {
-    console.log('[socketLogic/index.js]', nickname, scores, answer);
-  });
 }
 
 export function enterRandom(socket, { nickname, roomType }) {
