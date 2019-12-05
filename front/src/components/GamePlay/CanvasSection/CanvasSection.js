@@ -8,6 +8,7 @@ import WordPreview from './WordPreview/WordPreview';
 import Timer from '../../Timer/Timer';
 import GameInfo from '../../GameInfo/GameInfo';
 import Section from './Section.style';
+import QuestionResult from './QuestionResult/QuestionResult';
 
 export default function CanvasSection() {
   const {
@@ -19,6 +20,10 @@ export default function CanvasSection() {
     setIsOpen,
     selectedWord,
     setSelectedWord,
+    showQuestionResult,
+    setShowQuestionResult,
+    scores,
+    setScores,
   } = useContext(GamePlayContext);
   const { io } = useContext(GlobalContext);
 
@@ -34,6 +39,9 @@ export default function CanvasSection() {
     <CanvasSectionStyle>
       {io.socket.id === painter ? (
         <WordChoice setSelectedWord={setSelectedWord} />
+      ) : null}
+      {showQuestionResult ? (
+        <QuestionResult scores={scores} answer={selectedWord} />
       ) : null}
       <Section>
         <GameInfo />
