@@ -7,14 +7,12 @@ const ContentSectionStyle = styled.section`
     margin: 2rem 0.5rem 0 0.5rem;
   }
   padding: 1rem;
-  padding-bottom: 2rem;
   width: ${(props) => props.width};
   height: ${(props) => props.height};
   border: 2px solid white;
   border-radius: 0 1rem 1rem 1rem;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
 `;
 
 const ContentSectionTitleStyle = styled.span`
