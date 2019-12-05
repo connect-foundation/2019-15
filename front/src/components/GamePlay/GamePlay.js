@@ -14,14 +14,37 @@ const GamePlay = () => {
 
   const [userList, setUserList] = useState([]);
   const [painter, setPainter] = useState(null);
-  const [questionWord, setQuestionWord] = useState({
+  const initialQuestionWordState = {
     wordLength: 0,
     openLetter: '',
     openIndex: 0,
-  });
+  };
+  // 설정 : startQuestion 시그널을 받을 때
+  // 초기화 : endQuestion 시그널을 받을 때
+  const [questionWord, setQuestionWord] = useState(initialQuestionWordState);
+  // 설정 : GamePlay 컴포넌트에서 startQuestion 시그널을 받을 때
+  // 초기화 : endQuestion 시그널을 받을 때
   const [isTimerGetReady, setIsTimerGetReady] = useState(false);
+  // 설정 : Timer 컴포넌트에서 일정 시간이 지났을 때
+  // 초기화 : endQuestion 시그널을 받을 때
   const [isOpen, setIsOpen] = useState(false);
+  // 설정 : WordChoice 컴포넌트에서 단어 선택 시
+  // 초기화 : endQuestion 시그널을 받을 때
   const [selectedWord, setSelectedWord] = useState('');
+  // 설정 : endQuestion 시그널을 받을 때
+  // 초기화 : QuestionResult 컴포넌트가 렌더링되고 3초 후
+  const [showQuestionResult, setShowQuestionResult] = useState(false);
+  // 설정 : endQuestion 시그널을 받을 때
+  // 초기화 : QuestionResult 컴포넌트가 렌더링되고 3초 후
+  const [scores, setScores] = useState([]);
+
+  function resetQuestionStates() {
+    setPainter(null);
+    setQuestionWord(initialQuestionWordState);
+    setIsTimerGetReady(false);
+    setIsOpen(false);
+    setSelectedWord('');
+  }
 
   useEffect(() => {
     const initSocket = async () => {
@@ -31,7 +54,7 @@ const GamePlay = () => {
         io.setStartQuestionHandler(setQuestionWord, () => {
           setIsTimerGetReady(true);
         });
-        await io.setEndQuestionHandler();
+        await io.setEndQuestionHandler(setShowQuestionResult, setScores, setSelectedWord);
       }
     };
     initSocket();
@@ -54,6 +77,10 @@ const GamePlay = () => {
     setIsOpen,
     selectedWord,
     setSelectedWord,
+    showQuestionResult,
+    setShowQuestionResult,
+    scores,
+    setScores,
   };
 
   return (
