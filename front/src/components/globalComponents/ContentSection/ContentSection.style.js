@@ -3,8 +3,8 @@ import styled from 'styled-components';
 const ContentSectionStyle = styled.section`
   background-color: ${(props) => props.theme.paleRose};
   padding: 1rem;
-  flex-basis: ${(props) => props.width};
-  height: ${(props) => props.height};
+  flex-basis: 20rem;
+  height: 33rem;
   margin: 3rem 2.5rem 0 2.5rem;
   @media (max-width: 900px) {
     margin: 3rem 0.5rem 0 0.5rem;
