@@ -49,14 +49,22 @@ const GamePlay = () => {
     totalRound: 3,
   });
 
-  function endQuestionCallback({ nextExaminerSocketId, _scores, answer }) {
+  function endQuestionCallback({
+    nextExaminerSocketId,
+    _scores,
+    answer,
+    currentRound,
+    totalRound,
+  }) {
     // 결과 화면 띄우기
     setSelectedWord(answer);
     setScores(_scores);
     setShowQuestionResult(true);
+
     setTimeout(() => {
       // 각종 상태 초기화하기
       resetQuestionStates(nextExaminerSocketId);
+      setRound({ currentRound, totalRound });
       setShowQuestionResult(false);
     }, 5000);
   }
