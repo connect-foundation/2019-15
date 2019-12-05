@@ -1,5 +1,5 @@
 import socketIo from 'socket.io-client';
-import APP_URI from 'util/uri';
+import APP_URI from '../../util/uri';
 import Room from '../room';
 
 export function connectGameSocket() {

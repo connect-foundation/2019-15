@@ -7,7 +7,6 @@ import UserList from 'components/GamePlay/Userlist/Userlist';
 import CanvasSection from 'components/GamePlay/CanvasSection/CanvasSection';
 import Chatting from 'components/GamePlay/Chatting/Chatting';
 import GamePlayContext from 'components/GamePlay/GamePlay.context';
-import GameLoading from 'components/GamePlay/GameLoading/GameLoading';
 import {
   initUserListMsgHandler,
   initGameStartMsgHandler,
@@ -35,7 +34,7 @@ const GamePlay = () => {
     };
   }, [gameSocket, setGameSocket, setPainter, setUserList]);
 
-  if (!gameSocket || gameSocket.connected === false) {
+  if (!gameSocket || gameSocket.disconnected) {
     return <Redirect to="main" />;
   }
 
