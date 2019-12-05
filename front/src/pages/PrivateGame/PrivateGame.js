@@ -1,6 +1,6 @@
 import React, { useEffect, useContext, useState } from 'react';
 import GlobalContext from 'global.context';
-import SecretGameContext from 'pages/SecretGame/SecretGame.context';
+import SecretGameContext from 'pages/PrivateGame/SecretGame.context';
 import GamePlay from 'components/GamePlay/GamePlay';
 import GamePlayContext from 'components/GamePlay/GamePlay.context';
 import {
@@ -9,12 +9,12 @@ import {
   initStartSecretGameHandler,
 } from 'logics/socketLogic';
 
-import GamePreparation from 'pages/SecretGame/GamePreparation';
-import Room from 'logics/room/index';
+import GamePreparation from 'pages/PrivateGame/GamePreparation';
+import Room from 'logics/room';
 
 const roomType = '비밀방';
 
-const SecretGame = () => {
+const PrivateGame = () => {
   const { gameSocket, user, setRoom } = useContext(GlobalContext);
   const { setUserList, setPainter } = useContext(GamePlayContext);
   const [isGamePlaying, setIsGamePlaying] = useState(false);
@@ -43,4 +43,4 @@ const SecretGame = () => {
   );
 };
 
-export default SecretGame;
+export default PrivateGame;

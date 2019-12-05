@@ -14,7 +14,7 @@ export default function PublicRoom() {
   };
 
   const buttonComponents = roomInfo.roomList.map((roomName) => (
-    <CustomA to="gameplay" key={roomName}>
+    <CustomA to="public" key={roomName}>
       <PublicRoomButton
         key={roomName}
         onClick={makeGameStartBtnHandler(roomName)}
