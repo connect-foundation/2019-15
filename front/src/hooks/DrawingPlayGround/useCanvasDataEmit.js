@@ -1,17 +1,18 @@
 import { useContext, useCallback } from 'react';
 import GlobalContext from 'global.context';
+import { sendCanvasData } from 'logics/socketLogic';
 
 export default function useCanvasDataEmit() {
-  const { io, room } = useContext(GlobalContext);
+  const { gameSocket, room } = useContext(GlobalContext);
 
   const emitCanvasData = useCallback(
     (eventList) => {
-      io.emitCanvasData({
+      sendCanvasData(gameSocket, {
         roomId: room.roomId,
         eventList,
       });
     },
-    [io, room],
+    [gameSocket, room.roomId],
   );
 
   return emitCanvasData;

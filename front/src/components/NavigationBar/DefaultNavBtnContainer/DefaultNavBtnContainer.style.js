@@ -2,28 +2,27 @@ import styled from 'styled-components';
 import { FlexRowStyle } from 'components/globalComponents/Container/Flex.style';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-export const NavImage = styled(FontAwesomeIcon).attrs({
-  size: '2x',
+export const NavImageStyle = styled(FontAwesomeIcon).attrs({
+  size: '3x',
 })`
   margin-top: 10px;
-  margin-right: 1rem;
-  width: 2.8rem;
-  height: 2.8rem;
+  margin-right: 1.5rem;
   cursor: pointer;
   opacity: 0.8;
   color: black;
 `;
 
-export const ButtonContainerStyle = styled.div`
+export const NavBtnContainerStyle = styled.div`
   position: absolute;
   top: 0;
   right: 0;
-  height: 100%;
 `;
 
 export const Text = styled(FlexRowStyle)`
+  color: black;
+  width: 7rem;
+  margin-top: -3rem;
+  margin-left: 83.5rem;
   font-size: 32px;
-  padding-top: 10px;
-  padding-right: 30px;
   cursor: pointer;
 `;

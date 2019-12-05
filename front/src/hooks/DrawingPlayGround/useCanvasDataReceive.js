@@ -1,13 +1,14 @@
 import { useContext, useEffect } from 'react';
 import GlobalContext from 'global.context';
+import { onCanvasData, offCanvasData } from 'logics/socketLogic';
 
 export default function useCanvasDataReceive(setCanvas) {
-  const { io } = useContext(GlobalContext);
+  const { gameSocket } = useContext(GlobalContext);
 
   useEffect(() => {
-    io.onCanvasData(setCanvas);
+    onCanvasData(gameSocket, setCanvas);
     return () => {
-      io.offCanvasData();
+      offCanvasData(gameSocket);
     };
-  }, [io, setCanvas]);
+  }, [gameSocket, setCanvas]);
 }

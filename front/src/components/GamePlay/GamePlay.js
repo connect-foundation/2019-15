@@ -8,9 +8,15 @@ import CanvasSection from 'components/GamePlay/CanvasSection/CanvasSection';
 import Chatting from 'components/GamePlay/Chatting/Chatting';
 import GamePlayContext from 'components/GamePlay/GamePlay.context';
 import GameLoading from 'components/GamePlay/GameLoading/GameLoading';
+import {
+  initUserListMsgHandler,
+  initGameStartMsgHandler,
+  setEndQuestionHandler,
+  closeSocket,
+} from 'logics/socketLogic';
 
 const GamePlay = () => {
-  const { io, room } = useContext(GlobalContext);
+  const { gameSocket, setGameSocket, room } = useContext(GlobalContext);
 
   const [userList, setUserList] = useState([]);
   const [painter, setPainter] = useState(null);
@@ -47,46 +53,48 @@ const GamePlay = () => {
   }
 
   useEffect(() => {
-    const initSocket = async () => {
-      if (io.socket) {
-        await io.initUserListMsgHandler({ setUserList });
-        await io.initGameStartMsgHandler({ setPainter });
+    const initSocket = () => {
+      if (!gameSocket) return;
+      initUserListMsgHandler(gameSocket, { setUserList });
+      initGameStartMsgHandler(gameSocket, { setPainter });
         io.setStartQuestionHandler(setQuestionWord, () => {
-          setIsTimerGetReady(true);
+            setIsTimerGetReady(true);
         });
-        await io.setEndQuestionHandler(setShowQuestionResult, setScores, setSelectedWord);
-      }
+      setEndQuestionHandler(gameSocket, setScores, setSelectedWord);
     };
     initSocket();
-  }, [io, setPainter, setUserList]);
 
-  if (io.socket === null) {
+    return () => {
+      closeSocket(gameSocket, { setGameSocket });
+    };
+  }, [gameSocket, setGameSocket, setPainter, setUserList]);
+
+  if (!gameSocket || gameSocket.connected === false) {
     return <Redirect to="main" />;
   }
 
-  const contextValue = {
-    userList,
-    setUserList,
-    painter,
-    setPainter,
-    questionWord,
-    setQuestionWord,
-    isTimerGetReady,
-    setIsTimerGetReady,
-    isOpen,
-    setIsOpen,
-    selectedWord,
-    setSelectedWord,
-    showQuestionResult,
-    setShowQuestionResult,
-    scores,
-    setScores,
-  };
+    const contextValue = {
+        userList,
+        setUserList,
+        painter,
+        setPainter,
+        questionWord,
+        setQuestionWord,
+        isTimerGetReady,
+        setIsTimerGetReady,
+        isOpen,
+        setIsOpen,
+        selectedWord,
+        setSelectedWord,
+        showQuestionResult,
+        setShowQuestionResult,
+        scores,
+        setScores,
+    };
 
   return (
     <GamePlayContext.Provider value={contextValue}>
-      <GameLoading />
-      <NavigationBar visible={room.roomType} />
+      <NavigationBar />
       <>
         <FlexRowStyle>
           <UserList />

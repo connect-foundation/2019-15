@@ -2,102 +2,118 @@ import socketIo from 'socket.io-client';
 import APP_URI from 'util/uri';
 import Room from '../room';
 
-const io = {
-  socket: null,
+export function connectGameSocket() {
+  return socketIo.connect(`${APP_URI.REACT_APP_API_URI}/game`, {
+    reconnectionAttempts: 5,
+  });
+}
 
-  async connectSocket() {
-    this.socket = await socketIo.connect(`${APP_URI.REACT_APP_API_URI}/game`);
-  },
+export function initConnectMsgHandler(socket, { setRoom }) {
+  socket.on(`connectRandom`, ({ roomType, roomId }) => {
+    setRoom(new Room(roomId, roomType));
+  });
+}
 
-  async getSocket() {
-    if (this.socket !== null) {
-      return this.socket;
-    }
-    await this.connectSocket();
-    return this.socket;
-  },
+export function initUserListMsgHandler(socket, { setUserList }) {
+  socket.on('userList', ({ userList }) => {
+    const parsedList = JSON.parse(userList);
+    setUserList(parsedList);
+  });
+}
 
-  async initConnectMsgHandler({ setRoom }) {
-    this.socket.on(`connectRandom`, ({ roomType, roomId }) => {
-      setRoom(new Room(roomId, roomType));
+export function initGameStartMsgHandler(socket, { setPainter }) {
+  socket.on('gamestart', ({ painter }) => {
+    setPainter(painter);
+  });
+}
+
+export function initStartSecretGameHandler(
+  socket,
+  { setPainter, setIsGamePlaying },
+) {
+  socket.on('startSecretGame', ({ painter }) => {
+    setPainter(painter);
+    setIsGamePlaying(true);
+  });
+}
+
+export function requestMakeSecretRoom(socket, { nickname, roomId }) {
+  socket.emit('makeSecret', { nickname, roomId });
+}
+
+export function startSecretGame(socket, { roomId, roomType }) {
+  socket.emit('startSecretGame', { roomId, roomType });
+}
+
+export function exitGameRoom(socket, { roomType, roomId }) {
+  socket.emit('exitRoom', { roomType, roomId });
+}
+
+export function sendMessage(
+  socket,
+  { socketId, roomType, roomId, inputValue },
+) {
+  socket.emit('sendMessage', { socketId, roomType, roomId, inputValue });
+}
+
+export function initChattingHandler(socket, { messages, pushMessage }) {
+  socket.on('getMessage', ({ content, privileged }) => {
+    const splitRes = content.split(' : ');
+    if (splitRes.length === 2 && splitRes[1] === '') return;
+    messages.push({ content, privileged });
+    pushMessage(messages.slice());
+  });
+}
+
+export function selectWord(socket, { answer, roomType, roomId }) {
+  socket.emit('selectWord', { answer, roomType, roomId });
+}
+
+export function setStartQuestionHandler(socket, setQuestionWord, callback) {
+  socket.on('startQuestion', ({ wordLength, openLetter, openIndex }) => {
+    setQuestionWord({ wordLength, openLetter, openIndex });
+    callback();
+  });
+}
+
+export function setEndQuestionHandler(socket, setShowQuestionResult, setScores, setSelectedWord) {
+    socket.on('endQuestion', ({ nickname, scores, answer }) => {
+        // 결과 화면 띄우기
+        setSelectedWord(answer);
+        setScores(scores);
+        setShowQuestionResult(true);
+        setTimeout(() => setShowQuestionResult(false), 3000);
+        // 단어 선택 창 띄우기
+        // 각종 상태 초기화하기
     });
-  },
+}
 
-  async initUserListMsgHandler({ setUserList }) {
-    this.socket.on('userList', ({ userList }) => {
-      const parsedList = JSON.parse(userList);
-      setUserList(parsedList);
-    });
-  },
+export function onCanvasData(socket, setCanvas) {
+  socket.on('drawing', ({ eventList }) => {
+    setCanvas(eventList);
+  });
+}
 
-  async initGameStartMsgHandler({ setPainter }) {
-    this.socket.on('gamestart', ({ painter }) => {
-      setPainter(painter);
-    });
-  },
+export function offCanvasData(socket) {
+  socket.off('drawing');
+}
 
-  async initStartSecretGameHandler({ setPainter, setIsGamePlaying }) {
-    this.socket.on('startSecretGame', ({ painter }) => {
-      setPainter(painter);
-      setIsGamePlaying(true);
-    });
-  },
+export function sendCanvasData(socket, { roomId, eventList }) {
+  socket.emit('drawing', { roomId, eventList });
+}
 
-  async requestMakeSecretRoom({ nickname, roomId }) {
-    this.socket.emit('makeSecret', { nickname, roomId });
-  },
+export function setEndQuestionHandler(socket) {
+  socket.on('endQuestion', ({ nickname, scores, answer }) => {
+    console.log('[socketLogic/index.js]', nickname, scores, answer);
+  });
+}
 
-  async startSecretGame({ roomId, roomType }) {
-    this.socket.emit('startSecretGame', { roomId, roomType });
-  },
+export function enterRandom(socket, { nickname, roomType }) {
+  socket.emit('enterRandom', { nickname, roomType });
+}
 
-  async exitGameRoom({ roomType, roomId }) {
-    this.socket.emit('exitRoom', { roomType, roomId });
-  },
-  async sendMessage({ socketId, roomType, roomId, inputValue }) {
-    this.socket.emit('sendMessage', { socketId, roomType, roomId, inputValue });
-  },
-  async initChattingHandler({ messages, pushMessage }) {
-    this.socket.on('getMessage', ({ content, privileged }) => {
-      const splitRes = content.split(' : ');
-      if (splitRes.length === 2 && splitRes[1] === '') return;
-      messages.push({ content, privileged });
-      pushMessage(messages.slice());
-    });
-  },
-  async selectWord({ answer, roomType, roomId }) {
-    this.socket.emit('selectWord', { answer, roomType, roomId });
-  },
-  setStartQuestionHandler(setQuestionWord, callback) {
-    this.socket.on('startQuestion', ({ wordLength, openLetter, openIndex }) => {
-      setQuestionWord({ wordLength, openLetter, openIndex });
-      callback();
-    });
-  },
-  setEndQuestionHandler(setShowQuestionResult, setScores, setSelectedWord) {
-    this.socket.on('endQuestion', ({ nickname, scores, answer }) => {
-      // 결과 화면 띄우기
-      setSelectedWord(answer);
-      setScores(scores);
-      setShowQuestionResult(true);
-      setTimeout(() => setShowQuestionResult(false), 3000);
-      // 단어 선택 창 띄우기
-      // 각종 상태 초기화하기
-    });
-  },
-  onCanvasData(setCanvas) {
-    this.socket.on('drawing', ({ eventList }) => {
-      setCanvas(eventList);
-    });
-  },
-
-  offCanvasData() {
-    this.socket.off('drawing');
-  },
-
-  emitCanvasData({ roomId, eventList }) {
-    this.socket.emit('drawing', { roomId, eventList });
-  },
-};
-
-export default io;
+export function closeSocket(socket, { setGameSocket }) {
+  if (!socket) return;
+  socket.close();
+  setGameSocket(null);
+}

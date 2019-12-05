@@ -1,16 +1,18 @@
 import React, { useState, useContext, useEffect } from 'react';
 import GamePlayContext from 'components/GamePlay/GamePlay.context';
 import GlobalContext from 'global.context';
+import { setStartQuestionHandler } from 'logics/socketLogic';
+import GameLoading from 'components/GamePlay/GameLoading/GameLoading';
 import DrawingPlayGround from './DrawingPlayGround/DrawingPlayGround';
 import WordChoice from './WordChoice/WordChoice';
 import CanvasSectionStyle from './CanvasSection.style';
 import WordPreview from './WordPreview/WordPreview';
 import Timer from '../../Timer/Timer';
 import GameInfo from '../../GameInfo/GameInfo';
-import Section from './Section.style';
 import QuestionResult from './QuestionResult/QuestionResult';
 
 export default function CanvasSection() {
+    const { gameSocket } = useContext(GlobalContext);
   const {
     painter,
     questionWord,
@@ -25,31 +27,31 @@ export default function CanvasSection() {
     scores,
     setScores,
   } = useContext(GamePlayContext);
-  const { io } = useContext(GlobalContext);
 
   const [drawable, setDrawable] = useState(false);
 
   useEffect(() => {
-    if (painter === io.socket.id) {
+    if (painter === gameSocket.id) {
       setDrawable(true);
     }
-  }, [drawable, io.socket.id, painter]);
+  }, [drawable, gameSocket.id, painter]);
 
   return (
     <CanvasSectionStyle>
-      {io.socket.id === painter ? (
+      <GameLoading />
+      {gameSocket.id === painter ? (
         <WordChoice setSelectedWord={setSelectedWord} />
       ) : null}
       {showQuestionResult ? (
         <QuestionResult scores={scores} answer={selectedWord} />
       ) : null}
-      <Section>
-        <GameInfo />
+      <section>
         <Timer
           isTimerGetReady={isTimerGetReady}
           setIsTimerGetReady={setIsTimerGetReady}
           setIsOpen={setIsOpen}
         />
+        <GameInfo />
         <WordPreview
           openLetter={questionWord.openLetter}
           wordLength={questionWord.wordLength}
@@ -57,10 +59,10 @@ export default function CanvasSection() {
           isOpen={isOpen}
           selectedWord={selectedWord}
         />
-      </Section>
+      </section>
       <DrawingPlayGround
         drawable={drawable}
-        canvasSize={{ width: 800, height: 490 }}
+        canvasSize={{ width: 800, height: 480 }}
       />
     </CanvasSectionStyle>
   );
