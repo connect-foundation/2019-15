@@ -1,5 +1,5 @@
-function disconnect() {
-  this.userList.splice(this.userList.findIndex((user) => user.socket === this.socket));
+function disconnect(nodeCache, user) {
+  nodeCache.del(user.id);
 }
 
 module.exports = disconnect;

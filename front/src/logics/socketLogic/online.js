@@ -18,9 +18,8 @@ export const offRequestFriend = (socket) => {
   socket.off('requestFriend');
 };
 
-export const emitRequestFriend = (socket, { sender, receiver }) => {
+export const emitRequestFriend = (socket, { receiver }) => {
   socket.emit('requestFriend', {
-    sender,
     receiver,
   });
 };

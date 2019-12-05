@@ -36,7 +36,7 @@ export default function FriendsSetModal({
   const [sendFriendRequestFunc] = useMutation(sendFriendRequest, {
     onCompleted({ sendFriendRequest: { user: receiver, result } }) {
       if (!result || !onlineSocket) return;
-      emitRequestFriend(onlineSocket, { sender: user, receiver });
+      emitRequestFriend(onlineSocket, { receiver });
     },
   });
 
