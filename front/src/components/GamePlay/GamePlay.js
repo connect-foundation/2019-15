@@ -7,7 +7,6 @@ import UserList from 'components/GamePlay/Userlist/Userlist';
 import CanvasSection from 'components/GamePlay/CanvasSection/CanvasSection';
 import Chatting from 'components/GamePlay/Chatting/Chatting';
 import GamePlayContext from 'components/GamePlay/GamePlay.context';
-import GameLoading from 'components/GamePlay/GameLoading/GameLoading';
 import {
   initUserListMsgHandler,
   initGameStartMsgHandler,
@@ -16,7 +15,7 @@ import {
 } from 'logics/socketLogic';
 
 const GamePlay = () => {
-  const { gameSocket, setGameSocket, room } = useContext(GlobalContext);
+  const { gameSocket, setGameSocket } = useContext(GlobalContext);
 
   const [userList, setUserList] = useState([]);
   const [painter, setPainter] = useState(null);

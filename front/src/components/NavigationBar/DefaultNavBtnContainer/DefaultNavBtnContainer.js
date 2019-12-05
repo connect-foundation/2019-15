@@ -3,7 +3,10 @@ import { Link } from 'react-router-dom';
 import APP_URI from 'util/uri';
 import { faUserAlt, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
 import Notice from 'components/NavigationBar/DefaultNavBtnContainer/Notice/Notice';
-import { NavBtnContainerStyle, NavImageStyle } from 'components/NavigationBar/DefaultNavBtnContainer/DefaultNavBtnContainer.style';
+import {
+  NavBtnContainerStyle,
+  NavImageStyle,
+} from 'components/NavigationBar/DefaultNavBtnContainer/DefaultNavBtnContainer.style';
 
 export default function DefaultNavBtnContainer() {
   const logout = () => {

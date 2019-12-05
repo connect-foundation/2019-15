@@ -1,11 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import GlobalContext from 'global.context';
 import checkAuth from 'logics/auth/checkAuth';
-import {
-  checkFriendsOnline,
-  connectSocket,
-  onFriendOnline,
-} from 'logics/socketLogic/online';
+import { connectSocket } from 'logics/socketLogic/online';
 import NavigationBar from 'components/NavigationBar/NavigationBar';
 import Background from 'components/globalComponents/Container/Background.style';
 import RoomSelectSection from 'components/RoomSelectSection/RoomSelectSection';
