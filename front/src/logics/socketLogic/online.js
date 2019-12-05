@@ -23,3 +23,13 @@ export const emitRequestFriend = (socket, { receiver }) => {
     receiver,
   });
 };
+
+export const onFriendsOnline = (socket, onlineFriendsDispatch) => {
+  socket.on('friendsOnline', (friends) => {
+    onlineFriendsDispatch({ type: 'concat', friends });
+  });
+};
+
+export const offFriendsOnline = (socket) => {
+  socket.off('friendsOnline');
+};
