@@ -32,8 +32,25 @@ class Room {
     this.state = roomState.SELECTING_WORD;
     this.word = null;
     this.timer.stop();
-    this.examinerIndex -= 1;
+    this.players.forEach((player) => {
+      player.privileged = false;
+    });
     this.answererCount = 0;
+    this.examinerIndex -= 1;
+    this.players[this.examinerIndex].privileged = true;
+  }
+
+  prepareNextRound() {
+    this.state = roomState.SELECTING_WORD;
+    this.word = null;
+    this.timer.stop();
+    this.players.forEach((player) => {
+      player.privileged = false;
+    });
+    this.answererCount = 0;
+    this.examinerIndex = this.players.length - 1;
+    this.players[this.examinerIndex].privileged = true;
+    this.currentRound += 1;
   }
 
   addPlayer(user) {
@@ -58,6 +75,10 @@ class Room {
     );
   }
 
+  isAllPlayerAnswered() {
+    return this.answererCount === this.players.length - 1;
+  }
+
   getUserIndexBySocketId(gameSocket) {
     return this.players.findIndex((user) => user.socket.id === gameSocket.id);
   }
@@ -67,16 +88,26 @@ class Room {
   }
 
   timeOutCallback(gameIo) {
-    this.examinerIndex -= 1;
-    // this.room.currentExaminer가 -1이라면 한 라운드가 종료된 것
-    const nextExaminer = this.players[this.examinerIndex];
-    // 클라에게 해당 문제를 끝내라는 시그널을 전송한다
-    // todo: 다음 출제자를 구별하기 위해 nickname이 나은가? 아니면 id?
+    const answer = this.word;
+    this.prepareNextQuestion();
+    const nextExaminer = this.getExaminer();
     gameIo.in(this.roomId).emit('endQuestion', {
-      nickname: nextExaminer.nickname,
-      scores: this.players.map((player) => [player.nickname, player.score]),
-      answer: this.word,
+      nextExaminerSocketId: nextExaminer.socket.id,
+      _scores: this.getScores(),
+      answer: answer,
     });
+  }
+
+  getExaminerSocketId() {
+    return this.players[this.examinerIndex].socket.id;
+  }
+
+  getExaminer() {
+    return this.players[this.examinerIndex];
+  }
+
+  getScores() {
+    return this.players.map((player) => [player.nickname, player.score]);
   }
 }
 
