@@ -22,7 +22,7 @@ const GamePlay = () => {
   const [painter, setPainter] = useState(null);
 
   useEffect(() => {
-    const initSocket = async () => {
+    const initSocket = () => {
       if (!gameSocket) return;
       initUserListMsgHandler(gameSocket, { setUserList });
       initGameStartMsgHandler(gameSocket, { setPainter });
@@ -30,7 +30,9 @@ const GamePlay = () => {
     };
     initSocket();
 
-    return closeSocket(gameSocket, { setGameSocket });
+    return () => {
+      closeSocket(gameSocket, { setGameSocket });
+    };
   }, [gameSocket, setGameSocket, setPainter, setUserList]);
 
   if (!gameSocket || gameSocket.connected === false) {
