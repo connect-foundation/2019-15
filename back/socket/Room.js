@@ -1,6 +1,7 @@
 const uuid = require('uuid/v1');
 const { maxPeopleNum } = require('../config/roomConfig');
 const Timer = require('../util/timer/Timer');
+const roomState = require('../config/roomState');
 
 const makeRoomId = () => {
   return uuid();
@@ -13,7 +14,7 @@ class Room {
     this.wordSet = null;
     this.word = null;
     this.timer = new Timer();
-    this.state = null;
+    this.state = roomState.EMPTY;
     this.examinerIndex = null;
     this.totalRound = null;
     this.currentRound = null;
@@ -22,11 +23,13 @@ class Room {
   }
 
   prepareFirstQuestion() {
+    this.state = roomState.SELECTING_WORD;
     this.examinerIndex = this.players.length - 1;
     this.players[this.examinerIndex].privileged = true;
   }
 
   prepareNextQuestion() {
+    this.state = roomState.SELECTING_WORD;
     this.word = null;
     this.timer.stop();
     this.examinerIndex -= 1;
@@ -35,14 +38,24 @@ class Room {
 
   addPlayer(user) {
     this.players.push(user);
+    if (this.state === roomState.EMPTY) this.state = roomState.WAITING;
   }
 
   removePlayer(userIndex) {
     this.players.splice(userIndex, 1);
   }
 
+  // 최소 시작 인원을 기다리다가 충족된 경우. 즉, 새 게임
   isPlayable() {
-    return this.players.length >= 2;
+    return this.state === roomState.WAITING && this.players.length >= 2;
+  }
+
+  // 이미 게임이 시작했으며, 게임이 아직 종료되지 않은 경우. 즉, 난입
+  isPlaying() {
+    return (
+      this.players.length >= 2 &&
+      (this.state === roomState.SELECTING_WORD || this.state === roomState.PLAYING_QUESTION)
+    );
   }
 
   getUserIndexBySocketId(gameSocket) {
@@ -77,6 +90,7 @@ const RoomManager = {
     const newRoom = new Room(gameIo);
     const roomId = makeRoomId();
     newRoom.roomId = roomId;
+    newRoom.state = roomState.EMPTY;
     this.room[roomName][roomId] = newRoom;
 
     return roomId;
@@ -98,6 +112,7 @@ const RoomManager = {
     }
     return room[0];
   },
+
   getEnableSecretRoom(roomId) {
     const secretRoomList = this.room['비밀방'];
 
@@ -105,9 +120,11 @@ const RoomManager = {
 
     return secretRoomList[roomId];
   },
+
   isExistRoom({ roomType, roomId }) {
     return roomType && roomId && this.room[roomType].hasOwnProperty(roomId);
   },
+
   getRoomByRoomId(roomName, roomId) {
     return this.room[roomName][roomId];
   },
