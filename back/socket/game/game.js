@@ -20,12 +20,14 @@ function personEnterRoom(nickname, socket, roomType, io, roomId) {
   });
 
   sendUserListToRoom(room.players, roomId, io);
-  // 최소 시작 인원이 충족된 경우
   if (room.isPlayable()) {
     room.prepareFirstQuestion();
-
-    io.to(roomId).emit('gamestart', { painter: room.players[room.examinerIndex].socket.id });
+    io.to(roomId).emit('gamestart', { painter: room.getExaminerSocketId() });
   }
+  if (room.isPlaying()) {
+    socket.emit('gamestart', { painter: room.getExaminerSocketId() });
+  }
+
   return { roomId, roomType };
 }
 
