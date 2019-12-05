@@ -8,6 +8,12 @@ const UserRankingStyle = styled.div`
   > * {
     margin: 1rem;
   }
+  > div > p {
+    width: 9rem;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
 `;
 
 export default UserRankingStyle;

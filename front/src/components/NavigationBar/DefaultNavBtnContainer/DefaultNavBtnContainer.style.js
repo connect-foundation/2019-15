@@ -9,6 +9,9 @@ export const NavImageStyle = styled(FontAwesomeIcon).attrs({
   cursor: pointer;
   opacity: 0.8;
   color: black;
+  @media (max-width: 700px) {
+    margin-right: 0.5rem;
+  }
 `;
 
 export const NavBtnContainerStyle = styled.div`

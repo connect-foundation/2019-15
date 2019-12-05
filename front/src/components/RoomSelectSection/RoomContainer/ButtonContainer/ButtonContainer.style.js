@@ -6,9 +6,10 @@ const ButtonContainerStyle = styled.div`
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
-  margin-top: 1rem;
+  margin-top: 2rem;
   @media (max-width: 700px) {
     flex-direction: column;
+    margin-top: 1rem;
   }
 `;
 
