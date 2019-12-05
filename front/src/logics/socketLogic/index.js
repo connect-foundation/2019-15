@@ -68,13 +68,23 @@ const io = {
   async selectWord({ answer, roomType, roomId }) {
     this.socket.emit('selectWord', { answer, roomType, roomId });
   },
-  async setStartQuestionHandler(setQuestionWord, callback) {
+  setStartQuestionHandler(setQuestionWord, callback) {
     this.socket.on('startQuestion', ({ wordLength, openLetter, openIndex }) => {
       setQuestionWord({ wordLength, openLetter, openIndex });
       callback();
     });
   },
-
+  setEndQuestionHandler(setShowQuestionResult, setScores, setSelectedWord) {
+    this.socket.on('endQuestion', ({ nickname, scores, answer }) => {
+      // 결과 화면 띄우기
+      setSelectedWord(answer);
+      setScores(scores);
+      setShowQuestionResult(true);
+      setTimeout(() => setShowQuestionResult(false), 3000);
+      // 단어 선택 창 띄우기
+      // 각종 상태 초기화하기
+    });
+  },
   onCanvasData(setCanvas) {
     this.socket.on('drawing', ({ eventList }) => {
       setCanvas(eventList);
@@ -87,11 +97,6 @@ const io = {
 
   emitCanvasData({ roomId, eventList }) {
     this.socket.emit('drawing', { roomId, eventList });
-  },
-  async setEndQuestionHandler() {
-    this.socket.on('endQuestion', ({ nickname, scores, answer }) => {
-      console.log('[socketLogic/index.js]', nickname, scores, answer);
-    });
   },
 };
 
