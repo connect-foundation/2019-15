@@ -1,8 +1,12 @@
 class User {
   constructor(id, nickname, socketId) {
     this.nickname = nickname;
-    this.socketId = socketId;
+    this.socketIdList = socketId ? [socketId] : [];
     this.id = id;
+  }
+
+  pushSocketId(socketId) {
+    this.socketIdList.push(socketId);
   }
 }
 
