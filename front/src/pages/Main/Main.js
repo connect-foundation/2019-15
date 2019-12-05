@@ -25,10 +25,11 @@ const Main = () => {
   useEffect(() => {
     const initSocket = () => {
       const onlineSocket = connectSocket();
+      setOnlineSocket(onlineSocket);
+
       const gameSocket = connectGameSocket();
       setGameSocket(gameSocket);
       initConnectMsgHandler(gameSocket, { setRoom });
-      setOnlineSocket(onlineSocket);
       setRoom(new Room());
     };
     checkAuth(setNickName);
