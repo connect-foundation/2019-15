@@ -20,10 +20,10 @@ function sendMessage(gameSocket, { roomType, roomId, inputValue }) {
   };
 
   if (inputValue === answer && !player.privileged) {
+    room.answererCount += 1;
     player.privileged = true;
     returnMessage.content = `${player.nickname}님이 정답을 맞췄습니다! Hooray`;
     returnMessage.privileged = 'notice';
-    room.answererCount += 1;
 
     // 점수 계산
     const defaultScore = 100;
@@ -31,8 +31,24 @@ function sendMessage(gameSocket, { roomType, roomId, inputValue }) {
     player.score += score;
 
     // 모든 플레이어가 답을 맞춘 경우
-    if (room.answererCount === room.players.length - 1) {
-      console.log('[message.js] all players answered!');
+    if (room.isAllPlayerAnswered()) {
+      // 한 라운드가 끝나는 경우
+      if (room.examinerIndex === 0) {
+        room.prepareNextRound();
+      }
+      // 아직 한 라운드가 끝나지 않은 경우
+      else {
+        room.prepareNextQuestion();
+      }
+      const nextExaminer = room.getExaminer();
+
+      this.gameIo.in(roomId).emit('endQuestion', {
+        nextExaminerSocketId: nextExaminer.socket.id,
+        _scores: room.getScores(),
+        answer: answer,
+      });
+
+      return;
     }
   }
 
