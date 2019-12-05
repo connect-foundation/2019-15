@@ -1,7 +1,6 @@
 const uuid = require('uuid/v1');
-const { maxPeopleNum } = require('../config/roomConfig');
+const { maxPeopleNum, roomState, defaultRoomSetting } = require('../config/roomConfig');
 const Timer = require('../util/timer/Timer');
-const { roomState } = require('../config/roomConfig');
 
 const makeRoomId = () => {
   return uuid();
@@ -16,8 +15,8 @@ class Room {
     this.timer = new Timer();
     this.state = roomState.EMPTY;
     this.examinerIndex = null;
-    this.totalRound = null;
-    this.currentRound = null;
+    this.totalRound = defaultRoomSetting.totalRound;
+    this.currentRound = 1;
     this.answererCount = 0;
     this.timer.setTimeOutCallback(this.timeOutCallback.bind(this, gameIo));
   }
