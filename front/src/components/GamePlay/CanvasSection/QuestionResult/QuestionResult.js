@@ -13,7 +13,7 @@ function QuestionResult({ answer, scores }) {
   const Header = () => <h1>{answer}</h1>;
   const Body = () =>
     scores.map((score) => (
-      <div>
+      <div key={score[0]}>
         {score[0]} : {score[1]}
       </div>
     ));
