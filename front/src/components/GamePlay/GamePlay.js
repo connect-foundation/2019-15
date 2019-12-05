@@ -1,4 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
 import NavigationBar from 'components/NavigationBar/NavigationBar';
 import { FlexRowStyle } from 'components/globalComponents/Container/Flex.style';
@@ -14,10 +15,20 @@ import {
   closeSocket,
 } from 'logics/socketLogic';
 
-const GamePlay = () => {
+GamePlay.propTypes = {
+  propUserList: PropTypes.arrayOf(
+    PropTypes.shape({ nickname: PropTypes.string, socketId: PropTypes.string }),
+  ),
+};
+
+GamePlay.defaultProps = {
+  propUserList: [],
+};
+
+export default function GamePlay({ propUserList }) {
   const { gameSocket, setGameSocket, room } = useContext(GlobalContext);
 
-  const [userList, setUserList] = useState([]);
+  const [userList, setUserList] = useState(propUserList);
   const [painter, setPainter] = useState(null);
 
   useEffect(() => {
@@ -57,6 +68,4 @@ const GamePlay = () => {
       </>
     </GamePlayContext.Provider>
   );
-};
-
-export default GamePlay;
+}
