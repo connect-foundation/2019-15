@@ -5,7 +5,7 @@ export const NavImageStyle = styled(FontAwesomeIcon).attrs({
   size: '3x',
 })`
   margin-top: 10px;
-  margin-right: 1.5rem;
+  margin-right: 1rem;
   cursor: pointer;
   opacity: 0.8;
   color: black;
