@@ -59,8 +59,11 @@ const friendResolvers = {
           ],
         },
       };
-      await Friends.destroy(conditionColumns);
-      return Friends.findAll(conditionColumns);
+      const result = await Friends.destroy(conditionColumns);
+      return {
+        result: !!result,
+        user: idFromNickname,
+      };
     },
     deleteFriendRequest: async (obj, { nickname }, { BeforeFriends, Users, req }) => {
       const idFromNickname = await Users.findOne({
@@ -75,7 +78,6 @@ const friendResolvers = {
       return BeforeFriends.findAll(conditionColumns);
     },
     acceptFriendRequest: async (obj, { nickname }, { Users, Friends, req }) => {
-      // this.deleteFriendRequest({id:id, nickname:nickname}); resolver 안에서 resolver 호출하는법.....
       const idFromNickname = await Users.findOne({
         where: { nickname: nickname },
       });
@@ -99,7 +101,10 @@ const friendResolvers = {
           },
         },
       );
-      return idFromNickname;
+      return {
+        user: idFromNickname,
+        result: true,
+      };
     },
     sendFriendRequest: async (obj, { nickname }, { BeforeFriends, Users, req }) => {
       const idFromNickname = await Users.findOne({
