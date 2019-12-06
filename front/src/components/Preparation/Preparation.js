@@ -1,16 +1,18 @@
 import React from 'react';
-
+import PropTypes from 'prop-types';
 import { PreparationStyle, RoomSettingStyle } from './Preparation.style';
-import Setting from './Setting/Setting';
 import UserList from './UserList/UserList';
 import Anchor from './Anchor/Anchor';
 
-export default function Preparation() {
+Preparation.propTypes = {
+  setIsGamePlaying: PropTypes.func.isRequired,
+};
+
+export default function Preparation({ setIsGamePlaying }) {
   return (
     <>
       <PreparationStyle>
         <RoomSettingStyle>
-          <Setting />
           <UserList />
         </RoomSettingStyle>
         <Anchor />

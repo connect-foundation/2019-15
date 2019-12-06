@@ -1,11 +1,16 @@
 import React, { useContext, useEffect } from 'react';
-import GamePlayContext from 'components/GamePlay/GamePlay.context';
 import GlobalContext from 'global.context';
 import { initUserListMsgHandler } from 'logics/socketLogic';
+import PropTypes from 'prop-types';
 import UserListStyle from './UserList.style';
 
-export default function UserList() {
-  const { userList, setUserList } = useContext(GamePlayContext);
+UserList.propTypes = {
+  userList: PropTypes.arrayOf(
+    PropTypes.shape({ nickname: PropTypes.string, socketId: PropTypes.string }),
+  ),
+};
+
+export default function UserList({ userList }) {
   const { gameSocket } = useContext(GlobalContext);
 
   useEffect(() => {

@@ -27,22 +27,26 @@ export function initGameStartMsgHandler(socket, { setPainter }) {
   });
 }
 
-export function initStartSecretGameHandler(
+export function initStartPrivateGameHandler(
   socket,
   { setPainter, setIsGamePlaying },
 ) {
-  socket.on('startSecretGame', ({ painter }) => {
+  socket.on('startPrivateGame', ({ painter }) => {
     setPainter(painter);
     setIsGamePlaying(true);
   });
 }
 
-export function requestMakeSecretRoom(socket, { nickname, roomId }) {
-  socket.emit('makeSecret', { nickname, roomId });
+export function emitMakePrivateRoom(socket, { roomId }) {
+  socket.emit('makePrivateRoom', { roomId });
 }
 
-export function startSecretGame(socket, { roomId, roomType }) {
-  socket.emit('startSecretGame', { roomId, roomType });
+export function emitEnterPrivateRoom(socket, { nickname, roomId }) {
+  socket.emit('enterPrivateRoom', { nickname, roomId });
+}
+
+export function startPrivateGame(socket, { roomId }) {
+  socket.emit('startPrivateGame', { roomId });
 }
 
 export function exitGameRoom(socket, { roomType, roomId }) {
