@@ -1,10 +1,11 @@
-const { RoomManager } = require('../Room');
-const { personEnterSecretRoom, sendUserListToRoom } = require('./game');
+const { RoomManager, Room } = require('../Room');
+const { personEnterPrivateRoom, sendUserListToRoom } = require('./game');
 const exitRoom = require('./exitRoom');
 const sendGameImage = require('./gameImage');
 const enterRandom = require('./enterRandom');
 const { sendMessage } = require('./message');
 const selectWord = require('./selectWord');
+const { PRIVATE_ROOM_NAME } = require('../../config/roomConfig');
 
 function setGameSocket(socket) {
   this.RoomManager = RoomManager;
@@ -16,14 +17,21 @@ function setGameSocket(socket) {
     roomInfo.roomId = RoomManager.getEnableRoomId(roomType, this.gameIo);
   });
 
-  socket.on('makePrivateRoom', ({ nickname, roomId }) => {
-    personEnterSecretRoom(nickname, gameSocket, roomId, this.gameIo);
+  socket.on('makePrivateRoom', ({ roomId }) => {
+    this.RoomManager.room[PRIVATE_ROOM_NAME][roomId] = new Room(this.gameIo);
     roomInfo.roomId = roomId;
-    roomInfo.roomType = '비밀방';
+    roomInfo.roomType = PRIVATE_ROOM_NAME;
+    console.log('makePrivateRoom', roomId);
+  });
+
+  socket.on('enterPrivateRoom', ({ nickname, roomId }) => {
+    console.log('enterPrivateRoom', nickname, roomId);
+    personEnterPrivateRoom(nickname, gameSocket, roomId, this.gameIo);
   });
 
   socket.on('startPrivateGame', ({ roomId, roomType }) => {
-    // 난입 시나리오 추가해야됨
+    console.log('startPrivate');
+
     const room = RoomManager.room[roomType][roomId];
     if (room.isPlayable()) {
       this.gameIo
