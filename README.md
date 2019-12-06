@@ -3,7 +3,25 @@
   <a href="https://github.com/connect-foundation/2019-15/wiki" target="_blank">
     <img alt="Documentation" src="https://img.shields.io/badge/documentation-yes-brightgreen.svg" />
   </a>
+  <a href="https://travis-ci.org/connect-foundation/2019-15" target="_blank">
+    <img alt="travis-build-status" src="https://travis-ci.org/connect-foundation/2019-15.svg?branch=master" />
+  </a>
 </p>
+
+![GitHub language count](https://img.shields.io/github/languages/count/connect-foundation/2019-15)
+![GitHub top language](https://img.shields.io/github/languages/top/connect-foundation/2019-15)
+![W3C Validation](https://img.shields.io/w3c-validation/html?preset=HTML%2C%20SVG%201.1%2C%20MathML%203.0&targetUrl=http%3A%2F%2Fcatchmymind.shop)
+![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/connect-foundation/2019-15)
+![GitHub repo size](https://img.shields.io/github/repo-size/connect-foundation/2019-15)
+![GitHub All Releases](https://img.shields.io/github/downloads/connect-foundation/2019-15/total)
+![GitHub issues](https://img.shields.io/github/issues/connect-foundation/2019-15)
+![GitHub closed issues](https://img.shields.io/github/issues-closed/connect-foundation/2019-15)
+![GitHub pull requests](https://img.shields.io/github/issues-pr/connect-foundation/2019-15)
+![GitHub closed pull requests](https://img.shields.io/github/issues-pr-closed/connect-foundation/2019-15)
+![GitHub](https://img.shields.io/github/license/connect-foundation/2019-15)
+![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/v/release/connect-foundation/2019-15?include_prereleases)
+![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/connect-foundation/2019-15)
+![Website](https://img.shields.io/website?url=http%3A%2F%2Fcatchmymind.shop)
 
 ### :house: http://catchmymind.shop/
 
@@ -21,12 +39,17 @@
 - 회원끼리 할 수 있는 랜덤게임과 친구끼리 비회원으로 할 수 있는 비밀게임 존재
 
 ## Team
+🙎‍♀️ 손진아 - (한줄 자기소개)  
+💁‍♂️ 이지영 - (한줄 자기소개)  
+🤷‍♂️ 이창권 - (한줄 자기소개)  
+🙋‍♂️ 최형준 - (한줄 자기소개)  
+
 |          | 손진아                     | 이지영             | 이창권             | 최형준                    |
 | -------- | ----------------------- | --------------- | --------------- | ---------------------- |
 | Sprint_1 | 친구 기능 구현             | 웹소켓으로 게임시작기능 구현 | CI/CD 및 환경 설정   | OAuth 구현               |
 | Sprint_2 | 단어 db 구축, 단어 선택 기능 구현 | 게임화면 유저리스트 구현   | 전체 랭킹, 친구 랭킹 구현 | 자동 로그인, 배포 환경에서의 OAuth |
 | Sprint_3 | 채팅 기능 구현                       |비밀게임 시작구현                 | 친구 초대 알람, 닉네임 변경 | 전체적인UI, 타이머, 단어 미리보기  |
-| Sprint_4 |                         |                 |                 |                        |
+| Sprint_4 | 디자인 변경  | 리팩토링, 버그픽스    | 캔버스 소켓 통신, 알림 리팩토링 |  문제 종료, 라운드 변경, 프론트 코드 리팩토링(지영이와 페어 코딩) |
 | Sprint_5 |                         |                 |                 |                        |
 | Sprint_6 |                         |                 |                 |                        |
 
@@ -94,6 +117,11 @@
     - gitflow
 - etc
     - eslint (airbnb)
+    
+## Core Skills
+- OAuth
+- Web Socket
+- ...
     
 ## Document
 ### [그라운드 룰](https://github.com/connect-foundation/2019-15/wiki/%EA%B7%B8%EB%9D%BC%EC%9A%B4%EB%93%9C-%EB%A3%B0)
