@@ -1,46 +1,19 @@
-import React, { useEffect, useContext, useState } from 'react';
-import GlobalContext from 'global.context';
-import SecretGameContext from 'pages/PrivateGame/SecretGame.context';
+import React, { useEffect, useState } from 'react';
 import GamePlay from 'components/GamePlay/GamePlay';
-import GamePlayContext from 'components/GamePlay/GamePlay.context';
-import {
-  connectGameSocket,
-  requestMakeSecretRoom,
-  initStartSecretGameHandler,
-} from 'logics/socketLogic';
-
-import GamePreparation from 'pages/PrivateGame/GamePreparation';
-import Room from 'logics/room';
-
-const roomType = '비밀방';
+import Preparation from 'components/Preparation/Preparation';
 
 const PrivateGame = () => {
-  const { gameSocket, user, setRoom } = useContext(GlobalContext);
-  const { setUserList, setPainter } = useContext(GamePlayContext);
   const [isGamePlaying, setIsGamePlaying] = useState(false);
+  const [userList, setUserList] = useState([]);
 
   useEffect(() => {
-    async function init() {
-      const { nickname } = user;
-      const roomId = window.location.href.split('secret:')[1];
-      setUserList([]);
-      connectGameSocket(gameSocket);
-      requestMakeSecretRoom(gameSocket, { nickname, roomId });
-      initStartSecretGameHandler(gameSocket, { setPainter, setIsGamePlaying });
-      setRoom(new Room(roomId, roomType));
-    }
-    init();
-  }, [gameSocket, setPainter, setRoom, setUserList, user]);
+    // 서버에 요청해서 게임중인지 확인
+  }, []);
 
-  if (isGamePlaying) {
-    return <GamePlay />;
+  if (!isGamePlaying) {
+    return <Preparation setIsGamePlaying={setIsGamePlaying} />;
   }
-
-  return (
-    <SecretGameContext.Provider value={{ setIsGamePlaying }}>
-      <GamePreparation />
-    </SecretGameContext.Provider>
-  );
+  return <GamePlay propUserList={userList} />;
 };
 
 export default PrivateGame;

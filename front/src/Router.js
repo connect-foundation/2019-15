@@ -7,6 +7,7 @@ import Main from 'pages/Main/Main';
 import MyPage from 'pages/MyPage/MyPage';
 import PrivateGame from 'pages/PrivateGame/PrivateGame';
 import PublicGame from 'pages/PublicGame/PublicGame';
+import SettingPrivate from 'pages/SettingPrivate/SettingPrivate';
 
 import Room from 'logics/room';
 import User from 'logics/user';
@@ -58,7 +59,10 @@ const Router = () => {
             <Route path="/public">
               <PublicGame />
             </Route>
-            <Route path="/secret:hash">
+            <Route path="/setting:hash">
+              <SettingPrivate />
+            </Route>
+            <Route path="/private:hash">
               <PrivateGame />
             </Route>
           </GlobalContext.Provider>
