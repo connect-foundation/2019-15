@@ -9,7 +9,7 @@ const PrivateRoomButton = styled(Button)`
   font-size: 2.5rem;
   margin-left: 10px;
   margin-right: 10px;
-  margin-top : 4rem;
+  margin-top: 4rem;
   @media (max-width: 700px) {
     height: 4rem;
     font-size: 30px;
