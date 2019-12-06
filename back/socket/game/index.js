@@ -36,7 +36,7 @@ function setGameSocket(socket) {
     if (room.isPlayable()) {
       this.gameIo
         .to(roomId)
-        .emit('startPrivateGame', { painter: room.players[room.players.length - 1].socket.id });
+        .emit('startPrivateGame', { painter: room.players[room.players.length - 1].socketId });
     }
   });
 

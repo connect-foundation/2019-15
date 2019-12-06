@@ -46,7 +46,7 @@ class Room {
   }
 
   getUserIndexBySocketId(gameSocket) {
-    return this.players.findIndex((user) => user.socket.id === gameSocket.id);
+    return this.players.findIndex((user) => user.socketId === gameSocket.id);
   }
 
   isQuestionEnd() {
