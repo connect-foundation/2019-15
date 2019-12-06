@@ -94,6 +94,8 @@ class Room {
       nextExaminerSocketId: nextExaminer.socket.id,
       _scores: this.getScores(),
       answer: answer,
+      currentRound: this.currentRound,
+      totalRound: this.totalRound,
     });
   }
 
