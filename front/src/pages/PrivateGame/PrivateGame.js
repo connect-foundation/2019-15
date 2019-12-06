@@ -11,9 +11,15 @@ const PrivateGame = () => {
   }, []);
 
   if (!isGamePlaying) {
-    return <Preparation setIsGamePlaying={setIsGamePlaying} />;
+    return (
+      <Preparation
+        setIsGamePlaying={setIsGamePlaying}
+        userList={userList}
+        setUserList={setUserList}
+      />
+    );
   }
-  return <GamePlay propUserList={userList} />;
+  return <GamePlay propUserList={userList} setUserList={setUserList} />;
 };
 
 export default PrivateGame;

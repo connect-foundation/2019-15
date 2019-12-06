@@ -6,14 +6,22 @@ import Anchor from './Anchor/Anchor';
 
 Preparation.propTypes = {
   setIsGamePlaying: PropTypes.func.isRequired,
+  userList: PropTypes.arrayOf(
+    PropTypes.shape({ nickname: PropTypes.string, socketId: PropTypes.string }),
+  ).isRequired,
+  setUserList: PropTypes.func.isRequired,
 };
 
-export default function Preparation({ setIsGamePlaying }) {
+export default function Preparation({
+  setIsGamePlaying,
+  userList,
+  setUserList,
+}) {
   return (
     <>
       <PreparationStyle>
         <RoomSettingStyle>
-          <UserList />
+          <UserList userList={userList} />
         </RoomSettingStyle>
         <Anchor />
       </PreparationStyle>

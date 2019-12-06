@@ -11,13 +11,8 @@ UserList.propTypes = {
 };
 
 export default function UserList({ userList }) {
-  const { gameSocket } = useContext(GlobalContext);
-
   useEffect(() => {
-    const initSocket = async () => {
-      if (!gameSocket) return;
-      initUserListMsgHandler(gameSocket, { setUserList });
-    };
+    const initSocket = async () => {};
     initSocket();
   });
   const UserComponents = userList.map((user) => (
