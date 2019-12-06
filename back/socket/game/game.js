@@ -32,7 +32,7 @@ function personEnterRoom(nickname, socket, roomType, io, roomId) {
 function personEnterPrivateRoom(nickname, socket, roomId, io) {
   const room = RoomManager.getEnablePrivateRoom(roomId);
   socket.join(roomId);
-  room.addPlayer(new User(nickname, socket));
+  room.addPlayer(new User(nickname, socket.id));
   sendUserListToRoom(room.players, roomId, io);
 }
 
