@@ -7,7 +7,7 @@ import { selectWord } from 'logics/socketLogic';
 import { faSync } from '@fortawesome/free-solid-svg-icons';
 import Background from './Background.style';
 import WordSet from './WordSet.style';
-import { WordCard, P, Icon, Div } from './WordCard.style';
+import { WordCard, P, Icon, Div, Button } from './WordCard.style';
 
 WordChoice.propTypes = {
   setSelectedWord: PropTypes.func.isRequired,
@@ -42,9 +42,9 @@ function WordChoice({ setSelectedWord }) {
     <>
       {open ? (
         <Background>
-          <Div onClick={wordsChange}>
-            단어 변경을 원하세요?
-            <Icon icon={faSync} />
+          <Div>
+            원하시는 제시어를 선택하세요!
+            <Button onClick={wordsChange}>단어 변경 <Icon icon={faSync}/></Button>
           </Div>
           <WordSet>
             {data.getRandomWords.map((word) => (
