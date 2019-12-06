@@ -98,12 +98,12 @@ const RoomManager = {
     }
     return room[0];
   },
-  getEnableSecretRoom(roomId) {
-    const secretRoomList = this.room['비밀방'];
+  getEnablePrivateRoom(roomId) {
+    const privateRoomList = this.room['비밀방'];
 
-    if (!secretRoomList.hasOwnProperty(roomId)) secretRoomList[roomId] = new Room();
+    if (!privateRoomList.hasOwnProperty(roomId)) privateRoomList[roomId] = new Room();
 
-    return secretRoomList[roomId];
+    return privateRoomList[roomId];
   },
   isExistRoom({ roomType, roomId }) {
     return roomType && roomId && this.room[roomType].hasOwnProperty(roomId);

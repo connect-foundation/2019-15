@@ -16,19 +16,19 @@ function setGameSocket(socket) {
     roomInfo.roomId = RoomManager.getEnableRoomId(roomType, this.gameIo);
   });
 
-  socket.on('makeSecret', ({ nickname, roomId }) => {
+  socket.on('makePrivateRoom', ({ nickname, roomId }) => {
     personEnterSecretRoom(nickname, gameSocket, roomId, this.gameIo);
     roomInfo.roomId = roomId;
     roomInfo.roomType = '비밀방';
   });
 
-  socket.on('startSecretGame', ({ roomId, roomType }) => {
+  socket.on('startPrivateGame', ({ roomId, roomType }) => {
     // 난입 시나리오 추가해야됨
     const room = RoomManager.room[roomType][roomId];
     if (room.isPlayable()) {
       this.gameIo
         .to(roomId)
-        .emit('startSecretGame', { painter: room.players[room.players.length - 1].socket.id });
+        .emit('startPrivateGame', { painter: room.players[room.players.length - 1].socket.id });
     }
   });
 
