@@ -1,8 +1,12 @@
-const { time } = require('../../config/timerConfig');
+const { defaultTime } = require('../../config/timerConfig');
 
-function Timer() {
-  this.time = time;
+function Timer(roomId, roomName, io) {
+  this.roomId = roomId;
+  this.roomName = roomName;
+  this.io = io;
+  this.time = defaultTime;
   this.intervalId = 0;
+  this.timeOutCallback = undefined;
 }
 
 Timer.prototype.countDown = function() {
@@ -10,6 +14,7 @@ Timer.prototype.countDown = function() {
   if (this.time <= 0) {
     this.stop();
     // do something...
+    this.timeOutCallback();
   }
 };
 
@@ -24,7 +29,19 @@ Timer.prototype.stop = function() {
 
 Timer.prototype.reset = function() {
   this.intervalId = 0;
-  this.time = time;
+  this.time = defaultTime;
+};
+
+Timer.prototype.setTimeOutCallback = function(callback) {
+  this.timeOutCallback = callback;
+};
+
+Timer.prototype.getRemainTime = function() {
+  return this.time;
+};
+
+Timer.prototype.getDefaultTime = function() {
+  return defaultTime;
 };
 
 module.exports = Timer;

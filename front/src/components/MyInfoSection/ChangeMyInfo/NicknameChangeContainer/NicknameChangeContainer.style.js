@@ -6,4 +6,7 @@ export const NicknameChangeContainerStyle = styled.div`
 
 export const ResultTextStyle = styled.p`
   word-break: break-all;
+  font-size: 13px;
+  text-align: center;
+  color: ${(props) => (props.children.length < 2 ? 'white' : 'black')};
 `;

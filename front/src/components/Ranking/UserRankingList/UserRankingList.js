@@ -3,7 +3,20 @@ import PropTypes from 'prop-types';
 import UserRankingListStyle from './UserRankingList.style';
 import UserRanking from './UserRanking/UserRanking';
 
-const UserRankingList = ({ users }) => {
+UserRankingList.propTypes = {
+  users: PropTypes.arrayOf(
+    PropTypes.shape({
+      score: PropTypes.number,
+      nickname: PropTypes.string,
+    }),
+  ),
+};
+
+UserRankingList.defaultProps = {
+  users: [],
+};
+
+export default function UserRankingList({ users }) {
   return (
     <UserRankingListStyle>
       {users.map((user, idx) => {
@@ -18,19 +31,4 @@ const UserRankingList = ({ users }) => {
       })}
     </UserRankingListStyle>
   );
-};
-
-UserRankingList.propTypes = {
-  users: PropTypes.arrayOf(
-    PropTypes.shape({
-      score: PropTypes.number,
-      nickname: PropTypes.string,
-    }),
-  ),
-};
-
-UserRankingList.defaultProps = {
-  users: [],
-};
-
-export default UserRankingList;
+}

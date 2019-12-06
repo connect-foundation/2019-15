@@ -1,15 +1,16 @@
 import React, { useContext } from 'react';
+import GlobalContext from 'global.context';
+import GamePlayContext from 'components/GamePlay/GamePlay.context';
+import { startSecretGame } from 'logics/socketLogic';
 import {
   SettingStyle,
   RoomSettingStyle,
   UserSettingStyle,
   GameStartButtonStyle,
 } from './Setting.style';
-import GlobalContext from '../../../global.context';
-import GamePlayContext from '../../../GamePlay.context';
 
-const Setting = () => {
-  const { io, room, user } = useContext(GlobalContext);
+export default function Setting() {
+  const { gameSocket, room, user } = useContext(GlobalContext);
   const { userList } = useContext(GamePlayContext);
 
   function onClickGameStart() {
@@ -18,7 +19,7 @@ const Setting = () => {
 
     if (!user.roomOwner) return;
 
-    io.startSecretGame({ roomType, roomId });
+    startSecretGame(gameSocket, { roomType, roomId });
   }
 
   return (
@@ -30,6 +31,4 @@ const Setting = () => {
       </GameStartButtonStyle>
     </SettingStyle>
   );
-};
-
-export default Setting;
+}

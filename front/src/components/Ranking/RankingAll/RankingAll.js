@@ -1,14 +1,13 @@
 import React from 'react';
-import { useQuery } from '@apollo/react-hooks';
-import { getRankingAll } from '../../../queries/ranking';
-import Loading from '../../globalComponents/Loading/Loading';
-import Alert from '../../globalComponents/Alert/Alert';
+import useGetRankingAll from 'hooks/Ranking/useGetRankingAll';
+import Loading from 'components/globalComponents/Loading/Loading';
+import Alert from 'components/globalComponents/Alert/Alert';
+import InfinityScroll from 'components/globalComponents/InfinityScroll/InfinityScroll';
 import UserRankingList from '../UserRankingList/UserRankingList';
 import RankingAllStyle from './RankingAll.style';
-import InfinityScroll from '../../globalComponents/InfinityScroll/InfinityScroll';
 
-const RankingAll = () => {
-  const { data, loading, error, fetchMore } = useQuery(getRankingAll);
+export default function RankingAll() {
+  const { data, loading, error, fetchMore, hasMore } = useGetRankingAll();
   if (loading) {
     return <Loading />;
   }
@@ -16,41 +15,14 @@ const RankingAll = () => {
     return <Alert type="error" />;
   }
 
-  const {
-    pageInfo: { endCursor, hasNextPage },
-    edges,
-  } = data.rankingAll;
-  if (!edges.length) {
+  if (!data.length) {
     return <Alert type="noData" />;
   }
-
-  const loadMore = () => {
-    fetchMore({
-      query: getRankingAll,
-      variables: { after: endCursor },
-      updateQuery: (prev, { fetchMoreResult }) => {
-        const newEdges = fetchMoreResult.rankingAll.edges;
-        const { pageInfo } = fetchMoreResult.rankingAll;
-        return newEdges.length
-          ? {
-              rankingAll: {
-                __typename: prev.rankingAll.__typename,
-                edges: [...prev.rankingAll.edges, ...newEdges],
-                pageInfo,
-              },
-            }
-          : prev;
-      },
-    });
-  };
-  const users = edges.map((edge) => edge.node);
   return (
     <RankingAllStyle>
-      <InfinityScroll loadMore={loadMore} hasMore={hasNextPage}>
-        <UserRankingList users={users} />
+      <InfinityScroll loadMore={fetchMore} hasMore={hasMore}>
+        <UserRankingList users={data} />
       </InfinityScroll>
     </RankingAllStyle>
   );
-};
-
-export default RankingAll;
+}

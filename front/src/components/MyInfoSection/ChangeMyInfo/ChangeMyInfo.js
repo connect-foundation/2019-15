@@ -3,7 +3,7 @@ import ChangeMyInfoStyle from './ChangeMyInfo.style';
 import NicknameChangeContainer from './NicknameChangeContainer/NicknameChangeContainer';
 import ChangeCharacter from '../ChangeCharacter/ChangeCharacter';
 
-const ChangeMyInfo = () => {
+export default function ChangeMyInfo() {
   return (
     <ChangeMyInfoStyle id="ChangeMyInfo">
       <ChangeCharacter />
@@ -12,6 +12,4 @@ const ChangeMyInfo = () => {
       </div>
     </ChangeMyInfoStyle>
   );
-};
-
-export default ChangeMyInfo;
+}

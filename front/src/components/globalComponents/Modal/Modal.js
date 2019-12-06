@@ -1,24 +1,27 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import BackgroundModalStyle from './BackgroundModal.style';
-import ModalStyle from './Modal.style';
+import { ModalStyle, ModalDivStyle } from './Modal.style';
 
-function Modal({ children }) {
-  return (
-    <>
+function makeModal(Header, Body, Footer) {
+  function Modal() {
+    return (
       <BackgroundModalStyle>
-        <ModalStyle>{children}</ModalStyle>
+        <ModalStyle>
+          <ModalDivStyle className="modal-header">
+            {Header ? <Header /> : null}
+          </ModalDivStyle>
+          <ModalDivStyle className="modal-body">
+            {Body ? <Body /> : null}
+          </ModalDivStyle>
+          <ModalDivStyle className="modal-footer">
+            {Footer ? <Footer /> : null}
+          </ModalDivStyle>
+        </ModalStyle>
       </BackgroundModalStyle>
-    </>
-  );
+    );
+  }
+
+  return Modal;
 }
 
-Modal.propTypes = {
-  children: PropTypes.node,
-};
-
-Modal.defaultProps = {
-  children: null,
-};
-
-export default Modal;
+export default makeModal;

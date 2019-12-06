@@ -1,5 +1,4 @@
 {
-
   "env": {
     "node": true,
     "jest": true
@@ -14,13 +13,16 @@
     "no-process-exit": "off",
     "object-shorthand": "off",
     "class-methods-use-this": "off",
-    "linebreak-style": 0
+    "linebreak-style": 0,
+    "no-prototype-builtins": "off"
   },
-  "overrides": [{
-    "files": "**/*.test.js",
-    "rules": {
-      "node/no-unpublished-require": 0,
-      "node/no-missing-require": 0
+  "overrides": [
+    {
+      "files": "**/*.test.js",
+      "rules": {
+        "node/no-unpublished-require": 0,
+        "node/no-missing-require": 0
+      }
     }
-  }]
+  ]
 }

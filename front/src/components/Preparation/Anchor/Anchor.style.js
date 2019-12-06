@@ -1,13 +1,13 @@
 import styled from 'styled-components';
-import { FlexRowStyle } from '../../globalComponents/Container/Flex.style';
-import ButtonStyle from '../../globalComponents/Button/Button.style';
+import { FlexRowStyle } from 'components/globalComponents/Container/Flex.style';
+import ButtonStyle from 'components/globalComponents/Button/Button.style';
 
 export const AnchorStyle = styled(FlexRowStyle)`
   width: 100%;
   height: 5rem;
   justify-content: center;
   border-radius: 0.3rem;
-  background-color: ${({ theme }) => theme.Pumice}};
+  background-color: ${({ theme }) => theme.paleRose}};
 `;
 
 export const AnchorImageStyle = styled.img`

@@ -9,7 +9,7 @@ import DoneButton from './DoneButton.style';
 import Input from './Input.style';
 import FriendsSetModal from './FriendsSetModal/FriendsSetModal';
 
-const FriendsList = () => {
+export default function FriendsList() {
   const [configMode, switchMode] = useState(false);
   const [modalInfo, setModal] = useState({ mode: false, nickname: null });
   const [inputValue, setValue] = useState('');
@@ -70,6 +70,4 @@ const FriendsList = () => {
       </FriendsListStyle>
     </>
   );
-};
-
-export default FriendsList;
+}

@@ -1,24 +1,40 @@
 import styled from 'styled-components';
 
 const ContentSectionStyle = styled.section`
-  margin: 0 0 1.5rem 0;
+  background-color: ${(props) => props.theme.paleRose};
   padding: 1rem;
-  width: ${(props) => props.width};
-  height: ${(props) => props.height};
-  border: 2px solid ${(props) => props.theme.dimStormBrain};
-  border-radius: 0.5rem;
-  display: block;
+  flex-basis: 20rem;
+  height: 33rem;
+  margin: 3rem 2.5rem 0 2.5rem;
+  @media (max-width: 900px) {
+    margin: 3rem 0.5rem 0 0.5rem;
+  }
+  border: 2px solid white;
+  border-radius: 0 1rem 1rem 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
 
 const ContentSectionTitleStyle = styled.span`
   position: relative;
-  left: 1rem;
-  top: -2rem;
-  padding: 0.5rem 1rem;
+  top: -3.65rem;
+  left: -1.1rem;
+  align-self: flex-start;
+  padding: 0.5rem 2rem;
   width: fit-content;
   height: fit-content;
-  background-color: white;
+  border-radius: 1rem 1rem 0 0;
+  border: 2px solid white;
+  white-space: nowrap;
+  border-bottom: 0;
+  background-color: ${(props) => props.theme.paleRose};
   font-size: large;
+  @media (max-width: 1100px) {
+    top: -3.2rem;
+    font-size: 13px;
+    padding: 0.5rem 1rem;
+  }
 `;
 
 export { ContentSectionStyle, ContentSectionTitleStyle };

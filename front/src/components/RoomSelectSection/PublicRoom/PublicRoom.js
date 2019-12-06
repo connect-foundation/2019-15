@@ -1,22 +1,20 @@
 import React, { useContext } from 'react';
+import GlobalContext from 'global.context';
+import roomInfo from 'constant/room/roomInfo';
+import { enterRandom } from 'logics/socketLogic';
 import RoomContainer from '../RoomContainer/RoomContainer';
 import { PublicRoomButton, CustomA } from './PublicRoomButton.style';
-import GlobalContext from '../../../global.context';
-import roomInfo from '../../../constant/room/roomInfo';
 
-const PublicRoom = () => {
-  const { io, user, room } = useContext(GlobalContext);
-  const makeGameStartBtnHandler = (capacity) => {
+export default function PublicRoom() {
+  const { gameSocket, user } = useContext(GlobalContext);
+  const makeGameStartBtnHandler = (roomType) => {
     return () => {
-      io.socket.emit(`enter${capacity}`, {
-        nickname: user.nickname,
-        roomType: room.roomType,
-      });
+      enterRandom(gameSocket, { nickname: user.nickname, roomType });
     };
   };
 
   const buttonComponents = roomInfo.roomList.map((roomName) => (
-    <CustomA href="/#/gameplay" key={roomName}>
+    <CustomA to="gameplay" key={roomName}>
       <PublicRoomButton
         key={roomName}
         onClick={makeGameStartBtnHandler(roomName)}
@@ -27,6 +25,4 @@ const PublicRoom = () => {
   ));
 
   return <RoomContainer text="랜덤 게임" buttons={buttonComponents} />;
-};
-
-export default PublicRoom;
+}
