@@ -9,24 +9,26 @@ import CanvasSectionStyle from './CanvasSection.style';
 import WordPreview from './WordPreview/WordPreview';
 import Timer from '../../Timer/Timer';
 import GameInfo from '../../GameInfo/GameInfo';
+import QuestionResult from './QuestionResult/QuestionResult';
 
 export default function CanvasSection() {
-  const { painter } = useContext(GamePlayContext);
-  const { gameSocket } = useContext(GlobalContext);
-  const [questionWord, setQuestionWord] = useState({
-    wordLength: 0,
-    openLetter: '',
-    openIndex: 0,
-  });
+    const { gameSocket } = useContext(GlobalContext);
+  const {
+    painter,
+    questionWord,
+    isTimerGetReady,
+    setIsTimerGetReady,
+    isOpen,
+    setIsOpen,
+    selectedWord,
+    setSelectedWord,
+    showQuestionResult,
+    setShowQuestionResult,
+    scores,
+    setScores,
+  } = useContext(GamePlayContext);
+
   const [drawable, setDrawable] = useState(false);
-
-  const [isTimerGetReady, setIsTimerGetReady] = useState(false);
-  const [isOpen, setIsOpen] = useState(false);
-  const [selectedWord, setSelectedWord] = useState('');
-
-  setStartQuestionHandler(gameSocket, setQuestionWord, () => {
-    setIsTimerGetReady(true);
-  });
 
   useEffect(() => {
     if (painter === gameSocket.id) {
@@ -39,6 +41,9 @@ export default function CanvasSection() {
       <GameLoading />
       {gameSocket.id === painter ? (
         <WordChoice setSelectedWord={setSelectedWord} />
+      ) : null}
+      {showQuestionResult ? (
+        <QuestionResult scores={scores} answer={selectedWord} />
       ) : null}
       <section>
         <Timer

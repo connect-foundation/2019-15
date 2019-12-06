@@ -76,6 +76,10 @@ export function setStartQuestionHandler(socket, setQuestionWord, callback) {
   });
 }
 
+export function setEndQuestionHandler(socket, endQuestionCallback) {
+  socket.on('endQuestion', endQuestionCallback);
+}
+
 export function onCanvasData(socket, setCanvas) {
   socket.on('drawing', ({ eventList }) => {
     setCanvas(eventList);
@@ -88,12 +92,6 @@ export function offCanvasData(socket) {
 
 export function sendCanvasData(socket, { roomId, eventList }) {
   socket.emit('drawing', { roomId, eventList });
-}
-
-export function setEndQuestionHandler(socket) {
-  socket.on('endQuestion', ({ nickname, scores, answer }) => {
-    console.log('[socketLogic/index.js]', nickname, scores, answer);
-  });
 }
 
 export function enterRandom(socket, { nickname, roomType }) {

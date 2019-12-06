@@ -1,6 +1,7 @@
 const uuid = require('uuid/v1');
 const { maxPeopleNum } = require('../config/roomConfig');
 const Timer = require('../util/timer/Timer');
+const { roomState } = require('../config/roomConfig');
 
 const makeRoomId = () => {
   return uuid();
@@ -13,7 +14,7 @@ class Room {
     this.wordSet = null;
     this.word = null;
     this.timer = new Timer();
-    this.state = null;
+    this.state = roomState.EMPTY;
     this.examinerIndex = null;
     this.totalRound = null;
     this.currentRound = null;
@@ -22,27 +23,60 @@ class Room {
   }
 
   prepareFirstQuestion() {
+    this.state = roomState.SELECTING_WORD;
     this.examinerIndex = this.players.length - 1;
     this.players[this.examinerIndex].privileged = true;
   }
 
   prepareNextQuestion() {
+    this.state = roomState.SELECTING_WORD;
     this.word = null;
     this.timer.stop();
-    this.examinerIndex -= 1;
+    this.players.forEach((player) => {
+      player.privileged = false;
+    });
     this.answererCount = 0;
+    this.examinerIndex -= 1;
+    this.players[this.examinerIndex].privileged = true;
+  }
+
+  prepareNextRound() {
+    this.state = roomState.SELECTING_WORD;
+    this.word = null;
+    this.timer.stop();
+    this.players.forEach((player) => {
+      player.privileged = false;
+    });
+    this.answererCount = 0;
+    this.examinerIndex = this.players.length - 1;
+    this.players[this.examinerIndex].privileged = true;
+    this.currentRound += 1;
   }
 
   addPlayer(user) {
     this.players.push(user);
+    if (this.state === roomState.EMPTY) this.state = roomState.WAITING;
   }
 
   removePlayer(userIndex) {
     this.players.splice(userIndex, 1);
   }
 
+  // 최소 시작 인원을 기다리다가 충족된 경우. 즉, 새 게임
   isPlayable() {
-    return this.players.length >= 2;
+    return this.state === roomState.WAITING && this.players.length >= 2;
+  }
+
+  // 이미 게임이 시작했으며, 게임이 아직 종료되지 않은 경우. 즉, 난입
+  isPlaying() {
+    return (
+      this.players.length >= 2 &&
+      (this.state === roomState.SELECTING_WORD || this.state === roomState.PLAYING_QUESTION)
+    );
+  }
+
+  isAllPlayerAnswered() {
+    return this.answererCount === this.players.length - 1;
   }
 
   getUserIndexBySocketId(gameSocket) {
@@ -54,16 +88,26 @@ class Room {
   }
 
   timeOutCallback(gameIo) {
-    this.examinerIndex -= 1;
-    // this.room.currentExaminer가 -1이라면 한 라운드가 종료된 것
-    const nextExaminer = this.players[this.examinerIndex];
-    // 클라에게 해당 문제를 끝내라는 시그널을 전송한다
-    // todo: 다음 출제자를 구별하기 위해 nickname이 나은가? 아니면 id?
+    const answer = this.word;
+    this.prepareNextQuestion();
+    const nextExaminer = this.getExaminer();
     gameIo.in(this.roomId).emit('endQuestion', {
-      nickname: nextExaminer.nickname,
-      scores: this.players.map((player) => [player.nickname, player.score]),
-      answer: this.word,
+      nextExaminerSocketId: nextExaminer.socket.id,
+      _scores: this.getScores(),
+      answer: answer,
     });
+  }
+
+  getExaminerSocketId() {
+    return this.players[this.examinerIndex].socket.id;
+  }
+
+  getExaminer() {
+    return this.players[this.examinerIndex];
+  }
+
+  getScores() {
+    return this.players.map((player) => [player.nickname, player.score]);
   }
 }
 
@@ -77,6 +121,7 @@ const RoomManager = {
     const newRoom = new Room(gameIo);
     const roomId = makeRoomId();
     newRoom.roomId = roomId;
+    newRoom.state = roomState.EMPTY;
     this.room[roomName][roomId] = newRoom;
 
     return roomId;
@@ -98,6 +143,7 @@ const RoomManager = {
     }
     return room[0];
   },
+
   getEnableSecretRoom(roomId) {
     const secretRoomList = this.room['비밀방'];
 
@@ -105,9 +151,11 @@ const RoomManager = {
 
     return secretRoomList[roomId];
   },
+
   isExistRoom({ roomType, roomId }) {
     return roomType && roomId && this.room[roomType].hasOwnProperty(roomId);
   },
+
   getRoomByRoomId(roomName, roomId) {
     return this.room[roomName][roomId];
   },
