@@ -43,15 +43,28 @@ const GamePlay = () => {
   // 설정 : endQuestion 시그널을 받을 때
   // 초기화 : QuestionResult 컴포넌트가 렌더링되고 3초 후
   const [scores, setScores] = useState([]);
+  // 설정 : gamestart, endQuestion 시그널을 받을 때
+  const [round, setRound] = useState({
+    currentRound: 1,
+    totalRound: 3,
+  });
 
-  function endQuestionCallback({ nextExaminerSocketId, _scores, answer }) {
+  function endQuestionCallback({
+    nextExaminerSocketId,
+    _scores,
+    answer,
+    currentRound,
+    totalRound,
+  }) {
     // 결과 화면 띄우기
     setSelectedWord(answer);
     setScores(_scores);
     setShowQuestionResult(true);
+
     setTimeout(() => {
       // 각종 상태 초기화하기
       resetQuestionStates(nextExaminerSocketId);
+      setRound({ currentRound, totalRound });
       setShowQuestionResult(false);
     }, 5000);
   }
@@ -69,7 +82,7 @@ const GamePlay = () => {
     const initSocket = () => {
       if (!gameSocket) return;
       initUserListMsgHandler(gameSocket, { setUserList });
-      initGameStartMsgHandler(gameSocket, { setPainter });
+      initGameStartMsgHandler(gameSocket, { setPainter, setRound });
       setStartQuestionHandler(gameSocket, setQuestionWord, () => {
         setIsTimerGetReady(true);
       });
@@ -103,6 +116,8 @@ const GamePlay = () => {
     setShowQuestionResult,
     scores,
     setScores,
+    round,
+    setRound,
   };
 
   return (

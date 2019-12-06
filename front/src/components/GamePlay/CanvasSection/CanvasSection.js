@@ -1,7 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react';
 import GamePlayContext from 'components/GamePlay/GamePlay.context';
 import GlobalContext from 'global.context';
-import { setStartQuestionHandler } from 'logics/socketLogic';
 import GameLoading from 'components/GamePlay/GameLoading/GameLoading';
 import DrawingPlayGround from './DrawingPlayGround/DrawingPlayGround';
 import WordChoice from './WordChoice/WordChoice';
@@ -12,7 +11,7 @@ import GameInfo from '../../GameInfo/GameInfo';
 import QuestionResult from './QuestionResult/QuestionResult';
 
 export default function CanvasSection() {
-    const { gameSocket } = useContext(GlobalContext);
+  const { gameSocket } = useContext(GlobalContext);
   const {
     painter,
     questionWord,
@@ -26,6 +25,8 @@ export default function CanvasSection() {
     setShowQuestionResult,
     scores,
     setScores,
+    round,
+    setRound,
   } = useContext(GamePlayContext);
 
   const [drawable, setDrawable] = useState(false);
@@ -51,7 +52,7 @@ export default function CanvasSection() {
           setIsTimerGetReady={setIsTimerGetReady}
           setIsOpen={setIsOpen}
         />
-        <GameInfo />
+        <GameInfo round={round} />
         <WordPreview
           openLetter={questionWord.openLetter}
           wordLength={questionWord.wordLength}
