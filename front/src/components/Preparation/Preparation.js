@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useEffect, useContext } from 'react';
 import PropTypes from 'prop-types';
+import { initUserListMsgHandler } from 'logics/socketLogic';
+import GlobalContext from 'global.context';
 import { PreparationStyle, RoomSettingStyle } from './Preparation.style';
 import UserList from './UserList/UserList';
 import Anchor from './Anchor/Anchor';
@@ -17,6 +19,12 @@ export default function Preparation({
   userList,
   setUserList,
 }) {
+  const { gameSocket } = useContext(GlobalContext);
+
+  useEffect(() => {
+    initUserListMsgHandler(gameSocket, { setUserList });
+  }, [gameSocket, setUserList]);
+
   return (
     <>
       <PreparationStyle>
