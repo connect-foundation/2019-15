@@ -1,7 +1,11 @@
 import React, { useContext, useEffect } from 'react';
 import GlobalContext from 'global.context';
 import { useHistory } from 'react-router-dom';
-import { emitMakePrivateRoom, emitEnterPrivateRoom } from 'logics/socketLogic';
+import {
+  connectGameSocket,
+  emitMakePrivateRoom,
+  emitEnterPrivateRoom,
+} from 'logics/socketLogic';
 import useInput from 'hooks/Input/useInput';
 import Room from 'logics/room';
 import {
@@ -12,7 +16,9 @@ import {
 } from './Setting.style';
 
 export default function Setting() {
-  const { user, room, setRoom, gameSocket } = useContext(GlobalContext);
+  const { user, room, setRoom, gameSocket, setGameSocket } = useContext(
+    GlobalContext,
+  );
   const [nickname, onChange] = useInput('부스트캠퍼');
   const history = useHistory();
 
@@ -29,6 +35,11 @@ export default function Setting() {
   }, [gameSocket, setRoom, user.roomOwner]);
 
   function onClickGameStart() {
+    if (!gameSocket) {
+      const socket = connectGameSocket();
+      setGameSocket(socket);
+    }
+
     emitEnterPrivateRoom(gameSocket, { nickname, roomId: room.roomId });
     history.push(`private:${room.roomId}`);
   }
