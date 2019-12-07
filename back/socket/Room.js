@@ -87,7 +87,8 @@ class Room {
   }
 
   timeOutCallback(gameIo) {
-    const answer = this.word;
+    /* const answer = this.word;
+    // todo: 라운드가 끝난 경우와 아닌 경우를 구별해야 함
     this.prepareNextQuestion();
     const nextExaminer = this.getExaminer();
     gameIo.in(this.roomId).emit('endQuestion', {
@@ -96,7 +97,24 @@ class Room {
       answer: answer,
       currentRound: this.currentRound,
       totalRound: this.totalRound,
+    }); */
+
+    const answer = this.word;
+    // 한 라운드가 끝나는 경우
+    if (this.examinerIndex === 0) this.prepareNextRound();
+    // 아직 한 라운드가 끝나지 않은 경우
+    else this.prepareNextQuestion();
+
+    const nextExaminer = this.getExaminer();
+    gameIo.in(this.roomId).emit('endQuestion', {
+      nextExaminerSocketId: nextExaminer.socket.id,
+      _scores: this.getScores(),
+      answer: answer,
+      currentRound: this.currentRound,
+      totalRound: this.totalRound,
     });
+
+    return;
   }
 
   getExaminerSocketId() {
