@@ -1,31 +1,11 @@
-import React, { useState, useReducer } from 'react';
+import React, { useState } from 'react';
 import FriendsSectionContext from 'components/FriendsSection/FriendsSection.context';
-import useFriendsOnline from 'hooks/Online/useFriendsOnline';
-import useFriendsOffline from 'hooks/Online/useFriendsOffline';
+import useOnlineFriends from 'hooks/Online/useOnlineFriends';
 import FriendsList from './FriendsList/FriendsList';
 import ListPopUpButton from './ListPopUpButton.style';
 
-const friendsOnlineReducer = (state, action) => {
-  console.log(action);
-  switch (action.type) {
-    case 'add':
-      return { ...state, ...action.value };
-    case 'delete':
-      return { ...state, [action.value.id]: null };
-    default:
-      throw new Error('wrong action type');
-  }
-};
-
 export default function FriendsSection() {
-  const [onlineFriends, onlineFriendsDispatch] = useReducer(
-    friendsOnlineReducer,
-    {},
-  );
-
-  useFriendsOnline(onlineFriendsDispatch);
-  useFriendsOffline(onlineFriendsDispatch);
-
+  const [onlineFriends, onlineFriendsDispatch] = useOnlineFriends();
   const [open, setOpen] = useState(false);
 
   function changeOpen() {

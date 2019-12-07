@@ -28,20 +28,24 @@ export const onFriendsOnline = (socket, onlineFriendsDispatch) => {
   });
 };
 
+export const offFriendsOnline = (socket) => {
+  socket.off('friendsOnline');
+};
+
 export const onFriendOffline = (socket, onlineFriendsDispatch) => {
   socket.on('friendOffline', (friend) => {
     onlineFriendsDispatch({ type: 'delete', value: friend });
   });
 };
 
-export const offFriendsOnline = (socket) => {
-  socket.off('friendsOnline');
-};
-
 export const offFriendOffline = (socket) => {
   socket.off('friendOffline');
 };
 
-export const emitCheckFriendOnline = (socket, friend) => {
-  socket.emit('checkFriendOnline', friend);
+export const emitAcceptFriendRequest = (socket, friend) => {
+  socket.emit('acceptFriendRequest', friend);
+};
+
+export const emitDeleteFriend = (socket, friend) => {
+  socket.emit('deleteFriend', friend);
 };
