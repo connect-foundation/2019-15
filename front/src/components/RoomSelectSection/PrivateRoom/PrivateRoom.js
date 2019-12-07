@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import uuid from 'uuid/v1';
 import { useHistory } from 'react-router-dom';
 import GlobalContext from 'global.context';
+import { PrivateRoomList } from 'constant/room/roomInfo';
 import RoomContainer from '../RoomContainer/RoomContainer';
 import PrivateRoomButton from './privateRoomButton.style';
 

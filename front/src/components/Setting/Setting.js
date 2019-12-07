@@ -1,8 +1,8 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import GlobalContext from 'global.context';
-import GamePlayContext from 'components/GamePlay/GamePlay.context';
-import { startSecretGame } from 'logics/socketLogic';
+import Room from 'logics/room';
+import { PRIVATE_ROOM_NAME } from 'constant/room/roomInfo';
 import {
   SettingStyle,
   RoomSettingStyle,
@@ -11,10 +11,16 @@ import {
 } from './Setting.style';
 
 export default function Setting() {
-  const { gameSocket } = useContext(GlobalContext);
+  const { setRoom, room } = useContext(GlobalContext);
   const history = useHistory();
+
+  useEffect(() => {
+    const secretRoomId = window.location.hash.split('setting:')[1];
+    setRoom(new Room(secretRoomId, PRIVATE_ROOM_NAME));
+  }, [setRoom]);
+
   function onClickGameStart() {
-    history.push('');
+    history.push(`waiting:${room.roomId}`);
   }
 
   return (
