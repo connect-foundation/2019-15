@@ -1,9 +1,9 @@
-function requestFriend(nodeCache, sender, { receiver }) {
+function requestFriend(nodeCache, socketUser, { receiver }) {
   const userToReceive = nodeCache.get(receiver.id);
   if (!userToReceive) return;
 
-  userToReceive.socketIdList.forEach((socketId) => {
-    this.onlineIo.to(socketId).emit('requestFriend', sender);
+  userToReceive.socketList.forEach(({ id }) => {
+    this.onlineIo.to(id).emit('requestFriend', { id: socketUser.user });
   });
 }
 
