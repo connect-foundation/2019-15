@@ -55,7 +55,7 @@ const Router = () => {
             <Route path="/main">
               <Main />
             </Route>
-            <Route path="public">
+            <Route path="/public">
               <PublicGame />
             </Route>
             <Route path="/setting:hash">
