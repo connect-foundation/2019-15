@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 
 import { useMutation } from '@apollo/react-hooks';
 import {
@@ -7,6 +7,8 @@ import {
   acceptFriendRequest,
 } from 'queries/friend';
 import globalMessages from 'constant/messages';
+import { emitCheckFriendOnline } from 'logics/socketLogic/online';
+import GlobalContext from 'global.context';
 import MessagesStyle from './Messages.style';
 import MessageComponentStyle from './MessageComponent.style';
 import Button from '../globalComponents/Button/Button';
@@ -15,6 +17,7 @@ import Div from '../globalComponents/Modal/ContentDiv.style';
 import ButtonDiv from './ButtonDiv.style';
 
 export default function MessageList() {
+  const { onlineSocket } = useContext(GlobalContext);
   const [openModal, setOpenModal] = useState(false);
   const [friendRequests, setFriendRequests] = useState([]);
   const [findFriendRequestsFunc] = useMutation(findFriendRequests, {
@@ -28,9 +31,11 @@ export default function MessageList() {
     },
   });
   const [acceptFriendRequestFunc] = useMutation(acceptFriendRequest, {
-    onCompleted(data) {
+    onCompleted({ acceptFriendRequest: { user, result } }) {
+      if (!result) return;
+      emitCheckFriendOnline(onlineSocket, user);
       deleteFriendRequestFunc({
-        variables: { nickname: data.acceptFriendRequest.nickname },
+        variables: { nickname: user.nickname },
       });
     },
   });

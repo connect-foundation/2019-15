@@ -6,6 +6,7 @@ const jwtOptions = require('../../config/jwtOptions');
 const SocketUser = require('./SocketUser');
 const parseCookies = require('../../util/cookie/parseCookies');
 const { Friends } = require('../../db/models');
+const checkFriendOnline = require('./checkFriendOnline');
 
 const nodeCache = new NodeCache({ useClones: false });
 
@@ -59,6 +60,7 @@ async function setOnlineSockets(socket) {
 
   if (!socketUser) return;
 
+  socket.on('checkFriendOnline', checkFriendOnline.bind(this, nodeCache, socketUser));
   socket.on('requestFriend', requestFriend.bind(this, nodeCache, socketUser));
   socket.on('disconnect', disconnect.bind(this, nodeCache, socketUser, socket));
 }

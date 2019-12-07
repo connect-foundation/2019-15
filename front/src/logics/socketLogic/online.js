@@ -44,3 +44,7 @@ export const offFriendsOnline = (socket) => {
 export const offFriendOffline = (socket) => {
   socket.off('friendOffline');
 };
+
+export const emitCheckFriendOnline = (socket, friend) => {
+  socket.emit('checkFriendOnline', friend);
+};
