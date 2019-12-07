@@ -3,9 +3,7 @@ import character1 from 'asset/character1.png';
 import Character from 'components/globalComponents/Character/Character';
 import CurrentMyInfoStyle from './CurrentMyInfo.style';
 
-// 얘를 UserCard라는 이름의 컴포넌트로 리팱토링 해도 괜찮을듯?
-// 게임 플레이 페이지에서 써먹을 수 있을지도..
-export default function CurrentMyInfo () {
+export default function CurrentMyInfo() {
   return (
     <CurrentMyInfoStyle id="CurrentMyInfo">
       <Character alt="character" src={character1} />
@@ -15,4 +13,4 @@ export default function CurrentMyInfo () {
       </div>
     </CurrentMyInfoStyle>
   );
-};
+}

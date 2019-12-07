@@ -9,6 +9,7 @@ const MyPage = () => (
   <>
     <NavigationBar />
     <Background id="MyPage">
+      <ContentSection title="움짤" />
       <ContentSection title="랭킹">
         <Ranking />
       </ContentSection>

@@ -49,6 +49,7 @@ export default function Timer({
 
     runTimer();
     if (isTimerGetReady) startTimer();
+    else stopTimer();
   }, [isTimerGetReady, setIsTimerGetReady, time, isRunnable, setIsOpen]);
 
   return (

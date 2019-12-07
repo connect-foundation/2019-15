@@ -8,16 +8,11 @@ import {
 ContentSection.propTypes = {
   title: PropTypes.string.isRequired,
   children: PropTypes.element.isRequired,
-  height: PropTypes.string,
 };
 
-ContentSection.defaultProps = {
-  height: null,
-};
-
-export default function ContentSection({ title, children, height }) {
+export default function ContentSection({ title, children }) {
   return (
-    <ContentSectionStyle id="ContentSection" height={height}>
+    <ContentSectionStyle id="ContentSection">
       <ContentSectionTitleStyle>{title}</ContentSectionTitleStyle>
       {children}
     </ContentSectionStyle>
