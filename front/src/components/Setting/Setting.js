@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+import { useHistory } from 'react-router-dom';
 import GlobalContext from 'global.context';
 import GamePlayContext from 'components/GamePlay/GamePlay.context';
 import { startSecretGame } from 'logics/socketLogic';
@@ -10,16 +11,10 @@ import {
 } from './Setting.style';
 
 export default function Setting() {
-  const { gameSocket, room, user } = useContext(GlobalContext);
-  const { userList } = useContext(GamePlayContext);
-
+  const { gameSocket } = useContext(GlobalContext);
+  const history = useHistory();
   function onClickGameStart() {
-    const { roomType, roomId } = room;
-    if (userList.length < 2) return;
-
-    if (!user.roomOwner) return;
-
-    startSecretGame(gameSocket, { roomType, roomId });
+    history.push('');
   }
 
   return (

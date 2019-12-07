@@ -7,6 +7,7 @@ import Main from 'pages/Main/Main';
 import MyPage from 'pages/MyPage/MyPage';
 import PrivateGame from 'pages/PrivateGame/PrivateGame';
 import PublicGame from 'pages/PublicGame/PublicGame';
+import SettingPage from 'pages/Setting/Setting';
 import Room from 'logics/room';
 import User from 'logics/user';
 import RouterStyle from 'Router.style';
@@ -57,7 +58,9 @@ const Router = () => {
             <Route path="public">
               <PublicGame />
             </Route>
-            <Route path="/setting:hash" />
+            <Route path="/setting:hash">
+              <SettingPage />
+            </Route>
             <Route path="/waiting:hash" />
             <Route path="/private:hash">
               <PrivateGame />
