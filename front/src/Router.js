@@ -5,8 +5,8 @@ import Home from 'pages/Home/Home';
 import GlobalContext from 'global.context';
 import Main from 'pages/Main/Main';
 import MyPage from 'pages/MyPage/MyPage';
-import SecretGame from 'pages/SecretGame/SecretGame';
-import GamePlay from 'components/GamePlay/GamePlay';
+import PrivateGame from 'pages/PrivateGame/PrivateGame';
+import PublicGame from 'pages/PublicGame/PublicGame';
 import Room from 'logics/room';
 import User from 'logics/user';
 import RouterStyle from 'Router.style';
@@ -54,11 +54,13 @@ const Router = () => {
             <Route path="/main">
               <Main />
             </Route>
-            <Route path="/gameplay">
-              <GamePlay />
+            <Route path="public">
+              <PublicGame />
             </Route>
-            <Route path="/secret:hash">
-              <SecretGame />
+            <Route path="/setting:hash" />
+            <Route path="/waiting:hash" />
+            <Route path="/private:hash">
+              <PrivateGame />
             </Route>
           </GlobalContext.Provider>
         </Switch>
