@@ -5,9 +5,9 @@ const ListPopUpButtonStyle = styled(ButtonStyle)`
   position: fixed;
   bottom: 3rem;
   right: 2rem;
-  width: 8rem;
-  height: 3rem;
-  font-size: 15px;
+  width: 9rem;
+  height: 3.8rem;
+  font-size: 25px;
 `;
 
 export default ListPopUpButtonStyle;

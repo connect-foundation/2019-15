@@ -16,9 +16,9 @@ const slideUp = keyframes`
 const FriendsListStyle = styled.div`
   animation: ${slideUp} 0.15s ease 1;
   position: fixed;
-  bottom: ${friendsBtnBottom + 4}rem;
+  bottom: ${friendsBtnBottom + 5}rem;
   right: ${friendsBtnRight}rem;
-  width: 8rem;
+  width: 9rem;
   height: auto;
   background-color: ${(props) => props.theme.pink};
 `;

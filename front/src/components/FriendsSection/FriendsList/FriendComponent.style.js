@@ -9,7 +9,7 @@ const FriendComponentStyle = styled.div`
   padding-top: 0.5rem;
   padding-left: 1rem;
   padding-bottom: 1rem;
-  font-size: 13px;
+  font-size: 17px;
 `;
 
 export default FriendComponentStyle;
