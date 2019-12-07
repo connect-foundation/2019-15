@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import GlobalContext from 'global.context';
-import roomInfo from 'constant/room/roomInfo';
+import { PublicRoomList } from 'constant/room/roomInfo';
 import { enterRandom } from 'logics/socketLogic';
 import RoomContainer from '../RoomContainer/RoomContainer';
 import { PublicRoomButton, CustomA } from './PublicRoomButton.style';
@@ -13,7 +13,7 @@ export default function PublicRoom() {
     };
   };
 
-  const buttonComponents = roomInfo.roomList.map((roomName) => (
+  const buttonComponents = PublicRoomList.roomList.map((roomName) => (
     <CustomA to="gameplay" key={roomName}>
       <PublicRoomButton
         key={roomName}

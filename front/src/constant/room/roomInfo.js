@@ -1,5 +1,2 @@
-const roomInfo = {
-  roomList: ['3명', '6명', '12명', '100명'],
-};
-
-export default roomInfo;
+export const PublicRoomList = ['3명', '6명', '12명', '100명'];
+export const PrivateRoomList = ['방 만들기'];

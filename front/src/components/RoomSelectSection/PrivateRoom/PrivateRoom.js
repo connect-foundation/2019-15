@@ -12,7 +12,7 @@ export default function PrivateRoom() {
   const onClickMakeRoomBtn = () => {
     user.roomOwner = true;
   };
-  const buttonComponents = buttons.map((text) => (
+  const buttonComponents = PrivateRoomList.map((text) => (
     <PrivateRoomButton key={text} onClick={onClickMakeRoomBtn}>
       <Link to={`secret:${secretRoomId}`}>{text}</Link>
     </PrivateRoomButton>
