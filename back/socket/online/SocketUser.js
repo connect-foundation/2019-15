@@ -1,8 +1,9 @@
 class SocketUser {
-  constructor(id, nickname) {
+  constructor(id, nickname, io) {
     this.nickname = nickname;
     this.socketList = [];
     this.id = id;
+    this.io = io;
   }
 
   pushSocket(socket) {
@@ -14,6 +15,13 @@ class SocketUser {
       id: this.id,
       nickname: this.nickname,
     };
+  }
+
+  emitToMySockets(eventName, data) {
+    if (!this.io) return;
+    this.socketList.forEach(({ id }) => {
+      this.io.to(id).emit(eventName, data);
+    });
   }
 }
 

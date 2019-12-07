@@ -11,10 +11,8 @@ async function disconnect(nodeCache, socketUser, socket) {
   });
   FriendsFound.forEach(({ dataValues }) => {
     const friend = nodeCache.get(dataValues.sFriendId);
-    if (friend && friend.socketList.length) {
-      friend.socketList.forEach(({ id }) => {
-        this.onlineIo.to(id).emit('friendOffline', socketUser.user);
-      });
+    if (friend) {
+      friend.emitToMySockets('friendOffline', socketUser.user);
     }
   });
 }

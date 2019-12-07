@@ -5,7 +5,7 @@ export const connectSocket = () => {
   return socketIo.connect(`${APP_URI.REACT_APP_API_URI}/online`);
 };
 
-export const onRequestFriend = (socket, { alarmListDispatch }) => {
+export const onRequestFriend = (socket, alarmListDispatch) => {
   socket.on('requestFriend', (user) => {
     alarmListDispatch({
       type: 'push',
@@ -18,15 +18,12 @@ export const offRequestFriend = (socket) => {
   socket.off('requestFriend');
 };
 
-export const emitRequestFriend = (socket, { receiver }) => {
-  socket.emit('requestFriend', {
-    receiver,
-  });
+export const emitRequestFriend = (socket, receiver) => {
+  socket.emit('requestFriend', receiver);
 };
 
 export const onFriendsOnline = (socket, onlineFriendsDispatch) => {
   socket.on('friendsOnline', (friends) => {
-    console.log('friendsOnline');
     onlineFriendsDispatch({ type: 'add', value: friends });
   });
 };

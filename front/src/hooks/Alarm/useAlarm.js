@@ -6,7 +6,7 @@ export default function useAlarm(alarmListDispatch) {
   const { onlineSocket } = useContext(GlobalContext);
 
   useEffect(() => {
-    if (onlineSocket) onRequestFriend(onlineSocket, { alarmListDispatch });
+    if (onlineSocket) onRequestFriend(onlineSocket, alarmListDispatch);
     return () => {
       if (onlineSocket) offRequestFriend(onlineSocket);
     };
