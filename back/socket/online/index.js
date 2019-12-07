@@ -1,28 +1,68 @@
+const NodeCache = require('node-cache');
 const jwt = require('jsonwebtoken');
 const requestFriend = require('./requestFriend');
 const disconnect = require('./disconnect');
 const jwtOptions = require('../../config/jwtOptions');
-const User = require('../User');
+const SocketUser = require('./SocketUser');
 const parseCookies = require('../../util/cookie/parseCookies');
+const { Friends } = require('../../db/models');
+const acceptFriendRequest = require('./acceptFriendRequest');
+const deleteFriend = require('./deleteFriend');
 
-const userList = [];
+const nodeCache = new NodeCache({ useClones: false });
 
-function setOnlineSockets(socket) {
-  this.userList = userList;
-  this.socket = socket;
-  const { jwt: jwtToken } = parseCookies(socket.handshake.headers.cookie);
+async function emitOnline(socket, socketUser) {
+  const FriendsFound = await Friends.findAll({
+    where: {
+      pFriendId: socketUser.id,
+    },
+  });
+
+  const onlineFriends = FriendsFound.reduce((acc, { dataValues }) => {
+    const friendSocket = dataValues.sFriendId ? nodeCache.get(dataValues.sFriendId) : null;
+    if (friendSocket) {
+      friendSocket.emitToMySockets('friendsOnline', { [socketUser.id]: socketUser.user });
+      acc[friendSocket.id] = friendSocket.user;
+    }
+    return acc;
+  }, {});
+
+  this.onlineIo.to(socket.id).emit('friendsOnline', onlineFriends);
+}
+
+function getOrCreateSocketUser(id, nickname, socket, io) {
+  let socketUser = nodeCache.get(id);
+  if (!socketUser) {
+    socketUser = new SocketUser(id, nickname, io);
+    nodeCache.set(id, socketUser);
+  }
+
+  socketUser.pushSocket(socket);
+  return socketUser;
+}
+
+async function setOnlineSockets(socket) {
+  let socketUser;
   try {
+    const { jwt: jwtToken } = parseCookies(socket.handshake.headers.cookie);
     const { id, nickname } = jwt.verify(jwtToken, process.env.JWT_SECRET, {
       issuer: jwtOptions.issuer,
       subject: jwtOptions.subject,
     });
-    this.userList.push(new User(nickname, socket, id));
+
+    socketUser = getOrCreateSocketUser(id, nickname, socket, this.onlineIo);
+    await emitOnline(socket, socketUser);
   } catch (e) {
+    console.log(e);
     socket.disconnect();
   }
 
-  socket.on('requestFriend', requestFriend.bind(this));
-  socket.on('disconnect', disconnect.bind(this));
+  if (!socketUser) return;
+
+  socket.on('deleteFriend', deleteFriend.bind(this, nodeCache, socketUser));
+  socket.on('acceptFriendRequest', acceptFriendRequest.bind(this, nodeCache, socketUser));
+  socket.on('requestFriend', requestFriend.bind(this, nodeCache, socketUser));
+  socket.on('disconnect', disconnect.bind(this, nodeCache, socketUser, socket));
 }
 
 module.exports = setOnlineSockets;

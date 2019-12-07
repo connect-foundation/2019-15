@@ -3,6 +3,7 @@ import gql from 'graphql-tag';
 export const findFriends = gql`
   mutation friends {
     friends {
+      id
       nickname
     }
   }
@@ -11,7 +12,11 @@ export const findFriends = gql`
 export const deleteFriend = gql`
   mutation deleteFriend($nickname: String) {
     deleteFriend(nickname: $nickname) {
-      id
+      user {
+        id
+        nickname
+      }
+      result
     }
   }
 `;
@@ -35,7 +40,11 @@ export const deleteFriendRequest = gql`
 export const acceptFriendRequest = gql`
   mutation acceptFriendRequest($nickname: String) {
     acceptFriendRequest(nickname: $nickname) {
-      nickname
+      user {
+        id
+        nickname
+      }
+      result
     }
   }
 `;

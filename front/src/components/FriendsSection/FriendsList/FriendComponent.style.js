@@ -10,6 +10,11 @@ const FriendComponentStyle = styled.div`
   padding-left: 1rem;
   padding-bottom: 1rem;
   font-size: 13px;
+  align-items: center;
+
+  > *:first-child {
+    flex: 1;
+  }
 `;
 
 export default FriendComponentStyle;

@@ -16,7 +16,7 @@ import {
 } from 'logics/socketLogic';
 
 const GamePlay = () => {
-  const { gameSocket, setGameSocket, room } = useContext(GlobalContext);
+  const { gameSocket, setGameSocket } = useContext(GlobalContext);
 
   const [userList, setUserList] = useState([]);
   const [painter, setPainter] = useState(null);
