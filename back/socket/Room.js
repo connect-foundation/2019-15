@@ -22,26 +22,24 @@ class Room {
     this.players[this.examinerIndex].privileged = true;
   }
 
-  prepareNextQuestion() {
+  resetRoomState() {
     this.state = roomState.SELECTING_WORD;
     this.word = null;
     this.timer.stop();
+    this.answererCount = 0;
     this.players.forEach((player) => {
       player.privileged = false;
     });
-    this.answererCount = 0;
+  }
+
+  prepareNextQuestion() {
+    this.resetRoomState();
     this.examinerIndex -= 1;
     this.players[this.examinerIndex].privileged = true;
   }
 
   prepareNextRound() {
-    this.state = roomState.SELECTING_WORD;
-    this.word = null;
-    this.timer.stop();
-    this.players.forEach((player) => {
-      player.privileged = false;
-    });
-    this.answererCount = 0;
+    this.resetRoomState();
     this.examinerIndex = this.players.length - 1;
     this.players[this.examinerIndex].privileged = true;
     this.currentRound += 1;
