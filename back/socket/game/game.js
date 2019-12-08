@@ -1,5 +1,5 @@
 const User = require('../User');
-const { RoomManager } = require('../Room');
+const { RoomManager } = require('../RoomManager');
 
 function sendUserListToRoom(list, roomId, io) {
   const userList = list.map((user) => {
