@@ -13,7 +13,7 @@ class Room {
     this.totalRound = defaultRoomSetting.totalRound;
     this.currentRound = 1;
     this.answererCount = 0;
-    this.timer.setTimeOutCallback(this.timeOutCallback.bind(this, gameIo));
+    this.timer.setTimeOutCallback(this.questionEndCallback.bind(this, gameIo));
   }
 
   prepareFirstQuestion() {
@@ -79,7 +79,7 @@ class Room {
     return this.answererCount === this.players.length - 1;
   }
 
-  timeOutCallback(gameIo) {
+  questionEndCallback(gameIo) {
     const answer = this.word;
     // 한 라운드가 끝나는 경우
     if (this.examinerIndex === 0) this.prepareNextRound();
