@@ -34,15 +34,15 @@
 #### Description
 - pc게임인 캐치마인드를 웹게임으로 구현
 - 출제자가 그림을 그리면 채팅으로 답을 맞추는 게임
-- 참고: https://skribbl.io/
 - 로그인 기능(Oauth)를 추가하여 친구기능, 랭킹기능, 과거 게임기록을 볼 수 있도록 구현
-- 회원끼리 할 수 있는 랜덤게임과 친구끼리 비회원으로 할 수 있는 비밀게임 존재
+- 회원끼리 할 수 있는 랜덤 게임과 친구끼리 비회원으로 할 수 있는 비밀 게임 존재
+- 참고: https://skribbl.io/
 
 ## Team
 🙎‍♀️ 손진아 - (한줄 자기소개)  
 💁‍♂️ 이지영 - (한줄 자기소개)  
 🤷‍♂️ 이창권 - (한줄 자기소개)  
-🙋‍♂️ 최형준 - (한줄 자기소개)  
+🙋‍♂️ 최형준 - 🌐웹 개발자를 지향합니다  
 
 ### Sprint
 |          | 손진아                     | 이지영             | 이창권             | 최형준                    |
@@ -63,6 +63,8 @@
 ├── src/                      # 소스 파일
 |    ├── asset/               # 어셋 파일 
 |    ├── components/          # 컴포넌트
+|    ├── constant/            # 상수
+|    ├── hooks/               # 커스텀 훅
 |    ├── logics/              # 컴포넌트에 주입할 로직
 |    ├── pages/               # 페이지(뷰) 컴포넌트
 |    ├── queries/             # 쿼리 파일
@@ -97,32 +99,34 @@
 
 ## Environment
 - FRONT
-    - react
+    - React
     - apollo-boost
     - styled-component
 - BACK
-    - express
-    - passport
-    - jsonwebtoken
-    - graphql
-    - sequelize
-    - socket.io
+    - Express
+    - Passport.js
+    - JSON Web Token
+    - GraphQL
+    - Sequelize
+    - Socket.IO
+    - NODE-CACHE
 - CI/CD
-    - travis CI
+    - Travis CI
 - SERVER
-    - docker
+    - Docker
 - DB
-    - mysql 5.7
+    - MySQL 5.7
 - VCS
-    - git
-    - gitflow
+    - Git
+    - Git Flow
 - etc
-    - eslint (airbnb)
+    - ESLint (airbnb)
     
 ## Core Skills
-- OAuth
-- Web Socket
-- ...
+- OAuth 2.0
+- WebSocket
+    - throttle
+    - expoenetial 
     
 ## Document
 ### [그라운드 룰](https://github.com/connect-foundation/2019-15/wiki/%EA%B7%B8%EB%9D%BC%EC%9A%B4%EB%93%9C-%EB%A3%B0)
