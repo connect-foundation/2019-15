@@ -10,7 +10,7 @@ const BackgroundStyle = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1;
+  z-index: 2;
   border-radius: 0.5rem;
 `;
 

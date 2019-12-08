@@ -1,5 +1,5 @@
 /* eslint no-param-reassign:0 */
-import React, { useCallback, useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { fabric } from 'fabric';
 import {
@@ -52,20 +52,17 @@ export default function NonPainterBoard({ size }) {
     }
   };
 
-  const setCanvas = useCallback(
-    (eventList) => {
-      eventList.forEach((e) => {
-        if (e.drawingOptions.tool !== 'pen') {
-          setCanvasFromJson(e.data);
-          return;
-        }
+  const setCanvas = (eventList) => {
+    eventList.forEach((e) => {
+      if (e.drawingOptions.tool !== 'pen') {
+        setCanvasFromJson(e.data);
+        return;
+      }
 
-        pen.setCanvas(fabricCanvas.current, e.drawingOptions);
-        handleEvents(e);
-      });
-    },
-    [handleEvents],
-  );
+      pen.setCanvas(fabricCanvas.current, e.drawingOptions);
+      handleEvents(e);
+    });
+  };
 
   useCanvasDataReceive(setCanvas);
 
