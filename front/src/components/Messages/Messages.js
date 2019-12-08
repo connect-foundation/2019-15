@@ -13,7 +13,6 @@ import MessagesStyle from './Messages.style';
 import MessageComponentStyle from './MessageComponent.style';
 import Button from '../globalComponents/Button/Button';
 import makeModal from '../globalComponents/Modal/Modal';
-import Div from '../globalComponents/Modal/ContentDiv.style';
 import ButtonDiv from './ButtonDiv.style';
 
 export default function MessageList() {

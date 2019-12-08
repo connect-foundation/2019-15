@@ -20,7 +20,12 @@ export default function UserList() {
     const order = index + 1;
     const className = createClassName(user.socketId, gameSocket.id, painter);
     return (
-      <User className={className} nickname={user.nickname} index={order} />
+      <User
+        className={className}
+        nickname={user.nickname}
+        privileged={user.privileged}
+        index={order}
+      />
     );
   });
 

@@ -1,4 +1,5 @@
 const getScore = require('../../util/getScore');
+const { sendUserListToRoom } = require('./game');
 
 function sendMessage(gameSocket, { roomType, roomId, inputValue }) {
   let answer;
@@ -24,6 +25,7 @@ function sendMessage(gameSocket, { roomType, roomId, inputValue }) {
     player.privileged = true;
     returnMessage.content = `${player.nickname}님이 정답을 맞췄습니다! Hooray`;
     returnMessage.privileged = 'notice';
+    sendUserListToRoom(room.players, roomId, this.gameIo);
 
     // 점수 계산
     const defaultScore = 100;
@@ -38,6 +40,9 @@ function sendMessage(gameSocket, { roomType, roomId, inputValue }) {
       else room.prepareNextQuestion();
 
       const nextExaminer = room.getExaminer();
+      setTimeout(() => {
+        sendUserListToRoom(room.players, roomId, this.gameIo);
+      }, 5000);
       this.gameIo.in(roomId).emit('endQuestion', {
         nextExaminerSocketId: nextExaminer.socket.id,
         _scores: room.getScores(),
@@ -45,8 +50,6 @@ function sendMessage(gameSocket, { roomType, roomId, inputValue }) {
         currentRound: room.currentRound,
         totalRound: room.totalRound,
       });
-
-      return;
     }
   }
 
