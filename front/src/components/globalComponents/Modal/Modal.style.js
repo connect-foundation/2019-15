@@ -12,6 +12,7 @@ const ModalStyle = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-around;
+  padding: 0 3rem;
 
   -webkit-transform: translate(-50%, -50%);
   -ms-transform: translate(-50%, -50%);

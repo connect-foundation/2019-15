@@ -12,6 +12,6 @@ export const IconStyle = styled(FontAwesomeIcon).attrs({
 export const CircleStyle = styled(FontAwesomeIcon).attrs({
   size: '1x',
 })`
-  margin-right: 1rem;
+  margin-right: 0.3rem;
   color: ${(props) => props.theme.eastSide};
 `;
