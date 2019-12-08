@@ -1,7 +1,7 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import styled from 'styled-components';
 
-const IconStyle = styled(FontAwesomeIcon).attrs({
+export const IconStyle = styled(FontAwesomeIcon).attrs({
   size: 'lg',
 })`
   margin-left: auto;
@@ -9,4 +9,9 @@ const IconStyle = styled(FontAwesomeIcon).attrs({
   cursor: pointer;
 `;
 
-export default IconStyle;
+export const CircleStyle = styled(FontAwesomeIcon).attrs({
+  size: '1x',
+})`
+  margin-right: 1rem;
+  color: ${(props) => props.theme.eastSide};
+`;

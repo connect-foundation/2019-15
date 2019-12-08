@@ -29,7 +29,6 @@ const Main = () => {
       const gameSocket = connectGameSocket();
       setGameSocket(gameSocket);
       initConnectMsgHandler(gameSocket, { setRoom });
-      setOnlineSocket(onlineSocket);
       setRoom(null);
     };
     checkAuth(setNickName);

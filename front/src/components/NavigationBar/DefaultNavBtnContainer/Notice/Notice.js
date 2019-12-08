@@ -16,23 +16,8 @@ const noticeTypeReducer = (state, action) => {
   return { isOpen: true, type: action.type };
 };
 
-const alarmListReducer = (state, action) => {
-  switch (action.type) {
-    case 'push':
-      return [...state, action.value];
-    case 'pop':
-      state.pop();
-      return [...state];
-    case 'reset':
-      return [];
-    default:
-      throw new Error('wrong action type');
-  }
-};
-
 export default function Notice() {
-  const [alarmList, alarmListDispatch] = useReducer(alarmListReducer, []);
-  useAlarm(alarmListDispatch);
+  const [alarmList, alarmListDispatch] = useAlarm();
 
   useEffect(() => {
     if (!alarmList.length) return () => {};
@@ -44,7 +29,7 @@ export default function Notice() {
     return () => {
       clearTimeout(timeoutToCloseAlarm);
     };
-  }, [alarmList]);
+  }, [alarmList, alarmListDispatch]);
 
   const [notice, noticeDispatch] = useReducer(noticeTypeReducer, {
     isOpen: false,
