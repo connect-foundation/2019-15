@@ -33,28 +33,13 @@ function sendMessage(gameSocket, { roomType, roomId, inputValue }) {
 
     // 모든 플레이어가 답을 맞춘 경우
     if (room.isAllPlayerAnswered()) {
-      // 한 라운드가 끝나는 경우
-      if (room.examinerIndex === 0) room.prepareNextRound();
-      // 아직 한 라운드가 끝나지 않은 경우
-      else room.prepareNextQuestion();
-
-      const nextExaminer = room.getExaminer();
-      setTimeout(() => {
-        sendUserListToRoom(room.players, roomId, this.gameIo);
-      }, 5000);
-      this.gameIo.in(roomId).emit('endQuestion', {
-        nextExaminerSocketId: nextExaminer.socket.id,
-        _scores: room.getScores(),
-        answer: answer,
-        currentRound: room.currentRound,
-        totalRound: room.totalRound,
-      });
+      room.questionEndCallback(this.gameIo);
     }
   }
 
   this.gameIo.in(roomId).emit('getMessage', returnMessage);
   sendUserListToRoom(room.players, roomId, this.gameIo);
-
+  
 }
 
 module.exports = { sendMessage };
