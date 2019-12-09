@@ -2,7 +2,7 @@ const { personEnterPrivateRoom, sendUserListToRoom } = require('./game');
 const { RoomManager } = require('../RoomManager');
 const exitRoom = require('./exitRoom');
 const sendGameImage = require('./gameImage');
-const enterRandom = require('./enterRandom');
+const { enterRandom, enterPrivate } = require('./enterGame');
 const { sendMessage } = require('./message');
 const selectWord = require('./selectWord');
 const { PRIVATE_ROOM_NAME } = require('../../config/roomConfig');
@@ -20,8 +20,11 @@ function setGameSocket(socket) {
 
   socket.on('makePrivate', ({ roomId }) => {
     this.RoomManager.room[PRIVATE_ROOM_NAME][roomId] = new Room(this.gameIo);
-    roomInfo.roomId = roomId;
+  });
+
+  socket.on('enterPrivate', ({ nickname, roomId, roomOwner }) => {
     roomInfo.roomType = PRIVATE_ROOM_NAME;
+    roomInfo.roomId = roomId;
   });
 
   socket.on('startPrivateGame', ({ roomId, roomType }) => {
@@ -34,6 +37,7 @@ function setGameSocket(socket) {
     }
   });
 
+  socket.on('enterPrivate', enterPrivate.bind(this, gameSocket));
   socket.on('selectWord', selectWord.bind(this, gameSocket));
   socket.on('sendMessage', sendMessage.bind(this, gameSocket));
   socket.on('enterRandom', enterRandom.bind(this, gameSocket, roomInfo));
