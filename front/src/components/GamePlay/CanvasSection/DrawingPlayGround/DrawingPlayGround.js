@@ -4,10 +4,12 @@ import Tools from 'components/GamePlay/CanvasSection/DrawingPlayGround/Tools/Too
 import PainterBoard from 'components/GamePlay/CanvasSection/DrawingPlayGround/PainterBoard/PainterBoard';
 import NonPainterBoard from 'components/GamePlay/CanvasSection/DrawingPlayGround/NonPainterBoard/NonPainterBoard';
 import { ToolsStyle } from 'components/GamePlay/CanvasSection/DrawingPlayGround/Tools/Tools.style';
+
 import {
   DrawingPlayGroundStyle,
   CenterSpanStyle,
 } from './DrawingPlayGround.style';
+import { DEFAULT_DRAWING_OPTIONS } from 'constant/DrawingPlayGround';
 
 DrawingPlayGround.propTypes = {
   drawable: PropTypes.bool.isRequired,
@@ -37,17 +39,10 @@ const setDrawingOptions = (prev, { type, value }) => {
   }
 };
 
-const defaultDrawingOptions = {
-  tool: 'pen',
-  strokeColor: '#000000',
-  strokeWidth: 10,
-  fillColor: '#000000',
-};
-
 export default function DrawingPlayGround({ drawable, canvasSize }) {
   const [drawingOptions, drawingOptionsDispatcher] = useReducer(
     setDrawingOptions,
-    defaultDrawingOptions,
+    DEFAULT_DRAWING_OPTIONS,
   );
 
   return (
