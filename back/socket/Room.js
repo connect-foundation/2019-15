@@ -1,5 +1,5 @@
 const uuid = require('uuid/v1');
-const { maxPeopleNum } = require('../config/roomConfig');
+const { maxPeopleNum, PRIVATE_ROOM_NAME } = require('../config/roomConfig');
 const Timer = require('../util/timer/Timer');
 
 const makeRoomId = () => {
@@ -68,8 +68,8 @@ class Room {
 }
 
 const RoomManager = {
-  roomList: ['3명', '6명', '12명', '100명', '비밀방'],
-  room: { '3명': {}, '6명': {}, '12명': {}, '100명': {}, 비밀방: {} },
+  roomList: ['3명', '6명', '12명', '100명', PRIVATE_ROOM_NAME],
+  room: { '3명': {}, '6명': {}, '12명': {}, '100명': {}, PRIVATE_ROOM_NAME: {} },
   maxPeopleNum,
 
   // 방이 없을 때 새로운 방을 만들고 반환.
@@ -98,12 +98,12 @@ const RoomManager = {
     }
     return room[0];
   },
-  getEnableSecretRoom(roomId) {
-    const secretRoomList = this.room['비밀방'];
+  getEnablePrivateRoom(roomId) {
+    const privateRoomList = this.room[PRIVATE_ROOM_NAME];
 
-    if (!secretRoomList.hasOwnProperty(roomId)) secretRoomList[roomId] = new Room();
+    if (!privateRoomList.hasOwnProperty(roomId)) privateRoomList[roomId] = new Room();
 
-    return secretRoomList[roomId];
+    return privateRoomList[roomId];
   },
   isExistRoom({ roomType, roomId }) {
     return roomType && roomId && this.room[roomType].hasOwnProperty(roomId);

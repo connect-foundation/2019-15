@@ -15,4 +15,5 @@ const state = {
   GAME_END: 5,
 };
 
-module.exports = { maxPeopleNum, state };
+const PRIVATE_ROOM_NAME = '비밀방';
+module.exports = { maxPeopleNum, state, PRIVATE_ROOM_NAME };
