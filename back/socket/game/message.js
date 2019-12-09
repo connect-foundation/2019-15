@@ -26,6 +26,9 @@ function sendMessage(gameSocket, { roomType, roomId, inputValue }) {
     returnMessage.content = `${player.nickname}님이 정답을 맞췄습니다! Hooray`;
     returnMessage.privileged = 'notice';
 
+    this.gameIo.in(roomId).emit('getMessage', returnMessage);
+    sendUserListToRoom(room.players, roomId, this.gameIo);
+
     // 점수 계산
     const defaultScore = 100;
     const score = getScore(room.timer.getRemainTime(), room.timer.getDefaultTime(), defaultScore);
@@ -35,11 +38,10 @@ function sendMessage(gameSocket, { roomType, roomId, inputValue }) {
     if (room.isAllPlayerAnswered()) {
       room.questionEndCallback(this.gameIo);
     }
+    return;
   }
 
   this.gameIo.in(roomId).emit('getMessage', returnMessage);
-  sendUserListToRoom(room.players, roomId, this.gameIo);
-  
 }
 
 module.exports = { sendMessage };
