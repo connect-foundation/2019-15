@@ -21,6 +21,7 @@ export default function UserList() {
     const className = createClassName(user.socketId, gameSocket.id, painter);
     return (
       <User
+        key={order}
         className={className}
         nickname={user.nickname}
         privileged={user.privileged}
