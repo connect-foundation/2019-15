@@ -25,7 +25,6 @@ function sendMessage(gameSocket, { roomType, roomId, inputValue }) {
     player.privileged = true;
     returnMessage.content = `${player.nickname}님이 정답을 맞췄습니다! Hooray`;
     returnMessage.privileged = 'notice';
-    sendUserListToRoom(room.players, roomId, this.gameIo);
 
     // 점수 계산
     const defaultScore = 100;
@@ -54,6 +53,8 @@ function sendMessage(gameSocket, { roomType, roomId, inputValue }) {
   }
 
   this.gameIo.in(roomId).emit('getMessage', returnMessage);
+  sendUserListToRoom(room.players, roomId, this.gameIo);
+
 }
 
 module.exports = { sendMessage };
