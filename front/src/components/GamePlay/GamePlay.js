@@ -96,12 +96,11 @@ const GamePlay = () => {
       setEndQuestionHandler(gameSocket, endQuestionCallback);
     };
     initSocket();
-      console.log(gameSocket);
 
     return () => {
       closeSocket(gameSocket, { setGameSocket });
     };
-  }, [gameSocket, setGameSocket, setPainter, setUserList, endQuestionCallback]);
+  }, [gameSocket, setGameSocket, setPainter, setUserList]);
 
   if (!gameSocket || gameSocket.connected === false) {
     return <Redirect to="main" />;
