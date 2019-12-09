@@ -2,11 +2,11 @@
 import Tool from 'components/GamePlay/CanvasSection/DrawingPlayGround/Tools/ToolType/Tool';
 
 class Eraser extends Tool {
-  setCanvas(fabricCanvas, { strokeWidth, strokeColor }) {
+  setCanvas(fabricCanvas) {
     super.setCanvas(fabricCanvas);
     this.fc.isDrawingMode = true;
     this.fc.selection = false;
-    this.fc.freeDrawingBrush.width = strokeWidth;
+    this.fc.freeDrawingBrush.width = 50;
     this.fc.freeDrawingBrush.color = '#FFFFFF';
   }
 }
