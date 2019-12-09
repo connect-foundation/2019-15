@@ -11,4 +11,5 @@ export default {
   pink: '#FEBBBD',
   paleRose: '#F9E9E9',
   mustard: '#FFE65D',
+  geyser: '#D9E0E3',
 };

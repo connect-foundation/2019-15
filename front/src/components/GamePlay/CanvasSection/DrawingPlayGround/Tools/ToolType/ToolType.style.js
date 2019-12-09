@@ -1,5 +1,9 @@
 import styled from 'styled-components';
 
-const ToolTypeStyle = styled.div``;
+export const ToolTypeStyle = styled.div`
+  margin: 0;
+`;
 
-export default ToolTypeStyle;
+export const ToolTitleStyle = styled.h4`
+  margin: 0 0 1rem 0;
+`;
