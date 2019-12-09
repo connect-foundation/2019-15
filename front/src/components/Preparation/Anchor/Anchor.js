@@ -10,7 +10,7 @@ import {
 export default function Anchor() {
   function onClickCopyButton() {
     const tempElem = document.createElement('textarea');
-    tempElem.value = window.location.href;
+    tempElem.value = window.location.href.replace('waiting', 'setting');
     document.body.appendChild(tempElem);
 
     tempElem.select();
@@ -20,7 +20,9 @@ export default function Anchor() {
   return (
     <AnchorStyle>
       <AnchorImageStyle src={AnchorImage} />
-      <AnchorLinkText id="link-url">{window.location.href}</AnchorLinkText>
+      <AnchorLinkText id="link-url">
+        {window.location.href.replace('waiting', 'setting')}
+      </AnchorLinkText>
       <AnchorCopyButton onClick={onClickCopyButton}>복사</AnchorCopyButton>
     </AnchorStyle>
   );

@@ -5,9 +5,9 @@ import ButtonStyle from 'components/globalComponents/Button/Button.style';
 export const SettingStyle = styled(FlexColumnStyle)`
   width: 50%;
   height: 90%;
-  margin: 2rem;
   justify-content: space-around;
   align-items: center;
+  margin: 0 25%;
 `;
 
 export const RoomSettingStyle = styled(FlexColumnStyle)`
