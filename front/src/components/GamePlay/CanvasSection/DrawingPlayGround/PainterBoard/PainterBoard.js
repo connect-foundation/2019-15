@@ -22,7 +22,7 @@ PainterBoard.propTypes = {
 
 PainterBoard.defaultProps = {
   drawingOptions: PropTypes.shape({
-    tool: ToolManager.TOOL_LIST[0],
+    tool: ToolManager.toolList[0],
     strokeColor: '#000000',
   }),
   size: {
@@ -45,7 +45,7 @@ export default function PainterBoard({ drawingOptions, size }) {
 
     const onMouseDown = ({ pointer }) => {
       tool.onMouseDown(pointer);
-      if (toolName !== 'pen') return;
+      if (!ToolManager.freeDrawingTools.includes(toolName)) return;
       emitable = true;
       eventListDispatch({
         type: 'push',
@@ -54,7 +54,7 @@ export default function PainterBoard({ drawingOptions, size }) {
     };
     const onMouseMove = ({ pointer }) => {
       tool.onMouseMove(pointer);
-      if (toolName !== 'pen' || !emitable) return;
+      if (!ToolManager.freeDrawingTools.includes(toolName) || !emitable) return;
 
       eventListDispatch({
         type: 'push',
