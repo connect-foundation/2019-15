@@ -15,8 +15,8 @@ export default function Setting() {
   const history = useHistory();
 
   useEffect(() => {
-    const secretRoomId = window.location.hash.split('setting:')[1];
-    setRoom(new Room(secretRoomId, PRIVATE_ROOM_NAME));
+    const privateRoomId = window.location.hash.split('setting:')[1];
+    setRoom(new Room(privateRoomId, PRIVATE_ROOM_NAME));
   }, [setRoom]);
 
   function onClickGameStart() {

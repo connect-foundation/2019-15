@@ -6,6 +6,7 @@ const enterRandom = require('./enterRandom');
 const { sendMessage } = require('./message');
 const selectWord = require('./selectWord');
 const { PRIVATE_ROOM_NAME } = require('../../config/roomConfig');
+const { Room } = require('../Room');
 
 function setGameSocket(socket) {
   this.RoomManager = RoomManager;
