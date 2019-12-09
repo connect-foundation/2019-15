@@ -4,7 +4,7 @@ import { faCog, faUserPlus } from '@fortawesome/free-solid-svg-icons';
 import FriendsListStyle from './FriendsList.style';
 import FriendComponents from './FriendComponents/FriendComponents';
 import FriendComponentStyle from './FriendComponent.style';
-import Icon from './Icons.style';
+import { IconStyle } from './Icons.style';
 import DoneButton from './DoneButton.style';
 import Input from './Input.style';
 import FriendsSetModal from './FriendsSetModal/FriendsSetModal';
@@ -47,7 +47,7 @@ export default function FriendsList() {
             </FriendComponentStyle>
             <FriendComponentStyle>
               <Input onChange={inputChangeHandler} />
-              <Icon
+              <IconStyle
                 icon={faUserPlus}
                 onClick={() => modalOnOff('add', inputValue)}
               />
@@ -57,7 +57,7 @@ export default function FriendsList() {
           <>
             <FriendComponentStyle>
               <span>친구 목록</span>
-              <Icon icon={faCog} onClick={changeConfigMode} />
+              <IconStyle icon={faCog} onClick={changeConfigMode} />
             </FriendComponentStyle>
           </>
         )}

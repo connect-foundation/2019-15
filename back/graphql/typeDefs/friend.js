@@ -14,7 +14,7 @@ module.exports = `
     friendStateid:Int!
   }
   
-  type FriendRequestResult{
+  type FriendResult{
     user:User!
     result:Boolean!
   }
@@ -25,10 +25,10 @@ module.exports = `
 
   extend type Mutation{
     friends:[User]
-    deleteFriend(nickname:String):[Friend]
+    deleteFriend(nickname:String):FriendResult
     findFriendRequests:[User]
     deleteFriendRequest(nickname:String):[BeforeFriend]
-    acceptFriendRequest(nickname:String):User
-    sendFriendRequest(nickname:String):FriendRequestResult
+    acceptFriendRequest(nickname:String):FriendResult
+    sendFriendRequest(nickname:String):FriendResult
   }
 `;

@@ -8,10 +8,7 @@ import { ThemeContext } from 'styled-components';
 export default function Ranking() {
   const themeContext = useContext(ThemeContext);
   return (
-    <Tab
-      activeTabColor={themeContext.amour}
-      inActiveTabColor={themeContext.wePeep}
-    >
+    <Tab activeTabColor="white" inActiveTabColor={themeContext.pink}>
       <TabPane paneName="전체 랭킹">
         <RankingAll />
       </TabPane>

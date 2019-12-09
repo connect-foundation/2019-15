@@ -28,9 +28,7 @@ const resultTextReducer = (state, action) => {
 export default function NicknameChangeContainer() {
   const { user } = useContext(GlobalContext);
   const [nickname, setNickname] = useState(user.nickname);
-  const [resultText, resultTextDispatch] = useReducer(
-    resultTextReducer,''
-  );
+  const [resultText, resultTextDispatch] = useReducer(resultTextReducer, '.');
 
   return (
     <NicknameChangeContainerStyle>

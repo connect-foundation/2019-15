@@ -6,14 +6,18 @@ const maxPeopleNum = {
   비밀방: 100,
 };
 
-const state = {
-  WAIT_ANOTHER_PLAYER: 0,
-  SELECT_WORD: 1,
-  PLAYING_QUESTION: 2,
-  QUESTION_END: 3,
-  ROUND_END: 4,
-  GAME_END: 5,
+const roomState = {
+  EMPTY: 0,
+  WAITING: 1,
+  SELECTING_WORD: 2,
+  PLAYING_QUESTION: 3,
+  END_GAME: 4,
 };
 
 const PRIVATE_ROOM_NAME = '비밀방';
-module.exports = { maxPeopleNum, state, PRIVATE_ROOM_NAME };
+
+const defaultRoomSetting = {
+  totalRound: 3,
+};
+
+module.exports = { maxPeopleNum, roomState, defaultRoomSetting, PRIVATE_ROOM_NAME };

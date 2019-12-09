@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 const RoomContainerStyle = styled.section`
-  width: 20rem;
+  width: 22rem;
   height: 23rem;
   background-color: ${(props) => props.theme.paleRose};
   margin: 10px;

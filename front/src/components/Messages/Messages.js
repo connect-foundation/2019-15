@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 
 import { useMutation } from '@apollo/react-hooks';
 import {
@@ -7,14 +7,17 @@ import {
   acceptFriendRequest,
 } from 'queries/friend';
 import globalMessages from 'constant/messages';
+import { emitAcceptFriendRequest } from 'logics/socketLogic/online';
+import GlobalContext from 'global.context';
 import MessagesStyle from './Messages.style';
 import MessageComponentStyle from './MessageComponent.style';
 import Button from '../globalComponents/Button/Button';
-import Modal from '../globalComponents/Modal/Modal';
+import makeModal from '../globalComponents/Modal/Modal';
 import Div from '../globalComponents/Modal/ContentDiv.style';
 import ButtonDiv from './ButtonDiv.style';
 
 export default function MessageList() {
+  const { onlineSocket } = useContext(GlobalContext);
   const [openModal, setOpenModal] = useState(false);
   const [friendRequests, setFriendRequests] = useState([]);
   const [findFriendRequestsFunc] = useMutation(findFriendRequests, {
@@ -28,9 +31,11 @@ export default function MessageList() {
     },
   });
   const [acceptFriendRequestFunc] = useMutation(acceptFriendRequest, {
-    onCompleted(data) {
+    onCompleted({ acceptFriendRequest: { user, result } }) {
+      if (!result) return;
+      emitAcceptFriendRequest(onlineSocket, user);
       deleteFriendRequestFunc({
-        variables: { nickname: data.acceptFriendRequest.nickname },
+        variables: { nickname: user.nickname },
       });
     },
   });
@@ -51,6 +56,10 @@ export default function MessageList() {
     fetch();
   }, [findFriendRequestsFunc]);
 
+  const closeModal = () => setOpenModal(false);
+  const Body = () => <div>{globalMessages.acceptRequest}</div>;
+  const Footer = () => <Button onClick={closeModal}>확인</Button>;
+  const Modal = makeModal(null, Body, Footer);
   return (
     <>
       <MessagesStyle>
@@ -69,14 +78,7 @@ export default function MessageList() {
           </MessageComponentStyle>
         ))}
       </MessagesStyle>
-      {openModal ? (
-        <Modal>
-          <Div>
-            {globalMessages.acceptRequest}
-            <Button onClick={() => setOpenModal(false)}>확인</Button>
-          </Div>
-        </Modal>
-      ) : null}
+      {openModal ? <Modal /> : null}
     </>
   );
 }
