@@ -5,9 +5,9 @@ import Room from 'logics/room';
 import { PRIVATE_ROOM_NAME } from 'constant/room/roomInfo';
 import {
   SettingStyle,
-  RoomSettingStyle,
   UserSettingStyle,
   GameStartButtonStyle,
+  Nickname,
 } from './Setting.style';
 
 export default function Setting() {
@@ -25,8 +25,9 @@ export default function Setting() {
 
   return (
     <SettingStyle>
-      <RoomSettingStyle />
-      <UserSettingStyle />
+      <UserSettingStyle>
+        <Nickname />
+      </UserSettingStyle>
       <GameStartButtonStyle onClick={onClickGameStart}>
         게임 시작
       </GameStartButtonStyle>

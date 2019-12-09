@@ -25,3 +25,8 @@ export const GameStartButtonStyle = styled(ButtonStyle)`
   height: 10%;
   font-size: 22px;
 `;
+
+export const Nickname = styled.input`
+  width: 50%;
+  height: 15%;
+`;
