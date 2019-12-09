@@ -44,10 +44,6 @@ class Line extends Tool {
   onMouseUp() {
     this.isDown = false;
   }
-
-  onMouseOut() {
-    this.isDown = false;
-  }
 }
 
 export default Line;

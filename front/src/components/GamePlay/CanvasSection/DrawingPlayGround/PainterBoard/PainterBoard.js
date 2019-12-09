@@ -11,7 +11,7 @@ import { fab } from '@fortawesome/free-brands-svg-icons';
 
 PainterBoard.propTypes = {
   drawingOptions: PropTypes.shape({
-    tool: PropTypes.oneOf(ToolManager.TOOL_LIST),
+    tool: PropTypes.oneOf(ToolManager.toolList),
     strokeColor: PropTypes.string,
   }),
   size: PropTypes.shape({
@@ -73,29 +73,14 @@ export default function PainterBoard({ drawingOptions, size }) {
       });
       emitable = false;
     };
-    const onMouseOut = () => {
-      tool.onMouseOut();
-      if (toolName !== 'pen') return;
-      eventListDispatch({
-        type: 'push',
-        value: {
-          drawingOptions,
-          pointer: { x: null, y: null },
-          event: 'mouseOut',
-        },
-      });
-      emitable = false;
-    };
 
     fabricCopy.on('mouse:down', onMouseDown);
     fabricCopy.on('mouse:move', onMouseMove);
     fabricCopy.on('mouse:up', onMouseUp);
-    fabricCopy.on('mouse:out', onMouseOut);
     return () => {
       fabricCopy.off('mouse:down');
       fabricCopy.off('mouse:move');
       fabricCopy.off('mouse:up');
-      fabricCopy.off('mouse:out');
     };
   }, [drawingOptions, eventListDispatch, fabricCanvas, toolName]);
 

@@ -45,8 +45,6 @@ export default function NonPainterBoard({ size }) {
     } else if (event === 'mouseUp') {
       setCanvasFromJson(data);
       pen.onMouseUp();
-    } else if (event === 'mouseOut') {
-      pen.onMouseOut();
     }
   };
 

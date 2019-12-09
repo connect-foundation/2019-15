@@ -4,7 +4,6 @@ import SpectreButton from 'components/globalComponents/SpectreButton/SpectreButt
 import ToolManager from 'components/GamePlay/CanvasSection/DrawingPlayGround/Tools/ToolType/ToolManager';
 import {
   ToolTypeStyle,
-  ToolTitleStyle,
   ToolTypeSelectionStyle,
 } from 'components/GamePlay/CanvasSection/DrawingPlayGround/Tools/ToolType/ToolType.style';
 
