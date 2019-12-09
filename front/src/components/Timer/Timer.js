@@ -6,56 +6,58 @@ Timer.propTypes = {
   isTimerGetReady: PropTypes.bool.isRequired,
   setIsTimerGetReady: PropTypes.func.isRequired,
   setIsOpen: PropTypes.func.isRequired,
+  endTime: PropTypes.number.isRequired,
+  setEndTime: PropTypes.func.isRequired,
 };
+
+function getRemainTime(endTime) {
+  const gap = Math.floor((endTime - Date.now()) / 1000);
+  return gap >= 0 ? gap : 0;
+}
 
 export default function Timer({
   isTimerGetReady,
   setIsTimerGetReady,
   setIsOpen,
+  endTime,
+  setEndTime,
 }) {
-  const [time, setTime] = useState(30);
-  const [isRunnable, setIsRunnable] = useState(false);
-
-  function resetTimer() {
-    setTime(30);
-  }
+  const [expireTime, setExpireTime] = useState(30000);
+  const [requestId, setRequestId] = useState(0);
 
   useEffect(() => {
-    // useCallback을 쓰면 hoisting이 되지 않아서 useEffect 내부에 선언함
-    const countDown = () => {
-      if (isRunnable) setTime(time - 1);
-    };
-
-    function stopTimer() {
-      setIsRunnable(false);
-      setIsTimerGetReady(false);
-      resetTimer();
-    }
-
     function notifyOpeningLetter() {
       setIsOpen(true);
     }
 
+    function stopTimer() {
+      setIsTimerGetReady(false);
+      cancelAnimationFrame(requestId);
+      // setEndTime(0);
+    }
+
     function runTimer() {
-      if (time === 10) notifyOpeningLetter();
-      if (time > 0) setTimeout(countDown, 1000);
+      if (getRemainTime(endTime) <= 10) notifyOpeningLetter();
+      if (getRemainTime(endTime) > 0)
+        setRequestId(requestAnimationFrame(runTimer));
       else stopTimer();
     }
 
-    function startTimer() {
-      setIsRunnable(true);
-      runTimer();
-    }
-
-    runTimer();
-    if (isTimerGetReady) startTimer();
+    if (isTimerGetReady) setRequestId(requestAnimationFrame(runTimer));
     else stopTimer();
-  }, [isTimerGetReady, setIsTimerGetReady, time, isRunnable, setIsOpen]);
+  }, [
+    isTimerGetReady,
+    setIsTimerGetReady,
+    setIsOpen,
+    setEndTime,
+    endTime,
+    requestId,
+  ]);
 
   return (
     <>
       <TimerStyle>
-        <span>{time}</span>
+        <span>{getRemainTime(endTime)}</span>
       </TimerStyle>
     </>
   );
