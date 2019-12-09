@@ -27,13 +27,9 @@ export function initGameStartMsgHandler(socket, { setPainter }) {
   });
 }
 
-export function initStartPrivateGameHandler(
-  socket,
-  { setPainter, setIsGamePlaying },
-) {
+export function initStartPrivateGameHandler(socket, { setPainter }) {
   socket.on('startPrivateGame', ({ painter }) => {
     setPainter(painter);
-    setIsGamePlaying(true);
   });
 }
 
