@@ -34,6 +34,8 @@ const setDrawingOptions = (prev, { type, value }) => {
       return { ...prev, strokeColor: value };
     case 'strokeWidth':
       return { ...prev, strokeWidth: value };
+    case 'fillColor':
+      return { ...prev, fillColor: value };
     default:
       throw new Error(`${type} is wrong action type`);
   }

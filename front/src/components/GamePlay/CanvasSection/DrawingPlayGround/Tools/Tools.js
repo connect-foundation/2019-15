@@ -12,6 +12,7 @@ import Slider from 'components/globalComponents/Slider/Slider';
 Tools.propTypes = {
   drawingOptions: PropTypes.shape({
     tool: PropTypes.oneOf(ToolManager.toolList),
+    fillColor: PropTypes.string,
     strokeColor: PropTypes.string,
     strokeWidth: PropTypes.number,
   }),
@@ -21,6 +22,7 @@ Tools.propTypes = {
 Tools.defaultProps = {
   drawingOptions: PropTypes.shape({
     tool: ToolManager.toolList[0],
+    fillColor: '#ffffff',
     strokeColor: '#000000',
     strokeWidth: 10,
   }),
@@ -43,6 +45,10 @@ export default function Tools({ drawingOptions, setDrawingOptions }) {
     [setDrawingOptions],
   );
 
+  const changeFillColor = (rgb) => {
+    setDrawingOptions({ type: 'fillColor', value: rgb });
+  };
+
   return (
     <ToolsStyle>
       <div>
@@ -62,6 +68,10 @@ export default function Tools({ drawingOptions, setDrawingOptions }) {
       <div>
         <ToolTitleStyle>선 색</ToolTitleStyle>
         <ColorPicker color={strokeColor} changeColor={changeStrokeColor} />
+      </div>
+      <div>
+        <ToolTitleStyle>채우기 색</ToolTitleStyle>
+        <ColorPicker color={fillColor} changeColor={changeFillColor} />
       </div>
     </ToolsStyle>
   );
