@@ -1,4 +1,4 @@
-const { RoomManager } = require('../Room');
+const { RoomManager } = require('../RoomManager');
 const { personEnterSecretRoom, sendUserListToRoom } = require('./game');
 const exitRoom = require('./exitRoom');
 const sendGameImage = require('./gameImage');
