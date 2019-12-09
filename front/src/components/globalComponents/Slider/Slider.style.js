@@ -14,7 +14,7 @@ export const LineStyle = styled.div`
 export const HandlebarStyle = styled.div`
   width: 1rem;
   height: 1rem;
-  background-color: #3d3d3b;
+  background-color: ${(props) => props.theme.tuatara};
   border-radius: 50%;
   z-index: 1;
   position: relative;
@@ -27,4 +27,3 @@ export const SliderStyle = styled.div`
   position: relative;
 `;
 
-export const SliderContainerStyle = styled.div``;

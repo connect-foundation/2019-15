@@ -1,14 +1,17 @@
 import React, { useCallback } from 'react';
 import PropTypes from 'prop-types';
-import { ToolsStyle } from 'components/GamePlay/CanvasSection/DrawingPlayGround/Tools/Tools.style';
+import {
+  ToolsStyle,
+  ToolTitleStyle,
+} from 'components/GamePlay/CanvasSection/DrawingPlayGround/Tools/Tools.style';
 import ColorPicker from 'components/GamePlay/CanvasSection/DrawingPlayGround/Tools/ColorPicker/ColorPicker';
 import ToolType from 'components/GamePlay/CanvasSection/DrawingPlayGround/Tools/ToolType/ToolType';
 import ToolManager from 'components/GamePlay/CanvasSection/DrawingPlayGround/Tools/ToolType/ToolManager';
-import StrokeWidth from 'components/GamePlay/CanvasSection/DrawingPlayGround/Tools/StrokeWidth/StrokeWidth';
+import Slider from 'components/globalComponents/Slider/Slider';
 
 Tools.propTypes = {
   drawingOptions: PropTypes.shape({
-    tool: PropTypes.oneOf(ToolManager.TOOL_LIST),
+    tool: PropTypes.oneOf(ToolManager.toolList),
     strokeColor: PropTypes.string,
     strokeWidth: PropTypes.number,
   }),
@@ -17,19 +20,19 @@ Tools.propTypes = {
 
 Tools.defaultProps = {
   drawingOptions: PropTypes.shape({
-    tool: ToolManager.TOOL_LIST[0],
+    tool: ToolManager.toolList[0],
     strokeColor: '#000000',
     strokeWidth: 10,
   }),
 };
 
 export default function Tools({ drawingOptions, setDrawingOptions }) {
-  const { tool, strokeColor } = drawingOptions;
+  const { tool, strokeColor, strokeWidth, fillColor } = drawingOptions;
   const changeTool = (toolToChange) => {
     setDrawingOptions({ type: 'tool', value: toolToChange });
   };
 
-  const changeColor = (rgb) => {
+  const changeStrokeColor = (rgb) => {
     setDrawingOptions({ type: 'strokeColor', value: rgb });
   };
 
@@ -43,13 +46,22 @@ export default function Tools({ drawingOptions, setDrawingOptions }) {
   return (
     <ToolsStyle>
       <div>
+        <ToolTitleStyle>도구</ToolTitleStyle>
         <ToolType tool={tool} changeTool={changeTool} />
       </div>
       <div>
-        <ColorPicker color={strokeColor} changeColor={changeColor} />
+        <ToolTitleStyle>선 굵기</ToolTitleStyle>
+        <Slider
+          max={50}
+          min={5}
+          unit={5}
+          initialStep={strokeWidth}
+          onChange={changeStrokeWidth}
+        />
       </div>
       <div>
-        <StrokeWidth changeStrokeWidth={changeStrokeWidth} />
+        <ToolTitleStyle>선 색</ToolTitleStyle>
+        <ColorPicker color={strokeColor} changeColor={changeStrokeColor} />
       </div>
     </ToolsStyle>
   );

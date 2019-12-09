@@ -12,7 +12,6 @@ export const RGB_LIST = [
   '#00FF00',
   '#0000FF',
   '#FF00FF',
-  '#00FFFF',
   '#C0C0C0',
   '#FFFFFF',
 ];

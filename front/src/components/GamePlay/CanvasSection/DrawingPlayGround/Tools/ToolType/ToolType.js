@@ -5,26 +5,28 @@ import ToolManager from 'components/GamePlay/CanvasSection/DrawingPlayGround/Too
 import {
   ToolTypeStyle,
   ToolTitleStyle,
+  ToolTypeSelectionStyle,
 } from 'components/GamePlay/CanvasSection/DrawingPlayGround/Tools/ToolType/ToolType.style';
 
 ToolType.propTypes = {
-  tool: PropTypes.oneOf(ToolManager.TOOL_LIST).isRequired,
+  tool: PropTypes.oneOf(ToolManager.toolList).isRequired,
   changeTool: PropTypes.func.isRequired,
 };
 
 export default function ToolType({ tool, changeTool }) {
   return (
     <ToolTypeStyle>
-      <ToolTitleStyle>도구</ToolTitleStyle>
-      {ToolManager.TOOL_LIST.map((toolName) => (
-        <SpectreButton
-          active={toolName === tool}
-          key={toolName}
-          onClick={() => changeTool(toolName)}
-        >
-          {toolName}
-        </SpectreButton>
-      ))}
+      <ToolTypeSelectionStyle>
+        {ToolManager.toolList.map((toolName) => (
+          <SpectreButton
+            active={toolName === tool}
+            key={toolName}
+            onClick={() => changeTool(toolName)}
+          >
+            {toolName}
+          </SpectreButton>
+        ))}
+      </ToolTypeSelectionStyle>
     </ToolTypeStyle>
   );
 }

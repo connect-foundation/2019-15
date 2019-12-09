@@ -11,7 +11,6 @@ import {
   HandlebarStyle,
   LineStyle,
   SliderStyle,
-  SliderContainerStyle,
 } from 'components/globalComponents/Slider/Slider.style';
 import { getNodeCenterPos } from 'util/Slider';
 
@@ -113,11 +112,9 @@ export default function Slider({ max, min, unit, onChange, initialStep }) {
   );
 
   return (
-    <SliderContainerStyle>
-      <SliderStyle ref={setSliderEvents}>
-        <HandlebarStyle left={handlebarLeft} step={step} />
-        <LineStyle />
-      </SliderStyle>
-    </SliderContainerStyle>
+    <SliderStyle ref={setSliderEvents}>
+      <HandlebarStyle left={handlebarLeft} step={step} />
+      <LineStyle />
+    </SliderStyle>
   );
 }

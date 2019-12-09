@@ -22,7 +22,6 @@ ColorPicker.defaultProps = {
 export default function ColorPicker({ rgbList, color, changeColor }) {
   return (
     <div>
-      <ToolTitleStyle>선 색</ToolTitleStyle>
       <ColorPickerStyle>
         <ColorBoxList>
           {rgbList.map((RGB) => (

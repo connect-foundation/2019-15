@@ -5,11 +5,11 @@ import PainterBoard from 'components/GamePlay/CanvasSection/DrawingPlayGround/Pa
 import NonPainterBoard from 'components/GamePlay/CanvasSection/DrawingPlayGround/NonPainterBoard/NonPainterBoard';
 import { ToolsStyle } from 'components/GamePlay/CanvasSection/DrawingPlayGround/Tools/Tools.style';
 
+import { DEFAULT_DRAWING_OPTIONS } from 'constant/DrawingPlayGround';
 import {
   DrawingPlayGroundStyle,
   CenterSpanStyle,
 } from './DrawingPlayGround.style';
-import { DEFAULT_DRAWING_OPTIONS } from 'constant/DrawingPlayGround';
 
 DrawingPlayGround.propTypes = {
   drawable: PropTypes.bool.isRequired,
