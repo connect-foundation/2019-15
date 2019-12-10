@@ -19,9 +19,10 @@ const useGetRankingFriends = () => {
       updateQuery: (prev, { fetchMoreResult }) => {
         const newEdges = fetchMoreResult.rankingFriends.edges;
         const { pageInfo } = fetchMoreResult.rankingFriends;
+        console.log(newEdges);
         return newEdges.length
           ? {
-              getRankingFriends: {
+              rankingFriends: {
                 __typename: prev.rankingFriends.__typename,
                 edges: [...prev.rankingFriends.edges, ...newEdges],
                 pageInfo,
