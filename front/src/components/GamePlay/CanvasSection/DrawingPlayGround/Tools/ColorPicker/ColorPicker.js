@@ -1,12 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import RGB_LIST from 'constant/Tools';
+import { RGB_LIST } from 'constant/DrawingPlayGround';
 import {
   ColorPickerStyle,
   ColorBoxList,
   ColorInfo,
 } from 'components/GamePlay/CanvasSection/DrawingPlayGround/Tools/ColorPicker/ColorPicker.style';
 import ColorBox from 'components/GamePlay/CanvasSection/DrawingPlayGround/Tools/ColorPicker/ColorBox';
+import { ToolTitleStyle } from 'components/GamePlay/CanvasSection/DrawingPlayGround/Tools/ToolType/ToolType.style';
 
 ColorPicker.propTypes = {
   rgbList: PropTypes.arrayOf(String),
@@ -20,22 +21,24 @@ ColorPicker.defaultProps = {
 
 export default function ColorPicker({ rgbList, color, changeColor }) {
   return (
-    <ColorPickerStyle>
-      <ColorBoxList>
-        {rgbList.map((RGB) => (
-          <ColorBox
-            rgb={RGB}
-            changeColor={() => {
-              changeColor(RGB);
-            }}
-            key={RGB}
-          />
-        ))}
-      </ColorBoxList>
-      <ColorInfo>
-        <ColorBox rgb={color} />
-        <span>{color}</span>
-      </ColorInfo>
-    </ColorPickerStyle>
+    <div>
+      <ColorPickerStyle>
+        <ColorBoxList>
+          {rgbList.map((RGB) => (
+            <ColorBox
+              rgb={RGB}
+              changeColor={() => {
+                changeColor(RGB);
+              }}
+              key={RGB}
+            />
+          ))}
+        </ColorBoxList>
+        <ColorInfo>
+          <ColorBox rgb={color} />
+          <span>{color}</span>
+        </ColorInfo>
+      </ColorPickerStyle>
+    </div>
   );
 }

@@ -40,8 +40,8 @@ function personEnterRoom(nickname, socket, roomType, io, roomId) {
   return { roomId, roomType };
 }
 
-function personEnterSecretRoom(nickname, socket, roomId, io) {
-  const room = RoomManager.getEnableSecretRoom(roomId);
+function personEnterPrivateRoom(nickname, socket, roomId, io) {
+  const room = RoomManager.getEnablePrivateRoom(roomId);
   socket.join(roomId);
   room.addPlayer(new User(nickname, socket));
   sendUserListToRoom(room.players, roomId, io);
@@ -50,5 +50,5 @@ function personEnterSecretRoom(nickname, socket, roomId, io) {
 module.exports = {
   sendUserListToRoom,
   personEnterRoom,
-  personEnterSecretRoom,
+  personEnterPrivateRoom,
 };

@@ -5,7 +5,7 @@ const BackgroundStyle = styled.div`
   background-color: rgba(0, 0, 0, 0.2);
   margin-top: 3.5rem;
   margin-left: 0.5rem;
-  height: 480px;
+  height: 560px;
   width: 800px;
   display: flex;
   justify-content: center;

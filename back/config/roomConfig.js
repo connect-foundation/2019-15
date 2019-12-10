@@ -14,8 +14,10 @@ const roomState = {
   END_GAME: 4,
 };
 
+const PRIVATE_ROOM_NAME = '비밀방';
+
 const defaultRoomSetting = {
   totalRound: 3,
 };
 
-module.exports = { maxPeopleNum, roomState, defaultRoomSetting };
+module.exports = { maxPeopleNum, roomState, defaultRoomSetting, PRIVATE_ROOM_NAME };
