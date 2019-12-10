@@ -2,7 +2,7 @@ export const DEFAULT_DRAWING_OPTIONS = {
   tool: 'pen',
   strokeColor: '#000000',
   strokeWidth: 10,
-  fillColor: '#ffffff',
+  fillColor: '#FFFFFF',
 };
 
 export const RGB_LIST = [

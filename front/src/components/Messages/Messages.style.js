@@ -22,6 +22,7 @@ const MessagesStyle = styled(AlarmModalStyle)`
   width: 27rem;
   padding: 1rem;
   padding-bottom: 0;
+  z-index: 1;
 `;
 
 export default MessagesStyle;

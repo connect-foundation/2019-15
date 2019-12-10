@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { FlexRowStyle } from '../globalComponents/Container/Flex.style';
 
 export const GameInfoStyle = styled.div`
   width: 10rem;

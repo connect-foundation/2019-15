@@ -4,7 +4,7 @@ const { RoomManager } = require('../RoomManager');
 function sendUserListToRoom(list, roomId, io) {
   const userList = list.map((user) => {
     const userName = user.nickname || '부스트캠퍼';
-    return { nickname: userName, socketId: user.socket.id };
+    return { nickname: userName, socketId: user.socket.id, privileged: user.privileged };
   });
   io.in(roomId).emit('userList', { userList: JSON.stringify(userList) });
 }
@@ -19,8 +19,6 @@ function personEnterRoom(nickname, socket, roomType, io, roomId) {
     roomType,
   });
 
-  sendUserListToRoom(room.players, roomId, io);
-
   if (room.isPlayable()) {
     room.prepareFirstQuestion();
     io.to(roomId).emit('gamestart', room.makeGameStartData());
@@ -28,6 +26,8 @@ function personEnterRoom(nickname, socket, roomType, io, roomId) {
     socket.emit('gamestart', room.makeGameStartData());
     socket.emit('startQuestion', room.makeStartQuestionData());
   }
+
+  sendUserListToRoom(room.players, roomId, io);
 
   return { roomId, roomType };
 }
