@@ -15,7 +15,6 @@ const getRankingQuery = (resolverName, { order, first, after }) => {
           endCursor
           hasNextPage
         }
-        totalCount
         edges{
           node{
             id
@@ -30,13 +29,9 @@ const getRankingQuery = (resolverName, { order, first, after }) => {
 
 const testEdges = (values, testOptions) => {
   const { edges, pageInfo, expectedLength } = values;
-  const { order, isEdgeLengthSame } = testOptions;
+  const { order } = testOptions;
 
-  if (isEdgeLengthSame) {
-    expect(edges.length).toEqual(expectedLength);
-  } else {
-    expect(edges.length).toBeLessThan(expectedLength);
-  }
+  expect(edges.length).toBeLessThanOrEqual(expectedLength);
 
   let scoreExpectFunc = (idx) =>
     expect(edges[idx].node.score).toBeLessThanOrEqual(edges[idx + 1].node.score);
@@ -73,7 +68,7 @@ describe('랭킹 graphql 쿼리 테스트', () => {
       })
       .expect(200);
     const { pageInfo, edges } = res.body.data.rankingAll;
-    testEdges({ edges, pageInfo, expectedLength }, { order, isEdgeLengthSame: true });
+    testEdges({ edges, pageInfo, expectedLength }, { order });
     done();
   });
 
@@ -85,11 +80,11 @@ describe('랭킹 graphql 쿼리 테스트', () => {
       .set('Cookie', [`jwt=${token}`])
       .post(graphqlPath)
       .send({
-        query: getRankingQuery('rankingAll', { first: expectedLength }),
+        query: getRankingQuery('rankingAll', { order, first: expectedLength }),
       })
       .expect(200);
     const { pageInfo, edges } = res.body.data.rankingAll;
-    testEdges({ edges, pageInfo, expectedLength }, { order, isEdgeLengthSame: true });
+    testEdges({ edges, pageInfo, expectedLength }, { order });
     done();
   });
 
@@ -103,13 +98,15 @@ describe('랭킹 graphql 쿼리 테스트', () => {
       .post(graphqlPath)
       .send({
         query: getRankingQuery('rankingAll', {
+          order,
           first: expectedLength,
           after,
         }),
       })
       .expect(200);
+    console.log(res.body.data);
     const { pageInfo, edges } = res.body.data.rankingAll;
-    testEdges({ edges, pageInfo, expectedLength }, { order, isEdgeLengthSame: false });
+    testEdges({ edges, pageInfo, expectedLength }, { order });
     done();
   });
 });
@@ -128,7 +125,7 @@ describe('친구 랭킹 graphql 쿼리 테스트', () => {
       .expect(200);
 
     const { pageInfo, edges } = res.body.data.rankingFriends;
-    testEdges({ edges, pageInfo, expectedLength }, { order, isEdgeLengthSame: true });
+    testEdges({ edges, pageInfo, expectedLength }, { order });
     done();
   });
 
@@ -145,7 +142,7 @@ describe('친구 랭킹 graphql 쿼리 테스트', () => {
       .expect(200);
 
     const { pageInfo, edges } = res.body.data.rankingFriends;
-    testEdges({ edges, pageInfo, expectedLength }, { order, isEdgeLengthSame: true });
+    testEdges({ edges, pageInfo, expectedLength }, { order });
     done();
   });
 
@@ -163,7 +160,7 @@ describe('친구 랭킹 graphql 쿼리 테스트', () => {
       .expect(200);
 
     const { pageInfo, edges } = res.body.data.rankingFriends;
-    testEdges({ edges, pageInfo, expectedLength }, { order, isEdgeLengthSame: false });
+    testEdges({ edges, pageInfo, expectedLength }, { order });
     done();
   });
 });

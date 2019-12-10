@@ -2,13 +2,7 @@ const Sequelize = require('sequelize');
 
 const { Op } = Sequelize;
 
-const { MAX_CURSOR, intTo10Str, strToInt, CURSOR_LENGTH } = require('./constants/ranking');
-
-const getScoreOrdering = (col, order) => {
-  return order === 'ASC' ? [col] : [col, 'DESC'];
-};
-
-const makeNodeToEdge = (node) => {};
+const { MAX_CURSOR, intTo10Str, MIN_CURSOR } = require('./constants/ranking');
 
 const getEdgesWithCursor = (nodes) => {
   return nodes.map(({ dataValues: node }) => {
@@ -33,10 +27,14 @@ const getOrderOp = (order) => {
   return order === 'ASC' ? Op.gt : Op.lt;
 };
 
+const getDefaultCursor = (order) => {
+  return order === 'ASC' ? MAX_CURSOR : MIN_CURSOR;
+};
+
 const rankingResolvers = {
   Query: {
     rankingAll: async (obj, { order, first, after }, { Users }) => {
-      const lastEndCursor = after || MAX_CURSOR;
+      const lastEndCursor = after || getDefaultCursor(order);
 
       const nodes = await Users.findAll({
         attributes: {
