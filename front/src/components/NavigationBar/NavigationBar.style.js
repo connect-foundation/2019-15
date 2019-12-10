@@ -20,7 +20,7 @@ export const LogoImage = styled(Image)`
 export const SmallLogoImage = styled(Image)`
   margin-top: 5px;
   ${(props) =>
-    props.location.pathname.includes('mypage')
+    props.pathname.includes('mypage')
       ? `
       width : 12rem;
       height: 5rem;

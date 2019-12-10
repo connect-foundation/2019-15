@@ -18,7 +18,7 @@ export default function NavigationBar() {
         {location.pathname.includes('main') ? (
           <LogoImage src={mainlogo} />
         ) : (
-          <SmallLogoImage location={location} src={mainlogo} />
+          <SmallLogoImage pathname={location.pathname} src={mainlogo} />
         )}
       </Link>
       {location.pathname.includes('public') ||
