@@ -1,14 +1,18 @@
-import React, { useReducer, useEffect } from 'react';
+import React, { useRef, useCallback, useReducer, useEffect } from 'react';
 import Alarm from 'components/NavigationBar/DefaultNavBtnContainer/Notice/Alarm';
 import Messages from 'components/MessageList/MessageList';
 import { faBell } from '@fortawesome/free-solid-svg-icons';
 import { NavImageStyle } from 'components/NavigationBar/DefaultNavBtnContainer/DefaultNavBtnContainer.style';
 import useAlarm from 'hooks/Alarm/useAlarm';
+import { NoticeStyle } from 'components/NavigationBar/DefaultNavBtnContainer/Notice/Notice.style';
+import useCloseClicker from 'hooks/useCloseClicker';
 
 const noticeTypeReducer = (state, action) => {
-  if (action.type !== 'alarm') {
-    return { isOpen: !state.isOpen, type: action.type };
+  if (action.type === 'messages') {
+    if (action.open) return { isOpen: true, type: 'messages' };
+    return { isOpen: false, type: 'messages' };
   }
+
   if (!action.open) return { isOpen: false, type: action.type };
 
   if (state.isOpen) return state;
@@ -42,14 +46,20 @@ export default function Notice() {
       notice.type === 'alarm' ? <Alarm alarmList={alarmList} /> : <Messages />;
   }
 
-  const toggleMessages = () => {
-    noticeDispatch({ type: 'messages' });
+  const openMessages = () => {
+    noticeDispatch({ open: true, type: 'messages' });
   };
 
+  const closeMessages = () => {
+    noticeDispatch({ open: false, type: 'messages' });
+  };
+
+  const closeClicker = useCloseClicker(closeMessages);
+
   return (
-    <>
-      <NavImageStyle icon={faBell} onClick={toggleMessages} />
+    <NoticeStyle ref={closeClicker}>
+      <NavImageStyle icon={faBell} onClick={openMessages} />
       {noticeElement}
-    </>
+    </NoticeStyle>
   );
 }
