@@ -2,31 +2,19 @@ const Sequelize = require('sequelize');
 
 const { Op } = Sequelize;
 
-const { MIN_ID, MAX_INT, CURSOR_LENGTH, INT_TO_STRING_PADDING } = require('./constants/ranking');
+const { MAX_CURSOR, intTo10Str, MIN_CURSOR } = require('./constants/ranking');
 
-const getScoreOrdering = (order) => {
-  return order === 'ASC' ? ['score'] : ['score', 'DESC'];
+const getEdgesWithCursor = (nodes) => {
+  return nodes.map(({ dataValues: node }) => {
+    return {
+      node,
+      cursor: intTo10Str(node.score) + intTo10Str(node.id),
+    };
+  });
 };
 
-const splitCursor = (cursor) => {
+const toRankingResult = (edgesWithCursor, first) => {
   return {
-    id: parseInt(cursor.slice(0, CURSOR_LENGTH / 2), 10),
-    score: parseInt(cursor.slice(CURSOR_LENGTH / 2, CURSOR_LENGTH), 10),
-  };
-};
-
-const makeNodeToEdge = (node) => {
-  return {
-    node,
-    cursor:
-      node.id.toString().padStart(CURSOR_LENGTH / 2, INT_TO_STRING_PADDING) +
-      node.score.toString().padStart(CURSOR_LENGTH / 2, INT_TO_STRING_PADDING),
-  };
-};
-
-const toRankingResult = (edgesWithCursor, totalCount, first) => {
-  return {
-    totalCount: totalCount,
     edges: edgesWithCursor,
     pageInfo: {
       endCursor: edgesWithCursor.length ? edgesWithCursor[edgesWithCursor.length - 1].cursor : null,
@@ -35,46 +23,76 @@ const toRankingResult = (edgesWithCursor, totalCount, first) => {
   };
 };
 
+const getOrderOp = (order) => {
+  return order === 'ASC' ? Op.gt : Op.lt;
+};
+
+const getDefaultCursor = (order) => {
+  return order === 'ASC' ? MAX_CURSOR : MIN_CURSOR;
+};
+
 const rankingResolvers = {
   Query: {
     rankingAll: async (obj, { order, first, after }, { Users }) => {
-      const { id, score } = after ? splitCursor(after) : { id: MIN_ID, score: MAX_INT };
+      const lastEndCursor = after || getDefaultCursor(order);
 
-      const { rows: nodes, count: totalCount } = await Users.findAndCountAll({
-        where: {
-          [Op.and]: [{ id: { [Op.ne]: id } }, { score: { [Op.lte]: score } }],
+      const nodes = await Users.findAll({
+        attributes: {
+          include: [
+            [
+              Sequelize.fn(
+                'concat',
+                Sequelize.fn('lpad', Sequelize.col('score'), 10, '0'),
+                Sequelize.fn('lpad', Sequelize.col('id'), 10, '0'),
+              ),
+              'cursor',
+            ],
+          ],
         },
-        order: [getScoreOrdering(order), 'id', 'nickname'],
+        having: {
+          cursor: { [getOrderOp(order)]: lastEndCursor },
+        },
+        order: [['score', order], ['id', order]],
         limit: first,
       });
 
-      const edgesWithCursor = nodes.map((node) => makeNodeToEdge(node));
+      const edgesWithCursor = getEdgesWithCursor(nodes);
 
-      return toRankingResult(edgesWithCursor, totalCount, first);
+      return toRankingResult(edgesWithCursor, first);
     },
     rankingFriends: async (obj, { order, first, after }, { Users, Friends, req }) => {
-      const { id, score } = after ? splitCursor(after) : { id: MIN_ID, score: MAX_INT };
+      const lastEndCursor = after || MAX_CURSOR;
 
-      const { rows: nodes, count: totalCount } = await Friends.findAndCountAll({
+      const nodes = await Friends.findAll({
         where: { pFriendId: req.user.id },
         include: [
           {
             model: Users,
-            where: {
-              [Op.and]: [{ id: { [Op.ne]: id } }, { score: { [Op.lte]: score } }],
+            attributes: {
+              include: [
+                [
+                  Sequelize.fn(
+                    'concat',
+                    Sequelize.fn('lpad', Sequelize.col('User.score'), 10, '0'),
+                    Sequelize.fn('lpad', Sequelize.col('User.id'), 10, '0'),
+                  ),
+                  'cursor',
+                ],
+              ],
             },
           },
         ],
-        order: [
-          [{ model: Users }, ...getScoreOrdering(order)],
-          [{ model: Users }, 'id'],
-          [{ model: Users }, 'nickname'],
-        ],
+        having: {
+          'User.cursor': { [getOrderOp(order)]: lastEndCursor },
+        },
+        order: [[{ model: Users }, 'score', order], [{ model: Users }, 'id', order]],
         limit: first,
       });
-      const edgesWithCursor = nodes.map(({ User }) => makeNodeToEdge(User));
 
-      return toRankingResult(edgesWithCursor, totalCount, first);
+      const friendNodes = nodes.map(({ dataValues }) => dataValues.User);
+      const edgesWithCursor = getEdgesWithCursor(friendNodes);
+
+      return toRankingResult(edgesWithCursor, first);
     },
   },
 };

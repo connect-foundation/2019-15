@@ -18,15 +18,15 @@ export default function NavigationBar() {
         {location.pathname.includes('main') ? (
           <LogoImage src={mainlogo} />
         ) : (
-          <SmallLogoImage pathname={location.pathname} src={mainlogo} />
-        )}
+            <SmallLogoImage pathname={location.pathname} src={mainlogo} />
+          )}
       </Link>
       {location.pathname.includes('public') ||
-      location.pathname.includes('private') ? (
-        <GameNavBtnContainer />
-      ) : (
-        <DefaultNavBtnContainer />
-      )}
+        location.pathname.includes('private') ? (
+          <GameNavBtnContainer />
+        ) : (
+          <DefaultNavBtnContainer />
+        )}
     </NavigationBarStyle>
   );
 }
