@@ -99,6 +99,13 @@ class Room {
       currentRound: this.currentRound,
       totalRound: this.totalRound,
     });
+    setTimeout(() => {
+      const userList = this.players.map((user) => {
+        const userName = user.nickname || '부스트캠퍼';
+        return { nickname: userName, socketId: user.socket.id, privileged: user.privileged };
+      });
+      gameIo.in(this.roomId).emit('userList', { userList: JSON.stringify(userList) });
+    }, 5000);
   }
 
   getExaminerSocketId() {

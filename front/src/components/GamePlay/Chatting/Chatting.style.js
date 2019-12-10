@@ -7,7 +7,7 @@ const ChattingStyle = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 47rem;
+  height: 39.5rem;
   width: 16rem;
   margin-left: 0.5rem;
   border-radius: 0.5rem;
