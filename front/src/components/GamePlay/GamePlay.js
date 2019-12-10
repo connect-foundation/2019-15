@@ -100,7 +100,7 @@ const GamePlay = () => {
     initSocket();
 
     return () => {
-      // closeSocket(gameSocket, { setGameSocket });
+      closeSocket(gameSocket, { setGameSocket });
     };
   }, [gameSocket, setGameSocket, setPainter, setUserList]);
 
