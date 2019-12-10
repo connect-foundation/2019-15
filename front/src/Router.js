@@ -24,7 +24,7 @@ const Router = () => {
   let userInitial = new User();
   if (jwtToken) {
     const { id, nickname } = jwt.decode(jwtToken);
-    userInitial = new User(nickname, null, id);
+    userInitial = new User(nickname, false, id);
   }
   const [room, setRoom] = useState(new Room());
   const [user, userDispatch] = useReducer(changeUser, userInitial);

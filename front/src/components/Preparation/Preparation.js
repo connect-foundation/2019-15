@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
+import GlobalContext from 'global.context';
 import { PreparationStyle, RoomSettingStyle } from './Preparation.style';
 import UserList from './UserList/UserList';
 import Anchor from './Anchor/Anchor';
@@ -17,11 +18,15 @@ Preparation.propTypes = {
 };
 
 export default function Preparation({ waitingUserList }) {
+  const { user } = useContext(GlobalContext);
   return (
     <>
       <PreparationStyle>
         <RoomSettingStyle>
-          <GameSetting />
+          <GameSetting
+            roomOwner={user.roomOwner}
+            waitingUserList={waitingUserList}
+          />
           <FriendList />
           <UserList waitingUserList={waitingUserList} />
         </RoomSettingStyle>
