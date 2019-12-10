@@ -4,7 +4,12 @@ const { RoomManager } = require('../RoomManager');
 function sendUserListToRoom(list, roomId, io) {
   const userList = list.map((user) => {
     const userName = user.nickname || '부스트캠퍼';
-    return { nickname: userName, socketId: user.socket.id, avatar: user.avatar };
+    return {
+      nickname: userName,
+      socketId: user.socket.id,
+      avatar: user.avatar,
+      roomOwner: user.roomOwner,
+    };
   });
   io.in(roomId).emit('userList', { userList: JSON.stringify(userList) });
 }

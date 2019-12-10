@@ -1,8 +1,11 @@
 import styled from 'styled-components';
-import { FlexRowStyle } from 'components/globalComponents/Container/Flex.style';
+import {
+  FlexRowStyle,
+  FlexColumnStyle,
+} from 'components/globalComponents/Container/Flex.style';
 
-const UserListStyle = styled(FlexRowStyle)`
-  width: 50%;
+export const UserListStyle = styled(FlexRowStyle)`
+  width: 60%;
   height: 90%;
   margin: 2rem;
   flex-wrap: wrap;
@@ -10,4 +13,35 @@ const UserListStyle = styled(FlexRowStyle)`
   align-content: flex-start;
 `;
 
-export default UserListStyle;
+export const UserStyle = styled(FlexColumnStyle)`
+  width: 100px;
+  height: 130px;
+  max-height: 130px;
+  margin-left: 10px;
+  align-items: center;
+  justify-content: flex-start;
+`;
+
+export const Avatar = styled.img`
+  width: 90px;
+  height: 90px;
+`;
+
+export const RoomOwner = styled.img`
+  width: 20px;
+  height: 16px;
+  top: 20px;
+  left: 30px;
+`;
+
+export const Text = styled.div`
+  width: 100px;
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  word-wrap: normal;
+  overflow: hidden;
+  img {
+    display: ${({ roomOwner }) => (roomOwner ? 'inline' : 'none')};
+  }
+`;
