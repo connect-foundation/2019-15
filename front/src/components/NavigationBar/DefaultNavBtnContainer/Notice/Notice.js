@@ -1,6 +1,6 @@
 import React, { useReducer, useEffect } from 'react';
 import Alarm from 'components/NavigationBar/DefaultNavBtnContainer/Notice/Alarm';
-import Messages from 'components/Messages/Messages';
+import Messages from 'components/MessageList/MessageList';
 import { faBell } from '@fortawesome/free-solid-svg-icons';
 import { NavImageStyle } from 'components/NavigationBar/DefaultNavBtnContainer/DefaultNavBtnContainer.style';
 import useAlarm from 'hooks/Alarm/useAlarm';
