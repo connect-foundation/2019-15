@@ -1,5 +1,5 @@
 import socketIo from 'socket.io-client';
-import APP_URI from 'util/uri';
+import APP_URI from '../../util/uri';
 import Room from '../room';
 
 export function connectGameSocket() {
@@ -35,22 +35,18 @@ export function initGameStartMsgHandler(
   });
 }
 
-export function initStartSecretGameHandler(
-  socket,
-  { setPainter, setIsGamePlaying },
-) {
-  socket.on('startSecretGame', ({ painter }) => {
+export function initStartPrivateGameHandler(socket, { setPainter }) {
+  socket.on('startPrivateGame', ({ painter }) => {
     setPainter(painter);
-    setIsGamePlaying(true);
   });
 }
 
-export function requestMakeSecretRoom(socket, { nickname, roomId }) {
-  socket.emit('makeSecret', { nickname, roomId });
+export function emitMakePrivateRoom(socket, { nickname, roomId }) {
+  socket.emit('makePrivate', { nickname, roomId });
 }
 
-export function startSecretGame(socket, { roomId, roomType }) {
-  socket.emit('startSecretGame', { roomId, roomType });
+export function startPrivateGame(socket, { roomId, roomType }) {
+  socket.emit('startPrivateGame', { roomId, roomType });
 }
 
 export function exitGameRoom(socket, { roomType, roomId }) {

@@ -104,7 +104,7 @@ const GamePlay = () => {
     };
   }, [gameSocket, setGameSocket, setPainter, setUserList]);
 
-  if (!gameSocket || gameSocket.connected === false) {
+  if (!gameSocket || gameSocket.disconnected) {
     return <Redirect to="main" />;
   }
 

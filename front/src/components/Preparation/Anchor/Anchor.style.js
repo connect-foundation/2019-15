@@ -7,7 +7,7 @@ export const AnchorStyle = styled(FlexRowStyle)`
   height: 5rem;
   justify-content: center;
   border-radius: 0.3rem;
-  background-color: ${({ theme }) => theme.paleRose}};
+  background-color: ${({ theme }) => theme.paleRose};
 `;
 
 export const AnchorImageStyle = styled.img`
@@ -21,6 +21,10 @@ export const AnchorLinkText = styled.div`
   font-size: 17px;
   line-height: 5rem;
   text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  word-wrap: normal;
+  overflow: hidden;
 `;
 
 export const AnchorCopyButton = styled(ButtonStyle)`
