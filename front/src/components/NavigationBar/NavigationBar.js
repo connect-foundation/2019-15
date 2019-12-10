@@ -21,7 +21,8 @@ export default function NavigationBar() {
           <SmallLogoImage location={location} src={mainlogo} />
         )}
       </Link>
-      {location.pathname.includes('gameplay') ? (
+      {location.pathname.includes('public') ||
+      location.pathname.includes('private') ? (
         <GameNavBtnContainer />
       ) : (
         <DefaultNavBtnContainer />
