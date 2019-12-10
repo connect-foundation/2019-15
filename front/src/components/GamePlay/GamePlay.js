@@ -54,7 +54,6 @@ const GamePlay = () => {
     function resetQuestionStates(nextExaminerSocketId) {
       setPainter(nextExaminerSocketId);
       setQuestionWord(initialQuestionWordState);
-      setIsTimerGetReady(false);
       setIsOpen(false);
       setSelectedWord('');
       // todo: 캔버스 데이터 초기화
@@ -70,6 +69,9 @@ const GamePlay = () => {
       currentRound,
       totalRound,
     }) {
+      // 타이머 멈추기
+      setIsTimerGetReady(false);
+
       // 결과 화면 띄우기
       setSelectedWord(answer);
       setScores(_scores);
@@ -98,7 +100,7 @@ const GamePlay = () => {
     initSocket();
 
     return () => {
-      closeSocket(gameSocket, { setGameSocket });
+      // closeSocket(gameSocket, { setGameSocket });
     };
   }, [gameSocket, setGameSocket, setPainter, setUserList]);
 

@@ -51,10 +51,8 @@ export default function CanvasSection() {
       <section>
         <Timer
           isTimerGetReady={isTimerGetReady}
-          setIsTimerGetReady={setIsTimerGetReady}
           setIsOpen={setIsOpen}
           endTime={endTime}
-          setEndTime={setEndTime}
         />
         <GameInfo round={round} />
         <WordPreview
