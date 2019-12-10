@@ -1,5 +1,5 @@
 const User = require('../User');
-const { RoomManager } = require('../Room');
+const { RoomManager } = require('../RoomManager');
 
 function sendUserListToRoom(list, roomId, io) {
   const userList = list.map((user) => {
@@ -7,6 +7,15 @@ function sendUserListToRoom(list, roomId, io) {
     return { nickname: userName, socketId: user.socket.id };
   });
   io.in(roomId).emit('userList', { userList: JSON.stringify(userList) });
+}
+
+function makeRoomData(room) {
+  return {
+    painter: room.getExaminerSocketId(),
+    currentRound: room.currentRound,
+    totalRound: room.totalRound,
+    endTime: room.timer.endTime,
+  };
 }
 
 function personEnterRoom(nickname, socket, roomType, io, roomId) {
@@ -23,25 +32,17 @@ function personEnterRoom(nickname, socket, roomType, io, roomId) {
 
   if (room.isPlayable()) {
     room.prepareFirstQuestion();
-    io.to(roomId).emit('gamestart', {
-      painter: room.getExaminerSocketId(),
-      currentRound: room.currentRound,
-      totalRound: room.totalRound,
-    });
+    io.to(roomId).emit('gamestart', makeRoomData(room));
   }
   if (room.isPlaying()) {
-    socket.emit('gamestart', {
-      painter: room.getExaminerSocketId(),
-      currentRound: room.currentRound,
-      totalRound: room.totalRound,
-    });
+    socket.emit('gamestart', makeRoomData(room));
   }
 
   return { roomId, roomType };
 }
 
-function personEnterSecretRoom(nickname, socket, roomId, io) {
-  const room = RoomManager.getEnableSecretRoom(roomId);
+function personEnterPrivateRoom(nickname, socket, roomId, io) {
+  const room = RoomManager.getEnablePrivateRoom(roomId);
   socket.join(roomId);
   room.addPlayer(new User(nickname, socket));
   sendUserListToRoom(room.players, roomId, io);
@@ -50,5 +51,5 @@ function personEnterSecretRoom(nickname, socket, roomId, io) {
 module.exports = {
   sendUserListToRoom,
   personEnterRoom,
-  personEnterSecretRoom,
+  personEnterPrivateRoom,
 };

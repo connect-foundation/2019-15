@@ -1,10 +1,5 @@
-const uuid = require('uuid/v1');
-const { maxPeopleNum, roomState, defaultRoomSetting } = require('../config/roomConfig');
+const { roomState, defaultRoomSetting } = require('../config/roomConfig');
 const Timer = require('../util/timer/Timer');
-
-const makeRoomId = () => {
-  return uuid();
-};
 
 class Room {
   constructor(gameIo) {
@@ -18,7 +13,7 @@ class Room {
     this.totalRound = defaultRoomSetting.totalRound;
     this.currentRound = 1;
     this.answererCount = 0;
-    this.timer.setTimeOutCallback(this.timeOutCallback.bind(this, gameIo));
+    this.timer.setTimeOutCallback(this.questionEndCallback.bind(this, gameIo));
   }
 
   prepareFirstQuestion() {
@@ -27,26 +22,24 @@ class Room {
     this.players[this.examinerIndex].privileged = true;
   }
 
-  prepareNextQuestion() {
+  resetRoomState() {
     this.state = roomState.SELECTING_WORD;
     this.word = null;
     this.timer.stop();
+    this.answererCount = 0;
     this.players.forEach((player) => {
       player.privileged = false;
     });
-    this.answererCount = 0;
+  }
+
+  prepareNextQuestion() {
+    this.resetRoomState();
     this.examinerIndex -= 1;
     this.players[this.examinerIndex].privileged = true;
   }
 
   prepareNextRound() {
-    this.state = roomState.SELECTING_WORD;
-    this.word = null;
-    this.timer.stop();
-    this.players.forEach((player) => {
-      player.privileged = false;
-    });
-    this.answererCount = 0;
+    this.resetRoomState();
     this.examinerIndex = this.players.length - 1;
     this.players[this.examinerIndex].privileged = true;
     this.currentRound += 1;
@@ -59,6 +52,11 @@ class Room {
 
   removePlayer(userIndex) {
     this.players.splice(userIndex, 1);
+  }
+
+  // 방이 대기중인 상태인 경우
+  isWaiting() {
+    return this.state === roomState.WAITING;
   }
 
   // 최소 시작 인원을 기다리다가 충족된 경우. 즉, 새 게임
@@ -86,9 +84,13 @@ class Room {
     return this.answererCount === this.players.length - 1;
   }
 
-  timeOutCallback(gameIo) {
+  questionEndCallback(gameIo) {
     const answer = this.word;
-    this.prepareNextQuestion();
+    // 한 라운드가 끝나는 경우
+    if (this.examinerIndex === 0) this.prepareNextRound();
+    // 아직 한 라운드가 끝나지 않은 경우
+    else this.prepareNextQuestion();
+
     const nextExaminer = this.getExaminer();
     gameIo.in(this.roomId).emit('endQuestion', {
       nextExaminerSocketId: nextExaminer.socket.id,
@@ -112,54 +114,4 @@ class Room {
   }
 }
 
-const RoomManager = {
-  roomList: ['3명', '6명', '12명', '100명', '비밀방'],
-  room: { '3명': {}, '6명': {}, '12명': {}, '100명': {}, 비밀방: {} },
-  maxPeopleNum,
-
-  // 방이 없을 때 새로운 방을 만들고 반환.
-  addRoom: function(roomName, gameIo) {
-    const newRoom = new Room(gameIo);
-    const roomId = makeRoomId();
-    newRoom.roomId = roomId;
-    newRoom.state = roomState.EMPTY;
-    this.room[roomName][roomId] = newRoom;
-
-    return roomId;
-  },
-
-  // 수용가능한 방을 하나 반환, 없으면 생성해서 반환
-  getEnableRoomId: function(roomName, gameIo) {
-    const nRooms = this.room[roomName];
-
-    // find의 반환값이 undefined일 수 있으므로, destructuring은 불가능
-    // room[0] : key, room[1] : room
-    let room = Object.entries(nRooms).find(
-      ([roomId, _room]) => _room.players.length < maxPeopleNum[roomName],
-    );
-
-    if (!room) {
-      room = [];
-      room.push(this.addRoom(roomName, gameIo));
-    }
-    return room[0];
-  },
-
-  getEnableSecretRoom(roomId) {
-    const secretRoomList = this.room['비밀방'];
-
-    if (!secretRoomList.hasOwnProperty(roomId)) secretRoomList[roomId] = new Room();
-
-    return secretRoomList[roomId];
-  },
-
-  isExistRoom({ roomType, roomId }) {
-    return roomType && roomId && this.room[roomType].hasOwnProperty(roomId);
-  },
-
-  getRoomByRoomId(roomName, roomId) {
-    return this.room[roomName][roomId];
-  },
-};
-
-module.exports = { RoomManager, Room };
+module.exports = { Room };

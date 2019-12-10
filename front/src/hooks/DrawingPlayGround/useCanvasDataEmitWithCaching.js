@@ -15,7 +15,7 @@ const eventListReducer = (state, action) => {
   }
 };
 
-export default function useCanvasDataCaching() {
+export default function useCanvasDataEmitWithCaching() {
   const [eventList, eventListDispatch] = useReducer(eventListReducer, []);
   const emitCanvasData = useCanvasDataEmit();
 

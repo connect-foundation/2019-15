@@ -1,16 +1,17 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { fabric } from 'fabric';
 import {
   PainterBoardStyle,
   CanvasStyle,
 } from 'components/GamePlay/CanvasSection/DrawingPlayGround/PainterBoard/PainterBoard.style';
 import ToolManager from 'components/GamePlay/CanvasSection/DrawingPlayGround/Tools/ToolType/ToolManager';
-import useCanvasDataCaching from 'hooks/DrawingPlayGround/useCanvasDataCaching';
+import useCanvasDataEmitWithCaching from 'hooks/DrawingPlayGround/useCanvasDataEmitWithCaching';
+import useFabricCanvas from 'hooks/DrawingPlayGround/useFabricCanvas';
+import { fab } from '@fortawesome/free-brands-svg-icons';
 
 PainterBoard.propTypes = {
   drawingOptions: PropTypes.shape({
-    tool: PropTypes.oneOf(ToolManager.TOOL_LIST),
+    tool: PropTypes.oneOf(ToolManager.toolList),
     strokeColor: PropTypes.string,
   }),
   size: PropTypes.shape({
@@ -21,7 +22,7 @@ PainterBoard.propTypes = {
 
 PainterBoard.defaultProps = {
   drawingOptions: PropTypes.shape({
-    tool: ToolManager.TOOL_LIST[0],
+    tool: ToolManager.toolList[0],
     strokeColor: '#000000',
   }),
   size: {
@@ -33,84 +34,59 @@ PainterBoard.defaultProps = {
 export default function PainterBoard({ drawingOptions, size }) {
   const { tool: toolName } = drawingOptions;
   const { width, height } = size;
-  const canvas = useRef(null);
-  const fabricCanvas = useRef(null);
-  const emitable = useRef(false);
-
-  useEffect(() => {
-    fabricCanvas.current = new fabric.Canvas(canvas.current, {
-      isDrawingMode: false,
-      selection: false,
-      width,
-      height,
-    });
-  }, [height, width]);
-
-  const eventListDispatch = useCanvasDataCaching();
+  const eventListDispatch = useCanvasDataEmitWithCaching();
+  const [fabricCanvas, setFabricCanvas] = useFabricCanvas(size);
 
   useEffect(() => {
     const tool = ToolManager[toolName];
     tool.setCanvas(fabricCanvas.current, drawingOptions);
+    const fabricCopy = fabricCanvas.current;
+    let emitable = false;
 
-    const setCanvasEvents = () => {
-      fabricCanvas.current.on('mouse:down', ({ pointer }) => {
-        tool.onMouseDown(pointer);
-        if (toolName !== 'pen') return;
-        emitable.current = true;
-        eventListDispatch({
-          type: 'push',
-          value: { drawingOptions, pointer, event: 'mouseDown' },
-        });
-      });
-      fabricCanvas.current.on('mouse:move', ({ pointer }) => {
-        tool.onMouseMove(pointer);
-        if (toolName !== 'pen' || !emitable.current) return;
-        eventListDispatch({
-          type: 'push',
-          value: { drawingOptions, pointer, event: 'mouseMove' },
-        });
-      });
-      fabricCanvas.current.on('mouse:up', ({ pointer }) => {
-        tool.onMouseUp(pointer);
-        eventListDispatch({
-          type: 'push',
-          value: {
-            drawingOptions,
-            data: fabricCanvas.current.toJSON(),
-            event: 'mouseUp',
-          },
-        });
-        emitable.current = false;
-      });
-      fabricCanvas.current.on('mouse:out', () => {
-        tool.onMouseOut();
-        if (toolName !== 'pen') return;
-        eventListDispatch({
-          type: 'push',
-          value: {
-            drawingOptions,
-            pointer: { x: null, y: null },
-            event: 'mouseOut',
-          },
-        });
-        emitable.current = false;
+    const onMouseDown = ({ pointer }) => {
+      tool.onMouseDown(pointer);
+      if (!ToolManager.freeDrawingTools.includes(toolName)) return;
+      emitable = true;
+      eventListDispatch({
+        type: 'push',
+        value: { drawingOptions, pointer, event: 'mouseDown' },
       });
     };
+    const onMouseMove = ({ pointer }) => {
+      tool.onMouseMove(pointer);
+      if (!ToolManager.freeDrawingTools.includes(toolName) || !emitable) return;
 
-    const removeCanvasEvents = () => {
-      fabricCanvas.current.off('mouse:down');
-      fabricCanvas.current.off('mouse:move');
-      fabricCanvas.current.off('mouse:up');
-      fabricCanvas.current.off('mouse:out');
+      eventListDispatch({
+        type: 'push',
+        value: { drawingOptions, pointer, event: 'mouseMove' },
+      });
+    };
+    const onMouseUp = ({ pointer }) => {
+      tool.onMouseUp(pointer);
+      eventListDispatch({
+        type: 'push',
+        value: {
+          drawingOptions,
+          data: fabricCanvas.current.toJSON(),
+          event: 'mouseUp',
+        },
+      });
+      emitable = false;
     };
 
-    setCanvasEvents();
-    return removeCanvasEvents;
-  }, [drawingOptions, eventListDispatch, toolName]);
+    fabricCopy.on('mouse:down', onMouseDown);
+    fabricCopy.on('mouse:move', onMouseMove);
+    fabricCopy.on('mouse:up', onMouseUp);
+    return () => {
+      fabricCopy.off('mouse:down');
+      fabricCopy.off('mouse:move');
+      fabricCopy.off('mouse:up');
+    };
+  }, [drawingOptions, eventListDispatch, fabricCanvas, toolName]);
 
   return (
     <PainterBoardStyle>
-      <CanvasStyle ref={canvas} style={{ width, height }} />
+      <CanvasStyle ref={setFabricCanvas} style={{ width, height }} />
     </PainterBoardStyle>
   );
 }
