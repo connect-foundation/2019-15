@@ -7,6 +7,7 @@ class Room {
     this.players = [];
     this.wordSet = null;
     this.word = null;
+    this.openIndex = 0;
     this.timer = new Timer();
     this.state = roomState.EMPTY;
     this.examinerIndex = null;
@@ -118,6 +119,23 @@ class Room {
 
   getScores() {
     return this.players.map((player) => [player.nickname, player.score]);
+  }
+
+  makeGameStartData() {
+    return {
+      painter: this.getExaminerSocketId(),
+      currentRound: this.currentRound,
+      totalRound: this.totalRound,
+    };
+  }
+
+  makeStartQuestionData() {
+    return {
+      wordLength: this.word.length,
+      openLetter: this.word[this.openIndex],
+      openIndex: this.openIndex,
+      endTime: this.timer.endTime,
+    };
   }
 }
 
