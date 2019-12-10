@@ -9,15 +9,6 @@ function sendUserListToRoom(list, roomId, io) {
   io.in(roomId).emit('userList', { userList: JSON.stringify(userList) });
 }
 
-function makeRoomData(room) {
-  return {
-    painter: room.getExaminerSocketId(),
-    currentRound: room.currentRound,
-    totalRound: room.totalRound,
-    endTime: room.timer.endTime,
-  };
-}
-
 function personEnterRoom(nickname, socket, roomType, io, roomId) {
   const room = RoomManager.room[roomType][roomId];
   room.addPlayer(new User(nickname, socket));
@@ -30,10 +21,10 @@ function personEnterRoom(nickname, socket, roomType, io, roomId) {
 
   if (room.isPlayable()) {
     room.prepareFirstQuestion();
-    io.to(roomId).emit('gamestart', makeRoomData(room));
-  }
-  if (room.isPlaying()) {
-    socket.emit('gamestart', makeRoomData(room));
+    io.to(roomId).emit('gamestart', room.makeGameStartData());
+  } else if (room.isPlaying()) {
+    socket.emit('gamestart', room.makeGameStartData());
+    socket.emit('startQuestion', room.makeStartQuestionData());
   }
 
   sendUserListToRoom(room.players, roomId, io);
