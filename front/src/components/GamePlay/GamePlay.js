@@ -33,7 +33,7 @@ const GamePlay = () => {
   const [isTimerGetReady, setIsTimerGetReady] = useState(false);
   // 설정 : Timer 컴포넌트에서 일정 시간이 지났을 때
   // 초기화 : endQuestion 시그널을 받을 때
-  const [isOpen, setIsOpen] = useState(false);
+  const [isLetterOpen, setIsLetterOpen] = useState(false);
   // 설정 : WordChoice 컴포넌트에서 단어 선택 시, endQuestion 시그널을 받을 때
   // 초기화 : QuestionResult 컴포넌트가 사라질 때
   const [selectedWord, setSelectedWord] = useState('');
@@ -49,12 +49,13 @@ const GamePlay = () => {
     totalRound: 3,
   });
   const [endTime, setEndTime] = useState(0);
+  const [isWordChoiceOpen, setIsWordChoiceOpen] = useState(true);
 
   const resetQuestionStates = useCallback(
     function resetQuestionStates(nextExaminerSocketId) {
       setPainter(nextExaminerSocketId);
       setQuestionWord(initialQuestionWordState);
-      setIsOpen(false);
+      setIsLetterOpen(false);
       setSelectedWord('');
       // todo: 캔버스 데이터 초기화
     },
@@ -81,6 +82,7 @@ const GamePlay = () => {
         // 각종 상태 초기화하기
         resetQuestionStates(nextExaminerSocketId);
         setRound({ currentRound, totalRound });
+        setIsWordChoiceOpen(true);
         setShowQuestionResult(false);
       }, 5000);
     },
@@ -117,8 +119,8 @@ const GamePlay = () => {
     setQuestionWord,
     isTimerGetReady,
     setIsTimerGetReady,
-    isOpen,
-    setIsOpen,
+    isLetterOpen,
+    setIsLetterOpen,
     selectedWord,
     setSelectedWord,
     showQuestionResult,
@@ -129,6 +131,8 @@ const GamePlay = () => {
     setRound,
     endTime,
     setEndTime,
+    isWordChoiceOpen,
+    setIsWordChoiceOpen,
   };
 
   return (

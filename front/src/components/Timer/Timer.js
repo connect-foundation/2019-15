@@ -4,7 +4,7 @@ import TimerStyle from './Timer.style';
 
 Timer.propTypes = {
   isTimerGetReady: PropTypes.bool.isRequired,
-  setIsOpen: PropTypes.func.isRequired,
+  setIsLetterOpen: PropTypes.func.isRequired,
   endTime: PropTypes.number.isRequired,
 };
 
@@ -13,7 +13,7 @@ function getRemainTime(endTime) {
   return gap >= 0 ? gap : 0;
 }
 
-export default function Timer({ isTimerGetReady, setIsOpen, endTime }) {
+export default function Timer({ isTimerGetReady, setIsLetterOpen, endTime }) {
   const [remainTime, setRemainTime] = useState(getRemainTime(endTime));
   const requestId = useRef(0);
 
@@ -24,7 +24,7 @@ export default function Timer({ isTimerGetReady, setIsOpen, endTime }) {
 
     function countDown() {
       setRemainTime(getRemainTime(endTime));
-      if (getRemainTime(endTime) <= 10) setIsOpen(true);
+      if (getRemainTime(endTime) <= 10) setIsLetterOpen(true);
       if (isTimerGetReady) requestId.current = requestAnimationFrame(countDown);
     }
 
