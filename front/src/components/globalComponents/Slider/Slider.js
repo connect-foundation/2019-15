@@ -48,74 +48,81 @@ export default function Slider({ max, min, unit, onChange, initialStep }) {
 
   const [handlebarLeft, setHandlebarLeft] = useState(0);
   const [step, stepDispatch] = useReducer(stepReducer, initialStep);
-  const lineUnitLength = useRef(null);
+  const [lineUnitLength, setLineUnitLength] = useState(0);
+  const line = useRef(null);
+  const handlebar = useRef(null);
 
   useEffect(() => {
-    setHandlebarLeft(((step - min) / unit) * lineUnitLength.current);
-    onChange(step);
-  }, [lineUnitLength, min, onChange, step, unit]);
+    setLineUnitLength(line.current.clientWidth / ((max - min) / unit));
+  }, [max, min, unit]);
 
-  const setSliderEvents = useCallback(
-    (sliderNode) => {
-      if (!sliderNode) return;
-      const handlebarNode = sliderNode.firstChild;
-      lineUnitLength.current =
-        sliderNode.lastChild.clientWidth / ((max - min) / unit);
-      let isDown = false;
-
-      const getLengthDiff = (x) => x - getNodeCenterPos(handlebarNode).x;
-
-      const getStepDiff = (lengthDiff) => {
-        const halfLineUnitLength = lineUnitLength.current / 2;
-        const errorRange =
-          lengthDiff > 0 ? halfLineUnitLength : -halfLineUnitLength;
-        return (
-          parseInt((lengthDiff + errorRange) / lineUnitLength.current, 10) *
-          unit
-        );
-      };
-
-      const onMouseDown = (e) => {
-        e.preventDefault();
-        if (e.target === sliderNode.firstChild) {
-          isDown = true;
-        } else if (e.target === sliderNode.lastChild) {
-          const lengthDiff = getLengthDiff(e.clientX);
-
-          stepDispatch({
-            type: 'changeStep',
-            value: getStepDiff(lengthDiff),
-          });
-        }
-      };
-      const onMouseMove = (e) => {
-        e.preventDefault();
-        if (!isDown) return;
-
-        const diff = getLengthDiff(e.clientX);
-
-        if (diff >= lineUnitLength.current) {
-          stepDispatch({ type: 'increase' });
-        } else if (diff <= -lineUnitLength.current) {
-          stepDispatch({ type: 'decrease' });
-        }
-      };
-      const onMouseEnd = () => {
-        isDown = false;
-      };
-
-      document.addEventListener('mousedown', onMouseDown);
-      document.addEventListener('mousemove', onMouseMove);
-      document.addEventListener('mouseup', onMouseEnd);
-      document.addEventListener('mouseleave', onMouseEnd);
+  const getStepDiff = useCallback(
+    (lengthDiff) => {
+      const halfLineUnitLength = lineUnitLength / 2;
+      const errorRange =
+        lengthDiff > 0 ? halfLineUnitLength : -halfLineUnitLength;
+      return parseInt((lengthDiff + errorRange) / lineUnitLength, 10) * unit;
     },
-    [lineUnitLength, max, min, unit],
+    [lineUnitLength, unit],
   );
 
+  useEffect(() => {
+    let isDown = false;
+    const getLengthDiff = (x) => x - getNodeCenterPos(handlebar.current).x;
+
+    const onMouseDown = (e) => {
+      e.preventDefault();
+      if (e.target === handlebar.current) {
+        isDown = true;
+      } else if (e.target === line.current) {
+        const lengthDiff = getLengthDiff(e.clientX);
+
+        stepDispatch({
+          type: 'changeStep',
+          value: getStepDiff(lengthDiff),
+        });
+      }
+    };
+    const onMouseMove = (e) => {
+      e.preventDefault();
+      if (!isDown) return;
+
+      const diff = getLengthDiff(e.clientX);
+
+      if (diff >= lineUnitLength) {
+        stepDispatch({ type: 'increase' });
+      } else if (diff <= -lineUnitLength) {
+        stepDispatch({ type: 'decrease' });
+      }
+    };
+    const onMouseEnd = () => {
+      isDown = false;
+    };
+
+    document.addEventListener('mousedown', onMouseDown);
+    document.addEventListener('mousemove', onMouseMove);
+    document.addEventListener('mouseup', onMouseEnd);
+    document.addEventListener('mouseleave', onMouseEnd);
+    return () => {
+      document.removeEventListener('mousedown', onMouseDown);
+      document.removeEventListener('mousemove', onMouseMove);
+      document.removeEventListener('mouseup', onMouseEnd);
+      document.removeEventListener('mouseleave', onMouseEnd);
+    };
+  }, [getStepDiff, lineUnitLength]);
+
+  useEffect(() => {
+    setHandlebarLeft(((step - min) / unit) * lineUnitLength);
+  }, [lineUnitLength, min, step, unit]);
+
+  useEffect(() => {
+    onChange(step);
+  }, [onChange, step]);
+
   return (
-    <SliderStyle ref={setSliderEvents}>
-      <HandlebarStyle left={handlebarLeft} step={step} />
-      <LineStyle />
+    <SliderStyle>
+      <HandlebarStyle ref={handlebar} left={handlebarLeft} step={step} />
+      <LineStyle ref={line} />
     </SliderStyle>
   );
 }
