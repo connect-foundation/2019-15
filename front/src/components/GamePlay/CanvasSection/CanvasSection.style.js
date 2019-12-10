@@ -9,7 +9,7 @@ const CanvasSectionStyle = styled.div`
     display: flex;
     flex-direction: row;
     align-items: center;
-    width: 790px;
+    width: 750px;
     margin-left: 0.5rem;
     padding-left: 10px;
     background-color: ${(props) => props.theme.pink};

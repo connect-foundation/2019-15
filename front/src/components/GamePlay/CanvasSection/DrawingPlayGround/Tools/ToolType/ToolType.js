@@ -18,6 +18,7 @@ export default function ToolType({ tool, changeTool }) {
       <ToolTypeSelectionStyle>
         {ToolManager.toolList.map((toolName) => (
           <SpectreButton
+            height="1.7rem"
             active={toolName === tool}
             key={toolName}
             onClick={() => changeTool(toolName)}

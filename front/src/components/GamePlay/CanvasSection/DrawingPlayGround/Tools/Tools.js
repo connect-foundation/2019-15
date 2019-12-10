@@ -1,6 +1,7 @@
 import React, { useCallback } from 'react';
 import PropTypes from 'prop-types';
 import {
+  VerticalAlignDiv,
   ToolsStyle,
   ToolTitleStyle,
 } from 'components/GamePlay/CanvasSection/DrawingPlayGround/Tools/Tools.style';
@@ -22,7 +23,7 @@ Tools.propTypes = {
 Tools.defaultProps = {
   drawingOptions: PropTypes.shape({
     tool: ToolManager.toolList[0],
-    fillColor: '#ffffff',
+    fillColor: '#FFFFFF',
     strokeColor: '#000000',
     strokeWidth: 10,
   }),
@@ -57,13 +58,15 @@ export default function Tools({ drawingOptions, setDrawingOptions }) {
       </div>
       <div>
         <ToolTitleStyle>선 굵기</ToolTitleStyle>
-        <Slider
-          max={50}
-          min={5}
-          unit={5}
-          initialStep={strokeWidth}
-          onChange={changeStrokeWidth}
-        />
+        <VerticalAlignDiv>
+          <Slider
+            max={50}
+            min={5}
+            unit={5}
+            initialStep={strokeWidth}
+            onChange={changeStrokeWidth}
+          />
+        </VerticalAlignDiv>
       </div>
       <div>
         <ToolTitleStyle>선 색</ToolTitleStyle>

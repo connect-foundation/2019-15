@@ -23,15 +23,14 @@ export function initUserListMsgHandler(socket, { setUserList }) {
 
 export function initGameStartMsgHandler(
   socket,
-  { setPainter, setRound, setEndTime },
+  { setPainter, setRound },
 ) {
-  socket.on('gamestart', ({ painter, currentRound, totalRound, endTime }) => {
+  socket.on('gamestart', ({ painter, currentRound, totalRound }) => {
     setPainter(painter);
     setRound({
       currentRound,
       totalRound,
     });
-    setEndTime(endTime);
   });
 }
 
@@ -60,12 +59,11 @@ export function sendMessage(
   socket.emit('sendMessage', { socketId, roomType, roomId, inputValue });
 }
 
-export function initChattingHandler(socket, { messages, pushMessage }) {
+export function initChattingHandler(socket, { setMessage }) {
   socket.on('getMessage', ({ content, privileged }) => {
     const splitRes = content.split(' : ');
     if (splitRes.length === 2 && splitRes[1] === '') return;
-    messages.push({ content, privileged });
-    pushMessage(messages.slice());
+    setMessage({ content, privileged });
   });
 }
 

@@ -5,6 +5,7 @@ const ChattingListStyle = styled.div`
   width: 16rem;
   overflow-y: auto;
   overflow-x: hidden;
+  margin-bottom: 1rem;
   word-break: break-all;
 `;
 
