@@ -5,19 +5,21 @@ import {
 } from 'components/globalComponents/Container/Flex.style';
 
 export const UserListStyle = styled(FlexRowStyle)`
-  width: 60%;
+  min-width: 20rem;
   height: 90%;
-  margin: 2rem;
+  margin-left: 2rem;
   flex-wrap: wrap;
   justify-content: flex-start;
   align-content: flex-start;
+  background-color: ${({ theme }) => theme.paleRose};
 `;
 
 export const UserStyle = styled(FlexColumnStyle)`
   width: 100px;
   height: 130px;
   max-height: 130px;
-  margin-left: 10px;
+  margin-left: 5px;
+  margin-top: 5px;
   align-items: center;
   justify-content: flex-start;
 `;

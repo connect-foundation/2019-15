@@ -4,6 +4,7 @@ import { PreparationStyle, RoomSettingStyle } from './Preparation.style';
 import UserList from './UserList/UserList';
 import Anchor from './Anchor/Anchor';
 import GameSetting from './GameSetting/GameSetting';
+import FriendList from './FriendList/FriendList';
 
 Preparation.propTypes = {
   waitingUserList: PropTypes.arrayOf(
@@ -21,6 +22,7 @@ export default function Preparation({ waitingUserList }) {
       <PreparationStyle>
         <RoomSettingStyle>
           <GameSetting />
+          <FriendList />
           <UserList waitingUserList={waitingUserList} />
         </RoomSettingStyle>
         <Anchor />
