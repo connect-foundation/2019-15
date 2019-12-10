@@ -9,9 +9,14 @@ import { connectGameSocket, emitEnterPrivateRoom } from 'logics/socketLogic';
 import AvatarImg from './AvatarImg';
 import {
   SettingStyle,
-  UserSettingStyle,
+  NicknameSettingStyle,
   GameStartButtonStyle,
   Nickname,
+  InputWrapper,
+  AvatarSettingStyle,
+  AvatarChoiceStyle,
+  LeftBtn,
+  RightBtn,
 } from './Setting.style';
 
 export default function Setting() {
@@ -44,9 +49,20 @@ export default function Setting() {
 
   return (
     <SettingStyle>
-      <UserSettingStyle>
-        <Nickname />
-      </UserSettingStyle>
+      <NicknameSettingStyle>
+        닉네임
+        <InputWrapper>
+          <Nickname onChange={onChangeNickname} />
+        </InputWrapper>
+      </NicknameSettingStyle>
+      <AvatarSettingStyle>
+        아바타
+        <AvatarChoiceStyle>
+          <LeftBtn onClick={clickLeftBtn}>{'<'}</LeftBtn>
+          <AvatarImg avatarIdx={avatar} />
+          <RightBtn onClick={clickRightBtn}>{'>'}</RightBtn>
+        </AvatarChoiceStyle>
+      </AvatarSettingStyle>
       <GameStartButtonStyle onClick={onClickGameStart}>
         게임 시작
       </GameStartButtonStyle>
