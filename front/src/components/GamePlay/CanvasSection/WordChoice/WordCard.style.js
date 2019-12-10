@@ -16,6 +16,7 @@ export const P = styled.p`
   display: table-cell;
   text-align: center;
   vertical-align: middle;
+  font-size: 20px;
 `;
 
 export const Icon = styled(FontAwesomeIcon).attrs({
@@ -37,10 +38,10 @@ export const Button = styled.div`
   border-radius: 0.5rem;
   cursor: pointer;
   font-size: 1rem;
-  background-color: ${(props)=>(props.theme.pink)};
+  background-color: ${(props) => props.theme.pink};
   padding: 0.3rem;
   padding-bottom: 0;
-  :hover{
-    background-color: ${(props)=>(props.theme.seaPink)};
+  :hover {
+    background-color: ${(props) => props.theme.seaPink};
   }
 `;

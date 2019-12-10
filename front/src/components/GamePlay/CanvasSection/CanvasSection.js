@@ -13,6 +13,7 @@ import QuestionResult from './QuestionResult/QuestionResult';
 export default function CanvasSection() {
   const { gameSocket } = useContext(GlobalContext);
   const {
+    userList,
     painter,
     questionWord,
     isTimerGetReady,
@@ -47,7 +48,7 @@ export default function CanvasSection() {
   return (
     <CanvasSectionStyle>
       <GameLoading />
-      {gameSocket.id === painter ? (
+      {userList.length > 1 ? (
         <WordChoice setSelectedWord={setSelectedWord} />
       ) : null}
       {showQuestionResult ? (
@@ -70,7 +71,7 @@ export default function CanvasSection() {
       </section>
       <DrawingPlayGround
         drawable={drawable}
-        canvasSize={{ width: 800, height: 560 }}
+        canvasSize={{ width: 760, height: 470 }}
       />
     </CanvasSectionStyle>
   );

@@ -3,6 +3,7 @@ import { useQuery } from '@apollo/react-hooks';
 import PropTypes from 'prop-types';
 import getRandomWords from 'queries/word';
 import GlobalContext from 'global.context';
+import GamePlayContext from 'components/GamePlay/GamePlay.context';
 import { selectWord } from 'logics/socketLogic';
 import { faSync } from '@fortawesome/free-solid-svg-icons';
 import Background from './Background.style';
@@ -15,6 +16,7 @@ WordChoice.propTypes = {
 
 function WordChoice({ setSelectedWord }) {
   const { gameSocket, room } = useContext(GlobalContext);
+  const { painter, questionWord } = useContext(GamePlayContext);
   const [open, setOpen] = useState(true);
   const { data, loading, error, refetch } = useQuery(getRandomWords);
 
@@ -38,13 +40,25 @@ function WordChoice({ setSelectedWord }) {
     refetch();
   }
 
+  if (gameSocket.id !== painter && questionWord.wordLength === 0) {
+    return (
+      <Background>
+        <P>단어 선택 중입니다!</P>
+      </Background>
+    );
+  }
+
+  if (gameSocket.id !== painter) return <></>;
+
   return (
     <>
       {open ? (
         <Background>
           <Div>
             원하시는 제시어를 선택하세요!
-            <Button onClick={wordsChange}>단어 변경 <Icon icon={faSync}/></Button>
+            <Button onClick={wordsChange}>
+              단어 변경 <Icon icon={faSync} />
+            </Button>
           </Div>
           <WordSet>
             {data.getRandomWords.map((word) => (
