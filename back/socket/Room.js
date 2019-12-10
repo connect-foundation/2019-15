@@ -54,6 +54,11 @@ class Room {
     this.players.splice(userIndex, 1);
   }
 
+  // 방이 대기중인 상태인 경우
+  isWaiting() {
+    return this.state === roomState.WAITING;
+  }
+
   // 최소 시작 인원을 기다리다가 충족된 경우. 즉, 새 게임
   isPlayable() {
     return this.state === roomState.WAITING && this.players.length >= 2;

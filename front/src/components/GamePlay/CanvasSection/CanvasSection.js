@@ -27,6 +27,8 @@ export default function CanvasSection() {
     setScores,
     round,
     setRound,
+    endTime,
+    setEndTime,
   } = useContext(GamePlayContext);
 
   const [drawable, setDrawable] = useState(false);
@@ -49,8 +51,8 @@ export default function CanvasSection() {
       <section>
         <Timer
           isTimerGetReady={isTimerGetReady}
-          setIsTimerGetReady={setIsTimerGetReady}
           setIsOpen={setIsOpen}
+          endTime={endTime}
         />
         <GameInfo round={round} />
         <WordPreview

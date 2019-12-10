@@ -21,13 +21,17 @@ export function initUserListMsgHandler(socket, { setUserList }) {
   });
 }
 
-export function initGameStartMsgHandler(socket, { setPainter, setRound }) {
-  socket.on('gamestart', ({ painter, currentRound, totalRound }) => {
+export function initGameStartMsgHandler(
+  socket,
+  { setPainter, setRound, setEndTime },
+) {
+  socket.on('gamestart', ({ painter, currentRound, totalRound, endTime }) => {
     setPainter(painter);
     setRound({
       currentRound,
       totalRound,
     });
+    setEndTime(endTime);
   });
 }
 
@@ -69,11 +73,20 @@ export function selectWord(socket, { answer, roomType, roomId }) {
   socket.emit('selectWord', { answer, roomType, roomId });
 }
 
-export function setStartQuestionHandler(socket, setQuestionWord, callback) {
-  socket.on('startQuestion', ({ wordLength, openLetter, openIndex }) => {
-    setQuestionWord({ wordLength, openLetter, openIndex });
-    callback();
-  });
+export function setStartQuestionHandler(
+  socket,
+  setQuestionWord,
+  setEndTime,
+  callback,
+) {
+  socket.on(
+    'startQuestion',
+    ({ wordLength, openLetter, openIndex, endTime }) => {
+      setQuestionWord({ wordLength, openLetter, openIndex });
+      setEndTime(endTime);
+      callback();
+    },
+  );
 }
 
 export function setEndQuestionHandler(socket, endQuestionCallback) {

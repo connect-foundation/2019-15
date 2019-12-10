@@ -12,6 +12,7 @@ function selectWord(gameSocket, { answer, roomType, roomId }) {
     wordLength: answer.length,
     openLetter: answer[openIndex],
     openIndex,
+    endTime: room.timer.endTime,
   });
 }
 module.exports = selectWord;
