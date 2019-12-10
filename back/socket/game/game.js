@@ -14,7 +14,6 @@ function makeRoomData(room) {
     painter: room.getExaminerSocketId(),
     currentRound: room.currentRound,
     totalRound: room.totalRound,
-    endTime: room.timer.endTime,
   };
 }
 
