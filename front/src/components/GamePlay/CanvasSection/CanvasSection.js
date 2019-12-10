@@ -36,7 +36,12 @@ export default function CanvasSection() {
   useEffect(() => {
     if (painter === gameSocket.id) {
       setDrawable(true);
+    } else {
+      setDrawable(false);
     }
+    return () => {
+      setDrawable(false);
+    };
   }, [drawable, gameSocket.id, painter]);
 
   return (
