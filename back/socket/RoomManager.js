@@ -12,7 +12,7 @@ const RoomManager = {
   maxPeopleNum,
 
   // 방이 없을 때 새로운 방을 만들고 반환.
-  addRoom: function(roomName, gameIo) {
+  addRoom(roomName, gameIo) {
     const newRoom = new Room(gameIo);
     const roomId = makeRoomId();
     newRoom.roomId = roomId;
@@ -22,8 +22,12 @@ const RoomManager = {
     return roomId;
   },
 
+  deleteRoom(roomName, gameIo) {
+    delete this.room[roomName][gameIo];
+  },
+
   // 수용가능한 방을 하나 반환, 없으면 생성해서 반환
-  getEnableRoomId: function(roomName, gameIo) {
+  getEnableRoomId(roomName, gameIo) {
     const nRooms = this.room[roomName];
 
     // find의 반환값이 undefined일 수 있으므로, destructuring은 불가능
