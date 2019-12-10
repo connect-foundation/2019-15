@@ -7,6 +7,7 @@ const { sendMessage } = require('./message');
 const selectWord = require('./selectWord');
 const { PRIVATE_ROOM_NAME } = require('../../config/roomConfig');
 const { Room } = require('../Room');
+const { startPrivateGame } = require('./startPrivateGame');
 
 function setGameSocket(socket) {
   this.RoomManager = RoomManager;
@@ -27,16 +28,7 @@ function setGameSocket(socket) {
     roomInfo.roomId = roomId;
   });
 
-  socket.on('startPrivateGame', ({ roomId }) => {
-    // 난입 시나리오 추가해야됨
-    const room = RoomManager.room[PRIVATE_ROOM_NAME][roomId];
-    if (room.isPlayable()) {
-      this.gameIo
-        .to(roomId)
-        .emit('movePrivate', { painter: room.players[room.players.length - 1].socket.id });
-    }
-  });
-
+  socket.on('startPrivateGame', startPrivateGame.bind(this, gameSocket));
   socket.on('enterPrivate', enterPrivate.bind(this, gameSocket));
   socket.on('selectWord', selectWord.bind(this, gameSocket));
   socket.on('sendMessage', sendMessage.bind(this, gameSocket));

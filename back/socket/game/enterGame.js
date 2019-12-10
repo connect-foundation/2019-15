@@ -13,10 +13,6 @@ function enterPrivate(gameSocket, { nickname, roomId, roomOwner, avatar }) {
   room.addPlayer(new User(nickname, gameSocket, null, roomOwner, avatar));
 
   gameSocket.join(roomId);
-  gameSocket.emit(`connectRandom`, {
-    roomId,
-    PRIVATE_ROOM_NAME,
-  });
 
   sendUserListToRoom(room.players, roomId, this.gameIo);
 }
