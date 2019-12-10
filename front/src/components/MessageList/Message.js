@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import globalMessages from 'constant/messages';
 import MessageComponentStyle from './MessageComponent.style';

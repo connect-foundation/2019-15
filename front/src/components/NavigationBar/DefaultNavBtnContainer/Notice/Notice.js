@@ -1,4 +1,4 @@
-import React, { useRef, useCallback, useReducer, useEffect } from 'react';
+import React, { useReducer, useEffect } from 'react';
 import Alarm from 'components/NavigationBar/DefaultNavBtnContainer/Notice/Alarm';
 import Messages from 'components/MessageList/MessageList';
 import { faBell } from '@fortawesome/free-solid-svg-icons';
