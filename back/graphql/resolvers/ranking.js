@@ -63,34 +63,6 @@ const rankingResolvers = {
       return toRankingResult(edgesWithCursor, first);
     },
     rankingFriends: async (obj, { order, first, after }, { Users, Friends, req }) => {
-      // const { id, score } = after ? splitCursor(after) : { id: MIN_ID, score: MAX_INT };
-      //
-      // const { rows: nodes, count: totalCount } = await Friends.findAndCountAll({
-      //   where: { pFriendId: req.user.id },
-      //   include: [
-      //     {
-      //       model: Users,
-      //       where: {
-      //         [Op.or]: [
-      //           { score: { [order === 'ASC' ? Op.gt : Op.lt]: score } },
-      //           {
-      //             [Op.and]: [
-      //               { score: score },
-      //               {
-      //                 id: { [Op.gt]: id },
-      //               },
-      //             ],
-      //           },
-      //         ],
-      //       },
-      //     },
-      //   ],
-      //   order: [[{ model: Users }, ...getScoreOrdering(order)], [{ model: Users }, 'id']],
-      //   limit: first,
-      // });
-      // const edgesWithCursor = nodes.map(({ User }) => makeNodeToEdge(User));
-      //
-      // return toRankingResult(edgesWithCursor, totalCount, first);
       const lastEndCursor = after || MAX_CURSOR;
 
       const nodes = await Friends.findAll({

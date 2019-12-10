@@ -10,8 +10,8 @@ InfinityScroll.propTypes = {
 
 export default function InfinityScroll({ loadMore, hasMore, children }) {
   const onScroll = useCallback(
-    ({ target: { scrollHeight, scrollTop, clientHeight } }) => {
-      if (scrollHeight - scrollTop <= clientHeight && hasMore) {
+    ({ target: { offsetHeight, scrollTop, scrollHeight } }) => {
+      if (offsetHeight + scrollTop >= scrollHeight && hasMore) {
         loadMore();
       }
     },
@@ -19,6 +19,8 @@ export default function InfinityScroll({ loadMore, hasMore, children }) {
   );
 
   return (
-    <InfinityScrollStyle onScroll={onScroll}>{children}</InfinityScrollStyle>
+    <InfinityScrollStyle id="infinityScroll" onScroll={onScroll}>
+      {children}
+    </InfinityScrollStyle>
   );
 }

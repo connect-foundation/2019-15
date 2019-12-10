@@ -57,6 +57,7 @@ export default function Slider({ max, min, unit, onChange, initialStep }) {
 
   const setSliderEvents = useCallback(
     (sliderNode) => {
+      if (!sliderNode) return;
       const handlebarNode = sliderNode.firstChild;
       lineUnitLength.current =
         sliderNode.lastChild.clientWidth / ((max - min) / unit);
