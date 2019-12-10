@@ -1,4 +1,4 @@
-import React, { useReducer } from 'react';
+import React, { useReducer, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import Tools from 'components/GamePlay/CanvasSection/DrawingPlayGround/Tools/Tools';
 import PainterBoard from 'components/GamePlay/CanvasSection/DrawingPlayGround/PainterBoard/PainterBoard';
@@ -17,6 +17,8 @@ DrawingPlayGround.propTypes = {
     width: PropTypes.number,
     height: PropTypes.number,
   }),
+  userList: PropTypes.node.isRequired,
+  painter: PropTypes.node.isRequired,
 };
 
 DrawingPlayGround.defaultProps = {
@@ -41,15 +43,30 @@ const setDrawingOptions = (prev, { type, value }) => {
   }
 };
 
-export default function DrawingPlayGround({ drawable, canvasSize }) {
+export default function DrawingPlayGround({
+  drawable,
+  canvasSize,
+  userList,
+  painter,
+}) {
   const [drawingOptions, drawingOptionsDispatcher] = useReducer(
     setDrawingOptions,
     DEFAULT_DRAWING_OPTIONS,
   );
+  const [painterNickname, setPainterNickname] = useState('');
+
+  useEffect(() => {
+    const painterInfo = userList.filter((user) => {
+      if (user.socketId === painter) return user;
+      return false;
+    });
+    if (painterInfo.length > 0) setPainterNickname(painterInfo[0].nickname);
+    drawingOptionsDispatcher({ type: 'tool', value: 'pen' });
+  }, [drawable, painter, userList]);
 
   return (
     <DrawingPlayGroundStyle>
-      {drawable ? (
+      {drawable || userList > 1 ? (
         <>
           <PainterBoard drawingOptions={drawingOptions} size={canvasSize} />
           <Tools
@@ -61,7 +78,9 @@ export default function DrawingPlayGround({ drawable, canvasSize }) {
         <>
           <NonPainterBoard size={canvasSize} />
           <ToolsStyle>
-            <CenterSpanStyle>출제자가 그림을 그리고 있습니다.</CenterSpanStyle>
+            <CenterSpanStyle>
+              {painterNickname}님이 그림을 그리고 있습니다.
+            </CenterSpanStyle>
           </ToolsStyle>
         </>
       )}
