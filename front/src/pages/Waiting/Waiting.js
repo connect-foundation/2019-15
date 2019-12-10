@@ -10,20 +10,17 @@ import GlobalSocket from 'global.context';
 import NavigationBar from 'components/NavigationBar/NavigationBar';
 
 export default function Waiting() {
-  const { gameSocket, setGameSocket, room } = useContext(GlobalSocket);
+  const { gameSocket, setGameSocket } = useContext(GlobalSocket);
   const [userList, setUserList] = useState([]);
   const { hash } = useParams();
   const history = useHistory();
 
   useEffect(() => {
-    if (!gameSocket) return () => {};
+    if (!gameSocket) return;
     initUserListMsgHandler(gameSocket, { setUserList });
     initMovePrivateGame(gameSocket, () => {
       history.push(`private${hash}`);
     });
-    return () => {
-      closeSocket(gameSocket, { setGameSocket });
-    };
   }, [gameSocket, hash, history, setGameSocket]);
 
   if (!gameSocket || gameSocket.disconnected) {
