@@ -22,7 +22,7 @@ function setGameSocket(socket) {
     this.RoomManager.room[PRIVATE_ROOM_NAME][roomId] = new Room(this.gameIo);
   });
 
-  socket.on('enterPrivate', ({ nickname, roomId, roomOwner }) => {
+  socket.on('enterPrivate', ({ nickname, roomId, roomOwner, avatar }) => {
     roomInfo.roomType = PRIVATE_ROOM_NAME;
     roomInfo.roomId = roomId;
   });

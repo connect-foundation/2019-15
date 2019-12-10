@@ -6,9 +6,11 @@ function enterRandom(gameSocket, roomInfo, { nickname, roomType }) {
   personEnterRoom(nickname, gameSocket, roomType, this.gameIo, roomInfo.roomId);
 }
 
-function enterPrivate(gameSocket, { nickname, roomId, roomOwner }) {
+function enterPrivate(gameSocket, { nickname, roomId, roomOwner, avatar }) {
   const room = this.RoomManager.room[PRIVATE_ROOM_NAME][roomId];
-  room.addPlayer(new User(nickname, gameSocket, null, roomOwner));
+  if (!room) return;
+
+  room.addPlayer(new User(nickname, gameSocket, null, roomOwner, avatar));
 
   gameSocket.join(roomId);
   gameSocket.emit(`connectRandom`, {
