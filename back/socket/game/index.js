@@ -27,13 +27,13 @@ function setGameSocket(socket) {
     roomInfo.roomId = roomId;
   });
 
-  socket.on('startPrivateGame', ({ roomId, roomType }) => {
+  socket.on('startPrivateGame', ({ roomId }) => {
     // 난입 시나리오 추가해야됨
-    const room = RoomManager.room[roomType][roomId];
+    const room = RoomManager.room[PRIVATE_ROOM_NAME][roomId];
     if (room.isPlayable()) {
       this.gameIo
         .to(roomId)
-        .emit('startPrivateGame', { painter: room.players[room.players.length - 1].socket.id });
+        .emit('movePrivate', { painter: room.players[room.players.length - 1].socket.id });
     }
   });
 
