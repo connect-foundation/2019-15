@@ -92,7 +92,6 @@ const rankingResolvers = {
       });
 
       const friendNodes = nodes.map(({ dataValues }) => dataValues.User);
-      console.log(friendNodes);
       const edgesWithCursor = getEdgesWithCursor(friendNodes);
 
       return toRankingResult(edgesWithCursor, first);

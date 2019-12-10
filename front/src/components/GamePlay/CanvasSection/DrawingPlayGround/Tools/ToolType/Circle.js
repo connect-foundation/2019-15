@@ -42,10 +42,6 @@ class Circle extends Tool {
 
   onMouseMove(endPoint) {
     if (!this.isDown) return;
-    console.log(
-      getDistance(this.startPoint, endPoint) / 2,
-      getAngle(this.startPoint, endPoint),
-    );
     this.circle.set({
       radius: getDistance(this.startPoint, endPoint) / 2,
       angle: getAngle(this.startPoint, endPoint),
