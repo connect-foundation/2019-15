@@ -1,13 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import TimerStyle from './Timer.style';
 
 Timer.propTypes = {
   isTimerGetReady: PropTypes.bool.isRequired,
-  setIsTimerGetReady: PropTypes.func.isRequired,
   setIsOpen: PropTypes.func.isRequired,
   endTime: PropTypes.number.isRequired,
-  setEndTime: PropTypes.func.isRequired,
 };
 
 function getRemainTime(endTime) {
@@ -15,49 +13,33 @@ function getRemainTime(endTime) {
   return gap >= 0 ? gap : 0;
 }
 
-export default function Timer({
-  isTimerGetReady,
-  setIsTimerGetReady,
-  setIsOpen,
-  endTime,
-  setEndTime,
-}) {
-  const [expireTime, setExpireTime] = useState(30000);
-  const [requestId, setRequestId] = useState(0);
+export default function Timer({ isTimerGetReady, setIsOpen, endTime }) {
+  const [remainTime, setRemainTime] = useState(getRemainTime(endTime));
+  const requestId = useRef(0);
 
   useEffect(() => {
-    function notifyOpeningLetter() {
-      setIsOpen(true);
+    function resetTimer() {
+      setRemainTime(getRemainTime(Date.now() + 30000));
     }
 
-    function stopTimer() {
-      setIsTimerGetReady(false);
-      cancelAnimationFrame(requestId);
-      // setEndTime(0);
+    function countDown() {
+      setRemainTime(getRemainTime(endTime));
+      if (getRemainTime(endTime) <= 10) setIsOpen(true);
+      if (isTimerGetReady) requestId.current = requestAnimationFrame(countDown);
     }
 
-    function runTimer() {
-      if (getRemainTime(endTime) <= 10) notifyOpeningLetter();
-      if (getRemainTime(endTime) > 0)
-        setRequestId(requestAnimationFrame(runTimer));
-      else stopTimer();
-    }
+    if (isTimerGetReady) requestId.current = requestAnimationFrame(countDown);
+    else resetTimer();
 
-    if (isTimerGetReady) setRequestId(requestAnimationFrame(runTimer));
-    else stopTimer();
-  }, [
-    isTimerGetReady,
-    setIsTimerGetReady,
-    setIsOpen,
-    setEndTime,
-    endTime,
-    requestId,
-  ]);
+    return () => {
+      cancelAnimationFrame(requestId.current);
+    };
+  }, [isTimerGetReady]);
 
   return (
     <>
       <TimerStyle>
-        <span>{getRemainTime(endTime)}</span>
+        <span>{remainTime}</span>
       </TimerStyle>
     </>
   );
