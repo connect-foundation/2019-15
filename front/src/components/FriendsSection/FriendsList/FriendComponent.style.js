@@ -9,9 +9,14 @@ const FriendComponentStyle = styled.div`
   padding-top: 0.5rem;
   padding-left: 1rem;
   padding-bottom: 1rem;
-  font-size: 13px;
+  font-size: 17px;
   align-items: center;
-
+  
+  > span {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
   > *:first-child {
     flex: 1;
   }

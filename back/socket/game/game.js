@@ -8,6 +8,7 @@ function sendUserListToRoom(list, roomId, io) {
       nickname: userName,
       socketId: user.socket.id,
       avatar: user.avatar,
+      privileged: user.privileged,
       roomOwner: user.roomOwner,
     };
   });
@@ -24,23 +25,15 @@ function personEnterRoom(nickname, socket, roomType, io, roomId) {
     roomType,
   });
 
-  sendUserListToRoom(room.players, roomId, io);
-
   if (room.isPlayable()) {
     room.prepareFirstQuestion();
-    io.to(roomId).emit('gamestart', {
-      painter: room.getExaminerSocketId(),
-      currentRound: room.currentRound,
-      totalRound: room.totalRound,
-    });
+    io.to(roomId).emit('gamestart', room.makeGameStartData());
+  } else if (room.isPlaying()) {
+    socket.emit('gamestart', room.makeGameStartData());
+    socket.emit('startQuestion', room.makeStartQuestionData());
   }
-  if (room.isPlaying()) {
-    socket.emit('gamestart', {
-      painter: room.getExaminerSocketId(),
-      currentRound: room.currentRound,
-      totalRound: room.totalRound,
-    });
-  }
+
+  sendUserListToRoom(room.players, roomId, io);
 
   return { roomId, roomType };
 }

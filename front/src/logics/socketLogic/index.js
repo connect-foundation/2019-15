@@ -21,7 +21,10 @@ export function initUserListMsgHandler(socket, { setUserList }) {
   });
 }
 
-export function initGameStartMsgHandler(socket, { setPainter, setRound }) {
+export function initGameStartMsgHandler(
+  socket,
+  { setPainter, setRound },
+) {
   socket.on('gamestart', ({ painter, currentRound, totalRound }) => {
     setPainter(painter);
     setRound({
@@ -57,12 +60,11 @@ export function sendMessage(
   socket.emit('sendMessage', { socketId, roomType, roomId, inputValue });
 }
 
-export function initChattingHandler(socket, { messages, pushMessage }) {
+export function initChattingHandler(socket, { setMessage }) {
   socket.on('getMessage', ({ content, privileged }) => {
     const splitRes = content.split(' : ');
     if (splitRes.length === 2 && splitRes[1] === '') return;
-    messages.push({ content, privileged });
-    pushMessage(messages.slice());
+    setMessage({ content, privileged });
   });
 }
 
@@ -70,11 +72,20 @@ export function selectWord(socket, { answer, roomType, roomId }) {
   socket.emit('selectWord', { answer, roomType, roomId });
 }
 
-export function setStartQuestionHandler(socket, setQuestionWord, callback) {
-  socket.on('startQuestion', ({ wordLength, openLetter, openIndex }) => {
-    setQuestionWord({ wordLength, openLetter, openIndex });
-    callback();
-  });
+export function setStartQuestionHandler(
+  socket,
+  setQuestionWord,
+  setEndTime,
+  callback,
+) {
+  socket.on(
+    'startQuestion',
+    ({ wordLength, openLetter, openIndex, endTime }) => {
+      setQuestionWord({ wordLength, openLetter, openIndex });
+      setEndTime(endTime);
+      callback();
+    },
+  );
 }
 
 export function setEndQuestionHandler(socket, endQuestionCallback) {

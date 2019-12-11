@@ -7,6 +7,7 @@ class Room {
     this.players = [];
     this.wordSet = null;
     this.word = null;
+    this.openIndex = 0;
     this.timer = new Timer();
     this.state = roomState.EMPTY;
     this.examinerIndex = null;
@@ -54,6 +55,11 @@ class Room {
     this.players.splice(userIndex, 1);
   }
 
+  // 방이 대기중인 상태인 경우
+  isWaiting() {
+    return this.state === roomState.WAITING;
+  }
+
   // 최소 시작 인원을 기다리다가 충족된 경우. 즉, 새 게임
   isPlayable() {
     return this.state === roomState.WAITING && this.players.length >= 2;
@@ -94,6 +100,13 @@ class Room {
       currentRound: this.currentRound,
       totalRound: this.totalRound,
     });
+    setTimeout(() => {
+      const userList = this.players.map((user) => {
+        const userName = user.nickname || '부스트캠퍼';
+        return { nickname: userName, socketId: user.socket.id, privileged: user.privileged };
+      });
+      gameIo.in(this.roomId).emit('userList', { userList: JSON.stringify(userList) });
+    }, 5000);
   }
 
   getExaminerSocketId() {
@@ -106,6 +119,23 @@ class Room {
 
   getScores() {
     return this.players.map((player) => [player.nickname, player.score]);
+  }
+
+  makeGameStartData() {
+    return {
+      painter: this.getExaminerSocketId(),
+      currentRound: this.currentRound,
+      totalRound: this.totalRound,
+    };
+  }
+
+  makeStartQuestionData() {
+    return {
+      wordLength: this.word.length,
+      openLetter: this.word[this.openIndex],
+      openIndex: this.openIndex,
+      endTime: this.timer.endTime,
+    };
   }
 }
 

@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext, useEffect, useCallback } from 'react';
 import { Redirect } from 'react-router-dom';
 import NavigationBar from 'components/NavigationBar/NavigationBar';
 import { FlexRowStyle } from 'components/globalComponents/Container/Flex.style';
@@ -47,41 +47,50 @@ const GamePlay = () => {
     currentRound: 1,
     totalRound: 3,
   });
+  const [endTime, setEndTime] = useState(0);
 
-  function endQuestionCallback({
-    nextExaminerSocketId,
-    _scores,
-    answer,
-    currentRound,
-    totalRound,
-  }) {
-    // 결과 화면 띄우기
-    setSelectedWord(answer);
-    setScores(_scores);
-    setShowQuestionResult(true);
+  const resetQuestionStates = useCallback(
+    function resetQuestionStates(nextExaminerSocketId) {
+      setPainter(nextExaminerSocketId);
+      setQuestionWord(initialQuestionWordState);
+      setIsOpen(false);
+      setSelectedWord('');
+      // todo: 캔버스 데이터 초기화
+    },
+    [initialQuestionWordState],
+  );
 
-    setTimeout(() => {
-      // 각종 상태 초기화하기
-      resetQuestionStates(nextExaminerSocketId);
-      setRound({ currentRound, totalRound });
-      setShowQuestionResult(false);
-    }, 5000);
-  }
+  const endQuestionCallback = useCallback(
+    function endQuestionCallback({
+      nextExaminerSocketId,
+      _scores,
+      answer,
+      currentRound,
+      totalRound,
+    }) {
+      // 타이머 멈추기
+      setIsTimerGetReady(false);
 
-  function resetQuestionStates(nextExaminerSocketId) {
-    setPainter(nextExaminerSocketId);
-    setQuestionWord(initialQuestionWordState);
-    setIsTimerGetReady(false);
-    setIsOpen(false);
-    setSelectedWord('');
-    // todo: 캔버스 데이터 초기화
-  }
+      // 결과 화면 띄우기
+      setSelectedWord(answer);
+      setScores(_scores);
+      setShowQuestionResult(true);
+
+      setTimeout(() => {
+        // 각종 상태 초기화하기
+        resetQuestionStates(nextExaminerSocketId);
+        setRound({ currentRound, totalRound });
+        setShowQuestionResult(false);
+      }, 5000);
+    },
+    [resetQuestionStates],
+  );
 
   useEffect(() => {
     if (!gameSocket) return () => {};
     initUserListMsgHandler(gameSocket, { setUserList });
     initGameStartMsgHandler(gameSocket, { setPainter, setRound });
-    setStartQuestionHandler(gameSocket, setQuestionWord, () => {
+    setStartQuestionHandler(gameSocket, setQuestionWord, setEndTime, () => {
       setIsTimerGetReady(true);
     });
     setEndQuestionHandler(gameSocket, endQuestionCallback);
@@ -116,6 +125,8 @@ const GamePlay = () => {
     setScores,
     round,
     setRound,
+    endTime,
+    setEndTime,
   };
 
   return (

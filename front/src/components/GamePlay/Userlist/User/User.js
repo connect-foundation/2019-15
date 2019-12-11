@@ -21,13 +21,14 @@ User.propTypes = {
   className: PropTypes.string,
   nickname: PropTypes.string.isRequired,
   index: PropTypes.number.isRequired,
+  privileged: PropTypes.bool.isRequired,
 };
 
-export default function User({ className, nickname, index }) {
+export default function User({ className, nickname, index, privileged }) {
   const drawer = className.split('painter').length > 1;
 
   return (
-    <UserStyle className={className}>
+    <UserStyle className={className} privileged={privileged}>
       <UserImage
         src={`${faker.image.animals(parseInt(Math.random() * 1000, 0))}`}
         alt="avatar"

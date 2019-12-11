@@ -5,18 +5,31 @@ import InfinityScroll from 'components/globalComponents/InfinityScroll/InfinityS
 import useGetRankingFriends from 'hooks/Ranking/useGetRankingFriends';
 import RankingAllStyle from 'components/Ranking/RankingAll/RankingAll.style';
 import UserRankingList from '../UserRankingList/UserRankingList';
+import UserRankingListStyle from '../UserRankingList/UserRankingList.style';
 
 export default function RankingFriends() {
   const { data, loading, error, fetchMore, hasMore } = useGetRankingFriends();
   if (loading) {
-    return <Loading />;
+    return (
+      <UserRankingListStyle>
+        <Loading />
+      </UserRankingListStyle>
+    );
   }
   if (error) {
-    return <Alert type="error" />;
+    return (
+      <UserRankingListStyle>
+        <Alert type="error" />
+      </UserRankingListStyle>
+    );
   }
 
   if (!data.length) {
-    return <Alert type="noData" />;
+    return (
+      <UserRankingListStyle>
+        <Alert type="noData" />
+      </UserRankingListStyle>
+    );
   }
   return (
     <RankingAllStyle>

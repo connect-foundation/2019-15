@@ -13,6 +13,7 @@ import QuestionResult from './QuestionResult/QuestionResult';
 export default function CanvasSection() {
   const { gameSocket } = useContext(GlobalContext);
   const {
+    userList,
     painter,
     questionWord,
     isTimerGetReady,
@@ -27,6 +28,8 @@ export default function CanvasSection() {
     setScores,
     round,
     setRound,
+    endTime,
+    setEndTime,
   } = useContext(GamePlayContext);
 
   const [drawable, setDrawable] = useState(false);
@@ -34,13 +37,18 @@ export default function CanvasSection() {
   useEffect(() => {
     if (painter === gameSocket.id) {
       setDrawable(true);
+    } else {
+      setDrawable(false);
     }
+    return () => {
+      setDrawable(false);
+    };
   }, [drawable, gameSocket.id, painter]);
 
   return (
     <CanvasSectionStyle>
       <GameLoading />
-      {gameSocket.id === painter ? (
+      {userList.length > 1 ? (
         <WordChoice setSelectedWord={setSelectedWord} />
       ) : null}
       {showQuestionResult ? (
@@ -49,8 +57,8 @@ export default function CanvasSection() {
       <section>
         <Timer
           isTimerGetReady={isTimerGetReady}
-          setIsTimerGetReady={setIsTimerGetReady}
           setIsOpen={setIsOpen}
+          endTime={endTime}
         />
         <GameInfo round={round} />
         <WordPreview
@@ -63,7 +71,7 @@ export default function CanvasSection() {
       </section>
       <DrawingPlayGround
         drawable={drawable}
-        canvasSize={{ width: 800, height: 480 }}
+        canvasSize={{ width: 760, height: 470 }}
       />
     </CanvasSectionStyle>
   );
