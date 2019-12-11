@@ -11,7 +11,7 @@ const FriendComponentStyle = styled.div`
   padding-bottom: 1rem;
   font-size: 17px;
   align-items: center;
-  
+
   > span {
     overflow: hidden;
     white-space: nowrap;
