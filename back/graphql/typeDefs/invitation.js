@@ -19,6 +19,6 @@ module.exports = `
   }
   
   extend type Query{
-    invitations(first:Int!,after:ID):InvitationConnection
+    invitations(first:Int!,after:String):InvitationConnection
   }
 `;

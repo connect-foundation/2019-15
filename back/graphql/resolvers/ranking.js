@@ -41,7 +41,6 @@ const rankingResolvers = {
       });
 
       const edges = getEdgesFromNodes(nodes, getCursor);
-      console.log(edges);
 
       return getPageResult(edges, first);
     },

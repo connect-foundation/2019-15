@@ -1,8 +1,8 @@
 module.exports = `
   type Friend{
     id:Int!
-    pFriendId:Int!
-    sFriendId:Int!
+    pFriend:User!
+    sFriend:User!
     createdAt:String
     updatedAt:String
   }
