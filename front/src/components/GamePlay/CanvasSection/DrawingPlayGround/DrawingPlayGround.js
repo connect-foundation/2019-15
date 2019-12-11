@@ -1,4 +1,4 @@
-import React, { useReducer, useEffect, useState } from 'react';
+import React, { useReducer } from 'react';
 import PropTypes from 'prop-types';
 import Tools from 'components/GamePlay/CanvasSection/DrawingPlayGround/Tools/Tools';
 import PainterBoard from 'components/GamePlay/CanvasSection/DrawingPlayGround/PainterBoard/PainterBoard';
@@ -17,8 +17,7 @@ DrawingPlayGround.propTypes = {
     width: PropTypes.number,
     height: PropTypes.number,
   }),
-  userList: PropTypes.node.isRequired,
-  painter: PropTypes.node.isRequired,
+  painterNickname: PropTypes.node.isRequired,
 };
 
 DrawingPlayGround.defaultProps = {
@@ -46,27 +45,16 @@ const setDrawingOptions = (prev, { type, value }) => {
 export default function DrawingPlayGround({
   drawable,
   canvasSize,
-  userList,
-  painter,
+  painterNickname,
 }) {
   const [drawingOptions, drawingOptionsDispatcher] = useReducer(
     setDrawingOptions,
     DEFAULT_DRAWING_OPTIONS,
   );
-  const [painterNickname, setPainterNickname] = useState('');
-
-  useEffect(() => {
-    const painterInfo = userList.filter((user) => {
-      if (user.socketId === painter) return user;
-      return false;
-    });
-    if (painterInfo.length > 0) setPainterNickname(painterInfo[0].nickname);
-    drawingOptionsDispatcher({ type: 'tool', value: 'pen' });
-  }, [drawable, painter, userList]);
 
   return (
     <DrawingPlayGroundStyle>
-      {drawable || userList > 1 ? (
+      {drawable || painterNickname === null ? (
         <>
           <PainterBoard drawingOptions={drawingOptions} size={canvasSize} />
           <Tools
