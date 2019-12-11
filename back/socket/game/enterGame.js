@@ -14,7 +14,20 @@ function enterPrivate(gameSocket, { nickname, roomId, roomOwner, avatar }) {
 
   gameSocket.join(roomId);
 
+  setTimeout(() => {
   sendUserListToRoom(room.players, roomId, this.gameIo);
+  }, 0);
+
+  if (room.isPlaying()) {
+    gameSocket.emit('movePrivate');
+
+    setTimeout(() => {
+      sendUserListToRoom(room.players, roomId, this.gameIo);
+
+      gameSocket.emit('gamestart', room.makeGameStartData());
+      gameSocket.emit('startQuestion', room.makeStartQuestionData());
+    }, 1000);
+  }
 }
 
 module.exports = { enterRandom, enterPrivate };

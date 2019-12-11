@@ -6,27 +6,13 @@ function startPrivateGame(gameSocket, { roomId }) {
   const room = this.RoomManager.room[PRIVATE_ROOM_NAME][roomId];
   if (room.isPlayable()) {
     this.gameIo.to(roomId).emit('movePrivate');
-  }
-  setTimeout(() => {
-    if (room.isPlayable()) {
+
+    setTimeout(() => {
       room.prepareFirstQuestion();
       sendUserListToRoom(room.players, roomId, this.gameIo);
-
-      this.gameIo.to(roomId).emit('gamestart', {
-        painter: room.getExaminerSocketId(),
-        currentRound: room.currentRound,
-        totalRound: room.totalRound,
-      });
-    } else if (room.isPlaying()) {
-      sendUserListToRoom(room.players, roomId, this.gameIo);
-
-      gameSocket.emit('gamestart', {
-        painter: room.getExaminerSocketId(),
-        currentRound: room.currentRound,
-        totalRound: room.totalRound,
-      });
-    }
-  }, 1500);
+      this.gameIo.to(roomId).emit('gamestart', room.makeGameStartData());
+    }, 1000);
+  }
 }
 
 module.exports = { startPrivateGame };
