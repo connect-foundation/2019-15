@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import MessagesStyle from 'components/MessageList/Messages.style';
-import MessageComponentStyle from 'components/MessageList/MessageComponent.style';
+import { MessageListStyle } from 'components/NavigationBar/DefaultNavBtnContainer/Notice/MessageList/MessageList.style';
+import { MessageStyle } from 'components/NavigationBar/DefaultNavBtnContainer/Notice/MessageList/Message/Message.style';
 
 Alarm.propTypes = {
   alarmList: PropTypes.arrayOf(String),
@@ -13,14 +13,10 @@ Alarm.defaultProps = {
 
 export default function Alarm({ alarmList }) {
   return (
-    <MessagesStyle>
+    <MessageListStyle>
       {alarmList.map((alarmContent) => {
-        return (
-          <MessageComponentStyle key={alarmContent}>
-            {alarmContent}
-          </MessageComponentStyle>
-        );
+        return <MessageStyle key={alarmContent}>{alarmContent}</MessageStyle>;
       })}
-    </MessagesStyle>
+    </MessageListStyle>
   );
 }
