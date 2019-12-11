@@ -35,7 +35,7 @@ const invitationResolvers = {
             },
           },
         ],
-        order: [['id', 'DESC']],
+        order: [['id']],
         limit: first,
       });
 

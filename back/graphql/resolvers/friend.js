@@ -1,9 +1,40 @@
 const Sequelize = require('sequelize');
 
 const { Op } = Sequelize;
+const { getPageResult, getEdgesFromNodes } = require('../../util/graphql/cursor');
 
 const friendResolvers = {
   Query: {
+    friends: async (obj, { first, after }, { Friends, Users, req }) => {
+      const afterClause = after
+        ? {
+            id: {
+              [Op.gt]: after,
+            },
+          }
+        : {};
+      const nodes = await Friends.findAll({
+        where: {
+          [Op.and]: [
+            {
+              pFriendId: req.user.id,
+            },
+            afterClause,
+          ],
+        },
+        include: [
+          {
+            model: Users,
+            as: 'sFriend',
+          },
+        ],
+        limit: first,
+        order: [['id']],
+      });
+
+      const edges = getEdgesFromNodes(nodes, (node) => node.id);
+      return getPageResult(edges, first);
+    },
     addFriendForTest: async (obj, args, { Friends }) => {
       try {
         await Friends.create({ pFriendId: 4, sFriendId: 22 });
@@ -22,19 +53,6 @@ const friendResolvers = {
     },
   },
   Mutation: {
-    friends: (obj, args, { Friends, Users, req }) => {
-      return Users.findAll({
-        type: Sequelize.QueryTypes.SELECT,
-        include: [
-          {
-            model: Friends,
-            where: {
-              [Op.and]: [{ sFriendId: Sequelize.col('Users.id') }, { pFriendId: req.user.id }],
-            },
-          },
-        ],
-      });
-    },
     findFriendRequests: async (obj, args, { BeforeFriends, Users, req }) => {
       const sFriendRows = await BeforeFriends.findAll({
         where: { [Op.and]: [{ sFriendId: req.user.id }, { friendStateId: 1 }] },
