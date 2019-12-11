@@ -9,6 +9,7 @@ import {
 import globalMessages from 'constant/messages';
 import { emitAcceptFriendRequest } from 'logics/socketLogic/online';
 import GlobalContext from 'global.context';
+import Message from 'components/MessageList/Message';
 import MessagesStyle from './Messages.style';
 import MessageComponentStyle from './MessageComponent.style';
 import Button from '../globalComponents/Button/Button';
@@ -65,19 +66,12 @@ export default function MessageList() {
         {friendRequests.length < 1 ? (
           <MessageComponentStyle>새로운 알람이 없습니다.</MessageComponentStyle>
         ) : (
-          friendRequests.map((friend) => (
-            <MessageComponentStyle key={friend.nickname}>
-              {friend.nickname}
-              {globalMessages.recieveRequest}
-              <ButtonDiv>
-                <Button onClick={() => acceptRequest(friend.nickname)}>
-                  수락
-                </Button>
-                <Button onClick={() => declineRequest(friend.nickname)}>
-                  거절
-                </Button>
-              </ButtonDiv>
-            </MessageComponentStyle>
+          friendRequests.map(({ nickname }) => (
+            <Message
+              nickname={nickname}
+              acceptRequest={() => acceptRequest(nickname)}
+              declineRequest={() => declineRequest(nickname)}
+            />
           ))
         )}
       </MessagesStyle>

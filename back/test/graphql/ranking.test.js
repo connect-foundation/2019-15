@@ -104,7 +104,6 @@ describe('랭킹 graphql 쿼리 테스트', () => {
         }),
       })
       .expect(200);
-    console.log(res.body.data);
     const { pageInfo, edges } = res.body.data.rankingAll;
     testEdges({ edges, pageInfo, expectedLength }, { order });
     done();

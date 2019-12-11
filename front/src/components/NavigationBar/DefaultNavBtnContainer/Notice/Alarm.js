@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import MessagesStyle from 'components/Messages/Messages.style';
-import MessageComponentStyle from 'components/Messages/MessageComponent.style';
+import MessagesStyle from 'components/MessageList/Messages.style';
+import MessageComponentStyle from 'components/MessageList/MessageComponent.style';
 
 Alarm.propTypes = {
   alarmList: PropTypes.arrayOf(String),

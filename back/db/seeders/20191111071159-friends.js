@@ -46,6 +46,10 @@ module.exports = {
           sFriendId: 11,
         },
         {
+          pFriendId: 4,
+          sFriendId: 12,
+        },
+        {
           pFriendId: 1,
           sFriendId: 4,
         },
@@ -83,6 +87,10 @@ module.exports = {
         },
         {
           pFriendId: 11,
+          sFriendId: 4,
+        },
+        {
+          pFriendId: 12,
           sFriendId: 4,
         },
       ],

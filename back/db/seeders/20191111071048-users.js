@@ -119,6 +119,51 @@ module.exports = {
           nickname: '배추김치',
           score: getRandomInt(),
         },
+        {
+          userId: getRandomInt().toString(),
+          nickname: '도라지',
+          score: 0,
+        },
+        {
+          userId: getRandomInt().toString(),
+          nickname: '케냐',
+          score: 0,
+        },
+        {
+          userId: getRandomInt().toString(),
+          nickname: '베트남',
+          score: 0,
+        },
+        {
+          userId: getRandomInt().toString(),
+          nickname: '골저스',
+          score: 0,
+        },
+        {
+          userId: getRandomInt().toString(),
+          nickname: '지져스',
+          score: 0,
+        },
+        {
+          userId: getRandomInt().toString(),
+          nickname: '도라이',
+          score: 0,
+        },
+        {
+          userId: getRandomInt().toString(),
+          nickname: '공무원',
+          score: 0,
+        },
+        {
+          userId: getRandomInt().toString(),
+          nickname: '골덴바지',
+          score: 0,
+        },
+        {
+          userId: getRandomInt().toString(),
+          nickname: '통바지',
+          score: 0,
+        },
       ],
       {},
     );
