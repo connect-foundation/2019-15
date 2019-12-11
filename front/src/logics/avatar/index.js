@@ -14,7 +14,7 @@ function getCharacter(index) {
       return character3;
 
     default:
-      return null;
+      throw new Error();
   }
 }
 
