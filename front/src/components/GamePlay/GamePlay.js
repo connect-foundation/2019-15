@@ -16,8 +16,7 @@ import {
 } from 'logics/socketLogic';
 
 const GamePlay = () => {
-  const { gameSocket, setGameSocket } = useContext(GlobalContext);
-
+  const { gameSocket, setGameSocket, user, room } = useContext(GlobalContext);
   const [userList, setUserList] = useState([]);
   const [painter, setPainter] = useState(null);
   const initialQuestionWordState = {
@@ -88,20 +87,18 @@ const GamePlay = () => {
   );
 
   useEffect(() => {
-    const initSocket = () => {
-      if (!gameSocket) return;
-      initUserListMsgHandler(gameSocket, { setUserList });
-      initGameStartMsgHandler(gameSocket, { setPainter, setRound, setEndTime });
-      setStartQuestionHandler(gameSocket, setQuestionWord, setEndTime, () => {
-        setIsTimerGetReady(true);
-      });
-      setEndQuestionHandler(gameSocket, endQuestionCallback);
-    };
-    initSocket();
+    if (!gameSocket) return () => {};
+    initUserListMsgHandler(gameSocket, { setUserList });
+    initGameStartMsgHandler(gameSocket, { setPainter, setRound });
+    setStartQuestionHandler(gameSocket, setQuestionWord, setEndTime, () => {
+      setIsTimerGetReady(true);
+    });
+    setEndQuestionHandler(gameSocket, endQuestionCallback);
 
     return () => {
       closeSocket(gameSocket, { setGameSocket });
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [gameSocket, setGameSocket, setPainter, setUserList]);
 
   if (!gameSocket || gameSocket.disconnected) {
