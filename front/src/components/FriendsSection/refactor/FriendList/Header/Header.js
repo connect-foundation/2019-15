@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { faCog, faUserPlus } from '@fortawesome/free-solid-svg-icons';
 import {
   DoneButton,
@@ -13,13 +13,18 @@ import FriendsSectionContext from 'components/FriendsSection/refactor/FriendsSec
 
 export default function Header({ settingMode, changeSettingMode }) {
   const { dispatchModalContent } = useContext(FriendsSectionContext);
+  const [inputValue, setValue] = useState('');
+
+  function inputChangeHandler(e) {
+    setValue(e.target.value);
+  }
 
   function switchSettingMode() {
     changeSettingMode(!settingMode);
   }
 
   function addFriend() {
-    dispatchModalContent({ type: 'add', nickname: 'addedOne' });
+    dispatchModalContent({ type: 'add', nickname: inputValue });
   }
 
   return (
@@ -30,7 +35,7 @@ export default function Header({ settingMode, changeSettingMode }) {
             <DoneButton onClick={switchSettingMode}>완료</DoneButton>
           </ComponentStyle>
           <ComponentStyle>
-            <Input />
+            <Input onChange={inputChangeHandler} />
             <Icon icon={faUserPlus} onClick={addFriend} />
           </ComponentStyle>
         </>
