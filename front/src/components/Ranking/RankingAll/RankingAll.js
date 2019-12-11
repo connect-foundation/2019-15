@@ -1,17 +1,16 @@
 import React from 'react';
-import useGetRankingAll from 'hooks/Ranking/useGetRankingAll';
 import Loading from 'components/globalComponents/Loading/Loading';
 import Alert from 'components/globalComponents/Alert/Alert';
 import InfinityScroll from 'components/globalComponents/InfinityScroll/InfinityScroll';
 import useCursorQuery from 'hooks/useCursorQuery';
-import { getRankingAll } from 'queries/ranking';
+import { GET_RANKING_ALL } from 'queries/ranking';
 import UserRankingList from '../UserRankingList/UserRankingList';
 import RankingAllStyle from './RankingAll.style';
 import UserRankingListStyle from '../UserRankingList/UserRankingList.style';
 
 export default function RankingAll() {
   const { data, loading, error, fetchMore, hasMore } = useCursorQuery(
-    getRankingAll,
+    GET_RANKING_ALL,
   );
   if (loading) {
     return (
