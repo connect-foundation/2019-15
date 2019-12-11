@@ -7,7 +7,6 @@ const UserRankingListStyle = styled.div`
   @media (max-width: 1100px) {
     width: 9rem;
   }
-  justify-content: center;
 
   height: 28rem;
   overflow: hidden;
