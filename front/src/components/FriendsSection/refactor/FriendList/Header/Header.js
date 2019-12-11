@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useCallback } from 'react';
 import { faCog, faUserPlus } from '@fortawesome/free-solid-svg-icons';
 import {
   DoneButton,
@@ -8,8 +8,8 @@ import {
   ComponentStyle,
   Icon,
 } from 'components/FriendsSection/refactor/FriendList/Component/Component.style';
-
 import FriendsSectionContext from 'components/FriendsSection/refactor/FriendsSection.context';
+import regex from 'constant/TextInput';
 
 export default function Header({
   isConfigMode,
@@ -19,9 +19,14 @@ export default function Header({
   const { dispatchModalContent } = useContext(FriendsSectionContext);
   const [inputValue, setValue] = useState('');
 
-  function inputChangeHandler(e) {
-    setValue(e.target.value);
-  }
+  const inputChangeHandler = useCallback(
+    (e) => {
+      if (regex.test(e.target.value)) {
+        setValue(e.target.value);
+      }
+    },
+    [setValue],
+  );
 
   function addFriend() {
     dispatchModalContent({ type: 'add', nickname: inputValue });
@@ -35,7 +40,7 @@ export default function Header({
             <DoneButton onClick={changeToViewMode}>완료</DoneButton>
           </ComponentStyle>
           <ComponentStyle>
-            <Input onChange={inputChangeHandler} />
+            <Input onChange={inputChangeHandler} value={inputValue} />
             <Icon icon={faUserPlus} onClick={addFriend} />
           </ComponentStyle>
         </>
