@@ -11,6 +11,7 @@ import {
   NavBtnContainerStyle,
   NavImageStyle,
 } from 'components/NavigationBar/DefaultNavBtnContainer/DefaultNavBtnContainer.style';
+import Invitation from 'components/NavigationBar/DefaultNavBtnContainer/Invitation/Invitation';
 
 export default function DefaultNavBtnContainer() {
   const location = useLocation();
@@ -20,6 +21,7 @@ export default function DefaultNavBtnContainer() {
 
   return (
     <NavBtnContainerStyle>
+      <Invitation />
       <Notice />
       {location.pathname.includes('mypage') ? (
         <Link to="main">
