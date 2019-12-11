@@ -1,6 +1,5 @@
 const { personEnterPrivateRoom, sendUserListToRoom } = require('./game');
 const { RoomManager } = require('../RoomManager');
-const exitRoom = require('./exitRoom');
 const sendGameImage = require('./gameImage');
 const enterRandom = require('./enterRandom');
 const { sendMessage } = require('./message');
@@ -38,7 +37,6 @@ function setGameSocket(socket) {
   socket.on('sendMessage', sendMessage.bind(this, gameSocket));
   socket.on('enterRandom', enterRandom.bind(this, gameSocket, roomInfo));
   socket.on('drawing', sendGameImage.bind(this, gameSocket));
-  socket.on('exitRoom', exitRoom.bind(this, gameSocket));
   socket.on('disconnect', () => {
     if (!roomInfo) return;
     if (!RoomManager.isExistRoom(roomInfo)) return;
@@ -50,6 +48,9 @@ function setGameSocket(socket) {
       room.removePlayer(userIdx);
       sendUserListToRoom(room.players, roomId, this.gameIo);
       gameSocket.leave();
+    }
+    if (room.players.length < 1) {
+      RoomManager.deleteRoom(roomType, roomId);
     }
   });
 }

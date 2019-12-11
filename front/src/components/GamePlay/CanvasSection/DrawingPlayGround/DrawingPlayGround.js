@@ -17,6 +17,7 @@ DrawingPlayGround.propTypes = {
     width: PropTypes.number,
     height: PropTypes.number,
   }),
+  painterNickname: PropTypes.node.isRequired,
 };
 
 DrawingPlayGround.defaultProps = {
@@ -41,7 +42,11 @@ const setDrawingOptions = (prev, { type, value }) => {
   }
 };
 
-export default function DrawingPlayGround({ drawable, canvasSize }) {
+export default function DrawingPlayGround({
+  drawable,
+  canvasSize,
+  painterNickname,
+}) {
   const [drawingOptions, drawingOptionsDispatcher] = useReducer(
     setDrawingOptions,
     DEFAULT_DRAWING_OPTIONS,
@@ -49,7 +54,7 @@ export default function DrawingPlayGround({ drawable, canvasSize }) {
 
   return (
     <DrawingPlayGroundStyle>
-      {drawable ? (
+      {drawable || painterNickname === null ? (
         <>
           <PainterBoard drawingOptions={drawingOptions} size={canvasSize} />
           <Tools
@@ -61,7 +66,9 @@ export default function DrawingPlayGround({ drawable, canvasSize }) {
         <>
           <NonPainterBoard size={canvasSize} />
           <ToolsStyle>
-            <CenterSpanStyle>출제자가 그림을 그리고 있습니다.</CenterSpanStyle>
+            <CenterSpanStyle>
+              {painterNickname}님이 그림을 그리고 있습니다.
+            </CenterSpanStyle>
           </ToolsStyle>
         </>
       )}
