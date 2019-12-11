@@ -1,7 +1,7 @@
 import { useQuery } from '@apollo/react-hooks';
 
 const useCursorQuery = (query) => {
-  const { data, loading, error, fetchMore } = useQuery(query);
+  const { data, loading, error, fetchMore,refetch } = useQuery(query);
 
   const key = data && Object.keys(data).length ? Object.keys(data)[0] : null;
   const {
@@ -38,6 +38,7 @@ const useCursorQuery = (query) => {
     error,
     fetchMore: loadMore,
     hasMore: hasNextPage,
+    refetch
   };
 };
 
