@@ -97,7 +97,6 @@ const GamePlay = () => {
 
     return () => {
       closeSocket(gameSocket, { setGameSocket });
-      user.roomOwner = false;
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [gameSocket, setGameSocket, setPainter, setUserList]);

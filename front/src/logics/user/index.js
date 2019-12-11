@@ -1,7 +1,6 @@
 class User {
-  constructor(nickname, roomOwner = false, id) {
+  constructor(nickname, id) {
     this.nickname = nickname;
-    this.roomOwner = roomOwner;
     this.id = id;
   }
 }

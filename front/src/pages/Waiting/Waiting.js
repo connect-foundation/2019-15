@@ -3,8 +3,8 @@ import { Redirect, useParams, useHistory } from 'react-router-dom';
 import Preparation from 'components/Preparation/Preparation';
 import {
   initUserListMsgHandler,
-  closeSocket,
   initMovePrivateGame,
+  initSetRoomOwner,
 } from 'logics/socketLogic';
 import GlobalSocket from 'global.context';
 import NavigationBar from 'components/NavigationBar/NavigationBar';
@@ -14,6 +14,7 @@ export default function Waiting() {
   const [userList, setUserList] = useState([]);
   const { hash } = useParams();
   const history = useHistory();
+  const [roomOwner, setRoomOwner] = useState(false);
 
   useEffect(() => {
     if (!gameSocket) return;
@@ -21,6 +22,7 @@ export default function Waiting() {
     initMovePrivateGame(gameSocket, () => {
       history.push(`private${hash}`);
     });
+    initSetRoomOwner(gameSocket, { setRoomOwner });
   }, [gameSocket, hash, history, setGameSocket]);
 
   if (!gameSocket || gameSocket.disconnected) {
@@ -30,7 +32,7 @@ export default function Waiting() {
   return (
     <>
       <NavigationBar />
-      <Preparation waitingUserList={userList} />
+      <Preparation waitingUserList={userList} roomOwner={roomOwner} />
     </>
   );
 }
