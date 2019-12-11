@@ -4,11 +4,14 @@ import Alert from 'components/globalComponents/Alert/Alert';
 import InfinityScroll from 'components/globalComponents/InfinityScroll/InfinityScroll';
 import useGetRankingFriends from 'hooks/Ranking/useGetRankingFriends';
 import RankingAllStyle from 'components/Ranking/RankingAll/RankingAll.style';
+import { getRankingFriends } from 'queries/ranking';
 import UserRankingList from '../UserRankingList/UserRankingList';
 import UserRankingListStyle from '../UserRankingList/UserRankingList.style';
 
 export default function RankingFriends() {
-  const { data, loading, error, fetchMore, hasMore } = useGetRankingFriends();
+  const { data, loading, error, fetchMore, hasMore } = useGetRankingFriends(
+    getRankingFriends,
+  );
   if (loading) {
     return (
       <UserRankingListStyle>
