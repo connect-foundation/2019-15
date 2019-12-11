@@ -145,9 +145,19 @@ class Room {
     try {
       if (this.players.length > 0) {
         this.roomOwner = this.players[0].socket.id;
+        this.players[0].roomOwner = true;
+        this.players[0].socket.emit('roomOwner');
       }
     } catch (e) {
       console.log(e);
+    }
+  }
+
+  checkAndEmitRoomOwner(socketId, gameSocket) {
+    if (this.roomOwner === socketId) {
+      setTimeout(() => {
+        gameSocket.emit('roomOwner');
+      }, 100);
     }
   }
 }

@@ -38,11 +38,8 @@ export function emitMakePrivateRoom(socket, { nickname, roomId }) {
   socket.emit('makePrivate', { nickname, roomId });
 }
 
-export function emitEnterPrivateRoom(
-  socket,
-  { nickname, roomId, roomOwner, avatar },
-) {
-  socket.emit('enterPrivate', { nickname, roomId, roomOwner, avatar });
+export function emitEnterPrivateRoom(socket, { nickname, roomId, avatar }) {
+  socket.emit('enterPrivate', { nickname, roomId, avatar });
 }
 
 export function startPrivateGame(socket, { roomId }) {
@@ -119,5 +116,11 @@ export function closeSocket(socket, { setGameSocket }) {
 export function initMovePrivateGame(socket, moveGamePage) {
   socket.on('movePrivate', () => {
     moveGamePage();
+  });
+}
+
+export function initSetRoomOwner(socket, { setRoomOwner }) {
+  socket.on('roomOwner', () => {
+    setRoomOwner(true);
   });
 }
