@@ -1,10 +1,22 @@
 import gql from 'graphql-tag';
 
-export const FIND_FRIENDS = gql`
-  mutation friends {
-    friends {
-      id
-      nickname
+export const GET_FRIENDS = gql`
+  query getFriends($first: Int = 10, $after: String) {
+    friends(first: $first, after: $after) {
+      pageInfo {
+        endCursor
+        hasNextPage
+      }
+      edges {
+        node {
+          id
+          sFriend {
+            id
+            nickname
+          }
+        }
+        cursor
+      }
     }
   }
 `;
