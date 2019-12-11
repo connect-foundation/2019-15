@@ -8,7 +8,7 @@ export default function useCarousel(maxValue) {
       setIndex(maxValue - 1);
       return;
     }
-    setIndex(index - 1);
+    setIndex((beforeValue) => beforeValue - 1);
   }
 
   function clickRightBtn() {
@@ -16,7 +16,7 @@ export default function useCarousel(maxValue) {
       setIndex(0);
       return;
     }
-    setIndex(index + 1);
+    setIndex((beforeValue) => beforeValue + 1);
   }
 
   return [index, clickLeftBtn, clickRightBtn];
