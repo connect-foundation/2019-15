@@ -48,7 +48,7 @@ const rankingResolvers = {
       const afterClause = after
         ? {
             having: {
-              'User.cursor': { [getOrderOp(order)]: after },
+              'sFriend.cursor': { [getOrderOp(order)]: after },
             },
           }
         : {};
@@ -56,27 +56,31 @@ const rankingResolvers = {
         where: { pFriendId: req.user.id },
         include: [
           {
-            model: Users,
             attributes: {
               include: [
                 [
                   Sequelize.fn(
                     'concat',
-                    Sequelize.fn('lpad', Sequelize.col('User.score'), 10, '0'),
-                    Sequelize.fn('lpad', Sequelize.col('User.id'), 10, '0'),
+                    Sequelize.fn('lpad', Sequelize.col('sFriend.score'), 10, '0'),
+                    Sequelize.fn('lpad', Sequelize.col('sFriend.id'), 10, '0'),
                   ),
                   'cursor',
                 ],
               ],
             },
+            model: Users,
+            as: 'sFriend',
           },
         ],
         ...afterClause,
-        order: [[{ model: Users }, 'score', order], [{ model: Users }, 'id', order]],
+        order: [
+          [{ model: Users, as: 'sFriend' }, 'score', order],
+          [{ model: Users, as: 'sFriend' }, 'id', order],
+        ],
         limit: first,
       });
 
-      const friendNodes = nodes.map(({ dataValues }) => dataValues.User);
+      const friendNodes = nodes.map(({ dataValues }) => dataValues.sFriend);
       const edges = getEdgesFromNodes(friendNodes, getCursor);
 
       return getPageResult(edges, first);
