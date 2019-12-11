@@ -8,15 +8,18 @@ function startPrivateGame(gameSocket, { roomId }) {
     this.gameIo.to(roomId).emit('movePrivate');
   }
   setTimeout(() => {
-    sendUserListToRoom(room.players, roomId, this.gameIo);
     if (room.isPlayable()) {
       room.prepareFirstQuestion();
+      sendUserListToRoom(room.players, roomId, this.gameIo);
+
       this.gameIo.to(roomId).emit('gamestart', {
         painter: room.getExaminerSocketId(),
         currentRound: room.currentRound,
         totalRound: room.totalRound,
       });
     } else if (room.isPlaying()) {
+      sendUserListToRoom(room.players, roomId, this.gameIo);
+
       gameSocket.emit('gamestart', {
         painter: room.getExaminerSocketId(),
         currentRound: room.currentRound,
