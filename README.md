@@ -1,4 +1,4 @@
-<h1 align="center">Welcome to Catch My Mind 🎄</h1>
+<h1 align="center"><img src="https://github.com/connect-foundation/2019-15/blob/master/front/src/asset/mainlogo_yellowpink.png?raw=true" style="width: 80%;"></h1>
 <p>
   <a href="https://github.com/connect-foundation/2019-15/wiki" target="_blank">
     <img alt="Documentation" src="https://img.shields.io/badge/documentation-yes-brightgreen.svg" />
@@ -39,9 +39,9 @@
 - 참고: https://skribbl.io/
 
 ## Team
-🙎‍♀️ 손진아 - (한줄 자기소개)  
-💁‍♂️ 이지영 - (한줄 자기소개)  
-🤷‍♂️ 이창권 - (한줄 자기소개)  
+🙎‍♀️ 손진아 - 팀과 함께 성장하고자 합니다  
+💁‍♂️ 이지영 - 문제해결을 위해 끊임없이 고민하는 개발자입니다  
+🤷‍♂️ 이창권 - 재밌는 것을 만들고 싶은 개발자입니다.  
 🙋‍♂️ 최형준 - 🌐지속 가능한 웹 개발자를 지향합니다  
 
 ### Sprint
@@ -96,12 +96,13 @@
 └── util/                     # 유틸리티 파일
 ```
 
-
 ## Environment
 - FRONT
     - React
     - apollo-boost
     - styled-component
+    - Fabric.js
+    - three.js
 - BACK
     - Express
     - Passport.js
@@ -121,15 +122,18 @@
     - Git Flow
 - etc
     - ESLint (airbnb)
-    
+
 ## Core Skills
 - OAuth 2.0
 - WebSocket
     - throttle
-    - expoenetial 
+    - expoenetial reconnection
+- WebGL
     
 ## Document
 ### [그라운드 룰](https://github.com/connect-foundation/2019-15/wiki/%EA%B7%B8%EB%9D%BC%EC%9A%B4%EB%93%9C-%EB%A3%B0)
+
+### [기술 공유](https://github.com/connect-foundation/2019-15/wiki/%EA%B8%B0%EC%88%A0-%EA%B3%B5%EC%9C%A0)
 
 ### [Wiki](https://github.com/connect-foundation/2019-15/wiki)
 
