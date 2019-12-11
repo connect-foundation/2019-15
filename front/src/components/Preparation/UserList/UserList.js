@@ -1,13 +1,21 @@
-import React, { useContext, useEffect } from 'react';
-import GlobalContext from 'global.context';
-import { initUserListMsgHandler } from 'logics/socketLogic';
-import UserListStyle from './UserList.style';
+import React from 'react';
+import PropTypes from 'prop-types';
+import User from './User';
+import { UserListStyle } from './UserList.style';
 
-export default function UserList() {
-  const { gameSocket } = useContext(GlobalContext);
+UserList.propTypes = {
+  waitingUserList: PropTypes.arrayOf(
+    PropTypes.shape({
+      nickname: PropTypes.string,
+      socketId: PropTypes.string,
+      avatar: PropTypes.number,
+    }),
+  ).isRequired,
+};
 
-  const UserComponents = [].map((user) => (
-    <div style={{ width: '40px', height: '40px' }}>{user.nickname}</div>
+export default function UserList({ waitingUserList }) {
+  const UserComponents = waitingUserList.map((user) => (
+    <User key={user.socketId} user={user} />
   ));
 
   return <UserListStyle>{UserComponents}</UserListStyle>;

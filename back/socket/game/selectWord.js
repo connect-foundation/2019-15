@@ -3,6 +3,7 @@ const { roomState } = require('../../config/roomConfig');
 
 function selectWord(gameSocket, { answer, roomType, roomId }) {
   const room = this.RoomManager.room[roomType][roomId];
+  if (!room) return;
   room.state = roomState.PLAYING_QUESTION;
   room.word = answer;
   room.timer.start();

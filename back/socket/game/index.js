@@ -1,11 +1,13 @@
 const { personEnterPrivateRoom, sendUserListToRoom } = require('./game');
 const { RoomManager } = require('../RoomManager');
 const sendGameImage = require('./gameImage');
-const enterRandom = require('./enterRandom');
+const { enterRandom, enterPrivate } = require('./enterGame');
 const { sendMessage } = require('./message');
 const selectWord = require('./selectWord');
 const { PRIVATE_ROOM_NAME } = require('../../config/roomConfig');
 const { Room } = require('../Room');
+const { startPrivateGame } = require('./startPrivateGame');
+const exitRoom = require('./exitRoom');
 
 function setGameSocket(socket) {
   this.RoomManager = RoomManager;
@@ -18,21 +20,18 @@ function setGameSocket(socket) {
   });
 
   socket.on('makePrivate', ({ roomId }) => {
-    this.RoomManager.room[PRIVATE_ROOM_NAME][roomId] = new Room(this.gameIo);
-    roomInfo.roomId = roomId;
+    this.RoomManager.addRoom(PRIVATE_ROOM_NAME, this.gameIo, roomId);
+    this.RoomManager.room[PRIVATE_ROOM_NAME][roomId].roomOwner = gameSocket.id;
+  });
+
+  socket.on('enterPrivate', ({ nickname, roomId, avatar }) => {
     roomInfo.roomType = PRIVATE_ROOM_NAME;
+    roomInfo.roomId = roomId;
   });
 
-  socket.on('startPrivateGame', ({ roomId, roomType }) => {
-    // 난입 시나리오 추가해야됨
-    const room = RoomManager.room[roomType][roomId];
-    if (room.isPlayable()) {
-      this.gameIo
-        .to(roomId)
-        .emit('startPrivateGame', { painter: room.players[room.players.length - 1].socket.id });
-    }
-  });
-
+  socket.on('exitRoom', exitRoom.bind(this, gameSocket));
+  socket.on('startPrivateGame', startPrivateGame.bind(this, gameSocket));
+  socket.on('enterPrivate', enterPrivate.bind(this, gameSocket));
   socket.on('selectWord', selectWord.bind(this, gameSocket));
   socket.on('sendMessage', sendMessage.bind(this, gameSocket));
   socket.on('enterRandom', enterRandom.bind(this, gameSocket, roomInfo));
@@ -49,7 +48,12 @@ function setGameSocket(socket) {
       sendUserListToRoom(room.players, roomId, this.gameIo);
       gameSocket.leave();
     }
-    if (room.players.length < 1) {
+
+    if (gameSocket.id === room.roomOwner) {
+      room.passRoomOwnerToNext();
+      sendUserListToRoom(room.players, roomId, this.gameIo);
+    }
+    if (roomType !== PRIVATE_ROOM_NAME && room.players.length < 1) {
       RoomManager.deleteRoom(roomType, roomId);
     }
   });

@@ -12,7 +12,6 @@ export default function PrivateRoom() {
   const history = useHistory();
   const onClickMakeRoomBtn = () => {
     const privateRoomId = uuid();
-    user.roomOwner = true;
     history.push(`setting:${privateRoomId}`);
     emitMakePrivateRoom(gameSocket, { roomId: privateRoomId });
   };

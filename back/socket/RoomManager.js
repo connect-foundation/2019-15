@@ -12,9 +12,14 @@ const RoomManager = {
   maxPeopleNum,
 
   // 방이 없을 때 새로운 방을 만들고 반환.
-  addRoom(roomName, gameIo) {
+  addRoom(roomName, gameIo, privateRoomId) {
     const newRoom = new Room(gameIo);
-    const roomId = makeRoomId();
+    let roomId = makeRoomId();
+
+    if (privateRoomId) {
+      roomId = privateRoomId;
+    }
+
     newRoom.roomId = roomId;
     newRoom.state = roomState.EMPTY;
     this.room[roomName][roomId] = newRoom;
