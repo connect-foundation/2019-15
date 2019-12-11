@@ -18,8 +18,8 @@ export default function CanvasSection() {
     questionWord,
     isTimerGetReady,
     setIsTimerGetReady,
-    isOpen,
-    setIsOpen,
+    isLetterOpen,
+    setIsLetterOpen,
     selectedWord,
     setSelectedWord,
     showQuestionResult,
@@ -57,7 +57,7 @@ export default function CanvasSection() {
       <section>
         <Timer
           isTimerGetReady={isTimerGetReady}
-          setIsOpen={setIsOpen}
+          setIsLetterOpen={setIsLetterOpen}
           endTime={endTime}
         />
         <GameInfo round={round} />
@@ -65,7 +65,7 @@ export default function CanvasSection() {
           openLetter={questionWord.openLetter}
           wordLength={questionWord.wordLength}
           openIndex={questionWord.openIndex}
-          isOpen={isOpen}
+          isLetterOpen={isLetterOpen}
           selectedWord={selectedWord}
         />
       </section>
