@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useContext } from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import PropTypes from 'prop-types';
 import getRandomWords from 'queries/word';
@@ -16,8 +16,12 @@ WordChoice.propTypes = {
 
 function WordChoice({ setSelectedWord }) {
   const { gameSocket, room } = useContext(GlobalContext);
-  const { painter, questionWord } = useContext(GamePlayContext);
-  const [open, setOpen] = useState(true);
+  const {
+    painter,
+    questionWord,
+    isWordChoiceOpen,
+    setIsWordChoiceOpen,
+  } = useContext(GamePlayContext);
   const { data, loading, error, refetch } = useQuery(getRandomWords);
 
   if (loading) {
@@ -29,7 +33,7 @@ function WordChoice({ setSelectedWord }) {
 
   async function close(e) {
     refetch();
-    setOpen(false);
+    setIsWordChoiceOpen(false);
     const { roomType, roomId } = room;
     const answer = e.target.textContent;
     setSelectedWord(answer);
@@ -52,7 +56,7 @@ function WordChoice({ setSelectedWord }) {
 
   return (
     <>
-      {open ? (
+      {isWordChoiceOpen ? (
         <Background>
           <Div>
             원하시는 제시어를 선택하세요!
