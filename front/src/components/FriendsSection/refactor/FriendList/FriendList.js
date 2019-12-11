@@ -10,7 +10,7 @@ function changeModeReducer(state, action) {
     case 'toView':
       return false;
     default:
-      throw new Error();
+      throw new Error(`${action.type} is wrong action type`);
   }
 }
 

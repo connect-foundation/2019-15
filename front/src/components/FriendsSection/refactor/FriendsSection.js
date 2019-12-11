@@ -16,7 +16,7 @@ function modalReducer(state, action) {
         return { ...state, content: '친구의 닉네임을 입력해주세요' };
       return { ...state, content: `${action.nickname}님을 추가하시겠습니까?` };
     default:
-      throw new Error();
+      throw new Error(`${action.type} is wrong action type`);
   }
 }
 

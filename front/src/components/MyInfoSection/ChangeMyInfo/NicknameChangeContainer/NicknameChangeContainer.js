@@ -21,7 +21,7 @@ const resultTextReducer = (state, action) => {
     case 'completeChange':
       return `"${action.nickname}"닉네임으로 변경완료!`;
     default:
-      throw new Error();
+      throw new Error(`${action.type} is wrong action type`);
   }
 };
 
