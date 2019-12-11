@@ -15,6 +15,7 @@ class Room {
     this.currentRound = 1;
     this.answererCount = 0;
     this.timer.setTimeOutCallback(this.questionEndCallback.bind(this, gameIo));
+    this.roomOwner = null;
   }
 
   prepareFirstQuestion() {
@@ -36,6 +37,7 @@ class Room {
   prepareNextQuestion() {
     this.resetRoomState();
     this.examinerIndex -= 1;
+    // 주의!!!
     this.players[this.examinerIndex].privileged = true;
   }
 
@@ -52,6 +54,7 @@ class Room {
   }
 
   removePlayer(userIndex) {
+    if (userIndex < 0) return;
     this.players.splice(userIndex, 1);
   }
 
@@ -136,6 +139,16 @@ class Room {
       openIndex: this.openIndex,
       endTime: this.timer.endTime,
     };
+  }
+
+  passRoomOwnerToNext() {
+    try {
+      if (this.players.length > 0) {
+        this.roomOwner = this.players[0].socket.id;
+      }
+    } catch (e) {
+      console.log(e);
+    }
   }
 }
 

@@ -21,6 +21,7 @@ function setGameSocket(socket) {
 
   socket.on('makePrivate', ({ roomId }) => {
     this.RoomManager.addRoom(PRIVATE_ROOM_NAME, this.gameIo, roomId);
+    this.RoomManager.room[PRIVATE_ROOM_NAME][roomId].roomOwner = gameSocket.id;
   });
 
   socket.on('enterPrivate', ({ nickname, roomId, roomOwner, avatar }) => {
@@ -46,6 +47,10 @@ function setGameSocket(socket) {
       room.removePlayer(userIdx);
       sendUserListToRoom(room.players, roomId, this.gameIo);
       gameSocket.leave();
+    }
+
+    if (gameSocket.id === room.roomOwner) {
+      room.passRoomOwnerToNext();
     }
   });
 }

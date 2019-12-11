@@ -10,12 +10,16 @@ function enterPrivate(gameSocket, { nickname, roomId, roomOwner, avatar }) {
   const room = this.RoomManager.room[PRIVATE_ROOM_NAME][roomId];
   if (!room) return;
 
+  if (room.players.length === 0) {
+    room.roomOwner = gameSocket.id;
+  }
+
   room.addPlayer(new User(nickname, gameSocket, null, roomOwner, avatar));
 
   gameSocket.join(roomId);
 
   setTimeout(() => {
-  sendUserListToRoom(room.players, roomId, this.gameIo);
+    sendUserListToRoom(room.players, roomId, this.gameIo);
   }, 0);
 
   if (room.isPlaying()) {
