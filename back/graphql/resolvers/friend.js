@@ -44,25 +44,32 @@ const friendResolvers = {
       });
     },
     deleteFriend: async (obj, { nickname }, { Friends, Users, req }) => {
-      const idFromNickname = await Users.findOne({
-        where: { nickname: nickname },
+      const deletedColumns = await Friends.findAll({
+        include: [
+          {
+            model: Users,
+            as: 'sFriend',
+            where: { [Op.or]: [{ nickname: nickname }, { id: req.user.id }] },
+          },
+          {
+            model: Users,
+            as: 'pFriend',
+            where: { [Op.or]: [{ nickname: nickname }, { id: req.user.id }] },
+          },
+        ],
       });
-      const conditionColumns = {
-        where: {
-          [Op.or]: [
-            {
-              [Op.and]: [{ pFriendId: idFromNickname.dataValues.id }, { sFriendId: req.user.id }],
-            },
-            {
-              [Op.and]: [{ sFriendId: idFromNickname.dataValues.id }, { pFriendId: req.user.id }],
-            },
-          ],
-        },
-      };
-      const result = await Friends.destroy(conditionColumns);
+      let result = false;
+      try {
+        if (deletedColumns.length === 2) {
+          result = await Friends.destroy({ where: { id: deletedColumns[0].dataValues.id } });
+          result = await Friends.destroy({ where: { id: deletedColumns[1].dataValues.id } });
+        }
+      } catch (e) {
+        throw new Error(e);
+      }
       return {
-        result: !!result,
-        user: idFromNickname,
+        result: result,
+        nickname: nickname,
       };
     },
     deleteFriendRequest: async (obj, { nickname }, { BeforeFriends, Users, req }) => {
