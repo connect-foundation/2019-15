@@ -5,7 +5,11 @@ import Room from 'logics/room';
 import { PRIVATE_ROOM_NAME } from 'constant/room/roomInfo';
 import useInput from 'hooks/Input/useInput';
 import useCarousel from 'hooks/Carousel/useCarousel';
-import { connectGameSocket, emitEnterPrivateRoom } from 'logics/socketLogic';
+import {
+  connectGameSocket,
+  emitEnterPrivateRoom,
+  exitGameRoom,
+} from 'logics/socketLogic';
 import AvatarImg from './AvatarImg';
 import {
   SettingStyle,
@@ -29,19 +33,24 @@ export default function Setting() {
   const [avatar, clickLeftBtn, clickRightBtn] = useCarousel(3);
 
   useEffect(() => {
+    let socket = gameSocket;
     if (!gameSocket) {
-      const socket = connectGameSocket();
+      socket = connectGameSocket();
       setGameSocket(socket);
     }
     const privateRoomId = hash.slice(1, hash.length);
     setRoom(new Room(privateRoomId, PRIVATE_ROOM_NAME));
+
+    exitGameRoom(socket, {
+      roomType: PRIVATE_ROOM_NAME,
+      roomId: privateRoomId,
+    });
   }, [gameSocket, hash, setGameSocket, setRoom]);
 
   function onClickGameStart() {
     emitEnterPrivateRoom(gameSocket, {
       nickname,
       roomId: room.roomId,
-      roomOwner: user.roomOwner,
       avatar,
     });
     history.push(`waiting:${room.roomId}`);

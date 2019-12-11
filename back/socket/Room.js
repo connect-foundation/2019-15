@@ -35,10 +35,14 @@ class Room {
   }
 
   prepareNextQuestion() {
-    this.resetRoomState();
-    this.examinerIndex -= 1;
-    // 주의!!!
-    this.players[this.examinerIndex].privileged = true;
+    try {
+      this.resetRoomState();
+      this.examinerIndex -= 1;
+      // 주의!!!
+      this.players[this.examinerIndex].privileged = true;
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   prepareNextRound() {

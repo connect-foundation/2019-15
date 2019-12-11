@@ -21,10 +21,7 @@ export function initUserListMsgHandler(socket, { setUserList }) {
   });
 }
 
-export function initGameStartMsgHandler(
-  socket,
-  { setPainter, setRound },
-) {
+export function initGameStartMsgHandler(socket, { setPainter, setRound }) {
   socket.on('gamestart', ({ painter, currentRound, totalRound }) => {
     setPainter(painter);
     setRound({

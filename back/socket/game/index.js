@@ -51,6 +51,7 @@ function setGameSocket(socket) {
 
     if (gameSocket.id === room.roomOwner) {
       room.passRoomOwnerToNext();
+      sendUserListToRoom(room.players, roomId, this.gameIo);
     }
   });
 }

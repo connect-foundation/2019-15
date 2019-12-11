@@ -14,6 +14,7 @@ function exitRoom(gameSocket, { roomType, roomId }) {
 
   if (gameSocket.id === room.roomOwner) {
     room.passRoomOwnerToNext();
+    sendUserListToRoom(room.players, roomId, this.gameIo);
   }
 }
 
