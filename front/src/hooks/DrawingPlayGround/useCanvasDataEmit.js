@@ -12,7 +12,7 @@ export default function useCanvasDataEmit() {
         eventList,
       });
     },
-    [gameSocket, room.roomId],
+    [gameSocket, room],
   );
 
   return emitCanvasData;

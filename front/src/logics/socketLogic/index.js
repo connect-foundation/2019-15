@@ -43,10 +43,6 @@ export function startPrivateGame(socket, { roomId }) {
   socket.emit('startPrivateGame', { roomId });
 }
 
-export function exitGameRoom(socket, { roomType, roomId }) {
-  socket.emit('exitRoom', { roomType, roomId });
-}
-
 export function sendMessage(
   socket,
   { socketId, roomType, roomId, inputValue },

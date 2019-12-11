@@ -8,7 +8,7 @@ module.exports = {
       const json = [];
       let progress = 0;
 
-      queryInterface.bulkInsert('Words', [
+      queryInterface.bulkInsert('words', [
         { word: '강아지', categoryId: null, userId: 1 },
         { word: '고양이', categoryId: null, userId: 2 },
         { word: '치킨', categoryId: null, userId: 3 },
@@ -31,9 +31,15 @@ module.exports = {
         { word: '호박죽', categoryId: null, userId: 20 },
         { word: '팥죽', categoryId: null, userId: 21 },
         { word: '배추김치', categoryId: null, userId: 22 },
-
-
-
+        { word: '도라지', categoryId: null, userId: 23 },
+        { word: '케냐', categoryId: null, userId: 24 },
+        { word: '베트남', categoryId: null, userId: 25 },
+        { word: '골저스', categoryId: null, userId: 26 },
+        { word: '지져스', categoryId: null, userId: 27 },
+        { word: '도라이', categoryId: null, userId: 28 },
+        { word: '공무원', categoryId: null, userId: 29 },
+        { word: '골덴바지', categoryId: null, userId: 30 },
+        { word: '통바지', categoryId: null, userId: 31 },
       ]);
 
       crawling.urlSet.forEach((url, idx) => {

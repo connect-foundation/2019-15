@@ -1,6 +1,5 @@
 const { personEnterPrivateRoom, sendUserListToRoom } = require('./game');
 const { RoomManager } = require('../RoomManager');
-const exitRoom = require('./exitRoom');
 const sendGameImage = require('./gameImage');
 const { enterRandom, enterPrivate } = require('./enterGame');
 const { sendMessage } = require('./message');
@@ -8,6 +7,7 @@ const selectWord = require('./selectWord');
 const { PRIVATE_ROOM_NAME } = require('../../config/roomConfig');
 const { Room } = require('../Room');
 const { startPrivateGame } = require('./startPrivateGame');
+const { exitRoom } = require('./exitRoom');
 
 function setGameSocket(socket) {
   this.RoomManager = RoomManager;
@@ -29,13 +29,13 @@ function setGameSocket(socket) {
     roomInfo.roomId = roomId;
   });
 
+  socket.on('exitRoom', exitRoom.bind(this, gameSocket));
   socket.on('startPrivateGame', startPrivateGame.bind(this, gameSocket));
   socket.on('enterPrivate', enterPrivate.bind(this, gameSocket));
   socket.on('selectWord', selectWord.bind(this, gameSocket));
   socket.on('sendMessage', sendMessage.bind(this, gameSocket));
   socket.on('enterRandom', enterRandom.bind(this, gameSocket, roomInfo));
   socket.on('drawing', sendGameImage.bind(this, gameSocket));
-  socket.on('exitRoom', exitRoom.bind(this, gameSocket));
   socket.on('disconnect', () => {
     if (!roomInfo) return;
     if (!RoomManager.isExistRoom(roomInfo)) return;
@@ -52,6 +52,9 @@ function setGameSocket(socket) {
     if (gameSocket.id === room.roomOwner) {
       room.passRoomOwnerToNext();
       sendUserListToRoom(room.players, roomId, this.gameIo);
+    }
+    if (roomType !== PRIVATE_ROOM_NAME && room.players.length < 1) {
+      RoomManager.deleteRoom(roomType, roomId);
     }
   });
 }

@@ -7,7 +7,6 @@ import {
 import ToolManager from 'components/GamePlay/CanvasSection/DrawingPlayGround/Tools/ToolType/ToolManager';
 import useCanvasDataEmitWithCaching from 'hooks/DrawingPlayGround/useCanvasDataEmitWithCaching';
 import useFabricCanvas from 'hooks/DrawingPlayGround/useFabricCanvas';
-import { fab } from '@fortawesome/free-brands-svg-icons';
 
 PainterBoard.propTypes = {
   drawingOptions: PropTypes.shape({

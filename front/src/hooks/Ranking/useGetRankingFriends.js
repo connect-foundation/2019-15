@@ -21,7 +21,7 @@ const useGetRankingFriends = () => {
         const { pageInfo } = fetchMoreResult.rankingFriends;
         return newEdges.length
           ? {
-              getRankingFriends: {
+              rankingFriends: {
                 __typename: prev.rankingFriends.__typename,
                 edges: [...prev.rankingFriends.edges, ...newEdges],
                 pageInfo,
