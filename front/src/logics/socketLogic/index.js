@@ -117,3 +117,7 @@ export function initSetRoomOwner(socket, { setRoomOwner }) {
     setRoomOwner(true);
   });
 }
+
+export function exitGameRoom(socket, { roomType, roomId }) {
+  socket.emit('exitRoom', { roomType, roomId });
+}

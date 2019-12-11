@@ -7,7 +7,7 @@ const selectWord = require('./selectWord');
 const { PRIVATE_ROOM_NAME } = require('../../config/roomConfig');
 const { Room } = require('../Room');
 const { startPrivateGame } = require('./startPrivateGame');
-const { exitRoom } = require('./exitRoom');
+const exitRoom = require('./exitRoom');
 
 function setGameSocket(socket) {
   this.RoomManager = RoomManager;
