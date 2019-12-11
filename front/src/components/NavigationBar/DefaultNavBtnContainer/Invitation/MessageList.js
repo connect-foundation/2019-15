@@ -17,24 +17,9 @@ export default function MessageList() {
     },
   });
 
-  if (loading)
-    return (
-      <MessageListStyle>
-        <Loading />
-      </MessageListStyle>
-    );
-  if (error)
-    return (
-      <MessageListStyle>
-        <Alert type="error" />
-      </MessageListStyle>
-    );
-  if (!data.length)
-    return (
-      <MessageListStyle>
-        <Alert type="noData" />
-      </MessageListStyle>
-    );
+  if (loading) return <Loading Wrapper={MessageListStyle} />;
+  if (error) return <Alert type="error" Wrapper={MessageListStyle} />;
+  if (!data.length) return <Alert type="noData" Wrapper={MessageListStyle} />;
 
   return (
     <MessageListStyle>
