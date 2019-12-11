@@ -11,16 +11,16 @@ import {
 
 import FriendsSectionContext from 'components/FriendsSection/refactor/FriendsSection.context';
 
-export default function Header({ settingMode, changeSettingMode }) {
+export default function Header({
+  isConfigMode,
+  changeToViewMode,
+  changeToConfigMode,
+}) {
   const { dispatchModalContent } = useContext(FriendsSectionContext);
   const [inputValue, setValue] = useState('');
 
   function inputChangeHandler(e) {
     setValue(e.target.value);
-  }
-
-  function switchSettingMode() {
-    changeSettingMode(!settingMode);
   }
 
   function addFriend() {
@@ -29,10 +29,10 @@ export default function Header({ settingMode, changeSettingMode }) {
 
   return (
     <>
-      {settingMode ? (
+      {isConfigMode ? (
         <>
           <ComponentStyle>
-            <DoneButton onClick={switchSettingMode}>완료</DoneButton>
+            <DoneButton onClick={changeToViewMode}>완료</DoneButton>
           </ComponentStyle>
           <ComponentStyle>
             <Input onChange={inputChangeHandler} />
@@ -42,7 +42,7 @@ export default function Header({ settingMode, changeSettingMode }) {
       ) : (
         <ComponentStyle>
           <span>친구 목록</span>
-          <Icon icon={faCog} onClick={switchSettingMode} />
+          <Icon icon={faCog} onClick={changeToConfigMode} />
         </ComponentStyle>
       )}
     </>

@@ -1,16 +1,39 @@
-import React, { useState } from 'react';
+import React, { useReducer } from 'react';
 import Header from 'components/FriendsSection/refactor/FriendList/Header/Header';
 import Component from 'components/FriendsSection/refactor/FriendList/Component/Component';
 import { FriendListStyle } from 'components/FriendsSection/refactor/FriendList/FriendList.style';
 
+function changeModeReducer(state, action) {
+  switch (action.type) {
+    case 'toConfig':
+      return true;
+    case 'toView':
+      return false;
+    default:
+      throw new Error();
+  }
+}
+
 export default function FriendList() {
-  const [settingMode, changeSettingMode] = useState(false);
+  const [isConfigMode, changeMode] = useReducer(changeModeReducer, false);
+
+  function changeToViewMode() {
+    changeMode({ type: 'toView' });
+  }
+
+  function changeToConfigMode() {
+    changeMode({ type: 'toConfig' });
+  }
   return (
     <FriendListStyle>
-      <Header settingMode={settingMode} changeSettingMode={changeSettingMode} />
-      <Component settingMode={settingMode} online />
-      <Component settingMode={settingMode} online={false} />
-      <Component settingMode={settingMode} online />
+      <Header
+        isConfigMode={isConfigMode}
+        changeToViewMode={changeToViewMode}
+        changeToConfigMode={changeToConfigMode}
+      />
+      <Component isConfigMode={isConfigMode} online />
+      <Component isConfigMode={isConfigMode} online={false} />
+      <Component isConfigMode={isConfigMode} online />
     </FriendListStyle>
   );
 }
