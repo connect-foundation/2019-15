@@ -43,7 +43,19 @@ const invitationResolvers = {
       return getPageResult(edges, first);
     },
   },
-  Mutation: {},
+  Mutation: {
+    deleteInvitation: (obj, { id }, { Invitations }) => {
+      const result = Invitations.destroy({
+        where: {
+          id: id,
+        },
+      });
+      return {
+        id,
+        result: !!result,
+      };
+    },
+  },
 };
 
 module.exports = invitationResolvers;
