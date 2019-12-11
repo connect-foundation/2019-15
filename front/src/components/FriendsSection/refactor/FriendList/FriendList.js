@@ -1,7 +1,10 @@
 import React, { useReducer } from 'react';
 import Header from 'components/FriendsSection/refactor/FriendList/Header/Header';
 import Component from 'components/FriendsSection/refactor/FriendList/Component/Component';
+import Alert from 'components/globalComponents/Alert/Alert';
 import { FriendListStyle } from 'components/FriendsSection/refactor/FriendList/FriendList.style';
+import { useQuery } from '@apollo/react-hooks';
+import { findFriends } from 'queries/friend';
 
 function changeModeReducer(state, action) {
   switch (action.type) {
@@ -16,6 +19,23 @@ function changeModeReducer(state, action) {
 
 export default function FriendList() {
   const [isConfigMode, changeMode] = useReducer(changeModeReducer, false);
+  const { data, loading, error, refetch } = useQuery(findFriends);
+
+  if (loading) {
+    return (
+      <FriendListStyle>
+        <Header />
+      </FriendListStyle>
+    );
+  }
+  if (error) {
+    return (
+      <FriendListStyle>
+        <Header />
+        <Alert type="error" />
+      </FriendListStyle>
+    );
+  }
 
   function changeToViewMode() {
     changeMode({ type: 'toView' });
@@ -31,9 +51,14 @@ export default function FriendList() {
         changeToViewMode={changeToViewMode}
         changeToConfigMode={changeToConfigMode}
       />
-      <Component isConfigMode={isConfigMode} online />
-      <Component isConfigMode={isConfigMode} online={false} />
-      <Component isConfigMode={isConfigMode} online />
+      {data.friends.map((friend) => (
+        <Component
+          key={friend.nickname}
+          nickname={friend.nickname}
+          online={false}
+          isConfigMode={isConfigMode}
+        />
+      ))}
     </FriendListStyle>
   );
 }

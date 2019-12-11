@@ -20,8 +20,6 @@ const friendResolvers = {
         },
       });
     },
-  },
-  Mutation: {
     friends: (obj, args, { Friends, Users, req }) => {
       return Users.findAll({
         type: Sequelize.QueryTypes.SELECT,
@@ -35,6 +33,8 @@ const friendResolvers = {
         ],
       });
     },
+  },
+  Mutation: {
     findFriendRequests: async (obj, args, { BeforeFriends, Users, req }) => {
       const sFriendRows = await BeforeFriends.findAll({
         where: { [Op.and]: [{ sFriendId: req.user.id }, { friendStateId: 1 }] },

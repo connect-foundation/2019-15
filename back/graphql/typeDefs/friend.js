@@ -21,10 +21,10 @@ module.exports = `
   
   extend type Query{
     addFriendForTest:[Friend]
+    friends:[User]
   } 
 
   extend type Mutation{
-    friends:[User]
     deleteFriend(nickname:String):FriendResult
     findFriendRequests:[User]
     deleteFriendRequest(nickname:String):[BeforeFriend]

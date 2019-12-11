@@ -7,7 +7,7 @@ import {
   Icon,
 } from 'components/FriendsSection/refactor/FriendList/Component/Component.style';
 
-export default function Component({ isConfigMode, online }) {
+export default function Component({ nickname, online, isConfigMode }) {
   const { dispatchModalContent } = useContext(FriendsSectionContext);
 
   function makeModalContent() {
@@ -16,7 +16,7 @@ export default function Component({ isConfigMode, online }) {
 
   return (
     <ComponentStyle>
-      <span>닉네임</span>
+      <span>{nickname}</span>
       <CircleStyle icon={faCircle} online={online} />
       {isConfigMode ? (
         <Icon icon={faMinusCircle} onClick={makeModalContent} />
