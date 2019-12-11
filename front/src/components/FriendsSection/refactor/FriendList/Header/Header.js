@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { faCog, faUserPlus } from '@fortawesome/free-solid-svg-icons';
 import {
   DoneButton,
@@ -9,10 +9,19 @@ import {
   Icon,
 } from 'components/FriendsSection/refactor/FriendList/Component/Component.style';
 
+import FriendsSectionContext from 'components/FriendsSection/refactor/FriendsSection.context';
+
 export default function Header({ settingMode, changeSettingMode }) {
+  const { dispatchModalContent } = useContext(FriendsSectionContext);
+
   function switchSettingMode() {
     changeSettingMode(!settingMode);
   }
+
+  function addFriend() {
+    dispatchModalContent({ type: 'add', nickname: 'addedOne' });
+  }
+
   return (
     <>
       {settingMode ? (
@@ -22,7 +31,7 @@ export default function Header({ settingMode, changeSettingMode }) {
           </ComponentStyle>
           <ComponentStyle>
             <Input />
-            <Icon icon={faUserPlus} />
+            <Icon icon={faUserPlus} onClick={addFriend} />
           </ComponentStyle>
         </>
       ) : (

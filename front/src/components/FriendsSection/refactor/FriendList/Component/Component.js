@@ -8,10 +8,10 @@ import {
 } from 'components/FriendsSection/refactor/FriendList/Component/Component.style';
 
 export default function Component({ settingMode, online }) {
-  const { setModalContent } = useContext(FriendsSectionContext);
+  const { dispatchModalContent } = useContext(FriendsSectionContext);
 
   function makeModalContent() {
-    setModalContent('삭제하려고?');
+    dispatchModalContent({ type: 'delete', nickname: 'deletedOne' });
   }
 
   return (

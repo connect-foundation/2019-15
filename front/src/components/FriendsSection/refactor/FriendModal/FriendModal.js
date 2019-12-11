@@ -5,13 +5,15 @@ import Button from 'components/globalComponents/Button/Button';
 import { ButtonSection } from 'components/FriendsSection/refactor/FriendModal/FriendModal.style';
 
 export default function FriendModal() {
-  const { modalContent, setModalContent } = useContext(FriendsSectionContext);
+  const { modalContent, dispatchModalContent } = useContext(
+    FriendsSectionContext,
+  );
 
   function clearModalContent() {
-    setModalContent(null);
+    dispatchModalContent({ type: 'clear' });
   }
 
-  const Body = () => <span>{modalContent}</span>;
+  const Body = () => <span>{modalContent.content}</span>;
   const Footer = () => (
     <ButtonSection>
       <Button onClick={clearModalContent}>확인</Button>
@@ -21,5 +23,5 @@ export default function FriendModal() {
 
   const Modal = makeModal(null, Body, Footer);
 
-  return <>{modalContent !== null ? <Modal /> : null}</>;
+  return <>{modalContent.content ? <Modal /> : null}</>;
 }

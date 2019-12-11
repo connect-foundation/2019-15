@@ -1,13 +1,29 @@
-import React, { useState } from 'react';
+import React, { useState, useReducer } from 'react';
 import useOnlineFriends from 'hooks/Online/useOnlineFriends';
 import FriendsSectionContext from 'components/FriendsSection/refactor/FriendsSection.context';
 import { ListPopUpButton } from 'components/FriendsSection/refactor/FriendsSection.style';
 import FriendList from 'components/FriendsSection/refactor/FriendList/FriendList';
 import FriendModal from 'components/FriendsSection/refactor/FriendModal/FriendModal';
 
+function modalReducer(state, action) {
+  switch (action.type) {
+    case 'clear':
+      return { content: null, nickname: null };
+    case 'delete':
+      return { content: `${action.nickname}을 삭제하시겠습니까?` };
+    case 'add':
+      return { content: `${action.nickname}을 추가하시겠습니까?` };
+    default:
+      throw new Error();
+  }
+}
+
 export default function FriendsSection() {
   const [onlineFriends, onlineFriendsDispatch] = useOnlineFriends();
-  const [modalContent, setModalContent] = useState(null);
+  const [modalContent, dispatchModalContent] = useReducer(modalReducer, {
+    content: null,
+    nickname: null,
+  });
   const [listOpen, setListOpen] = useState(false);
 
   function switchListOpen() {
@@ -20,7 +36,7 @@ export default function FriendsSection() {
         onlineFriends,
         onlineFriendsDispatch,
         modalContent,
-        setModalContent,
+        dispatchModalContent,
       }}
     >
       <FriendModal modalContent={modalContent} />
