@@ -26,6 +26,7 @@ export default function UserList() {
         nickname={user.nickname}
         privileged={user.privileged}
         index={order}
+        avatar={user.avatar}
       />
     );
   });
