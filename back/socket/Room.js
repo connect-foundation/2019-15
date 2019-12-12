@@ -85,6 +85,14 @@ class Room {
     return this.answererCount === this.players.length - 1;
   }
 
+  isLastRound() {
+    return this.currentRound === this.totalRound;
+  }
+
+  isGameEnd() {
+    return this.isLastRound() && this.examinerIndex === 0;
+  }
+
   questionEndCallback(gameIo) {
     const answer = this.word;
     // 한 라운드가 끝나는 경우
@@ -107,6 +115,13 @@ class Room {
       });
       gameIo.in(this.roomId).emit('userList', { userList: JSON.stringify(userList) });
     }, 5000);
+  }
+
+  gameEndCallback(gameIo) {
+    gameIo.in(this.roomId).emit('endGame', {
+      _scores: this.getScores(),
+      answer: this.word,
+    });
   }
 
   getExaminerSocketId() {
