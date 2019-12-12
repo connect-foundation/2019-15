@@ -24,6 +24,17 @@ class Room {
     this.players[this.examinerIndex].privileged = true;
   }
 
+  initRoomState() {
+    this.wordSet = null;
+    this.word = null;
+    this.openIndex = 0;
+    this.state = roomState.EMPTY;
+    this.examinerIndex = null;
+    this.totalRound = defaultRoomSetting.totalRound;
+    this.currentRound = 1;
+    this.answererCount = 0;
+  }
+
   resetRoomState() {
     this.state = roomState.SELECTING_WORD;
     this.word = null;

@@ -47,6 +47,9 @@ function setGameSocket(socket) {
       room.removePlayer(userIdx);
       sendUserListToRoom(room.players, roomId, this.gameIo);
       gameSocket.leave();
+
+      // 방 상태 변경
+      if (room.players.length < 2) room.initRoomState();
     }
 
     if (gameSocket.id === room.roomOwner) {
