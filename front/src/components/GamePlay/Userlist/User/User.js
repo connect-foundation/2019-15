@@ -23,6 +23,7 @@ User.propTypes = {
   index: PropTypes.number.isRequired,
   privileged: PropTypes.bool.isRequired,
   avatar: PropTypes.number.isRequired,
+  drawer: PropTypes.bool.isRequired,
 };
 
 export default function User({
@@ -31,9 +32,8 @@ export default function User({
   index,
   privileged,
   avatar,
+  drawer,
 }) {
-  const drawer = className.split('painter').length > 1;
-
   return (
     <UserStyle className={className} privileged={privileged}>
       <UserImage src={getCharacter(avatar)} alt="avatar" />
