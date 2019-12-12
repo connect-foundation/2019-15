@@ -61,7 +61,7 @@ const friendResolvers = {
         where: { id: sFriendRows.map((acc) => acc.dataValues.pFriendId) },
       });
     },
-    deleteFriend: async (obj, { nickname }, { Friends, Users, req }) => {
+    deleteFriend: async (obj, { nickname }, { Friends, Users, req, sequelize }) => {
       const deletedColumns = await Friends.findAll({
         include: [
           {
@@ -76,15 +76,20 @@ const friendResolvers = {
           },
         ],
       });
+
+      let transaction;
       try {
-        await Friends.destroy({ where: { id: deletedColumns[0].dataValues.id } });
-        await Friends.destroy({ where: { id: deletedColumns[1].dataValues.id } });
+        transaction = await sequelize.transaction();
+        await Friends.destroy({ where: { id: deletedColumns[0].dataValues.id }, transaction });
+        await Friends.destroy({ where: { id: deletedColumns[1].dataValues.id }, transaction });
+        await transaction.commit();
+        return {
+          nickname: nickname,
+        };
       } catch (e) {
+        if (transaction) await transaction.rollback();
         throw new Error(e);
       }
-      return {
-        nickname: nickname,
-      };
     },
     deleteFriendRequest: async (obj, { nickname }, { BeforeFriends, Users, req }) => {
       const idFromNickname = await Users.findOne({
