@@ -53,9 +53,7 @@ function setGameSocket(socket) {
       gameSocket.leave();
 
       if (resultCode === 1) gameSocket.to(roomId).emit('gamestart', room.makeGameStartData());
-      if (resultCode === 2) {
-        // 다음 출제자가 그림을 그릴 수 이ㅆ게 해야 함.. 개귀찮
-      }
+      if (resultCode === 2) room.questionEndCallback(gameSocket);
     }
 
     if (gameSocket.id === room.roomOwner) {
