@@ -36,6 +36,7 @@ export default function Setting() {
     const privateRoomId = hash.slice(1, hash.length);
     setRoom(new Room(privateRoomId, PRIVATE_ROOM_NAME));
 
+    if (!gameSocket) return;
     exitGameRoom(gameSocket, {
       roomType: PRIVATE_ROOM_NAME,
       roomId: privateRoomId,
