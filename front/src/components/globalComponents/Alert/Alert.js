@@ -10,7 +10,9 @@ Alert.propTypes = {
 };
 
 Alert.defaultProps = {
-  Wrapper: () => {},
+  Wrapper: () => {
+    return <></>;
+  },
 };
 
 export default function Alert({ Wrapper, type }) {
