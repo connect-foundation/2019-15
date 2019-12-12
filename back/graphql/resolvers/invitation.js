@@ -5,7 +5,7 @@ const { getPageResult, getEdgesFromNodes } = require('../../util/graphql/cursor'
 
 const invitationResolvers = {
   Query: {
-    invitations: async (obj, { first, after }, { Invitations, Friends, req }) => {
+    invitations: async (obj, { first, after }, { Invitations, Friends, Users, req }) => {
       const afterClause = after
         ? {
             where: {
@@ -20,12 +20,22 @@ const invitationResolvers = {
         include: [
           {
             model: Friends,
+            include: [
+              {
+                model: Users,
+                as: 'pFriend',
+              },
+              {
+                model: Users,
+                as: 'sFriend',
+              },
+            ],
             where: {
               sFriendId: req.user.id,
             },
           },
         ],
-        order: [['id', 'DESC']],
+        order: [['id']],
         limit: first,
       });
 
@@ -33,7 +43,19 @@ const invitationResolvers = {
       return getPageResult(edges, first);
     },
   },
-  Mutation: {},
+  Mutation: {
+    deleteInvitation: (obj, { id }, { Invitations }) => {
+      const result = Invitations.destroy({
+        where: {
+          id: id,
+        },
+      });
+      return {
+        id,
+        result: !!result,
+      };
+    },
+  },
 };
 
 module.exports = invitationResolvers;

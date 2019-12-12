@@ -1,29 +1,29 @@
 import { useQuery } from '@apollo/react-hooks';
-import { getRankingFriends } from 'queries/ranking';
 
-const useGetRankingFriends = () => {
-  const { data, loading, error, fetchMore } = useQuery(getRankingFriends);
+const useCursorQuery = (query) => {
+  const { data, loading, error, fetchMore, refetch } = useQuery(query);
 
+  const key = data && Object.keys(data).length ? Object.keys(data)[0] : null;
   const {
     pageInfo: { endCursor, hasNextPage },
     edges,
-  } = data
-    ? data.rankingFriends
+  } = key
+    ? data[key]
     : { pageInfo: { endCursor: null, hasNextPage: null }, edges: null };
 
   const loadMore = () => {
     if (!hasNextPage) return;
     fetchMore({
-      query: getRankingFriends,
+      query,
       variables: { after: endCursor },
       updateQuery: (prev, { fetchMoreResult }) => {
-        const newEdges = fetchMoreResult.rankingFriends.edges;
-        const { pageInfo } = fetchMoreResult.rankingFriends;
+        const newEdges = fetchMoreResult[key].edges;
+        const { pageInfo } = fetchMoreResult[key];
         return newEdges.length
           ? {
-              rankingFriends: {
-                __typename: prev.rankingFriends.__typename,
-                edges: [...prev.rankingFriends.edges, ...newEdges],
+              [key]: {
+                __typename: prev[key].__typename,
+                edges: [...prev[key].edges, ...newEdges],
                 pageInfo,
               },
             }
@@ -38,7 +38,8 @@ const useGetRankingFriends = () => {
     error,
     fetchMore: loadMore,
     hasMore: hasNextPage,
+    refetch,
   };
 };
 
-export default useGetRankingFriends;
+export default useCursorQuery;

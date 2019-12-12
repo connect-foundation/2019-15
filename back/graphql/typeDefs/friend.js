@@ -1,8 +1,8 @@
 module.exports = `
   type Friend{
     id:Int!
-    pFriendId:Int!
-    sFriendId:Int!
+    pFriend:User
+    sFriend:User
     createdAt:String
     updatedAt:String
   }
@@ -14,12 +14,23 @@ module.exports = `
     friendStateid:Int!
   }
   
+  type FriendEdge{
+    node:Friend
+    cursor:String
+  }
+  
+  type FriendConnection{
+    edges:[FriendEdge]
+    pageInfo:PageInfo
+  }
+  
   type FriendResult{
     result:Boolean!
     nickname: String
   }
   
   extend type Query{
+    friends(first:Int!,after:String):FriendConnection
     addFriendForTest:[Friend]
     friends:[User]
   } 

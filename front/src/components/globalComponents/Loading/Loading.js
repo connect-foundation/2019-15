@@ -4,11 +4,22 @@ import {
   CogStyle,
   LoadingStyle,
 } from 'components/globalComponents/Loading/Loading.style';
+import PropTypes from 'prop-types';
 
-export default function Loading() {
+Loading.propTypes = {
+  Wrapper: PropTypes.elementType,
+};
+
+Loading.defaultProps = {
+  Wrapper: () => {},
+};
+
+export default function Loading({ Wrapper }) {
   return (
-    <LoadingStyle>
-      <CogStyle icon={faCog} spin size="3x" />
-    </LoadingStyle>
+    <Wrapper>
+      <LoadingStyle>
+        <CogStyle icon={faCog} spin size="3x" />
+      </LoadingStyle>
+    </Wrapper>
   );
 }

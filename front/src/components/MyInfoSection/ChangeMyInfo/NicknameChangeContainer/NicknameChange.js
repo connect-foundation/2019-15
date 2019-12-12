@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { useLazyQuery } from '@apollo/react-hooks';
-import { checkNicknameAvailableQuery } from 'queries/user';
+import { CHECK_NICKNAME_AVAILABLE } from 'queries/user';
 import TextInput from 'components/globalComponents/TextInput/TextInput';
 import NicknameChangeBtn from './NicknameChangeBtn';
 import { NicknameChangeStyle } from './NicknameChange.style';
@@ -27,7 +27,7 @@ export default function NicknameChange({
 }) {
   const [disabled, setDisabled] = useState(false);
   const [checkNicknameAvailable, { loading, data, error }] = useLazyQuery(
-    checkNicknameAvailableQuery,
+    CHECK_NICKNAME_AVAILABLE,
   );
 
   if (loading) {
