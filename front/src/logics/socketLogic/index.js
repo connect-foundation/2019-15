@@ -4,6 +4,9 @@ import Room from '../room';
 
 export function connectGameSocket() {
   return socketIo.connect(`${APP_URI.REACT_APP_API_URI}/game`, {
+    reconnection: true,
+    reconnectionDelay: 1000,
+    reconnectionDelayMax: 20000,
     reconnectionAttempts: 5,
   });
 }
