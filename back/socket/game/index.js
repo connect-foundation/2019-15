@@ -44,7 +44,11 @@ function setGameSocket(socket) {
     const room = RoomManager.room[roomType][roomId];
     const userIdx = room.getUserIndexBySocketId(gameSocket);
     if (userIdx >= 0) {
-      room.removePlayer(userIdx);
+      // 방 상태 변경
+      if (room.players.length <= 2) room.initRoomState();
+
+      // 방에 있는 플레이어 업데이트
+      const resultCode = room.removePlayer(userIdx);
       sendUserListToRoom(room.players, roomId, this.gameIo);
       gameSocket.leave();
 
