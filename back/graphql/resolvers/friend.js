@@ -65,7 +65,7 @@ const friendResolvers = {
           result = await Friends.destroy({ where: { id: deletedColumns[1].dataValues.id } });
         }
       } catch (e) {
-        throw new Error(e);
+        console.log('cannot find columns');
       }
       return {
         result: result,
