@@ -3,9 +3,8 @@ import { FlexColumnStyle } from 'components/globalComponents/Container/Flex.styl
 import ButtonStyle from 'components/globalComponents/Button/Button.style';
 
 export const GameSettingStyle = styled(FlexColumnStyle)`
-  width: 20rem;
-  min-width: 15rem;
-  height: 90%;
+  width: 15rem;
+  height: 35rem;
   background-color: ${({ theme }) => theme.paleRose};
   align-items: center;
   justify-content: center;
