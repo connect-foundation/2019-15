@@ -24,11 +24,7 @@ export const GET_FRIENDS = gql`
 export const DELETE_FRIEND = gql`
   mutation deleteFriend($nickname: String) {
     deleteFriend(nickname: $nickname) {
-      user {
-        id
-        nickname
-      }
-      result
+      nickname
     }
   }
 `;
