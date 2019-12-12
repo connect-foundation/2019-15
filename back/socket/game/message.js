@@ -40,8 +40,7 @@ function sendMessage(gameSocket, { roomType, roomId, inputValue }) {
 
     // 모든 플레이어가 답을 맞춘 경우
     if (room.isAllPlayerAnswered()) {
-      if (room.isGameEnd()) room.gameEndCallback(this.gameIo);
-      else room.questionEndCallback(this.gameIo);
+      room.questionEndCallback(this.gameIo);
     }
     return;
   }

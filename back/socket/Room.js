@@ -95,6 +95,11 @@ class Room {
 
   questionEndCallback(gameIo) {
     const answer = this.word;
+    // 마지막 문제인 경우
+    if (this.isGameEnd()) {
+      this.gameEndCallback(gameIo);
+      return;
+    }
     // 한 라운드가 끝나는 경우
     if (this.examinerIndex === 0) this.prepareNextRound();
     // 아직 한 라운드가 끝나지 않은 경우
