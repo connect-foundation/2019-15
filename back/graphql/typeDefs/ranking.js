@@ -5,7 +5,6 @@ module.exports = `
   }
   
   type RankingConnection{
-    totalCount:Int
     edges:[UserEdge]
     pageInfo:PageInfo
   }

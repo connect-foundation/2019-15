@@ -17,7 +17,7 @@ import {
 import { setEndGameHandler } from '../../logics/socketLogic';
 
 const GamePlay = () => {
-  const { gameSocket, setGameSocket } = useContext(GlobalContext);
+  const { gameSocket, setGameSocket, user, room } = useContext(GlobalContext);
   const history = useHistory();
 
   const [userList, setUserList] = useState([]);
@@ -121,21 +121,19 @@ const GamePlay = () => {
   );
 
   useEffect(() => {
-    const initSocket = () => {
-      if (!gameSocket) return;
-      initUserListMsgHandler(gameSocket, { setUserList });
-      initGameStartMsgHandler(gameSocket, { setPainter, setRound, setEndTime });
-      setStartQuestionHandler(gameSocket, setQuestionWord, setEndTime, () => {
-        setIsTimerGetReady(true);
-      });
-      setEndQuestionHandler(gameSocket, endQuestionCallback);
-      setEndGameHandler(gameSocket, endGameCallback);
-    };
-    initSocket();
+    if (!gameSocket) return () => {};
+    initUserListMsgHandler(gameSocket, { setUserList });
+    initGameStartMsgHandler(gameSocket, { setPainter, setRound, setEndTime });
+    setStartQuestionHandler(gameSocket, setQuestionWord, setEndTime, () => {
+      setIsTimerGetReady(true);
+    });
+    setEndQuestionHandler(gameSocket, endQuestionCallback);
+    setEndGameHandler(gameSocket, endGameCallback);
 
     return () => {
       closeSocket(gameSocket, { setGameSocket });
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [gameSocket, setGameSocket, setPainter, setUserList]);
 
   if (!gameSocket || gameSocket.disconnected) {

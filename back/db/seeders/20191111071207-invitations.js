@@ -8,15 +8,19 @@ module.exports = {
           url: 'https://github.com/eminem54',
         },
         {
-          friendsId: 2,
+          friendsId: 11,
+          url: 'https://github.com/eminem54',
+        },
+        {
+          friendsId: 12,
           url: 'https://github.com/hos101010',
         },
         {
-          friendsId: 3,
+          friendsId: 13,
           url: 'https://github.com/changgunyee',
         },
         {
-          friendsId: 4,
+          friendsId: 14,
           url: 'https://github.com/einere',
         },
       ],

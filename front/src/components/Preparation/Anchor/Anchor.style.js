@@ -3,11 +3,12 @@ import { FlexRowStyle } from 'components/globalComponents/Container/Flex.style';
 import ButtonStyle from 'components/globalComponents/Button/Button.style';
 
 export const AnchorStyle = styled(FlexRowStyle)`
-  width: 100%;
+  width: 74rem;
   height: 5rem;
   justify-content: center;
   border-radius: 0.3rem;
   background-color: ${({ theme }) => theme.paleRose};
+  margin: 1rem 0rem;
 `;
 
 export const AnchorImageStyle = styled.img`

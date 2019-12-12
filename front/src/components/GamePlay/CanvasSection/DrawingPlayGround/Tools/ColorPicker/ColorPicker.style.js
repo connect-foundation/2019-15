@@ -1,7 +1,5 @@
 import styled from 'styled-components';
 
-const colorPickerWidth = '15rem';
-
 const colorBoxMargin = '4px';
 
 export const ColorPickerStyle = styled.div`

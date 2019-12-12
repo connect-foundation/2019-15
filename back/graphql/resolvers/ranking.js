@@ -2,40 +2,26 @@ const Sequelize = require('sequelize');
 
 const { Op } = Sequelize;
 
-const { MAX_CURSOR, intTo10Str, MIN_CURSOR } = require('./constants/ranking');
+const { getPageResult, intTo10Str, getEdgesFromNodes } = require('../../util/graphql/cursor');
 
-const getEdgesWithCursor = (nodes) => {
-  return nodes.map(({ dataValues: node }) => {
-    return {
-      node,
-      cursor: intTo10Str(node.score) + intTo10Str(node.id),
-    };
-  });
-};
-
-const toRankingResult = (edgesWithCursor, first) => {
-  return {
-    edges: edgesWithCursor,
-    pageInfo: {
-      endCursor: edgesWithCursor.length ? edgesWithCursor[edgesWithCursor.length - 1].cursor : null,
-      hasNextPage: edgesWithCursor.length === first,
-    },
-  };
+const getCursor = ({ id, score }) => {
+  return intTo10Str(score) + intTo10Str(id);
 };
 
 const getOrderOp = (order) => {
   return order === 'ASC' ? Op.gt : Op.lt;
 };
 
-const getDefaultCursor = (order) => {
-  return order === 'ASC' ? MAX_CURSOR : MIN_CURSOR;
-};
-
 const rankingResolvers = {
   Query: {
     rankingAll: async (obj, { order, first, after }, { Users }) => {
-      const lastEndCursor = after || getDefaultCursor(order);
-
+      const afterClause = after
+        ? {
+            having: {
+              cursor: { [getOrderOp(order)]: after },
+            },
+          }
+        : {};
       const nodes = await Users.findAll({
         attributes: {
           include: [
@@ -49,50 +35,55 @@ const rankingResolvers = {
             ],
           ],
         },
-        having: {
-          cursor: { [getOrderOp(order)]: lastEndCursor },
-        },
+        ...afterClause,
         order: [['score', order], ['id', order]],
         limit: first,
       });
 
-      const edgesWithCursor = getEdgesWithCursor(nodes);
+      const edges = getEdgesFromNodes(nodes, getCursor);
 
-      return toRankingResult(edgesWithCursor, first);
+      return getPageResult(edges, first);
     },
     rankingFriends: async (obj, { order, first, after }, { Users, Friends, req }) => {
-      const lastEndCursor = after || MAX_CURSOR;
-
+      const afterClause = after
+        ? {
+            having: {
+              'sFriend.cursor': { [getOrderOp(order)]: after },
+            },
+          }
+        : {};
       const nodes = await Friends.findAll({
         where: { pFriendId: req.user.id },
         include: [
           {
-            model: Users,
             attributes: {
               include: [
                 [
                   Sequelize.fn(
                     'concat',
-                    Sequelize.fn('lpad', Sequelize.col('User.score'), 10, '0'),
-                    Sequelize.fn('lpad', Sequelize.col('User.id'), 10, '0'),
+                    Sequelize.fn('lpad', Sequelize.col('sFriend.score'), 10, '0'),
+                    Sequelize.fn('lpad', Sequelize.col('sFriend.id'), 10, '0'),
                   ),
                   'cursor',
                 ],
               ],
             },
+            model: Users,
+            as: 'sFriend',
           },
         ],
-        having: {
-          'User.cursor': { [getOrderOp(order)]: lastEndCursor },
-        },
-        order: [[{ model: Users }, 'score', order], [{ model: Users }, 'id', order]],
+        ...afterClause,
+        order: [
+          [{ model: Users, as: 'sFriend' }, 'score', order],
+          [{ model: Users, as: 'sFriend' }, 'id', order],
+        ],
         limit: first,
       });
 
-      const friendNodes = nodes.map(({ dataValues }) => dataValues.User);
-      const edgesWithCursor = getEdgesWithCursor(friendNodes);
+      const friendNodes = nodes.map(({ dataValues }) => dataValues.sFriend);
+      const edges = getEdgesFromNodes(friendNodes, getCursor);
 
-      return toRankingResult(edgesWithCursor, first);
+      return getPageResult(edges, first);
     },
   },
 };

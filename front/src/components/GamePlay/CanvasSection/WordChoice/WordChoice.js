@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import PropTypes from 'prop-types';
-import getRandomWords from 'queries/word';
+import GET_RANDOM_WORDS from 'queries/word';
 import GlobalContext from 'global.context';
 import GamePlayContext from 'components/GamePlay/GamePlay.context';
 import { selectWord } from 'logics/socketLogic';
@@ -22,7 +22,7 @@ function WordChoice({ setSelectedWord }) {
     isWordChoiceOpen,
     setIsWordChoiceOpen,
   } = useContext(GamePlayContext);
-  const { data, loading, error, refetch } = useQuery(getRandomWords);
+  const { data, loading, error, refetch } = useQuery(GET_RANDOM_WORDS);
 
   if (loading) {
     return <></>;

@@ -11,6 +11,11 @@ function exitRoom(gameSocket, { roomType, roomId }) {
   gameSocket.leave(roomId);
   // 리뷰: 유저리스트를 다보내지 말고 제외된 유저 아이디만 보내자
   sendUserListToRoom(room.players, roomId, this.gameIo);
+
+  if (gameSocket.id === room.roomOwner) {
+    room.passRoomOwnerToNext();
+    sendUserListToRoom(room.players, roomId, this.gameIo);
+  }
 }
 
 module.exports = exitRoom;

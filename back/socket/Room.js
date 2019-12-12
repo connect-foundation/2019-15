@@ -15,6 +15,7 @@ class Room {
     this.currentRound = 1;
     this.answererCount = 0;
     this.timer.setTimeOutCallback(this.questionEndCallback.bind(this, gameIo));
+    this.roomOwner = null;
   }
 
   prepareFirstQuestion() {
@@ -34,9 +35,14 @@ class Room {
   }
 
   prepareNextQuestion() {
-    this.resetRoomState();
-    this.examinerIndex -= 1;
-    this.players[this.examinerIndex].privileged = true;
+    try {
+      this.resetRoomState();
+      this.examinerIndex -= 1;
+      // 주의!!!
+      this.players[this.examinerIndex].privileged = true;
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   prepareNextRound() {
@@ -52,6 +58,7 @@ class Room {
   }
 
   removePlayer(userIndex) {
+    if (userIndex < 0) return;
     this.players.splice(userIndex, 1);
   }
 
@@ -156,6 +163,26 @@ class Room {
       openIndex: this.openIndex,
       endTime: this.timer.endTime,
     };
+  }
+
+  passRoomOwnerToNext() {
+    try {
+      if (this.players.length > 0) {
+        this.roomOwner = this.players[0].socket.id;
+        this.players[0].roomOwner = true;
+        this.players[0].socket.emit('roomOwner');
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  checkAndEmitRoomOwner(socketId, gameSocket) {
+    if (this.roomOwner === socketId) {
+      setTimeout(() => {
+        gameSocket.emit('roomOwner');
+      }, 100);
+    }
   }
 }
 

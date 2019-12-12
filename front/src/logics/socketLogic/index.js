@@ -31,22 +31,16 @@ export function initGameStartMsgHandler(socket, { setPainter, setRound }) {
   });
 }
 
-export function initStartPrivateGameHandler(socket, { setPainter }) {
-  socket.on('startPrivateGame', ({ painter }) => {
-    setPainter(painter);
-  });
-}
-
 export function emitMakePrivateRoom(socket, { nickname, roomId }) {
   socket.emit('makePrivate', { nickname, roomId });
 }
 
-export function startPrivateGame(socket, { roomId, roomType }) {
-  socket.emit('startPrivateGame', { roomId, roomType });
+export function emitEnterPrivateRoom(socket, { nickname, roomId, avatar }) {
+  socket.emit('enterPrivate', { nickname, roomId, avatar });
 }
 
-export function exitGameRoom(socket, { roomType, roomId }) {
-  socket.emit('exitRoom', { roomType, roomId });
+export function startPrivateGame(socket, { roomId }) {
+  socket.emit('startPrivateGame', { roomId });
 }
 
 export function sendMessage(
@@ -114,4 +108,20 @@ export function closeSocket(socket, { setGameSocket }) {
   if (!socket) return;
   socket.close();
   setGameSocket(null);
+}
+
+export function initMovePrivateGame(socket, moveGamePage) {
+  socket.on('movePrivate', () => {
+    moveGamePage();
+  });
+}
+
+export function initSetRoomOwner(socket, { setRoomOwner }) {
+  socket.on('roomOwner', () => {
+    setRoomOwner(true);
+  });
+}
+
+export function exitGameRoom(socket, { roomType, roomId }) {
+  socket.emit('exitRoom', { roomType, roomId });
 }

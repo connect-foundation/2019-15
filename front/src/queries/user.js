@@ -1,6 +1,6 @@
 import { gql } from 'apollo-boost';
 
-export const checkNicknameAvailableQuery = gql`
+export const CHECK_NICKNAME_AVAILABLE = gql`
   query checkNicknameAvailable($nickname: String!) {
     checkNicknameAvailable(nickname: $nickname) {
       nickname
@@ -9,7 +9,7 @@ export const checkNicknameAvailableQuery = gql`
   }
 `;
 
-export const changeNicknameMutation = gql`
+export const CHANGE_NICKNAME = gql`
   mutation changeNickname($nickname: String!) {
     changeNickname(nickname: $nickname) {
       nickname
