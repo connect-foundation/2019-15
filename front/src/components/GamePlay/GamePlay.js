@@ -90,10 +90,12 @@ const GamePlay = () => {
     if (!gameSocket) return () => {};
     initUserListMsgHandler(gameSocket, { setUserList });
     initGameStartMsgHandler(gameSocket, { setPainter, setRound });
-    setStartQuestionHandler(gameSocket, setQuestionWord, setEndTime, () => {
-      setIsTimerGetReady(true);
+    setStartQuestionHandler(gameSocket, {
+      setQuestionWord,
+      setEndTime,
+      setIsTimerGetReady,
     });
-    setEndQuestionHandler(gameSocket, endQuestionCallback);
+    setEndQuestionHandler(gameSocket, { endQuestionCallback });
 
     return () => {
       closeSocket(gameSocket, { setGameSocket });
