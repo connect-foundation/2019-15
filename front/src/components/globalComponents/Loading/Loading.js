@@ -11,7 +11,9 @@ Loading.propTypes = {
 };
 
 Loading.defaultProps = {
-  Wrapper: () => {},
+  Wrapper: () => {
+    return <></>;
+  },
 };
 
 export default function Loading({ Wrapper }) {
