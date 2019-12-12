@@ -11,7 +11,7 @@ const eventListReducer = (state, action) => {
     case 'reset':
       return [];
     default:
-      throw new Error();
+      throw new Error(`${action.type} is wrong action type`);
   }
 };
 

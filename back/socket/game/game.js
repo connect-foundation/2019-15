@@ -28,7 +28,9 @@ function personEnterRoom(nickname, socket, roomType, io, roomId) {
   if (room.isPlayable()) {
     room.prepareFirstQuestion();
     io.to(roomId).emit('gamestart', room.makeGameStartData());
-  } else if (room.isPlaying()) {
+  } else if (room.isSelectingWord()) {
+    socket.emit('gamestart', room.makeGameStartData());
+  } else if (room.isPlayingQuestion()) {
     socket.emit('gamestart', room.makeGameStartData());
     socket.emit('startQuestion', room.makeStartQuestionData());
   }
