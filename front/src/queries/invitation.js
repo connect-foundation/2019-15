@@ -35,3 +35,9 @@ export const DELETE_INVITATION = gql`
     }
   }
 `;
+
+export const INVITE = gql`
+  mutation invite($id: Int!, $roomId: String!) {
+    invite(id: $id, roomId: $roomId)
+  }
+`;

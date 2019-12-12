@@ -14,13 +14,14 @@ export default function FriendList() {
 
   if (loading) return <Loading Wrapper={FriendListStyle} />;
   if (error) return <Alert type="error" Wrapper={FriendListStyle} />;
-  if (!data.length) return <Alert type="noData" Wrapper={FriendListStyle} />;
+  if (!data || !data.length)
+    return <Alert type="noData" Wrapper={FriendListStyle} />;
 
   return (
     <FriendListStyle>
       <InfinityScroll hasMore={hasMore} loadMore={fetchMore}>
-        {data.map(({ sFriend: { nickname } }) => (
-          <Friend key={nickname} nickname={nickname} />
+        {data.map(({ sFriend: { id, nickname } }) => (
+          <Friend key={id} nickname={nickname} id={id} />
         ))}
       </InfinityScroll>
     </FriendListStyle>

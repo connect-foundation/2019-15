@@ -44,6 +44,26 @@ const invitationResolvers = {
     },
   },
   Mutation: {
+    invite: async (obj, { id, roomId }, { Invitations, Friends, req }) => {
+      const Friend = await Friends.findOne({
+        where: {
+          [Op.and]: [{ pFriendId: req.user.id }, { sFriendId: id }],
+        },
+      });
+
+      if (!Friend) throw new Error(`${req.user.id} and ${id} is not friend`);
+      const {
+        dataValues: { id: friendsId },
+      } = Friend;
+
+      const Invitation = await Invitations.create({
+        friendsId,
+        roomId,
+      });
+
+      if (!Invitation) throw new Error('create error');
+      return Invitation.dataValues.id;
+    },
     deleteInvitation: (obj, { id }, { Invitations }) => {
       const result = Invitations.destroy({
         where: {
