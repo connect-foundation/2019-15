@@ -3,10 +3,12 @@ module.exports = (sequelize) => {
   Friends.associate = function(models) {
     Friends.belongsTo(models.Users, {
       foreignKey: 'pFriendId',
+      as: 'pFriend',
       targetKey: 'id',
     });
     Friends.belongsTo(models.Users, {
       foreignKey: 'sFriendId',
+      as: 'sFriend',
       targetKey: 'id',
     });
     Friends.hasMany(models.Invitations, {

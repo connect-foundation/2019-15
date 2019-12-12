@@ -5,7 +5,7 @@ export default function useCloseClicker(close) {
 
   useEffect(() => {
     const eventHandler = (e) => {
-      if (!ref.current.contains(e.target)) close();
+      if (ref.current && !ref.current.contains(e.target)) close();
     };
     document.addEventListener('click', eventHandler);
     return () => {
