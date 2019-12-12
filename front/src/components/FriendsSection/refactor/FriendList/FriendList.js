@@ -9,6 +9,8 @@ import {
 import { GET_FRIENDS } from 'queries/friend';
 import useCursorQuery from 'hooks/useCursorQuery';
 import InfinityScroll from 'components/globalComponents/InfinityScroll/InfinityScroll';
+import FriendModal from 'components/FriendsSection/refactor/FriendList/FriendModal/FriendModal';
+import modalReducer from 'components/FriendsSection/refactor/FriendList/modalReducer';
 
 function changeModeReducer(state, action) {
   return !action.current;
@@ -19,6 +21,11 @@ export default function FriendList() {
   const { data, loading, error, fetchMore, hasMore } = useCursorQuery(
     GET_FRIENDS,
   );
+  const [modalContent, dispatchModalContent] = useReducer(modalReducer, {
+    content: null,
+    nickname: null,
+    current: null,
+  });
 
   if (loading) {
     return (
@@ -39,25 +46,32 @@ export default function FriendList() {
   function switchMode() {
     changeMode({ current: isConfigMode });
   }
-
   return (
-    <FriendListStyle>
-      <Header
-        isConfigMode={isConfigMode}
-        switchMode={switchMode}
+    <>
+      <FriendModal
+        modalContent={modalContent}
+        dispatchModalContent={dispatchModalContent}
       />
-      <InfinityScroll loadMore={fetchMore} hasMore={hasMore}>
-        <Div>
-          {data.map(({ sFriend: { nickname } }) => (
-            <Component
-              key={nickname}
-              nickname={nickname}
-              online={false}
-              isConfigMode={isConfigMode}
-            />
-          ))}
-        </Div>
-      </InfinityScroll>
-    </FriendListStyle>
+      <FriendListStyle>
+        <Header
+          isConfigMode={isConfigMode}
+          switchMode={switchMode}
+          dispatchModalContent={dispatchModalContent}
+        />
+        <InfinityScroll loadMore={fetchMore} hasMore={hasMore}>
+          <Div>
+            {data.map(({ sFriend: { nickname } }) => (
+              <Component
+                key={nickname}
+                nickname={nickname}
+                online={false}
+                isConfigMode={isConfigMode}
+                dispatchModalContent={dispatchModalContent}
+              />
+            ))}
+          </Div>
+        </InfinityScroll>
+      </FriendListStyle>
+    </>
   );
 }

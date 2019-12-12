@@ -1,17 +1,34 @@
-import React, { useContext } from 'react';
-import FriendsSectionContext from 'components/FriendsSection/refactor/FriendsSection.context';
+import React from 'react';
 import { faMinusCircle, faCircle } from '@fortawesome/free-solid-svg-icons';
 import {
   ComponentStyle,
   CircleStyle,
   Icon,
 } from 'components/FriendsSection/refactor/FriendList/Component/Component.style';
+import PropTypes from 'prop-types';
 
-export default function Component({ nickname, online, isConfigMode }) {
-  const { dispatchModalContent } = useContext(FriendsSectionContext);
+Component.propTypes = {
+  nickname: PropTypes.string,
+  online: PropTypes.bool,
+  isConfigMode: PropTypes.bool,
+  dispatchModalContent: PropTypes.func,
+};
 
-  function makeModalContent() {
-    dispatchModalContent({ type: 'delete', nickname: 'deletedOne' });
+Component.defaultProps = {
+  nickname: null,
+  online: false,
+  isConfigMode: false,
+  dispatchModalContent: null,
+};
+
+export default function Component({
+  nickname,
+  online,
+  isConfigMode,
+  dispatchModalContent,
+}) {
+  function clickDeleteButton() {
+    dispatchModalContent({ type: 'deleteRequest', nickname });
   }
 
   return (
@@ -19,7 +36,7 @@ export default function Component({ nickname, online, isConfigMode }) {
       <span>{nickname}</span>
       <CircleStyle icon={faCircle} online={online} />
       {isConfigMode ? (
-        <Icon icon={faMinusCircle} onClick={makeModalContent} />
+        <Icon icon={faMinusCircle} onClick={clickDeleteButton} />
       ) : null}
     </ComponentStyle>
   );

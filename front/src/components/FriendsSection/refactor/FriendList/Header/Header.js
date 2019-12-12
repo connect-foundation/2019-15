@@ -1,4 +1,4 @@
-import React, { useContext, useState, useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
 import { faCog, faUserPlus } from '@fortawesome/free-solid-svg-icons';
 import {
   DoneButton,
@@ -8,15 +8,26 @@ import {
   ComponentStyle,
   Icon,
 } from 'components/FriendsSection/refactor/FriendList/Component/Component.style';
-import FriendsSectionContext from 'components/FriendsSection/refactor/FriendsSection.context';
 import regex from 'constant/TextInput';
+import PropTypes from 'prop-types';
+
+Header.propTypes = {
+  isConfigMode: PropTypes.bool,
+  switchMode: PropTypes.func,
+  dispatchModalContent: PropTypes.func,
+};
+
+Header.defaultProps = {
+  isConfigMode: false,
+  switchMode: null,
+  dispatchModalContent: null,
+};
 
 export default function Header({
   isConfigMode,
-  changeToViewMode,
-  changeToConfigMode,
+  switchMode,
+  dispatchModalContent,
 }) {
-  const { dispatchModalContent } = useContext(FriendsSectionContext);
   const [inputValue, setValue] = useState('');
 
   const inputChangeHandler = useCallback(
@@ -29,7 +40,7 @@ export default function Header({
   );
 
   function addFriend() {
-    dispatchModalContent({ type: 'add', nickname: inputValue });
+    dispatchModalContent({ type: 'addRequest', nickname: inputValue });
   }
 
   return (
@@ -37,7 +48,7 @@ export default function Header({
       {isConfigMode ? (
         <>
           <ComponentStyle>
-            <DoneButton onClick={changeToViewMode}>완료</DoneButton>
+            <DoneButton onClick={switchMode}>완료</DoneButton>
           </ComponentStyle>
           <ComponentStyle>
             <Input onChange={inputChangeHandler} value={inputValue} />
@@ -47,7 +58,7 @@ export default function Header({
       ) : (
         <ComponentStyle>
           <span>친구 목록</span>
-          <Icon icon={faCog} onClick={changeToConfigMode} />
+          <Icon icon={faCog} onClick={switchMode} />
         </ComponentStyle>
       )}
     </>
