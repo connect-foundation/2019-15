@@ -14,7 +14,7 @@ function setGameSocket(socket) {
   const roomInfo = {};
   const gameSocket = socket;
 
-  socket.on('enterRandom', ({ nickname, roomType }) => {
+  socket.on('enterRandom', ({ nickname, roomType, avatar }) => {
     roomInfo.roomType = roomType;
     roomInfo.roomId = RoomManager.getEnableRoomId(roomType, this.gameIo);
   });

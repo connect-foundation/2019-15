@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import faker from 'faker';
 import PENCIL from 'asset/pencil.png';
 import getCharacter from 'logics/avatar';
 import {
