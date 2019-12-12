@@ -73,11 +73,12 @@ class Room {
   }
 
   // 이미 게임이 시작했으며, 게임이 아직 종료되지 않은 경우. 즉, 난입
-  isPlaying() {
-    return (
-      this.players.length >= 2 &&
-      (this.state === roomState.SELECTING_WORD || this.state === roomState.PLAYING_QUESTION)
-    );
+  isSelectingWord() {
+    return this.state === roomState.SELECTING_WORD && this.players.length >= 2;
+  }
+
+  isPlayingQuestion() {
+    return this.state === roomState.PLAYING_QUESTION && this.players.length >= 2;
   }
 
   isAllPlayerAnswered() {
