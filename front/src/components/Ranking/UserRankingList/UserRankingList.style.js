@@ -9,12 +9,9 @@ const UserRankingListStyle = styled.div`
   }
 
   height: 28rem;
-  overflow: hidden;
+
   border-radius: 0 1rem 1rem 1rem;
-  background-color: white;
-  :hover {
-    overflow-y: scroll;
-  }
+  background-color: #fff;
 `;
 
 export default UserRankingListStyle;

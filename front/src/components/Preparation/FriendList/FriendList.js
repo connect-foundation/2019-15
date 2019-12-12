@@ -17,12 +17,12 @@ export default function FriendList() {
   if (!data.length) return <Alert type="noData" Wrapper={FriendListStyle} />;
 
   return (
-    <InfinityScroll hasMore={hasMore} loadMore={fetchMore}>
-      <FriendListStyle>
+    <FriendListStyle>
+      <InfinityScroll hasMore={hasMore} loadMore={fetchMore}>
         {data.map(({ sFriend: { nickname } }) => (
           <Friend key={nickname} nickname={nickname} />
         ))}
-      </FriendListStyle>
-    </InfinityScroll>
+      </InfinityScroll>
+    </FriendListStyle>
   );
 }

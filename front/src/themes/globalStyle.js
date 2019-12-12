@@ -13,4 +13,5 @@ export default {
   mustard: '#FFE65D',
   geyser: '#D9E0E3',
   tuatara: '#3d3d3b',
+  darkPink: '#DD6468',
 };

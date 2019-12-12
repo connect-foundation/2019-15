@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import InfinityScrollStyle from './InfinityScroll.style';
 
@@ -9,18 +9,14 @@ InfinityScroll.propTypes = {
 };
 
 export default function InfinityScroll({ loadMore, hasMore, children }) {
-  const onScroll = useCallback(
-    ({ target: { offsetHeight, scrollTop, scrollHeight } }) => {
-      if (offsetHeight + scrollTop >= scrollHeight && hasMore) {
-        loadMore();
-      }
-    },
-    [hasMore, loadMore],
-  );
+  const onScroll = async ({ target }) => {
+    const { offsetHeight, scrollTop, scrollHeight } = target;
+    if (offsetHeight + scrollTop >= scrollHeight - 5 && hasMore) {
+      await loadMore();
+    }
+  };
 
   return (
-    <InfinityScrollStyle id="infinityScroll" onScroll={onScroll}>
-      {children}
-    </InfinityScrollStyle>
+    <InfinityScrollStyle onScroll={onScroll}>{children}</InfinityScrollStyle>
   );
 }
