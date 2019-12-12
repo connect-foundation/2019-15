@@ -11,14 +11,7 @@ import useCursorQuery from 'hooks/useCursorQuery';
 import InfinityScroll from 'components/globalComponents/InfinityScroll/InfinityScroll';
 
 function changeModeReducer(state, action) {
-  switch (action.type) {
-    case 'toConfig':
-      return true;
-    case 'toView':
-      return false;
-    default:
-      throw new Error(`${action.type} is wrong action type`);
-  }
+  return !action.current;
 }
 
 export default function FriendList() {
@@ -43,20 +36,15 @@ export default function FriendList() {
     );
   }
 
-  function changeToViewMode() {
-    changeMode({ type: 'toView' });
-  }
-
-  function changeToConfigMode() {
-    changeMode({ type: 'toConfig' });
+  function switchMode() {
+    changeMode({ current: isConfigMode });
   }
 
   return (
     <FriendListStyle>
       <Header
         isConfigMode={isConfigMode}
-        changeToViewMode={changeToViewMode}
-        changeToConfigMode={changeToConfigMode}
+        switchMode={switchMode}
       />
       <InfinityScroll loadMore={fetchMore} hasMore={hasMore}>
         <Div>
