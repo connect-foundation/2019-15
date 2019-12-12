@@ -25,7 +25,6 @@ module.exports = `
   }
   
   type FriendResult{
-    result:Boolean!
     nickname: String
   }
   

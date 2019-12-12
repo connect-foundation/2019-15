@@ -76,17 +76,15 @@ const friendResolvers = {
           },
         ],
       });
-      let result = false;
       try {
         if (deletedColumns.length === 2) {
-          result = await Friends.destroy({ where: { id: deletedColumns[0].dataValues.id } });
-          result = await Friends.destroy({ where: { id: deletedColumns[1].dataValues.id } });
+          await Friends.destroy({ where: { id: deletedColumns[0].dataValues.id } });
+          await Friends.destroy({ where: { id: deletedColumns[1].dataValues.id } });
         }
       } catch (e) {
-        console.log('cannot find columns');
+        throw new Error(e);
       }
       return {
-        result: result,
         nickname: nickname,
       };
     },
