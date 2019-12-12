@@ -10,6 +10,7 @@ export const GET_INVITATIONS = gql`
       edges {
         node {
           id
+          roomId
           Friend {
             pFriend {
               id

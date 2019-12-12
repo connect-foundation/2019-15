@@ -10,7 +10,9 @@ import { useMutation } from '@apollo/react-hooks';
 
 export default function MessageList() {
   const history = useHistory();
-  const { data, loading, error, refetch } = useCursorQuery(GET_INVITATIONS);
+  const { data, loading, error, refetch } = useCursorQuery(GET_INVITATIONS, {
+    fetchPolicy: 'no-cache',
+  });
   const [deleteInvitation] = useMutation(DELETE_INVITATION, {
     onCompleted: () => {
       refetch();
@@ -19,14 +21,15 @@ export default function MessageList() {
 
   if (loading) return <Loading Wrapper={MessageListStyle} />;
   if (error) return <Alert type="error" Wrapper={MessageListStyle} />;
-  if (!data.length) return <Alert type="noData" Wrapper={MessageListStyle} />;
+  if (!data || !data.length)
+    return <Alert type="noData" Wrapper={MessageListStyle} />;
 
   return (
     <MessageListStyle>
-      {data.map(({ id, url, Friend: { pFriend } }) => (
+      {data.map(({ id, roomId, Friend: { pFriend } }) => (
         <Message
           content={`${pFriend.nickname}님이 게임에 초대하였습니다.`}
-          acceptRequest={() => history.push(url)}
+          acceptRequest={() => history.push(`setting:${roomId}`)}
           declineRequest={() => deleteInvitation({ variables: { id } })}
           key={pFriend.id}
         />

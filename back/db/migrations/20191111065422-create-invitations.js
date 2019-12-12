@@ -15,7 +15,7 @@ module.exports = {
         },
         onDelete: 'CASCADE',
       },
-      url: {
+      roomId: {
         type: Sequelize.TEXT,
       },
       createdAt: {
