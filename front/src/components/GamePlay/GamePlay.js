@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect, useCallback } from 'react';
-import { Redirect } from 'react-router-dom';
+import { Redirect, useHistory } from 'react-router-dom';
 import NavigationBar from 'components/NavigationBar/NavigationBar';
 import { FlexRowStyle } from 'components/globalComponents/Container/Flex.style';
 import GlobalContext from 'global.context';
@@ -18,6 +18,7 @@ import { setEndGameHandler } from '../../logics/socketLogic';
 
 const GamePlay = () => {
   const { gameSocket, setGameSocket } = useContext(GlobalContext);
+  const history = useHistory();
 
   const [userList, setUserList] = useState([]);
   const [painter, setPainter] = useState(null);
@@ -51,13 +52,15 @@ const GamePlay = () => {
   });
   const [endTime, setEndTime] = useState(0);
   const [isWordChoiceOpen, setIsWordChoiceOpen] = useState(true);
+  const [showGameResult, setShowGameResult] = useState(false);
 
   const resetQuestionStates = useCallback(
     function resetQuestionStates(nextExaminerSocketId) {
-      setPainter(nextExaminerSocketId);
+      if (nextExaminerSocketId) setPainter(nextExaminerSocketId);
       setQuestionWord(initialQuestionWordState);
       setIsLetterOpen(false);
       setSelectedWord('');
+      setShowQuestionResult(false);
       // todo: 캔버스 데이터 초기화
     },
     [initialQuestionWordState],
@@ -84,7 +87,34 @@ const GamePlay = () => {
         resetQuestionStates(nextExaminerSocketId);
         setRound({ currentRound, totalRound });
         setIsWordChoiceOpen(true);
-        setShowQuestionResult(false);
+      }, 5000);
+    },
+    [resetQuestionStates],
+  );
+
+  const endGameCallback = useCallback(
+    ({ _scores, answer }) => {
+      console.log('end game callback');
+      // 타이머 멈추기
+      setIsTimerGetReady(false);
+
+      // 결과 화면 띄우기
+      setSelectedWord(answer);
+      setScores(_scores);
+      setShowQuestionResult(true);
+
+      // 게임 결과 띄우기
+      setTimeout(() => {
+        console.log('show game result');
+        resetQuestionStates();
+        setShowGameResult(true);
+
+        // 게임 결과 지우고 메인으로 나가기
+        setTimeout(() => {
+          console.log('go to main page');
+          setShowGameResult(false);
+          history.push('main');
+        }, 5000);
       }, 5000);
     },
     [resetQuestionStates],
@@ -135,6 +165,8 @@ const GamePlay = () => {
     setEndTime,
     isWordChoiceOpen,
     setIsWordChoiceOpen,
+    showGameResult,
+    setShowGameResult,
   };
 
   return (
