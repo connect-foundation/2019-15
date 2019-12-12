@@ -1,5 +1,5 @@
 import styled, { keyframes } from 'styled-components';
-import { AlarmModalStyle } from '../globalComponents/Modal/Modal.style';
+import { AlarmModalStyle } from 'components/globalComponents/Modal/Modal.style';
 
 const slideDown = keyframes`
     0% {
@@ -12,7 +12,7 @@ const slideDown = keyframes`
     }
 `;
 
-const MessagesStyle = styled(AlarmModalStyle)`
+export const MessageListStyle = styled(AlarmModalStyle)`
   transform: translate3d(0, 0, 0);
   animation: ${slideDown} 0.15s ease 1;
   position: absolute;
@@ -24,5 +24,3 @@ const MessagesStyle = styled(AlarmModalStyle)`
   padding-bottom: 0;
   z-index: 1;
 `;
-
-export default MessagesStyle;

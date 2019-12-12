@@ -5,9 +5,7 @@ import {
 } from '../globalComponents/Container/Flex.style';
 
 export const PreparationStyle = styled(FlexColumnStyle)`
-  width: 75%;
-  height: 90%;
-  margin: 0 12.5%;
+  align-items: center;
 `;
 
 export const RoomSettingStyle = styled(FlexRowStyle)`

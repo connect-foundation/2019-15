@@ -3,7 +3,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { useMutation } from '@apollo/react-hooks';
 import { faMinusCircle, faCircle } from '@fortawesome/free-solid-svg-icons';
 import PropTypes from 'prop-types';
-import { findFriends } from 'queries/friend';
+import { FIND_FRIENDS } from 'queries/friend';
 import FriendsSectionContext from 'components/FriendsSection/FriendsSection.context';
 import FriendComponentStyle from '../FriendComponent.style';
 import { IconStyle, CircleStyle } from '../Icons.style';
@@ -29,7 +29,7 @@ export default function FriendComponents({
   setRefresh,
 }) {
   const { onlineFriends } = useContext(FriendsSectionContext);
-  const [findFriendsFunc] = useMutation(findFriends);
+  const [findFriendsFunc] = useMutation(FIND_FRIENDS);
   const [data, setData] = useState({ friends: [{ nickname: null }] });
 
   const fetchItems = async () => {

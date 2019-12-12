@@ -5,14 +5,21 @@ import types from 'logics/alert';
 import AlertStyle from './Alert.style';
 
 Alert.propTypes = {
+  Wrapper: PropTypes.elementType,
   type: PropTypes.oneOf(Object.keys(types)).isRequired,
 };
 
-export default function Alert({ type }) {
+Alert.defaultProps = {
+  Wrapper: () => {},
+};
+
+export default function Alert({ Wrapper, type }) {
   return (
-    <AlertStyle>
-      <FontAwesomeIcon icon={types[type].icon} size="3x" />
-      <p>{types[type].message}</p>
-    </AlertStyle>
+    <Wrapper>
+      <AlertStyle>
+        <FontAwesomeIcon icon={types[type].icon} size="3x" />
+        <p>{types[type].message}</p>
+      </AlertStyle>
+    </Wrapper>
   );
 }

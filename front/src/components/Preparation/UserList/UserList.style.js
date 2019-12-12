@@ -5,8 +5,8 @@ import {
 } from 'components/globalComponents/Container/Flex.style';
 
 export const UserListStyle = styled(FlexRowStyle)`
-  min-width: 20rem;
-  height: 90%;
+  width: 40rem;
+  height: 35rem;
   margin-left: 2rem;
   flex-wrap: wrap;
   justify-content: flex-start;

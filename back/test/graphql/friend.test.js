@@ -4,6 +4,30 @@ const graphqlPath = require('../../config/graphqlPath');
 const { app } = require('../../app');
 const signJWT = require('../../util/jwt/signJWT');
 
+const getFriendsQuery = (resolverName, { order, first, after }) => {
+  let query = `{
+     ${resolverName}(`;
+  query = first ? `${query} first:${first}` : query;
+  query = after ? `${query} after:"${after}"` : query;
+  return `${query}){
+        pageInfo{
+          endCursor
+          hasNextPage
+        }
+        edges{
+          node{
+            id
+            sFriend{
+              id
+              nickname
+            }
+          }
+          cursor
+        }
+      }
+  }`;
+};
+
 let token;
 beforeAll(async (done) => {
   token = await signJWT({ user: { id: 1111, displayName: '최형준' } });
@@ -16,11 +40,7 @@ describe('friend resolvers test', () => {
       .set('Cookie', [`jwt=${token}`])
       .post(graphqlPath)
       .send({
-        query: `mutation {
-                  friends{
-                    nickname
-                  }
-                }`,
+        query: getFriendsQuery('friends', { first: 10 }),
       })
       .expect(200);
     const friendsExpected = [
@@ -28,7 +48,21 @@ describe('friend resolvers test', () => {
         nickname: expect.any(String),
       },
     ];
-    expect(res.body.data.friends).toStrictEqual(expect.arrayContaining(friendsExpected));
+
+    const desiredNode = {
+      node: {
+        id: expect.any(Number),
+        sFriend: {
+          id: expect.any(Number),
+          nickname: expect.any(String),
+        },
+      },
+      cursor: expect.any(String),
+    };
+    res.body.data.friends.edges.forEach((edge) => {
+      expect(edge).toMatchObject(desiredNode);
+    });
+
     done();
   });
 });
