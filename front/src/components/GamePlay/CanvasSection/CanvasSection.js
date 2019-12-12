@@ -9,6 +9,7 @@ import WordPreview from './WordPreview/WordPreview';
 import Timer from '../../Timer/Timer';
 import GameInfo from '../../GameInfo/GameInfo';
 import QuestionResult from './QuestionResult/QuestionResult';
+import GameResult from './GameResult/GameResult';
 
 export default function CanvasSection() {
   const { gameSocket } = useContext(GlobalContext);
@@ -30,6 +31,8 @@ export default function CanvasSection() {
     setRound,
     endTime,
     setEndTime,
+    showGameResult,
+    setShowGameResult,
   } = useContext(GamePlayContext);
 
   const [drawable, setDrawable] = useState(false);
@@ -48,12 +51,13 @@ export default function CanvasSection() {
   return (
     <CanvasSectionStyle>
       <GameLoading />
-      {userList.length > 1 ? (
+      {userList.length > 1 && !showQuestionResult && !showGameResult ? (
         <WordChoice setSelectedWord={setSelectedWord} />
       ) : null}
       {showQuestionResult ? (
         <QuestionResult scores={scores} answer={selectedWord} />
       ) : null}
+      {showGameResult ? <GameResult scores={scores} /> : null}
       <section>
         <Timer
           isTimerGetReady={isTimerGetReady}
