@@ -14,6 +14,7 @@ import {
   setEndQuestionHandler,
   closeSocket,
 } from 'logics/socketLogic';
+import { setEndGameHandler } from '../../logics/socketLogic';
 
 const GamePlay = () => {
   const { gameSocket, setGameSocket } = useContext(GlobalContext);
@@ -98,6 +99,7 @@ const GamePlay = () => {
         setIsTimerGetReady(true);
       });
       setEndQuestionHandler(gameSocket, endQuestionCallback);
+      setEndGameHandler(gameSocket, endGameCallback);
     };
     initSocket();
 
