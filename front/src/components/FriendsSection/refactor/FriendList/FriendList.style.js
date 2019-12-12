@@ -24,7 +24,7 @@ export const FriendListStyle = styled.div`
 `;
 
 export const Div = styled.div`
-  height: 20rem;
+  max-height: 20rem;
   overflow-y: scroll;
   overflow-x: hidden;
   &::-webkit-scrollbar {
