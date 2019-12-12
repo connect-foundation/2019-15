@@ -2,9 +2,13 @@ import React, { useReducer } from 'react';
 import Header from 'components/FriendsSection/refactor/FriendList/Header/Header';
 import Component from 'components/FriendsSection/refactor/FriendList/Component/Component';
 import Alert from 'components/globalComponents/Alert/Alert';
-import { FriendListStyle } from 'components/FriendsSection/refactor/FriendList/FriendList.style';
-import { useQuery } from '@apollo/react-hooks';
-import { findFriends } from 'queries/friend';
+import {
+  FriendListStyle,
+  Div,
+} from 'components/FriendsSection/refactor/FriendList/FriendList.style';
+import { GET_FRIENDS } from 'queries/friend';
+import useCursorQuery from 'hooks/useCursorQuery';
+import InfinityScroll from 'components/globalComponents/InfinityScroll/InfinityScroll';
 
 function changeModeReducer(state, action) {
   switch (action.type) {
@@ -19,7 +23,9 @@ function changeModeReducer(state, action) {
 
 export default function FriendList() {
   const [isConfigMode, changeMode] = useReducer(changeModeReducer, false);
-  const { data, loading, error, refetch } = useQuery(findFriends);
+  const { data, loading, error, fetchMore, hasMore } = useCursorQuery(
+    GET_FRIENDS,
+  );
 
   if (loading) {
     return (
@@ -44,6 +50,7 @@ export default function FriendList() {
   function changeToConfigMode() {
     changeMode({ type: 'toConfig' });
   }
+
   return (
     <FriendListStyle>
       <Header
@@ -51,14 +58,18 @@ export default function FriendList() {
         changeToViewMode={changeToViewMode}
         changeToConfigMode={changeToConfigMode}
       />
-      {data.friends.map((friend) => (
-        <Component
-          key={friend.nickname}
-          nickname={friend.nickname}
-          online={false}
-          isConfigMode={isConfigMode}
-        />
-      ))}
+      <InfinityScroll loadMore={fetchMore} hasMore={hasMore}>
+        <Div>
+          {data.map(({ sFriend: { nickname } }) => (
+            <Component
+              key={nickname}
+              nickname={nickname}
+              online={false}
+              isConfigMode={isConfigMode}
+            />
+          ))}
+        </Div>
+      </InfinityScroll>
     </FriendListStyle>
   );
 }

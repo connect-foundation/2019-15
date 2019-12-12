@@ -32,7 +32,6 @@ module.exports = `
   extend type Query{
     friends(first:Int!,after:String):FriendConnection
     addFriendForTest:[Friend]
-    friends:[User]
   } 
 
   extend type Mutation{
