@@ -28,6 +28,12 @@ const modalReducer = (state, action) => {
         content: `${action.nickname}님에게 요청이 전달되었습니다.`,
         current: 'addDone',
       };
+    case 'error':
+      return {
+        ...state,
+        content: `에러가 발생했습니다.`,
+        current: 'error',
+      };
     default:
       throw new Error(`${action.type} is wrong action type`);
   }

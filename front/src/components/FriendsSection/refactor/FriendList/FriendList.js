@@ -18,7 +18,7 @@ function changeModeReducer(state, action) {
 
 export default function FriendList() {
   const [isConfigMode, changeMode] = useReducer(changeModeReducer, false);
-  const { data, loading, error, fetchMore, hasMore } = useCursorQuery(
+  const { data, loading, error, fetchMore, hasMore, refetch } = useCursorQuery(
     GET_FRIENDS,
   );
   const [modalContent, dispatchModalContent] = useReducer(modalReducer, {
@@ -51,6 +51,7 @@ export default function FriendList() {
       <FriendModal
         modalContent={modalContent}
         dispatchModalContent={dispatchModalContent}
+        refetch={refetch}
       />
       <FriendListStyle>
         <Header

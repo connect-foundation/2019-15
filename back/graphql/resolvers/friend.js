@@ -77,10 +77,8 @@ const friendResolvers = {
         ],
       });
       try {
-        if (deletedColumns.length === 2) {
-          await Friends.destroy({ where: { id: deletedColumns[0].dataValues.id } });
-          await Friends.destroy({ where: { id: deletedColumns[1].dataValues.id } });
-        }
+        await Friends.destroy({ where: { id: deletedColumns[0].dataValues.id } });
+        await Friends.destroy({ where: { id: deletedColumns[1].dataValues.id } });
       } catch (e) {
         throw new Error(e);
       }

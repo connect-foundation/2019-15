@@ -3,18 +3,41 @@ import makeModal from 'components/globalComponents/Modal/Modal';
 import Button from 'components/globalComponents/Button/Button';
 import { ButtonSection } from 'components/FriendsSection/refactor/FriendList/FriendModal/FriendModal.style';
 import PropTypes from 'prop-types';
+import { DELETE_FRIEND } from 'queries/friend';
+import { useMutation } from '@apollo/react-hooks';
 
 FriendModal.propTypes = {
-  modalContent: PropTypes.objectOf(PropTypes.object),
+  modalContent: PropTypes.objectOf(PropTypes.string),
   dispatchModalContent: PropTypes.func,
+  refetch: PropTypes.func,
 };
 
 FriendModal.defaultProps = {
   modalContent: null,
   dispatchModalContent: null,
+  refetch: null,
 };
 
-export default function FriendModal({ modalContent, dispatchModalContent }) {
+export default function FriendModal({
+  modalContent,
+  dispatchModalContent,
+  refetch,
+}) {
+  const [deleteFriendRequest] = useMutation(DELETE_FRIEND, {
+    onCompleted(result) {
+      dispatchModalContent({
+        type: 'deleteDone',
+        nickname: result.deleteFriend.nickname,
+      });
+      refetch();
+    },
+    onError() {
+      dispatchModalContent({
+        type: 'error',
+      });
+    },
+  });
+
   function clearModalContent() {
     dispatchModalContent({ type: 'clear' });
   }
@@ -23,6 +46,7 @@ export default function FriendModal({ modalContent, dispatchModalContent }) {
     switch (modalContent.current) {
       case 'addDone':
       case 'deleteDone':
+      case 'error':
         return dispatchModalContent({ type: 'clear' });
       case 'addRequest':
         console.log('친구요청 로직 추가 예정');
@@ -31,10 +55,8 @@ export default function FriendModal({ modalContent, dispatchModalContent }) {
           nickname: modalContent.nickname,
         });
       case 'deleteRequest':
-        console.log('삭제로직 추가 예정');
-        return dispatchModalContent({
-          type: 'deleteDone',
-          nickname: modalContent.nickname,
+        return deleteFriendRequest({
+          variables: { nickname: modalContent.nickname },
         });
       default:
         throw new Error(`${modalContent.current}cannot find current`);
