@@ -1,47 +1,40 @@
 import { useQuery } from '@apollo/react-hooks';
+import {
+  getFirstKey,
+  getLoadingWithNetwork,
+  getLoadMore,
+  getNodes,
+  getNullPage,
+} from 'logics/hooks/cursorQuery';
 
-const useCursorQuery = (query) => {
+const useCursorQuery = (query, options = {}) => {
   const { data, loading, error, fetchMore, refetch, networkStatus } = useQuery(
     query,
     {
       notifyOnNetworkStatusChange: true,
+      ...options,
     },
   );
 
-  const loadingIncludingFetchMore = networkStatus !== 3 && loading;
+  const loadingWithNetwork = getLoadingWithNetwork(networkStatus, loading);
 
-  const key = data && Object.keys(data).length ? Object.keys(data)[0] : null;
+  const firstKey = getFirstKey(data);
   const {
     pageInfo: { endCursor, hasNextPage },
     edges,
-  } = key
-    ? data[key]
-    : { pageInfo: { endCursor: null, hasNextPage: null }, edges: null };
+  } = firstKey ? data[firstKey] : getNullPage();
+  const loadMore = getLoadMore(
+    query,
+    loading,
+    fetchMore,
+    endCursor,
+    hasNextPage,
+  );
+  const nodes = getNodes(edges);
 
-  const loadMore = () => {
-    if (loading || !hasNextPage) return;
-    fetchMore({
-      query,
-      variables: { after: endCursor },
-      updateQuery: (prev, { fetchMoreResult }) => {
-        const newEdges = fetchMoreResult[key].edges;
-        const { pageInfo } = fetchMoreResult[key];
-        return newEdges.length
-          ? {
-              [key]: {
-                __typename: prev[key].__typename,
-                edges: [...prev[key].edges, ...newEdges],
-                pageInfo,
-              },
-            }
-          : prev;
-      },
-    });
-  };
-  const users = edges ? edges.map((edge) => edge.node) : null;
   return {
-    data: users,
-    loading: loadingIncludingFetchMore,
+    data: nodes,
+    loading: loadingWithNetwork,
     error,
     fetchMore: loadMore,
     hasMore: hasNextPage,
