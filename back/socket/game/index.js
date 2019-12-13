@@ -60,8 +60,12 @@ function setGameSocket(socket) {
       room.passRoomOwnerToNext();
       sendUserListToRoom(room.players, roomId, this.gameIo);
     }
+
     if (roomType !== PRIVATE_ROOM_NAME && room.players.length < 1) {
       RoomManager.deleteRoom(roomType, roomId);
+    }
+    if (roomType === PRIVATE_ROOM_NAME && room.players.length < 1) {
+      room.timer.stop();
     }
   });
 }
