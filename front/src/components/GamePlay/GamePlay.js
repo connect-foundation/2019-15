@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect, useCallback } from 'react';
-import { Redirect } from 'react-router-dom';
+import { Redirect, useHistory } from 'react-router-dom';
 import NavigationBar from 'components/NavigationBar/NavigationBar';
 import { FlexRowStyle } from 'components/globalComponents/Container/Flex.style';
 import GlobalContext from 'global.context';
@@ -14,9 +14,12 @@ import {
   setEndQuestionHandler,
   closeSocket,
 } from 'logics/socketLogic';
+import { setEndGameHandler } from '../../logics/socketLogic';
 
 const GamePlay = () => {
   const { gameSocket, setGameSocket, user, room } = useContext(GlobalContext);
+  const history = useHistory();
+
   const [userList, setUserList] = useState([]);
   const [painter, setPainter] = useState(null);
   const initialQuestionWordState = {
@@ -32,7 +35,7 @@ const GamePlay = () => {
   const [isTimerGetReady, setIsTimerGetReady] = useState(false);
   // 설정 : Timer 컴포넌트에서 일정 시간이 지났을 때
   // 초기화 : endQuestion 시그널을 받을 때
-  const [isOpen, setIsOpen] = useState(false);
+  const [isLetterOpen, setIsLetterOpen] = useState(false);
   // 설정 : WordChoice 컴포넌트에서 단어 선택 시, endQuestion 시그널을 받을 때
   // 초기화 : QuestionResult 컴포넌트가 사라질 때
   const [selectedWord, setSelectedWord] = useState('');
@@ -48,13 +51,16 @@ const GamePlay = () => {
     totalRound: 3,
   });
   const [endTime, setEndTime] = useState(0);
+  const [isWordChoiceOpen, setIsWordChoiceOpen] = useState(true);
+  const [showGameResult, setShowGameResult] = useState(false);
 
   const resetQuestionStates = useCallback(
     function resetQuestionStates(nextExaminerSocketId) {
-      setPainter(nextExaminerSocketId);
+      if (nextExaminerSocketId) setPainter(nextExaminerSocketId);
       setQuestionWord(initialQuestionWordState);
-      setIsOpen(false);
+      setIsLetterOpen(false);
       setSelectedWord('');
+      setShowQuestionResult(false);
       // todo: 캔버스 데이터 초기화
     },
     [initialQuestionWordState],
@@ -80,7 +86,35 @@ const GamePlay = () => {
         // 각종 상태 초기화하기
         resetQuestionStates(nextExaminerSocketId);
         setRound({ currentRound, totalRound });
-        setShowQuestionResult(false);
+        setIsWordChoiceOpen(true);
+      }, 5000);
+    },
+    [resetQuestionStates],
+  );
+
+  const endGameCallback = useCallback(
+    ({ _scores, answer }) => {
+      console.log('end game callback');
+      // 타이머 멈추기
+      setIsTimerGetReady(false);
+
+      // 결과 화면 띄우기
+      setSelectedWord(answer);
+      setScores(_scores);
+      setShowQuestionResult(true);
+
+      // 게임 결과 띄우기
+      setTimeout(() => {
+        console.log('show game result');
+        resetQuestionStates();
+        setShowGameResult(true);
+
+        // 게임 결과 지우고 메인으로 나가기
+        setTimeout(() => {
+          console.log('go to main page');
+          setShowGameResult(false);
+          history.push('main');
+        }, 5000);
       }, 5000);
     },
     [resetQuestionStates],
@@ -89,11 +123,14 @@ const GamePlay = () => {
   useEffect(() => {
     if (!gameSocket) return () => {};
     initUserListMsgHandler(gameSocket, { setUserList });
-    initGameStartMsgHandler(gameSocket, { setPainter, setRound });
-    setStartQuestionHandler(gameSocket, setQuestionWord, setEndTime, () => {
-      setIsTimerGetReady(true);
+    initGameStartMsgHandler(gameSocket, { setPainter, setRound, setEndTime });
+    setStartQuestionHandler(gameSocket, {
+      setQuestionWord,
+      setEndTime,
+      setIsTimerGetReady,
     });
-    setEndQuestionHandler(gameSocket, endQuestionCallback);
+    setEndQuestionHandler(gameSocket, { endQuestionCallback });
+    setEndGameHandler(gameSocket, endGameCallback);
 
     return () => {
       closeSocket(gameSocket, { setGameSocket });
@@ -114,8 +151,8 @@ const GamePlay = () => {
     setQuestionWord,
     isTimerGetReady,
     setIsTimerGetReady,
-    isOpen,
-    setIsOpen,
+    isLetterOpen,
+    setIsLetterOpen,
     selectedWord,
     setSelectedWord,
     showQuestionResult,
@@ -126,6 +163,10 @@ const GamePlay = () => {
     setRound,
     endTime,
     setEndTime,
+    isWordChoiceOpen,
+    setIsWordChoiceOpen,
+    showGameResult,
+    setShowGameResult,
   };
 
   return (

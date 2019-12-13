@@ -28,6 +28,7 @@ const RoomManager = {
   },
 
   deleteRoom(roomName, gameIo) {
+    this.room[roomName][gameIo].timer.stop();
     delete this.room[roomName][gameIo];
   },
 

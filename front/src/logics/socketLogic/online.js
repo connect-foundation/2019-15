@@ -2,7 +2,12 @@ import socketIo from 'socket.io-client';
 import APP_URI from 'util/uri';
 
 export const connectSocket = () => {
-  return socketIo.connect(`${APP_URI.REACT_APP_API_URI}/online`);
+  return socketIo.connect(`${APP_URI.REACT_APP_API_URI}/online`, {
+    reconnection: true,
+    reconnectionDelay: 1000,
+    reconnectionDelayMax: 20000,
+    reconnectionAttempts: 5,
+  });
 };
 
 export const onRequestFriend = (socket, alarmListDispatch) => {

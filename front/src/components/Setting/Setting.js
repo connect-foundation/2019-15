@@ -24,7 +24,7 @@ import {
 } from './Setting.style';
 
 export default function Setting() {
-  const { setRoom, room, user, gameSocket, setGameSocket } = useContext(
+  const { setRoom, room, gameSocket, setGameSocket } = useContext(
     GlobalContext,
   );
   const history = useHistory();
@@ -33,15 +33,11 @@ export default function Setting() {
   const [avatar, clickLeftBtn, clickRightBtn] = useCarousel(3);
 
   useEffect(() => {
-    let socket = gameSocket;
-    if (!gameSocket) {
-      socket = connectGameSocket();
-      setGameSocket(socket);
-    }
     const privateRoomId = hash.slice(1, hash.length);
     setRoom(new Room(privateRoomId, PRIVATE_ROOM_NAME));
 
-    exitGameRoom(socket, {
+    if (!gameSocket) return;
+    exitGameRoom(gameSocket, {
       roomType: PRIVATE_ROOM_NAME,
       roomId: privateRoomId,
     });

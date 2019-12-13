@@ -7,7 +7,7 @@ WordPreview.propTypes = {
   wordLength: PropTypes.number.isRequired,
   openIndex: PropTypes.number.isRequired,
   openLetter: PropTypes.string.isRequired,
-  isOpen: PropTypes.bool.isRequired,
+  isLetterOpen: PropTypes.bool.isRequired,
   selectedWord: PropTypes.string,
 };
 
@@ -38,7 +38,7 @@ export default function WordPreview({
   wordLength,
   openIndex,
   openLetter,
-  isOpen,
+  isLetterOpen,
   selectedWord,
 }) {
   const [letters, lettersDispatch] = useReducer(
@@ -61,13 +61,13 @@ export default function WordPreview({
       lettersDispatch({ type: 'openWord', arg: selectedWord });
     else {
       lettersDispatch({ type: 'makeNewArray', arg: wordLength });
-      if (isOpen) openLetterTrigger();
+      if (isLetterOpen) openLetterTrigger();
     }
   }, [
     wordLength,
     openIndex,
     openLetter,
-    isOpen,
+    isLetterOpen,
     selectedWord,
     openLetterTrigger,
   ]);

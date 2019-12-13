@@ -25,6 +25,7 @@ export default function Chatting() {
       value={inputValue}
       onChange={inputChangeHandler}
       onKeyPress={pressKeyHandler}
+      onClick={(e) => e.target.focus()}
     />
   );
 }

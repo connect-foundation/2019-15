@@ -4,7 +4,7 @@ import Component from 'components/FriendsSection/refactor/FriendList/Component/C
 import Alert from 'components/globalComponents/Alert/Alert';
 import {
   FriendListStyle,
-  Div,
+  FriendListScrollStyle,
 } from 'components/FriendsSection/refactor/FriendList/FriendList.style';
 import { GET_FRIENDS } from 'queries/friend';
 import useCursorQuery from 'hooks/useCursorQuery';
@@ -62,7 +62,7 @@ export default function FriendList() {
           dispatchModalContent={dispatchModalContent}
         />
         <InfinityScroll loadMore={fetchMore} hasMore={hasMore}>
-          <Div>
+          <FriendListScrollStyle>
             {data.map(({ sFriend: { id, nickname } }) => (
               <Component
                 key={nickname}
@@ -72,7 +72,7 @@ export default function FriendList() {
                 dispatchModalContent={dispatchModalContent}
               />
             ))}
-          </Div>
+          </FriendListScrollStyle>
         </InfinityScroll>
       </FriendListStyle>
     </>
