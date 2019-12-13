@@ -1,22 +1,39 @@
-import React from 'react';
+import React, { useContext, useState } from 'react';
 import SpectreButton from 'components/globalComponents/SpectreButton/SpectreButton';
 import PropTypes from 'prop-types';
 import { faPlay } from '@fortawesome/free-solid-svg-icons';
+import { INVITE } from 'queries/invitation';
+import { useMutation } from '@apollo/react-hooks';
+import GlobalContext from 'global.context';
+import APP_URI from 'util/uri';
 import { FriendStyle, PlayIconStyle } from './Friend.style';
 
 Friend.propTypes = {
-  nickname: PropTypes.string,
+  id: PropTypes.number.isRequired,
+  nickname: PropTypes.string.isRequired,
 };
 
-Friend.defaultProps = {
-  nickname: '',
-};
+export default function Friend({ id, nickname }) {
+  const { room } = useContext(GlobalContext);
 
-export default function Friend({ nickname }) {
+  const [disabled, setDisabled] = useState(false);
+  const [invite] = useMutation(INVITE, {
+    onCompleted: () => {
+      setDisabled(true);
+    },
+  });
+  const sendInvitation = () => {
+    invite({
+      variables: {
+        id,
+        roomId: room.roomId,
+      },
+    });
+  };
   return (
     <FriendStyle>
       <span>{nickname}</span>
-      <SpectreButton>
+      <SpectreButton onClick={sendInvitation} disabled={disabled}>
         <PlayIconStyle icon={faPlay} />
       </SpectreButton>
     </FriendStyle>

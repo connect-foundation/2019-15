@@ -5,7 +5,7 @@ import { connectSocket } from 'logics/socketLogic/online';
 import NavigationBar from 'components/NavigationBar/NavigationBar';
 import Background from 'components/globalComponents/Container/Background.style';
 import RoomSelectSection from 'components/RoomSelectSection/RoomSelectSection';
-import FriendsSection from 'components/FriendsSection/FriendsSection';
+import FriendsSection from 'components/FriendsSection/refactor/FriendsSection';
 import makeModal from 'components/globalComponents/Modal/Modal';
 import parseCookies from 'util/cookie';
 import { connectGameSocket, initConnectMsgHandler } from 'logics/socketLogic';

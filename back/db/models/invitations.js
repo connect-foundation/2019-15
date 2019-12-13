@@ -2,7 +2,7 @@ module.exports = (sequelize, DataTypes) => {
   const Invitations = sequelize.define(
     'Invitations',
     {
-      url: DataTypes.STRING,
+      roomId: DataTypes.STRING,
     },
     {},
   );

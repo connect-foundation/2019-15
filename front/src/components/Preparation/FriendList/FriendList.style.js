@@ -8,8 +8,4 @@ export const FriendListStyle = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  overflow: hidden;
-  :hover {
-    overflow-y: scroll;
-  }
 `;

@@ -2,7 +2,7 @@ module.exports = `
   type Invitation{
     id:Int!
     friendsId:Int!
-    url:String!
+    roomId:String!
     Friend:Friend!
     createdAt:String
     updatedAt:String
@@ -28,6 +28,7 @@ module.exports = `
   }
   
   extend type Mutation{
+    invite(id:Int!,roomId:String!):Int
     deleteInvitation(id:Int!):InvitationResult
   }
 `;

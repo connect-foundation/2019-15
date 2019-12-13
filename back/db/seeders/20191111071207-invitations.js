@@ -5,23 +5,23 @@ module.exports = {
       [
         {
           friendsId: 1,
-          url: 'https://github.com/eminem54',
+          roomId: 'https://github.com/eminem54',
         },
         {
           friendsId: 11,
-          url: 'https://github.com/eminem54',
+          roomId: 'https://github.com/eminem54',
         },
         {
           friendsId: 12,
-          url: 'https://github.com/hos101010',
+          roomId: 'https://github.com/hos101010',
         },
         {
           friendsId: 13,
-          url: 'https://github.com/changgunyee',
+          roomId: 'https://github.com/changgunyee',
         },
         {
           friendsId: 14,
-          url: 'https://github.com/einere',
+          roomId: 'https://github.com/einere',
         },
       ],
       {},
