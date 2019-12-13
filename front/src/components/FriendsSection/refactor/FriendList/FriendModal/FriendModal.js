@@ -27,7 +27,7 @@ export default function FriendModal({
     onCompleted(result) {
       dispatchModalContent({
         type: 'deleteDone',
-        nickname: result.deleteFriend.nickname,
+        nickname: result.deleteFriend.user.nickname,
       });
       refetch();
     },
@@ -42,7 +42,7 @@ export default function FriendModal({
     onCompleted(result) {
       dispatchModalContent({
         type: 'addDone',
-        nickname: result.sendFriendRequest.nickname,
+        nickname: result.sendFriendRequest.user.nickname,
       });
     },
     onError({ graphQLErrors }) {

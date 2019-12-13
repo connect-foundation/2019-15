@@ -83,9 +83,8 @@ const friendResolvers = {
         await Friends.destroy({ where: { id: deletedColumns[0].dataValues.id }, transaction });
         await Friends.destroy({ where: { id: deletedColumns[1].dataValues.id }, transaction });
         await transaction.commit();
-        return {
-          nickname: nickname,
-        };
+        const result = await Users.findOne({ where: { nickname: nickname }});
+        return {user : result};
       } catch (e) {
         if (transaction) await transaction.rollback();
         throw new Error(e);
@@ -103,7 +102,7 @@ const friendResolvers = {
       await BeforeFriends.destroy(conditionColumns);
       return BeforeFriends.findAll(conditionColumns);
     },
-    acceptFriendRequest: async (obj, { nickname }, { Users, Friends, req }) => {
+    acceptFriendRequest: async (obj, { nickname }, { BeforeFriends, Users, Friends, req }) => {
       const idFromNickname = await Users.findOne({
         where: { nickname: nickname },
       });
@@ -119,7 +118,7 @@ const friendResolvers = {
       } catch {
         console.log('already exists');
       }
-      await Friends.update(
+      await BeforeFriends.update(
         { friendStateId: 2 },
         {
           where: {
@@ -129,11 +128,12 @@ const friendResolvers = {
       );
       return {
         user: idFromNickname,
-        result: true,
       };
     },
 
     sendFriendRequest: async (obj, { nickname }, { Friends, BeforeFriends, Users, req }) => {
+      //자기자신인지 확인
+
       // 이미 친구인지 확인
       const checkFriendsTable = await Friends.findAll({
         include: [
@@ -169,7 +169,7 @@ const friendResolvers = {
         }
         throw new Error(`${nickname}님은 유저가 아닙니다.`);
       }
-      return { nickname: nickname };
+      return {user: idFromNickname};
     },
   },
 };
