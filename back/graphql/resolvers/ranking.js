@@ -2,79 +2,88 @@ const Sequelize = require('sequelize');
 
 const { Op } = Sequelize;
 
-const { MIN_ID, MAX_INT, CURSOR_LENGTH, INT_TO_STRING_PADDING } = require('./constants/ranking');
+const { getPageResult, intTo10Str, getEdgesFromNodes } = require('../../util/graphql/cursor');
 
-const getScoreOrdering = (order) => {
-  return order === 'ASC' ? ['score'] : ['score', 'DESC'];
+const getCursor = ({ id, score }) => {
+  return intTo10Str(score) + intTo10Str(id);
 };
 
-const splitCursor = (cursor) => {
-  return {
-    id: parseInt(cursor.slice(0, CURSOR_LENGTH / 2), 10),
-    score: parseInt(cursor.slice(CURSOR_LENGTH / 2, CURSOR_LENGTH), 10),
-  };
-};
-
-const makeNodeToEdge = (node) => {
-  return {
-    node,
-    cursor:
-      node.id.toString().padStart(CURSOR_LENGTH / 2, INT_TO_STRING_PADDING) +
-      node.score.toString().padStart(CURSOR_LENGTH / 2, INT_TO_STRING_PADDING),
-  };
-};
-
-const toRankingResult = (edgesWithCursor, totalCount, first) => {
-  return {
-    totalCount: totalCount,
-    edges: edgesWithCursor,
-    pageInfo: {
-      endCursor: edgesWithCursor.length ? edgesWithCursor[edgesWithCursor.length - 1].cursor : null,
-      hasNextPage: edgesWithCursor.length === first,
-    },
-  };
+const getOrderOp = (order) => {
+  return order === 'ASC' ? Op.gt : Op.lt;
 };
 
 const rankingResolvers = {
   Query: {
     rankingAll: async (obj, { order, first, after }, { Users }) => {
-      const { id, score } = after ? splitCursor(after) : { id: MIN_ID, score: MAX_INT };
-
-      const { rows: nodes, count: totalCount } = await Users.findAndCountAll({
-        where: {
-          [Op.and]: [{ id: { [Op.ne]: id } }, { score: { [Op.lte]: score } }],
+      const afterClause = after
+        ? {
+            having: {
+              cursor: { [getOrderOp(order)]: after },
+            },
+          }
+        : {};
+      const nodes = await Users.findAll({
+        attributes: {
+          include: [
+            [
+              Sequelize.fn(
+                'concat',
+                Sequelize.fn('lpad', Sequelize.col('score'), 10, '0'),
+                Sequelize.fn('lpad', Sequelize.col('id'), 10, '0'),
+              ),
+              'cursor',
+            ],
+          ],
         },
-        order: [getScoreOrdering(order), 'id', 'nickname'],
+        ...afterClause,
+        order: [['score', order], ['id', order]],
         limit: first,
       });
 
-      const edgesWithCursor = nodes.map((node) => makeNodeToEdge(node));
+      const edges = getEdgesFromNodes(nodes, getCursor);
 
-      return toRankingResult(edgesWithCursor, totalCount, first);
+      return getPageResult(edges, first);
     },
     rankingFriends: async (obj, { order, first, after }, { Users, Friends, req }) => {
-      const { id, score } = after ? splitCursor(after) : { id: MIN_ID, score: MAX_INT };
-
-      const { rows: nodes, count: totalCount } = await Friends.findAndCountAll({
+      const afterClause = after
+        ? {
+            having: {
+              'sFriend.cursor': { [getOrderOp(order)]: after },
+            },
+          }
+        : {};
+      const nodes = await Friends.findAll({
         where: { pFriendId: req.user.id },
         include: [
           {
-            model: Users,
-            where: {
-              [Op.and]: [{ id: { [Op.ne]: id } }, { score: { [Op.lte]: score } }],
+            attributes: {
+              include: [
+                [
+                  Sequelize.fn(
+                    'concat',
+                    Sequelize.fn('lpad', Sequelize.col('sFriend.score'), 10, '0'),
+                    Sequelize.fn('lpad', Sequelize.col('sFriend.id'), 10, '0'),
+                  ),
+                  'cursor',
+                ],
+              ],
             },
+            model: Users,
+            as: 'sFriend',
           },
         ],
+        ...afterClause,
         order: [
-          [{ model: Users }, ...getScoreOrdering(order)],
-          [{ model: Users }, 'id'],
-          [{ model: Users }, 'nickname'],
+          [{ model: Users, as: 'sFriend' }, 'score', order],
+          [{ model: Users, as: 'sFriend' }, 'id', order],
         ],
         limit: first,
       });
-      const edgesWithCursor = nodes.map(({ User }) => makeNodeToEdge(User));
 
-      return toRankingResult(edgesWithCursor, totalCount, first);
+      const friendNodes = nodes.map(({ dataValues }) => dataValues.sFriend);
+      const edges = getEdgesFromNodes(friendNodes, getCursor);
+
+      return getPageResult(edges, first);
     },
   },
 };

@@ -17,6 +17,10 @@ const TextInputStyle = styled.input`
   position: relative;
   transition: background 0.2s, border 0.2s, box-shadow 0.2s, color 0.2s;
   width: 100%;
+  font-family: 'Cookierun Bold';
+  font-style: normal;
+  font-weight: normal;
+  src: local('CookieRun'), url('./font/CookieRun Bold.otf') format('opentype');
   :focus {
     border-color: ${(props) => props.theme.royalBlue};
     box-shadow: 0 0 0 0.1rem ${(props) => props.theme.royal}20;

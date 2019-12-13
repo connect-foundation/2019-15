@@ -8,6 +8,7 @@ import {
 } from './SpectreButton.style';
 
 SpectreButton.propTypes = {
+  height: PropTypes.string,
   onClick: PropTypes.func,
   children: PropTypes.node,
   active: PropTypes.bool,
@@ -16,6 +17,7 @@ SpectreButton.propTypes = {
 };
 
 SpectreButton.defaultProps = {
+  height: '2rem',
   onClick: null,
   children: null,
   active: false,
@@ -24,6 +26,7 @@ SpectreButton.defaultProps = {
 };
 
 export default function SpectreButton({
+  height,
   onClick,
   children,
   active,
@@ -39,7 +42,12 @@ export default function SpectreButton({
     icon = children;
   }
   return (
-    <SpectreButtonStyle disabled={disabled} onClick={onClick} active={active}>
+    <SpectreButtonStyle
+      style={{ height }}
+      disabled={disabled}
+      onClick={onClick}
+      active={active}
+    >
       <span style={{ width: '1rem' }}>{icon}</span>
     </SpectreButtonStyle>
   );

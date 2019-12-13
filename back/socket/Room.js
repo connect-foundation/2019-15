@@ -1,10 +1,5 @@
-const uuid = require('uuid/v1');
-const { maxPeopleNum, roomState, defaultRoomSetting } = require('../config/roomConfig');
+const { roomState, defaultRoomSetting } = require('../config/roomConfig');
 const Timer = require('../util/timer/Timer');
-
-const makeRoomId = () => {
-  return uuid();
-};
 
 class Room {
   constructor(gameIo) {
@@ -12,13 +7,15 @@ class Room {
     this.players = [];
     this.wordSet = null;
     this.word = null;
+    this.openIndex = 0;
     this.timer = new Timer();
     this.state = roomState.EMPTY;
     this.examinerIndex = null;
     this.totalRound = defaultRoomSetting.totalRound;
     this.currentRound = 1;
     this.answererCount = 0;
-    this.timer.setTimeOutCallback(this.timeOutCallback.bind(this, gameIo));
+    this.timer.setTimeOutCallback(this.questionEndCallback.bind(this, gameIo));
+    this.roomOwner = null;
   }
 
   prepareFirstQuestion() {
@@ -27,26 +24,40 @@ class Room {
     this.players[this.examinerIndex].privileged = true;
   }
 
-  prepareNextQuestion() {
+  initRoomState() {
+    this.wordSet = null;
+    this.word = null;
+    this.openIndex = 0;
+    this.state = roomState.EMPTY;
+    this.examinerIndex = null;
+    this.totalRound = defaultRoomSetting.totalRound;
+    this.currentRound = 1;
+    this.answererCount = 0;
+  }
+
+  resetRoomState() {
     this.state = roomState.SELECTING_WORD;
     this.word = null;
     this.timer.stop();
+    this.answererCount = 0;
     this.players.forEach((player) => {
       player.privileged = false;
     });
-    this.answererCount = 0;
-    this.examinerIndex -= 1;
-    this.players[this.examinerIndex].privileged = true;
+  }
+
+  prepareNextQuestion() {
+    try {
+      this.resetRoomState();
+      this.examinerIndex -= 1;
+      // 주의!!!
+      this.players[this.examinerIndex].privileged = true;
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   prepareNextRound() {
-    this.state = roomState.SELECTING_WORD;
-    this.word = null;
-    this.timer.stop();
-    this.players.forEach((player) => {
-      player.privileged = false;
-    });
-    this.answererCount = 0;
+    this.resetRoomState();
     this.examinerIndex = this.players.length - 1;
     this.players[this.examinerIndex].privileged = true;
     this.currentRound += 1;
@@ -58,7 +69,51 @@ class Room {
   }
 
   removePlayer(userIndex) {
-    this.players.splice(userIndex, 1);
+    if (userIndex < 0) return;
+    const [removedPlayer] = this.players.splice(userIndex, 1);
+    // 출제자가 나간 경우 && 게임을 계속 할 수 잇는 경우 && 단어를 아직 선택하지 않은 경우
+    if (removedPlayer.privileged && this.players.length) {
+      if (userIndex === 0) {
+        this.players[this.players.length - 1].privileged = true;
+        this.examinerIndex = this.players.length - 1;
+      } else {
+        this.players[userIndex - 1].privileged = true;
+        this.examinerIndex = userIndex - 1;
+      }
+
+      if (this.isSelectingWord()) return 1;
+      if (this.isPlayingQuestion()) return 2;
+    }
+    /* if (removedPlayer.privileged && this.isSelectingWord()) {
+      if (userIndex === 0) {
+        this.players[this.players.length - 1].privileged = true;
+        this.examinerIndex = this.players.length - 1;
+      } else {
+        this.players[userIndex - 1].privileged = true;
+        this.examinerIndex = userIndex - 1;
+      }
+
+      // todo: 다음 출제자가 단어를 선택할 수 있게 해야 함
+      return 1;
+    }
+    // 출제자가 나간 경우 && 게임을 계속 할 수 있는 경우 && 단어를 이미 선택한 경우
+    else if (removedPlayer.privileged && this.isPlayingQuestion()) {
+      if (userIndex === 0) {
+        this.players[this.players.length - 1].privileged = true;
+        this.examinerIndex = this.players.length - 1;
+      } else {
+        this.players[userIndex - 1].privileged = true;
+        this.examinerIndex = userIndex - 1;
+      }
+
+      // todo: 다음 출제자가 그림을 그릴 수 있게 해야 함
+      return 2;
+    } */
+  }
+
+  // 방이 대기중인 상태인 경우
+  isWaiting() {
+    return this.state === roomState.WAITING && this.players.length < 2;
   }
 
   // 최소 시작 인원을 기다리다가 충족된 경우. 즉, 새 게임
@@ -67,11 +122,12 @@ class Room {
   }
 
   // 이미 게임이 시작했으며, 게임이 아직 종료되지 않은 경우. 즉, 난입
-  isPlaying() {
-    return (
-      this.players.length >= 2 &&
-      (this.state === roomState.SELECTING_WORD || this.state === roomState.PLAYING_QUESTION)
-    );
+  isSelectingWord() {
+    return this.state === roomState.SELECTING_WORD && this.players.length >= 2;
+  }
+
+  isPlayingQuestion() {
+    return this.state === roomState.PLAYING_QUESTION && this.players.length >= 2;
   }
 
   isAllPlayerAnswered() {
@@ -86,9 +142,26 @@ class Room {
     return this.answererCount === this.players.length - 1;
   }
 
-  timeOutCallback(gameIo) {
+  isLastRound() {
+    return this.currentRound === this.totalRound;
+  }
+
+  isGameEnd() {
+    return this.isLastRound() && this.examinerIndex === 0;
+  }
+
+  questionEndCallback(gameIo) {
     const answer = this.word;
-    this.prepareNextQuestion();
+    // 마지막 문제인 경우
+    if (this.isGameEnd()) {
+      this.gameEndCallback(gameIo);
+      return;
+    }
+    // 한 라운드가 끝나는 경우
+    if (this.examinerIndex === 0) this.prepareNextRound();
+    // 아직 한 라운드가 끝나지 않은 경우
+    else this.prepareNextQuestion();
+
     const nextExaminer = this.getExaminer();
     gameIo.in(this.roomId).emit('endQuestion', {
       nextExaminerSocketId: nextExaminer.socket.id,
@@ -96,6 +169,25 @@ class Room {
       answer: answer,
       currentRound: this.currentRound,
       totalRound: this.totalRound,
+    });
+    setTimeout(() => {
+      const userList = this.players.map((user) => {
+        const userName = user.nickname || '부스트캠퍼';
+        return {
+          nickname: userName,
+          socketId: user.socket.id,
+          privileged: user.privileged,
+          avatar: user.avatar,
+        };
+      });
+      gameIo.in(this.roomId).emit('userList', { userList: JSON.stringify(userList) });
+    }, 5000);
+  }
+
+  gameEndCallback(gameIo) {
+    gameIo.in(this.roomId).emit('endGame', {
+      _scores: this.getScores(),
+      answer: this.word,
     });
   }
 
@@ -110,56 +202,43 @@ class Room {
   getScores() {
     return this.players.map((player) => [player.nickname, player.score]);
   }
+
+  makeGameStartData() {
+    return {
+      painter: this.getExaminerSocketId(),
+      currentRound: this.currentRound,
+      totalRound: this.totalRound,
+    };
+  }
+
+  makeStartQuestionData() {
+    return {
+      wordLength: this.word.length,
+      openLetter: this.word[this.openIndex],
+      openIndex: this.openIndex,
+      endTime: this.timer.endTime,
+    };
+  }
+
+  passRoomOwnerToNext() {
+    try {
+      if (this.players.length > 0) {
+        this.roomOwner = this.players[0].socket.id;
+        this.players[0].roomOwner = true;
+        this.players[0].socket.emit('roomOwner');
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  checkAndEmitRoomOwner(socketId, gameSocket) {
+    if (this.roomOwner === socketId) {
+      setTimeout(() => {
+        gameSocket.emit('roomOwner');
+      }, 100);
+    }
+  }
 }
 
-const RoomManager = {
-  roomList: ['3명', '6명', '12명', '100명', '비밀방'],
-  room: { '3명': {}, '6명': {}, '12명': {}, '100명': {}, 비밀방: {} },
-  maxPeopleNum,
-
-  // 방이 없을 때 새로운 방을 만들고 반환.
-  addRoom: function(roomName, gameIo) {
-    const newRoom = new Room(gameIo);
-    const roomId = makeRoomId();
-    newRoom.roomId = roomId;
-    newRoom.state = roomState.EMPTY;
-    this.room[roomName][roomId] = newRoom;
-
-    return roomId;
-  },
-
-  // 수용가능한 방을 하나 반환, 없으면 생성해서 반환
-  getEnableRoomId: function(roomName, gameIo) {
-    const nRooms = this.room[roomName];
-
-    // find의 반환값이 undefined일 수 있으므로, destructuring은 불가능
-    // room[0] : key, room[1] : room
-    let room = Object.entries(nRooms).find(
-      ([roomId, _room]) => _room.players.length < maxPeopleNum[roomName],
-    );
-
-    if (!room) {
-      room = [];
-      room.push(this.addRoom(roomName, gameIo));
-    }
-    return room[0];
-  },
-
-  getEnableSecretRoom(roomId) {
-    const secretRoomList = this.room['비밀방'];
-
-    if (!secretRoomList.hasOwnProperty(roomId)) secretRoomList[roomId] = new Room();
-
-    return secretRoomList[roomId];
-  },
-
-  isExistRoom({ roomType, roomId }) {
-    return roomType && roomId && this.room[roomType].hasOwnProperty(roomId);
-  },
-
-  getRoomByRoomId(roomName, roomId) {
-    return this.room[roomName][roomId];
-  },
-};
-
-module.exports = { RoomManager, Room };
+module.exports = { Room };

@@ -1,5 +1,14 @@
 import styled from 'styled-components';
 
-const ToolTypeStyle = styled.div``;
+export const ToolTypeStyle = styled.div`
+  margin: 0;
+`;
 
-export default ToolTypeStyle;
+export const ToolTypeSelectionStyle = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  width: 9rem;
+  > * {
+    margin: 2px;
+  }
+`;

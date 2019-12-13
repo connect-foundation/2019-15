@@ -1,6 +1,6 @@
 import { gql } from 'apollo-boost';
 
-const getRandomWords = gql`
+const GET_RANDOM_WORDS = gql`
   query getRandomWords {
     getRandomWords {
       id
@@ -9,4 +9,4 @@ const getRandomWords = gql`
   }
 `;
 
-export default getRandomWords;
+export default GET_RANDOM_WORDS;

@@ -1,9 +1,6 @@
-function requestFriend({ sender, receiver }) {
-  this.userList
-    .filter((user) => user.nickname === receiver.nickname)
-    .forEach((user) => {
-      this.onlineIo.to(`${user.socket.id}`).emit('requestFriend', sender);
-    });
+function requestFriend(nodeCache, socketUser, receiver) {
+  const friendSocket = nodeCache.get(receiver.id);
+  if (friendSocket) friendSocket.emitToMySockets('requestFriend', socketUser.user);
 }
 
 module.exports = requestFriend;

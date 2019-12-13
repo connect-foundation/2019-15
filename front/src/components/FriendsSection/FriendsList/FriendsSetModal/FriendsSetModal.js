@@ -5,9 +5,9 @@ import { useMutation } from '@apollo/react-hooks';
 import makeModal from 'components/globalComponents/Modal/Modal';
 import Button from 'components/globalComponents/Button/Button';
 import message from 'constant/messages';
-import { deleteFriend, sendFriendRequest } from 'queries/friend';
+import { DELETE_FRIEND, SEND_FRIEND_REQUEST } from 'queries/friend';
 import GlobalContext from 'global.context';
-import { emitRequestFriend } from 'logics/socketLogic/online';
+import { emitDeleteFriend, emitRequestFriend } from 'logics/socketLogic/online';
 import ButtonSectionStyle from './ButtonSection.style';
 
 FriendsSetModal.propTypes = {
@@ -30,13 +30,18 @@ export default function FriendsSetModal({
   modalOff,
   setRefresh,
 }) {
+  const { onlineSocket } = useContext(GlobalContext);
   const [content, switchContent] = useState(mode);
-  const [deleteFriendFunc] = useMutation(deleteFriend);
-  const { onlineSocket, user } = useContext(GlobalContext);
-  const [sendFriendRequestFunc] = useMutation(sendFriendRequest, {
+  const [deleteFriendFunc] = useMutation(DELETE_FRIEND, {
+    onCompleted({ deleteFriend: { user: friend, result } }) {
+      if (!result || !onlineSocket) return;
+      emitDeleteFriend(onlineSocket, friend);
+    },
+  });
+  const [sendFriendRequestFunc] = useMutation(SEND_FRIEND_REQUEST, {
     onCompleted({ sendFriendRequest: { user: receiver, result } }) {
       if (!result || !onlineSocket) return;
-      emitRequestFriend(onlineSocket, { sender: user, receiver });
+      emitRequestFriend(onlineSocket, receiver);
     },
   });
 

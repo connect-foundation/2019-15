@@ -9,9 +9,11 @@ const ModalStyle = styled.div`
   min-height: 10rem;
   background-color: white;
   border-radius: 1rem;
+  padding: 1rem;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
+  padding: 0 3rem;
 
   -webkit-transform: translate(-50%, -50%);
   -ms-transform: translate(-50%, -50%);
@@ -24,9 +26,12 @@ const ModalDivStyle = styled.div`
   display: flex;
   width: 100%;
   height: fit-content;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
+  & > p {
+    text-align: center;
+  }
 `;
 
 const AlarmModalStyle = styled.div`

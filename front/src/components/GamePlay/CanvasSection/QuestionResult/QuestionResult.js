@@ -12,11 +12,14 @@ QuestionResult.propTypes = {
 function QuestionResult({ answer, scores }) {
   const Header = () => <h1>{answer}</h1>;
   const Body = () =>
-    scores.map((score) => (
-      <div key={score[0]}>
-        {score[0]} : {score[1]}
-      </div>
-    ));
+    scores.map((score, idx) => {
+      const order = idx + 1;
+      return (
+        <div key={order}>
+          {score[0]} : {score[1]}
+        </div>
+      );
+    });
 
   const Modal = makeModal(Header, Body);
 

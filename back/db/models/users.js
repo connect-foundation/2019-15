@@ -17,8 +17,8 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: 'sFriendId',
       sourceKey: 'id',
     });
-    Users.hasMany(models.Friends, { foreignKey: 'pFriendId', sourceKey: 'id' });
-    Users.hasMany(models.Friends, { foreignKey: 'sFriendId', sourceKey: 'id' });
+    Users.hasMany(models.Friends, { foreignKey: 'pFriendId', sourceKey: 'id', as: 'pFriend' });
+    Users.hasMany(models.Friends, { foreignKey: 'sFriendId', sourceKey: 'id', as: 'sFriend' });
     Users.hasOne(models.Words, { foreignKey: 'userId', sourceKey: 'id' });
   };
   return Users;

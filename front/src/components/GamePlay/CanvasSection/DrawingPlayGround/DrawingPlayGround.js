@@ -1,11 +1,15 @@
-import React, { useReducer, useState, useEffect, useContext } from 'react';
+import React, { useReducer } from 'react';
 import PropTypes from 'prop-types';
 import Tools from 'components/GamePlay/CanvasSection/DrawingPlayGround/Tools/Tools';
 import PainterBoard from 'components/GamePlay/CanvasSection/DrawingPlayGround/PainterBoard/PainterBoard';
 import NonPainterBoard from 'components/GamePlay/CanvasSection/DrawingPlayGround/NonPainterBoard/NonPainterBoard';
-import GamePlayContext from 'components/GamePlay/GamePlay.context';
-import DrawingPlayGroundStyle from './DrawingPlayGround.style';
-import Shield from './Shield.style';
+import { ToolsStyle } from 'components/GamePlay/CanvasSection/DrawingPlayGround/Tools/Tools.style';
+
+import { DEFAULT_DRAWING_OPTIONS } from 'constant/DrawingPlayGround';
+import {
+  DrawingPlayGroundStyle,
+  CenterSpanStyle,
+} from './DrawingPlayGround.style';
 
 DrawingPlayGround.propTypes = {
   drawable: PropTypes.bool.isRequired,
@@ -13,6 +17,7 @@ DrawingPlayGround.propTypes = {
     width: PropTypes.number,
     height: PropTypes.number,
   }),
+  painterNickname: PropTypes.node.isRequired,
 };
 
 DrawingPlayGround.defaultProps = {
@@ -28,51 +33,45 @@ const setDrawingOptions = (prev, { type, value }) => {
       return { ...prev, tool: value };
     case 'strokeColor':
       return { ...prev, strokeColor: value };
+    case 'strokeWidth':
+      return { ...prev, strokeWidth: value };
+    case 'fillColor':
+      return { ...prev, fillColor: value };
     default:
-      throw new Error();
+      throw new Error(`${type} is wrong action type`);
   }
 };
 
-export default function DrawingPlayGround({ drawable, canvasSize }) {
-  const { painter, userList } = useContext(GamePlayContext);
-  const [painterNickname, setPainterNickname] = useState(null);
-
-  const defaultDrawingOptions = {
-    tool: 'pen',
-    strokeColor: '#000000',
-    strokeWidth: 10,
-    fillColor: '#000000',
-  };
-
-  useEffect(() => {
-    const painterInfo = userList.filter((user) => {
-      if (user.socketId === painter) return user;
-      return false;
-    });
-    if (painterInfo.length > 0) setPainterNickname(painterInfo[0].nickname);
-    drawingOptionsDispatcher({ type: 'tool', value: 'pen' });
-  }, [drawable, painter, userList]);
+export default function DrawingPlayGround({
+  drawable,
+  canvasSize,
+  painterNickname,
+}) {
   const [drawingOptions, drawingOptionsDispatcher] = useReducer(
     setDrawingOptions,
-    defaultDrawingOptions,
+    DEFAULT_DRAWING_OPTIONS,
   );
 
   return (
     <DrawingPlayGroundStyle>
-      {drawable ? (
-        <PainterBoard drawingOptions={drawingOptions} size={canvasSize} />
+      {drawable || painterNickname === null ? (
+        <>
+          <PainterBoard drawingOptions={drawingOptions} size={canvasSize} />
+          <Tools
+            drawingOptions={drawingOptions}
+            setDrawingOptions={drawingOptionsDispatcher}
+          />
+        </>
       ) : (
         <>
           <NonPainterBoard size={canvasSize} />
-          {painterNickname ? (
-            <Shield>{painterNickname}님이 그림을 그리고 있습니다.</Shield>
-          ) : null}
+          <ToolsStyle>
+            <CenterSpanStyle>
+              {painterNickname}님이 그림을 그리고 있습니다.
+            </CenterSpanStyle>
+          </ToolsStyle>
         </>
       )}
-      <Tools
-        drawingOptions={drawingOptions}
-        setDrawingOptions={drawingOptionsDispatcher}
-      />
     </DrawingPlayGroundStyle>
   );
 }

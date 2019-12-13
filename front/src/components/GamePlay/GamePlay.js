@@ -1,5 +1,5 @@
-import React, { useState, useContext, useEffect } from 'react';
-import { Redirect } from 'react-router-dom';
+import React, { useState, useContext, useEffect, useCallback } from 'react';
+import { Redirect, useHistory } from 'react-router-dom';
 import NavigationBar from 'components/NavigationBar/NavigationBar';
 import { FlexRowStyle } from 'components/globalComponents/Container/Flex.style';
 import GlobalContext from 'global.context';
@@ -14,9 +14,11 @@ import {
   setEndQuestionHandler,
   closeSocket,
 } from 'logics/socketLogic';
+import { setEndGameHandler } from '../../logics/socketLogic';
 
 const GamePlay = () => {
-  const { gameSocket, setGameSocket, room } = useContext(GlobalContext);
+  const { gameSocket, setGameSocket, user, room } = useContext(GlobalContext);
+  const history = useHistory();
 
   const [userList, setUserList] = useState([]);
   const [painter, setPainter] = useState(null);
@@ -33,7 +35,7 @@ const GamePlay = () => {
   const [isTimerGetReady, setIsTimerGetReady] = useState(false);
   // 설정 : Timer 컴포넌트에서 일정 시간이 지났을 때
   // 초기화 : endQuestion 시그널을 받을 때
-  const [isOpen, setIsOpen] = useState(false);
+  const [isLetterOpen, setIsLetterOpen] = useState(false);
   // 설정 : WordChoice 컴포넌트에서 단어 선택 시, endQuestion 시그널을 받을 때
   // 초기화 : QuestionResult 컴포넌트가 사라질 때
   const [selectedWord, setSelectedWord] = useState('');
@@ -48,54 +50,95 @@ const GamePlay = () => {
     currentRound: 1,
     totalRound: 3,
   });
+  const [endTime, setEndTime] = useState(0);
+  const [isWordChoiceOpen, setIsWordChoiceOpen] = useState(true);
+  const [showGameResult, setShowGameResult] = useState(false);
 
-  function endQuestionCallback({
-    nextExaminerSocketId,
-    _scores,
-    answer,
-    currentRound,
-    totalRound,
-  }) {
-    // 결과 화면 띄우기
-    setSelectedWord(answer);
-    setScores(_scores);
-    setShowQuestionResult(true);
-
-    setTimeout(() => {
-      // 각종 상태 초기화하기
-      resetQuestionStates(nextExaminerSocketId);
-      setRound({ currentRound, totalRound });
+  const resetQuestionStates = useCallback(
+    function resetQuestionStates(nextExaminerSocketId) {
+      if (nextExaminerSocketId) setPainter(nextExaminerSocketId);
+      setQuestionWord(initialQuestionWordState);
+      setIsLetterOpen(false);
+      setSelectedWord('');
       setShowQuestionResult(false);
-    }, 5000);
-  }
+      // todo: 캔버스 데이터 초기화
+    },
+    [initialQuestionWordState],
+  );
 
-  function resetQuestionStates(nextExaminerSocketId) {
-    setPainter(nextExaminerSocketId);
-    setQuestionWord(initialQuestionWordState);
-    setIsTimerGetReady(false);
-    setIsOpen(false);
-    setSelectedWord('');
-    // todo: 캔버스 데이터 초기화
-  }
+  const endQuestionCallback = useCallback(
+    function endQuestionCallback({
+      nextExaminerSocketId,
+      _scores,
+      answer,
+      currentRound,
+      totalRound,
+    }) {
+      // 타이머 멈추기
+      setIsTimerGetReady(false);
+
+      // 결과 화면 띄우기
+      setSelectedWord(answer);
+      setScores(_scores);
+      setShowQuestionResult(true);
+
+      setTimeout(() => {
+        // 각종 상태 초기화하기
+        resetQuestionStates(nextExaminerSocketId);
+        setRound({ currentRound, totalRound });
+        setIsWordChoiceOpen(true);
+      }, 5000);
+    },
+    [resetQuestionStates],
+  );
+
+  const endGameCallback = useCallback(
+    ({ _scores, answer }) => {
+      console.log('end game callback');
+      // 타이머 멈추기
+      setIsTimerGetReady(false);
+
+      // 결과 화면 띄우기
+      setSelectedWord(answer);
+      setScores(_scores);
+      setShowQuestionResult(true);
+
+      // 게임 결과 띄우기
+      setTimeout(() => {
+        console.log('show game result');
+        resetQuestionStates();
+        setShowGameResult(true);
+
+        // 게임 결과 지우고 메인으로 나가기
+        setTimeout(() => {
+          console.log('go to main page');
+          setShowGameResult(false);
+          history.push('main');
+        }, 5000);
+      }, 5000);
+    },
+    [resetQuestionStates],
+  );
 
   useEffect(() => {
-    const initSocket = () => {
-      if (!gameSocket) return;
-      initUserListMsgHandler(gameSocket, { setUserList });
-      initGameStartMsgHandler(gameSocket, { setPainter, setRound });
-      setStartQuestionHandler(gameSocket, setQuestionWord, () => {
-        setIsTimerGetReady(true);
-      });
-      setEndQuestionHandler(gameSocket, endQuestionCallback);
-    };
-    initSocket();
+    if (!gameSocket) return () => {};
+    initUserListMsgHandler(gameSocket, { setUserList });
+    initGameStartMsgHandler(gameSocket, { setPainter, setRound, setEndTime });
+    setStartQuestionHandler(gameSocket, {
+      setQuestionWord,
+      setEndTime,
+      setIsTimerGetReady,
+    });
+    setEndQuestionHandler(gameSocket, { endQuestionCallback });
+    setEndGameHandler(gameSocket, endGameCallback);
 
     return () => {
       closeSocket(gameSocket, { setGameSocket });
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [gameSocket, setGameSocket, setPainter, setUserList]);
 
-  if (!gameSocket || gameSocket.connected === false) {
+  if (!gameSocket || gameSocket.disconnected) {
     return <Redirect to="main" />;
   }
 
@@ -108,8 +151,8 @@ const GamePlay = () => {
     setQuestionWord,
     isTimerGetReady,
     setIsTimerGetReady,
-    isOpen,
-    setIsOpen,
+    isLetterOpen,
+    setIsLetterOpen,
     selectedWord,
     setSelectedWord,
     showQuestionResult,
@@ -118,6 +161,12 @@ const GamePlay = () => {
     setScores,
     round,
     setRound,
+    endTime,
+    setEndTime,
+    isWordChoiceOpen,
+    setIsWordChoiceOpen,
+    showGameResult,
+    setShowGameResult,
   };
 
   return (

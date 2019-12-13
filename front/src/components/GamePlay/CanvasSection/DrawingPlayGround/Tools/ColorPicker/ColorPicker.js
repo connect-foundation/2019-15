@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import RGB_LIST from 'constant/Tools';
+import { RGB_LIST } from 'constant/DrawingPlayGround';
 import {
   ColorPickerStyle,
   ColorBoxList,
@@ -20,22 +20,24 @@ ColorPicker.defaultProps = {
 
 export default function ColorPicker({ rgbList, color, changeColor }) {
   return (
-    <ColorPickerStyle>
-      <ColorBoxList>
-        {rgbList.map((RGB) => (
-          <ColorBox
-            rgb={RGB}
-            changeColor={() => {
-              changeColor(RGB);
-            }}
-            key={RGB}
-          />
-        ))}
-      </ColorBoxList>
-      <ColorInfo>
-        <ColorBox rgb={color} />
-        <span>{color}</span>
-      </ColorInfo>
-    </ColorPickerStyle>
+    <div>
+      <ColorPickerStyle>
+        <ColorBoxList>
+          {rgbList.map((RGB) => (
+            <ColorBox
+              rgb={RGB}
+              changeColor={() => {
+                changeColor(RGB);
+              }}
+              key={RGB}
+            />
+          ))}
+        </ColorBoxList>
+        <ColorInfo>
+          <ColorBox rgb={color} />
+          <span>{color}</span>
+        </ColorInfo>
+      </ColorPickerStyle>
+    </div>
   );
 }

@@ -7,8 +7,12 @@ export default {
   royalBlue: '#5755D9',
   alto: '#d9d9d9',
   dimStormBrain: '#50525D80',
+  darkPink: '#DD6468',
   seaPink: '#EEA4A8',
   pink: '#FEBBBD',
   paleRose: '#F9E9E9',
   mustard: '#FFE65D',
+  geyser: '#D9E0E3',
+  tuatara: '#3d3d3b',
+  darkPink: '#DD6468',
 };

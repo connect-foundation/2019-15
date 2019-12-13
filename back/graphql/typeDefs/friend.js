@@ -1,8 +1,8 @@
 module.exports = `
   type Friend{
     id:Int!
-    pFriendId:Int!
-    sFriendId:Int!
+    pFriend:User
+    sFriend:User
     createdAt:String
     updatedAt:String
   }
@@ -14,21 +14,30 @@ module.exports = `
     friendStateid:Int!
   }
   
-  type FriendRequestResult{
-    user:User!
-    result:Boolean!
+  type FriendEdge{
+    node:Friend
+    cursor:String
+  }
+  
+  type FriendConnection{
+    edges:[FriendEdge]
+    pageInfo:PageInfo
+  }
+  
+  type FriendResult{
+    user: User!
   }
   
   extend type Query{
+    friends(first:Int!,after:String):FriendConnection
     addFriendForTest:[Friend]
   } 
 
   extend type Mutation{
-    friends:[User]
-    deleteFriend(nickname:String):[Friend]
+    deleteFriend(nickname:String):FriendResult
     findFriendRequests:[User]
     deleteFriendRequest(nickname:String):[BeforeFriend]
-    acceptFriendRequest(nickname:String):User
-    sendFriendRequest(nickname:String):FriendRequestResult
+    acceptFriendRequest(nickname:String):FriendResult
+    sendFriendRequest(nickname:String):FriendResult
   }
 `;

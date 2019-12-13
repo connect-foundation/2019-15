@@ -1,61 +1,45 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import TimerStyle from './Timer.style';
 
 Timer.propTypes = {
   isTimerGetReady: PropTypes.bool.isRequired,
-  setIsTimerGetReady: PropTypes.func.isRequired,
-  setIsOpen: PropTypes.func.isRequired,
+  setIsLetterOpen: PropTypes.func.isRequired,
+  endTime: PropTypes.number.isRequired,
 };
 
-export default function Timer({
-  isTimerGetReady,
-  setIsTimerGetReady,
-  setIsOpen,
-}) {
-  const [time, setTime] = useState(30);
-  const [isRunnable, setIsRunnable] = useState(false);
+function getRemainTime(endTime) {
+  const gap = Math.floor((endTime - Date.now()) / 1000);
+  return gap >= 0 ? gap : 0;
+}
 
-  function resetTimer() {
-    setTime(30);
-  }
+export default function Timer({ isTimerGetReady, setIsLetterOpen, endTime }) {
+  const [remainTime, setRemainTime] = useState(getRemainTime(endTime));
+  const requestId = useRef(0);
 
   useEffect(() => {
-    // useCallback을 쓰면 hoisting이 되지 않아서 useEffect 내부에 선언함
-    const countDown = () => {
-      if (isRunnable) setTime(time - 1);
+    function resetTimer() {
+      setRemainTime(getRemainTime(Date.now() + 30000));
+    }
+
+    function countDown() {
+      setRemainTime(getRemainTime(endTime));
+      if (getRemainTime(endTime) <= 10) setIsLetterOpen(true);
+      if (isTimerGetReady) requestId.current = requestAnimationFrame(countDown);
+    }
+
+    if (isTimerGetReady) requestId.current = requestAnimationFrame(countDown);
+    else resetTimer();
+
+    return () => {
+      cancelAnimationFrame(requestId.current);
     };
-
-    function stopTimer() {
-      setIsRunnable(false);
-      setIsTimerGetReady(false);
-      resetTimer();
-    }
-
-    function notifyOpeningLetter() {
-      setIsOpen(true);
-    }
-
-    function runTimer() {
-      if (time === 10) notifyOpeningLetter();
-      if (time > 0) setTimeout(countDown, 1000);
-      else stopTimer();
-    }
-
-    function startTimer() {
-      setIsRunnable(true);
-      runTimer();
-    }
-
-    runTimer();
-    if (isTimerGetReady) startTimer();
-    else stopTimer();
-  }, [isTimerGetReady, setIsTimerGetReady, time, isRunnable, setIsOpen]);
+  }, [isTimerGetReady]);
 
   return (
     <>
       <TimerStyle>
-        <span>{time}</span>
+        <span>{remainTime}</span>
       </TimerStyle>
     </>
   );

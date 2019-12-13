@@ -1,41 +1,20 @@
-import React, { useReducer, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import Alarm from 'components/NavigationBar/DefaultNavBtnContainer/Notice/Alarm';
-import Messages from 'components/Messages/Messages';
+import MessageList from 'components/NavigationBar/DefaultNavBtnContainer/Notice/MessageList/MessageList';
 import { faBell } from '@fortawesome/free-solid-svg-icons';
 import { NavImageStyle } from 'components/NavigationBar/DefaultNavBtnContainer/DefaultNavBtnContainer.style';
 import useAlarm from 'hooks/Alarm/useAlarm';
-
-const noticeTypeReducer = (state, action) => {
-  if (action.type !== 'alarm') {
-    return { isOpen: !state.isOpen, type: action.type };
-  }
-  if (!action.open) return { isOpen: false, type: action.type };
-
-  if (state.isOpen) return state;
-  if (!state.type) return { type: action.type };
-  return { isOpen: true, type: action.type };
-};
-
-const alarmListReducer = (state, action) => {
-  switch (action.type) {
-    case 'push':
-      return [...state, action.value];
-    case 'pop':
-      state.pop();
-      return [...state];
-    case 'reset':
-      return [];
-    default:
-      throw new Error('wrong action type');
-  }
-};
+import { NoticeStyle } from 'components/NavigationBar/DefaultNavBtnContainer/Notice/Notice.style';
+import useCloseClicker from 'hooks/useCloseClicker';
+import useNotice from 'hooks/Alarm/useNotice';
 
 export default function Notice() {
-  const [alarmList, alarmListDispatch] = useReducer(alarmListReducer, []);
-  useAlarm(alarmListDispatch);
+  const [alarmList, alarmListDispatch] = useAlarm();
+  const [notice, noticeDispatch] = useNotice();
 
   useEffect(() => {
     if (!alarmList.length) return () => {};
+
     noticeDispatch({ open: true, type: 'alarm' });
     const timeoutToCloseAlarm = setTimeout(() => {
       noticeDispatch({ open: false, type: 'alarm' });
@@ -44,27 +23,32 @@ export default function Notice() {
     return () => {
       clearTimeout(timeoutToCloseAlarm);
     };
-  }, [alarmList]);
-
-  const [notice, noticeDispatch] = useReducer(noticeTypeReducer, {
-    isOpen: false,
-    type: null,
-  });
+  }, [alarmList, alarmListDispatch, noticeDispatch]);
 
   let noticeElement = null;
   if (notice.isOpen) {
     noticeElement =
-      notice.type === 'alarm' ? <Alarm alarmList={alarmList} /> : <Messages />;
+      notice.type === 'alarm' ? (
+        <Alarm alarmList={alarmList} />
+      ) : (
+        <MessageList />
+      );
   }
 
-  const toggleMessages = () => {
-    noticeDispatch({ type: 'messages' });
+  const openMessages = () => {
+    noticeDispatch({ open: true, type: 'messages' });
   };
 
+  const closeMessages = () => {
+    noticeDispatch({ open: false, type: 'messages' });
+  };
+
+  const closeClicker = useCloseClicker(closeMessages);
+
   return (
-    <>
-      <NavImageStyle icon={faBell} onClick={toggleMessages} />
+    <NoticeStyle ref={closeClicker}>
+      <NavImageStyle icon={faBell} onClick={openMessages} />
       {noticeElement}
-    </>
+    </NoticeStyle>
   );
 }

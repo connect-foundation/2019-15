@@ -5,8 +5,10 @@ import Home from 'pages/Home/Home';
 import GlobalContext from 'global.context';
 import Main from 'pages/Main/Main';
 import MyPage from 'pages/MyPage/MyPage';
-import SecretGame from 'pages/SecretGame/SecretGame';
-import GamePlay from 'components/GamePlay/GamePlay';
+import PrivateGame from 'pages/PrivateGame/PrivateGame';
+import PublicGame from 'pages/PublicGame/PublicGame';
+import SettingPage from 'pages/Setting/Setting';
+import Waiting from 'pages/Waiting/Waiting';
 import Room from 'logics/room';
 import User from 'logics/user';
 import RouterStyle from 'Router.style';
@@ -22,7 +24,7 @@ const Router = () => {
   let userInitial = new User();
   if (jwtToken) {
     const { id, nickname } = jwt.decode(jwtToken);
-    userInitial = new User(nickname, null, id);
+    userInitial = new User(nickname, id);
   }
   const [room, setRoom] = useState(new Room());
   const [user, userDispatch] = useReducer(changeUser, userInitial);
@@ -54,11 +56,17 @@ const Router = () => {
             <Route path="/main">
               <Main />
             </Route>
-            <Route path="/gameplay">
-              <GamePlay />
+            <Route path="/public">
+              <PublicGame />
             </Route>
-            <Route path="/secret:hash">
-              <SecretGame />
+            <Route path="/setting:hash">
+              <SettingPage />
+            </Route>
+            <Route path="/waiting:hash">
+              <Waiting />
+            </Route>
+            <Route path="/private:hash">
+              <PrivateGame />
             </Route>
           </GlobalContext.Provider>
         </Switch>
