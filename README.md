@@ -32,10 +32,13 @@
 여러분의 창의력을 마음껏 발휘해 보세요!
 
 #### Description
-- pc게임인 캐치마인드를 웹게임으로 구현
-- 출제자가 그림을 그리면 채팅으로 답을 맞추는 게임
-- 로그인 기능(Oauth)를 추가하여 친구기능, 랭킹기능, 과거 게임기록을 볼 수 있도록 구현
-- 회원끼리 할 수 있는 랜덤 게임과 친구끼리 비회원으로 할 수 있는 비밀 게임 존재
+- PC 게임인 캐치마인드를 웹게임으로 구현하였습니다.
+- 출제자가 그림을 그리면 이외의 플레이어가 채팅으로 답을 맞추는 웹 게임입니다.
+- 기본적으로 회원제 서비스로서, 다른 유저에게 친구 신청을 보낼 수 있으며, 친구 신청을 수락하거나 거절할 수 있습니다.
+- 회원끼리 할 수 있는 랜덤 게임과 친구끼리 비회원으로도 즐길 수 있는 비밀 게임, 두가지 게임 모드가 있습니다.
+- 전체 회원 및 친구들의 점수를 랭킹을 통해 확인할 수 있으며, 게임에서 점수를 획득하여 랭킹을 올릴 수 있습니다.
+- 과거의 게임 기록을 움짤의 형태로 조회할 수 있습니다.
+- 나의 닉네임과 캐릭터를 변경할 수 있습니다.
 - 참고: https://skribbl.io/
 
 ## Team
@@ -53,48 +56,6 @@
 | Sprint_4 | 디자인 변경  | 리팩토링, 버그픽스    | 캔버스 소켓 통신, 알림 리팩토링 |  문제 종료, 라운드 변경, 프론트 코드 리팩토링(지영이와 페어 코딩) |
 | Sprint_5 |                         |                 |                 |                        |
 | Sprint_6 |                         |                 |                 |                        |
-
-## Directory
-### Frontend
-```
-./
-├── conf/                     # 설정 파일
-├── public/                   # 정적 문서 
-├── src/                      # 소스 파일
-|    ├── asset/               # 어셋 파일 
-|    ├── components/          # 컴포넌트
-|    ├── constant/            # 상수
-|    ├── hooks/               # 커스텀 훅
-|    ├── logics/              # 컴포넌트에 주입할 로직
-|    ├── pages/               # 페이지(뷰) 컴포넌트
-|    ├── queries/             # 쿼리 파일
-|    ├── themes/              # 테마(글로벌 스타일)
-|    ├── util/                # 유틸리티 파일
-|    ├── index.js             # 엔트리 포인트
-|    ├── Router.js            # 라우터
-|    └── serviceWorker.js     # 빌드 시 실행되는 파일
-└── test/                     # 테스트 파일
-```
-
-### Backend
-```
-./
-├── bin/                      # Express 실행 파일
-├── config/                   # 각종 환경설정 파일
-├── db/                       # DB 및 sequelize 관련 파일
-|   ├── migrations/           # 마이그레이션 파일들 (sequelize-cli)
-|   ├── models/               # 모델 파일 (sequelize-cli)
-|   └── seeders/              # 시더 파일 (sequelize-cli)    
-├── graphql/                  # graphQL 관련 폴더
-|   ├── resolvers/            # 리졸버 파일
-|   ├── typeDefs/             # 타입 파일
-|   └── schema.js             # 스키마
-├── middlewares/              # 커스텀 미들웨어
-├── router/                   # 라우터
-├── secket/                   # 소켓 관련 파일
-├── test/                     # 테스트 파일
-└── util/                     # 유틸리티 파일
-```
 
 ## Environment
 - FRONT
@@ -123,12 +84,73 @@
 - etc
     - ESLint (airbnb)
 
+## Directory
+### Frontend
+<details>
+  <summary>펼치기 / 접기</summary>
+  <div>
+
+```
+./
+├── conf/                     # 설정 파일
+├── public/                   # 정적 문서 
+├── src/                      # 소스 파일
+|    ├── asset/               # 어셋 파일 
+|    ├── components/          # 컴포넌트
+|    ├── constant/            # 상수
+|    ├── hooks/               # 커스텀 훅
+|    ├── logics/              # 컴포넌트에 주입할 로직
+|    ├── pages/               # 페이지(뷰) 컴포넌트
+|    ├── queries/             # 쿼리 파일
+|    ├── themes/              # 테마(글로벌 스타일)
+|    ├── util/                # 유틸리티 파일
+|    ├── index.js             # 엔트리 포인트
+|    ├── Router.js            # 라우터
+|    └── serviceWorker.js     # 빌드 시 실행되는 파일
+└── test/                     # 테스트 파일
+```
+
+  </div>
+</details>
+
+### Backend
+<details>
+  <summary>펼치기 / 접기</summary>
+  <div>
+
+```
+./
+├── bin/                      # Express 실행 파일
+├── config/                   # 각종 환경설정 파일
+├── db/                       # DB 및 sequelize 관련 파일
+|   ├── migrations/           # 마이그레이션 파일들 (sequelize-cli)
+|   ├── models/               # 모델 파일 (sequelize-cli)
+|   └── seeders/              # 시더 파일 (sequelize-cli)    
+├── graphql/                  # graphQL 관련 폴더
+|   ├── resolvers/            # 리졸버 파일
+|   ├── typeDefs/             # 타입 파일
+|   └── schema.js             # 스키마
+├── middlewares/              # 커스텀 미들웨어
+├── router/                   # 라우터
+├── secket/                   # 소켓 관련 파일
+├── test/                     # 테스트 파일
+└── util/                     # 유틸리티 파일
+```
+
+  </div>
+</details>
+
 ## Core Skills
-- OAuth 2.0
+- authentication with Passport.js and OAuth 2.0
+- access control with Json Web Token
 - WebSocket
-    - throttle
-    - expoenetial reconnection
+    - Socket Room
+    - Throttle
+    - Debounce
+    - Expoenetial Reconnection
 - requestAnimationFrame in React
+- canvas with Fabric.js and custom drawing tool
+- cursor based lazy loading and infinite scroll
     
 ## Document
 ### [그라운드 룰](https://github.com/connect-foundation/2019-15/wiki/%EA%B7%B8%EB%9D%BC%EC%9A%B4%EB%93%9C-%EB%A3%B0)
