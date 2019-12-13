@@ -24,6 +24,17 @@ class Room {
     this.players[this.examinerIndex].privileged = true;
   }
 
+  initRoomState() {
+    this.wordSet = null;
+    this.word = null;
+    this.openIndex = 0;
+    this.state = roomState.EMPTY;
+    this.examinerIndex = null;
+    this.totalRound = defaultRoomSetting.totalRound;
+    this.currentRound = 1;
+    this.answererCount = 0;
+  }
+
   resetRoomState() {
     this.state = roomState.SELECTING_WORD;
     this.word = null;
@@ -59,12 +70,50 @@ class Room {
 
   removePlayer(userIndex) {
     if (userIndex < 0) return;
-    this.players.splice(userIndex, 1);
+    const [removedPlayer] = this.players.splice(userIndex, 1);
+    // 출제자가 나간 경우 && 게임을 계속 할 수 잇는 경우 && 단어를 아직 선택하지 않은 경우
+    if (removedPlayer.privileged && this.players.length) {
+      if (userIndex === 0) {
+        this.players[this.players.length - 1].privileged = true;
+        this.examinerIndex = this.players.length - 1;
+      } else {
+        this.players[userIndex - 1].privileged = true;
+        this.examinerIndex = userIndex - 1;
+      }
+
+      if (this.isSelectingWord()) return 1;
+      if (this.isPlayingQuestion()) return 2;
+    }
+    /* if (removedPlayer.privileged && this.isSelectingWord()) {
+      if (userIndex === 0) {
+        this.players[this.players.length - 1].privileged = true;
+        this.examinerIndex = this.players.length - 1;
+      } else {
+        this.players[userIndex - 1].privileged = true;
+        this.examinerIndex = userIndex - 1;
+      }
+
+      // todo: 다음 출제자가 단어를 선택할 수 있게 해야 함
+      return 1;
+    }
+    // 출제자가 나간 경우 && 게임을 계속 할 수 있는 경우 && 단어를 이미 선택한 경우
+    else if (removedPlayer.privileged && this.isPlayingQuestion()) {
+      if (userIndex === 0) {
+        this.players[this.players.length - 1].privileged = true;
+        this.examinerIndex = this.players.length - 1;
+      } else {
+        this.players[userIndex - 1].privileged = true;
+        this.examinerIndex = userIndex - 1;
+      }
+
+      // todo: 다음 출제자가 그림을 그릴 수 있게 해야 함
+      return 2;
+    } */
   }
 
   // 방이 대기중인 상태인 경우
   isWaiting() {
-    return this.state === roomState.WAITING;
+    return this.state === roomState.WAITING && this.players.length < 2;
   }
 
   // 최소 시작 인원을 기다리다가 충족된 경우. 즉, 새 게임
@@ -73,11 +122,12 @@ class Room {
   }
 
   // 이미 게임이 시작했으며, 게임이 아직 종료되지 않은 경우. 즉, 난입
-  isPlaying() {
-    return (
-      this.players.length >= 2 &&
-      (this.state === roomState.SELECTING_WORD || this.state === roomState.PLAYING_QUESTION)
-    );
+  isSelectingWord() {
+    return this.state === roomState.SELECTING_WORD && this.players.length >= 2;
+  }
+
+  isPlayingQuestion() {
+    return this.state === roomState.PLAYING_QUESTION && this.players.length >= 2;
   }
 
   isAllPlayerAnswered() {
@@ -92,8 +142,21 @@ class Room {
     return this.answererCount === this.players.length - 1;
   }
 
+  isLastRound() {
+    return this.currentRound === this.totalRound;
+  }
+
+  isGameEnd() {
+    return this.isLastRound() && this.examinerIndex === 0;
+  }
+
   questionEndCallback(gameIo) {
     const answer = this.word;
+    // 마지막 문제인 경우
+    if (this.isGameEnd()) {
+      this.gameEndCallback(gameIo);
+      return;
+    }
     // 한 라운드가 끝나는 경우
     if (this.examinerIndex === 0) this.prepareNextRound();
     // 아직 한 라운드가 끝나지 않은 경우
@@ -119,6 +182,13 @@ class Room {
       });
       gameIo.in(this.roomId).emit('userList', { userList: JSON.stringify(userList) });
     }, 5000);
+  }
+
+  gameEndCallback(gameIo) {
+    gameIo.in(this.roomId).emit('endGame', {
+      _scores: this.getScores(),
+      answer: this.word,
+    });
   }
 
   getExaminerSocketId() {

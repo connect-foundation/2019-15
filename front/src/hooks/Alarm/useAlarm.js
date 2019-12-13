@@ -12,7 +12,7 @@ const alarmListReducer = (state, action) => {
     case 'reset':
       return [];
     default:
-      throw new Error('wrong action type');
+      throw new Error(`${action.type} is wrong action type`);
   }
 };
 

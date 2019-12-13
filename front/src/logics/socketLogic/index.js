@@ -68,6 +68,10 @@ export function setEndQuestionHandler(socket, { endQuestionCallback }) {
   socket.on('endQuestion', endQuestionCallback);
 }
 
+export function setEndGameHandler(socket, endGameCallback) {
+  socket.on('endGame', endGameCallback);
+}
+
 export function onCanvasData(socket, setCanvas) {
   socket.on('drawing', ({ eventList }) => {
     setCanvas(eventList);

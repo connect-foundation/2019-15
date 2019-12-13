@@ -25,7 +25,7 @@ function enterPrivate(gameSocket, { nickname, roomId, avatar }) {
     sendUserListToRoom(room.players, roomId, this.gameIo);
   }, 0);
 
-  if (room.isPlaying()) {
+  if (room.isPlayingQuestion()) {
     setTimeout(() => {
       gameSocket.emit('movePrivate');
     }, 100);
