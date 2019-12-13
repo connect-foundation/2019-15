@@ -1,4 +1,4 @@
-import { useQuery } from '@apollo/react-hooks';
+import { useLazyQuery } from '@apollo/react-hooks';
 import {
   getFirstKey,
   getLoadingWithNetwork,
@@ -7,14 +7,14 @@ import {
   getNullPage,
 } from 'logics/hooks/cursorQuery';
 
-const useCursorQuery = (query, options = {}) => {
-  const { data, loading, error, fetchMore, refetch, networkStatus } = useQuery(
-    query,
-    {
-      notifyOnNetworkStatusChange: true,
-      ...options,
-    },
-  );
+const useCursorLazyQuery = (query, options = {}) => {
+  const [
+    getData,
+    { data, loading, error, fetchMore, networkStatus },
+  ] = useLazyQuery(query, {
+    notifyOnNetworkStatusChange: true,
+    ...options,
+  });
 
   const loadingWithNetwork = getLoadingWithNetwork(networkStatus, loading);
 
@@ -32,14 +32,16 @@ const useCursorQuery = (query, options = {}) => {
   );
   const nodes = getNodes(edges);
 
-  return {
-    data: nodes,
-    loading: loadingWithNetwork,
-    error,
-    fetchMore: loadMore,
-    hasMore: hasNextPage,
-    refetch,
-  };
+  return [
+    getData,
+    {
+      data: nodes,
+      loading: loadingWithNetwork,
+      error,
+      fetchMore: loadMore,
+      hasMore: hasNextPage,
+    },
+  ];
 };
 
-export default useCursorQuery;
+export default useCursorLazyQuery;

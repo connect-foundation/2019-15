@@ -10,6 +10,7 @@ export const GET_INVITATIONS = gql`
       edges {
         node {
           id
+          roomId
           Friend {
             pFriend {
               id
@@ -32,5 +33,11 @@ export const DELETE_INVITATION = gql`
     deleteInvitation(id: $id) {
       result
     }
+  }
+`;
+
+export const INVITE = gql`
+  mutation invite($id: Int!, $roomId: String!) {
+    invite(id: $id, roomId: $roomId)
   }
 `;
