@@ -31,7 +31,7 @@ const modalReducer = (state, action) => {
     case 'error':
       return {
         ...state,
-        content: `에러가 발생했습니다.`,
+        content: action.content,
         current: 'error',
       };
     default:

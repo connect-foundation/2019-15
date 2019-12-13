@@ -3,7 +3,7 @@ import makeModal from 'components/globalComponents/Modal/Modal';
 import Button from 'components/globalComponents/Button/Button';
 import { ButtonSection } from 'components/FriendsSection/refactor/FriendList/FriendModal/FriendModal.style';
 import PropTypes from 'prop-types';
-import { DELETE_FRIEND } from 'queries/friend';
+import { DELETE_FRIEND, SEND_FRIEND_REQUEST } from 'queries/friend';
 import { useMutation } from '@apollo/react-hooks';
 
 FriendModal.propTypes = {
@@ -34,6 +34,21 @@ export default function FriendModal({
     onError() {
       dispatchModalContent({
         type: 'error',
+        content: '에러가 발생했습니다.',
+      });
+    },
+  });
+  const [sendFriendRequest] = useMutation(SEND_FRIEND_REQUEST, {
+    onCompleted(result) {
+      dispatchModalContent({
+        type: 'addDone',
+        nickname: result.sendFriendRequest.nickname,
+      });
+    },
+    onError({ graphQLErrors }) {
+      dispatchModalContent({
+        type: 'error',
+        content: graphQLErrors[0].message,
       });
     },
   });
@@ -49,10 +64,8 @@ export default function FriendModal({
       case 'error':
         return dispatchModalContent({ type: 'clear' });
       case 'addRequest':
-        console.log('친구요청 로직 추가 예정');
-        return dispatchModalContent({
-          type: 'addDone',
-          nickname: modalContent.nickname,
+        return sendFriendRequest({
+          variables: { nickname: modalContent.nickname },
         });
       case 'deleteRequest':
         return deleteFriendRequest({
