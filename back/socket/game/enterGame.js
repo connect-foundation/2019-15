@@ -2,8 +2,8 @@ const { personEnterRoom, sendUserListToRoom } = require('./game');
 const { PRIVATE_ROOM_NAME } = require('../../config/roomConfig');
 const User = require('../User');
 
-function enterRandom(gameSocket, roomInfo, { nickname, roomType }) {
-  personEnterRoom(nickname, gameSocket, roomType, this.gameIo, roomInfo.roomId);
+function enterRandom(gameSocket, roomInfo, { nickname, roomType, avatar }) {
+  personEnterRoom(nickname, gameSocket, roomType, this.gameIo, roomInfo.roomId, avatar);
 }
 
 function enterPrivate(gameSocket, { nickname, roomId, avatar }) {

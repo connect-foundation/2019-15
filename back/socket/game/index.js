@@ -14,7 +14,7 @@ function setGameSocket(socket) {
   const roomInfo = {};
   const gameSocket = socket;
 
-  socket.on('enterRandom', ({ nickname, roomType }) => {
+  socket.on('enterRandom', ({ nickname, roomType, avatar }) => {
     roomInfo.roomType = roomType;
     roomInfo.roomId = RoomManager.getEnableRoomId(roomType, this.gameIo);
   });
@@ -60,8 +60,12 @@ function setGameSocket(socket) {
       room.passRoomOwnerToNext();
       sendUserListToRoom(room.players, roomId, this.gameIo);
     }
+
     if (roomType !== PRIVATE_ROOM_NAME && room.players.length < 1) {
       RoomManager.deleteRoom(roomType, roomId);
+    }
+    if (roomType === PRIVATE_ROOM_NAME && room.players.length < 1) {
+      room.timer.stop();
     }
   });
 }

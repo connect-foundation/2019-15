@@ -33,3 +33,9 @@ export const AnchorCopyButton = styled(ButtonStyle)`
   height: 3rem;
   font-size: 20px;
 `;
+
+export const CopyTextArea = styled.textarea`
+  width: 10px;
+  height: 10px;
+  z-index: -10;
+`;
