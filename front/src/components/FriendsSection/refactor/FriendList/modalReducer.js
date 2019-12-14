@@ -5,6 +5,7 @@ const modalReducer = (state, action) => {
     case 'deleteRequest':
       return {
         content: `${action.nickname}님을 삭제하시겠습니까?`,
+        id: action.id,
         nickname: action.nickname,
         current: 'deleteRequest',
       };
@@ -19,6 +20,7 @@ const modalReducer = (state, action) => {
         return { ...state, content: '친구의 닉네임을 입력해주세요' };
       return {
         content: `${action.nickname}님을 추가하시겠습니까?`,
+        id: action.id,
         nickname: action.nickname,
         current: 'addRequest',
       };

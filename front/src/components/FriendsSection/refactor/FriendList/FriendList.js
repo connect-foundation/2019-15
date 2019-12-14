@@ -13,8 +13,8 @@ import FriendModal from 'components/FriendsSection/refactor/FriendList/FriendMod
 import modalReducer from 'components/FriendsSection/refactor/FriendList/modalReducer';
 import FriendsSectionContext from 'components/FriendsSection/refactor/FriendsSection.context';
 
-function changeModeReducer(state, action) {
-  return !action.current;
+function changeModeReducer(state) {
+  return !state.current;
 }
 
 export default function FriendList() {
@@ -24,6 +24,7 @@ export default function FriendList() {
     GET_FRIENDS,
   );
   const [modalContent, dispatchModalContent] = useReducer(modalReducer, {
+    id: null,
     content: null,
     nickname: null,
     current: null,
@@ -36,7 +37,7 @@ export default function FriendList() {
       </FriendListStyle>
     );
   }
-  if (error) {
+  if (error || !data) {
     return (
       <FriendListStyle>
         <Header />
@@ -46,7 +47,7 @@ export default function FriendList() {
   }
 
   function switchMode() {
-    changeMode({ current: isConfigMode });
+    changeMode();
   }
   return (
     <>
@@ -66,8 +67,9 @@ export default function FriendList() {
             {data.map(({ sFriend: { id, nickname } }) => (
               <Component
                 key={nickname}
+                id={id}
                 nickname={nickname}
-                online={onlineFriends[id]}
+                online={!!onlineFriends[id]}
                 isConfigMode={isConfigMode}
                 dispatchModalContent={dispatchModalContent}
               />
@@ -78,4 +80,3 @@ export default function FriendList() {
     </>
   );
 }
-
