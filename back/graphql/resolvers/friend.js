@@ -83,9 +83,8 @@ const friendResolvers = {
         await Friends.destroy({ where: { id: deletedColumns[0].dataValues.id }, transaction });
         await Friends.destroy({ where: { id: deletedColumns[1].dataValues.id }, transaction });
         await transaction.commit();
-        return {
-          nickname: nickname,
-        };
+        const result = await Users.findOne({ where: { nickname: nickname }});
+        return {user : result};
       } catch (e) {
         if (transaction) await transaction.rollback();
         throw new Error(e);
@@ -103,7 +102,7 @@ const friendResolvers = {
       await BeforeFriends.destroy(conditionColumns);
       return BeforeFriends.findAll(conditionColumns);
     },
-    acceptFriendRequest: async (obj, { nickname }, { Users, Friends, req }) => {
+    acceptFriendRequest: async (obj, { nickname }, { BeforeFriends, Users, Friends, req }) => {
       const idFromNickname = await Users.findOne({
         where: { nickname: nickname },
       });
@@ -119,7 +118,7 @@ const friendResolvers = {
       } catch {
         console.log('already exists');
       }
-      await Friends.update(
+      await BeforeFriends.update(
         { friendStateId: 2 },
         {
           where: {
@@ -129,10 +128,31 @@ const friendResolvers = {
       );
       return {
         user: idFromNickname,
-        result: true,
       };
     },
-    sendFriendRequest: async (obj, { nickname }, { BeforeFriends, Users, req }) => {
+
+    sendFriendRequest: async (obj, { nickname }, { Friends, BeforeFriends, Users, req }) => {
+      //자기자신인지 확인
+
+      // 이미 친구인지 확인
+      const checkFriendsTable = await Friends.findAll({
+        include: [
+          {
+            model: Users,
+            as: 'sFriend',
+            where: { [Op.or]: [{ nickname: nickname }, { id: req.user.id }] },
+          },
+          {
+            model: Users,
+            as: 'pFriend',
+            where: { [Op.or]: [{ nickname: nickname }, { id: req.user.id }] },
+          },
+        ],
+      });
+
+      if (checkFriendsTable.length > 1) throw new Error(`${nickname}님과는 이미 친구입니다.`);
+
+      // 친구 요청
       const idFromNickname = await Users.findOne({
         where: { nickname: nickname },
       });
@@ -143,10 +163,13 @@ const friendResolvers = {
           sFriendId: idFromNickname.dataValues.id,
           friendStateId: 1,
         });
-      } catch {
-        console.log('already sent');
+      } catch (e) {
+        if (e.message === 'Validation error') {
+          throw new Error(`이미 친구 신청을 보냈습니다.`);
+        }
+        throw new Error(`${nickname}님은 유저가 아닙니다.`);
       }
-      return { user: idFromNickname, result: true };
+      return {user: idFromNickname};
     },
   },
 };

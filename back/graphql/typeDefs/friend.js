@@ -25,7 +25,7 @@ module.exports = `
   }
   
   type FriendResult{
-    nickname: String
+    user: User!
   }
   
   extend type Query{

@@ -1,4 +1,4 @@
-import React, { useReducer } from 'react';
+import React, { useReducer, useContext } from 'react';
 import Header from 'components/FriendsSection/refactor/FriendList/Header/Header';
 import Component from 'components/FriendsSection/refactor/FriendList/Component/Component';
 import Alert from 'components/globalComponents/Alert/Alert';
@@ -11,12 +11,14 @@ import useCursorQuery from 'hooks/useCursorQuery';
 import InfinityScroll from 'components/globalComponents/InfinityScroll/InfinityScroll';
 import FriendModal from 'components/FriendsSection/refactor/FriendList/FriendModal/FriendModal';
 import modalReducer from 'components/FriendsSection/refactor/FriendList/modalReducer';
+import FriendsSectionContext from 'components/FriendsSection/refactor/FriendsSection.context';
 
 function changeModeReducer(state, action) {
   return !action.current;
 }
 
 export default function FriendList() {
+  const { onlineFriends } = useContext(FriendsSectionContext);
   const [isConfigMode, changeMode] = useReducer(changeModeReducer, false);
   const { data, loading, error, fetchMore, hasMore, refetch } = useCursorQuery(
     GET_FRIENDS,
@@ -61,11 +63,11 @@ export default function FriendList() {
         />
         <InfinityScroll loadMore={fetchMore} hasMore={hasMore}>
           <FriendListScrollStyle>
-            {data.map(({ sFriend: { nickname } }) => (
+            {data.map(({ sFriend: { id, nickname } }) => (
               <Component
                 key={nickname}
                 nickname={nickname}
-                online={false}
+                online={onlineFriends[id]}
                 isConfigMode={isConfigMode}
                 dispatchModalContent={dispatchModalContent}
               />
@@ -76,3 +78,4 @@ export default function FriendList() {
     </>
   );
 }
+

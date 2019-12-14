@@ -24,7 +24,9 @@ export const GET_FRIENDS = gql`
 export const DELETE_FRIEND = gql`
   mutation deleteFriend($nickname: String) {
     deleteFriend(nickname: $nickname) {
-      nickname
+      user {
+        nickname
+      }
     }
   }
 `;
@@ -40,7 +42,7 @@ export const FIND_FRIEND_REQUESTS = gql`
 export const DELETE_FRIEND_REQUEST = gql`
   mutation deleteFriendRequest($nickname: String) {
     deleteFriendRequest(nickname: $nickname) {
-      id
+        id
     }
   }
 `;
@@ -48,11 +50,9 @@ export const DELETE_FRIEND_REQUEST = gql`
 export const ACCEPT_FRIEND_REQUEST = gql`
   mutation acceptFriendRequest($nickname: String) {
     acceptFriendRequest(nickname: $nickname) {
-      user {
-        id
+      user{
         nickname
-      }
-      result
+        }
     }
   }
 `;
@@ -60,11 +60,9 @@ export const ACCEPT_FRIEND_REQUEST = gql`
 export const SEND_FRIEND_REQUEST = gql`
   mutation sendFriendRequest($nickname: String) {
     sendFriendRequest(nickname: $nickname) {
-      user {
-        id
+      user{
         nickname
-      }
-      result
+      }   
     }
   }
 `;

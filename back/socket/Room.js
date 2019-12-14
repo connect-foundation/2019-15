@@ -71,6 +71,9 @@ class Room {
   removePlayer(userIndex) {
     if (userIndex < 0) return;
     const [removedPlayer] = this.players.splice(userIndex, 1);
+    if (this.players.length === 1) {
+      this.state = roomState.WAITING;
+    }
     // 출제자가 나간 경우 && 게임을 계속 할 수 잇는 경우 && 단어를 아직 선택하지 않은 경우
     if (removedPlayer.privileged && this.players.length) {
       if (userIndex === 0) {
@@ -81,34 +84,10 @@ class Room {
         this.examinerIndex = userIndex - 1;
       }
 
-      if (this.isSelectingWord()) return 1;
-      if (this.isPlayingQuestion()) return 2;
+      if (this.isWaiting()) return 1;
+      if (this.isSelectingWord()) return 2;
+      if (this.isPlayingQuestion()) return 3;
     }
-    /* if (removedPlayer.privileged && this.isSelectingWord()) {
-      if (userIndex === 0) {
-        this.players[this.players.length - 1].privileged = true;
-        this.examinerIndex = this.players.length - 1;
-      } else {
-        this.players[userIndex - 1].privileged = true;
-        this.examinerIndex = userIndex - 1;
-      }
-
-      // todo: 다음 출제자가 단어를 선택할 수 있게 해야 함
-      return 1;
-    }
-    // 출제자가 나간 경우 && 게임을 계속 할 수 있는 경우 && 단어를 이미 선택한 경우
-    else if (removedPlayer.privileged && this.isPlayingQuestion()) {
-      if (userIndex === 0) {
-        this.players[this.players.length - 1].privileged = true;
-        this.examinerIndex = this.players.length - 1;
-      } else {
-        this.players[userIndex - 1].privileged = true;
-        this.examinerIndex = userIndex - 1;
-      }
-
-      // todo: 다음 출제자가 그림을 그릴 수 있게 해야 함
-      return 2;
-    } */
   }
 
   // 방이 대기중인 상태인 경우
