@@ -1,8 +1,8 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import mainlogo from 'asset/mainlogo_yellowpink.png';
-import DefaultNavBtnContainer from 'components/NavigationBar/DefaultNavBtnContainer/DefaultNavBtnContainer';
-import GameNavBtnContainer from 'components/NavigationBar/GameNavBtnContainer/GameNavBtnContainer';
+import DefaultNavBtnList from 'components/NavigationBar/DefaultNavBtnList/DefaultNavBtnList';
+import GameNavBtnList from 'components/NavigationBar/GameNavBtnList/GameNavBtnList';
 import {
   SmallLogoImage,
   LogoImage,
@@ -23,9 +23,9 @@ export default function NavigationBar() {
       </Link>
       {location.pathname.includes('public') ||
         location.pathname.includes('private') ? (
-          <GameNavBtnContainer />
+          <GameNavBtnList />
         ) : (
-          <DefaultNavBtnContainer />
+          <DefaultNavBtnList />
         )}
     </NavigationBarStyle>
   );

@@ -70,7 +70,6 @@ const invitationResolvers = {
           id: id,
         },
       });
-      console.log(result);
       if (!result) throw new Error(`에러 발생으로 초대 삭제에 실패하였습니다.`);
 
       return id;

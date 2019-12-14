@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import {
   getFirstKey,
@@ -8,21 +9,29 @@ import {
 } from 'logics/hooks/cursorQuery';
 
 const useCursorQuery = (query, options = {}) => {
-  const { data, loading, error, fetchMore, refetch, networkStatus } = useQuery(
-    query,
-    {
-      notifyOnNetworkStatusChange: true,
-      ...options,
+  const [data, setData] = useState(null);
+  const {
+    data: initialData,
+    loading,
+    error,
+    fetchMore,
+    refetch,
+    networkStatus,
+  } = useQuery(query, {
+    notifyOnNetworkStatusChange: true,
+    onCompleted(result) {
+      const nodes = getNodes(result[getFirstKey(result)].edges);
+      setData(nodes);
     },
-  );
+    ...options,
+  });
 
   const loadingWithNetwork = getLoadingWithNetwork(networkStatus, loading);
 
-  const firstKey = getFirstKey(data);
+  const firstKey = getFirstKey(initialData);
   const {
     pageInfo: { endCursor, hasNextPage },
-    edges,
-  } = firstKey ? data[firstKey] : getNullPage();
+  } = firstKey ? initialData[firstKey] : getNullPage();
   const loadMore = getLoadMore(
     query,
     loading,
@@ -30,10 +39,10 @@ const useCursorQuery = (query, options = {}) => {
     endCursor,
     hasNextPage,
   );
-  const nodes = getNodes(edges);
 
   return {
-    data: nodes,
+    data,
+    setData,
     loading: loadingWithNetwork,
     error,
     fetchMore: loadMore,
