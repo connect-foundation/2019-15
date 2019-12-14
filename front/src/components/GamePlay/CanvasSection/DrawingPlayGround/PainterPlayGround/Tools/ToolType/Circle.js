@@ -1,6 +1,6 @@
 /* eslint no-param-reassign:0 */
 import { fabric } from 'fabric';
-import Tool from 'components/GamePlay/CanvasSection/DrawingPlayGround/Tools/ToolType/Tool';
+import Tool from 'components/GamePlay/CanvasSection/DrawingPlayGround/PainterPlayGround/Tools/ToolType/Tool';
 import { getDistance, getAngle } from 'util/Circle';
 
 class Circle extends Tool {

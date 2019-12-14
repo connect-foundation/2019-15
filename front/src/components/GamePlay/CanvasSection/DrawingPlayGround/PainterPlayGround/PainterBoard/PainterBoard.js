@@ -1,21 +1,18 @@
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import {
   PainterBoardStyle,
   CanvasStyle,
-} from 'components/GamePlay/CanvasSection/DrawingPlayGround/PainterBoard/PainterBoard.style';
-import ToolManager from 'components/GamePlay/CanvasSection/DrawingPlayGround/Tools/ToolType/ToolManager';
+} from 'components/GamePlay/CanvasSection/DrawingPlayGround/PainterPlayGround/PainterBoard/PainterBoard.style';
+import ToolManager from 'components/GamePlay/CanvasSection/DrawingPlayGround/PainterPlayGround/Tools/ToolType/ToolManager';
 import useCanvasDataEmitWithCaching from 'hooks/DrawingPlayGround/useCanvasDataEmitWithCaching';
 import useFabricCanvas from 'hooks/DrawingPlayGround/useFabricCanvas';
+import DrawingPlayGroundContext from 'components/GamePlay/CanvasSection/DrawingPlayGround/DrawingPlayGround.context';
 
 PainterBoard.propTypes = {
   drawingOptions: PropTypes.shape({
     tool: PropTypes.oneOf(ToolManager.toolList),
     strokeColor: PropTypes.string,
-  }),
-  size: PropTypes.shape({
-    width: PropTypes.number,
-    height: PropTypes.number,
   }),
 };
 
@@ -24,17 +21,13 @@ PainterBoard.defaultProps = {
     tool: ToolManager.toolList[0],
     strokeColor: '#000000',
   }),
-  size: {
-    width: 500,
-    height: 500,
-  },
 };
 
-export default function PainterBoard({ drawingOptions, size }) {
+export default function PainterBoard({ drawingOptions }) {
+  const { canvasSize } = useContext(DrawingPlayGroundContext);
   const { tool: toolName } = drawingOptions;
-  const { width, height } = size;
   const eventListDispatch = useCanvasDataEmitWithCaching();
-  const [fabricCanvas, setFabricCanvas] = useFabricCanvas(size);
+  const [fabricCanvas, setFabricCanvas] = useFabricCanvas(canvasSize);
 
   useEffect(() => {
     const tool = ToolManager[toolName];
@@ -85,7 +78,7 @@ export default function PainterBoard({ drawingOptions, size }) {
 
   return (
     <PainterBoardStyle>
-      <CanvasStyle ref={setFabricCanvas} style={{ width, height }} />
+      <CanvasStyle ref={setFabricCanvas} />
     </PainterBoardStyle>
   );
 }

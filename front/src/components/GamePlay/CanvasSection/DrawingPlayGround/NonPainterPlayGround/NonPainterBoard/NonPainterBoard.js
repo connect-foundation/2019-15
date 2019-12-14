@@ -1,33 +1,19 @@
 /* eslint no-param-reassign:0 */
-import React from 'react';
-import PropTypes from 'prop-types';
+import React, { useContext } from 'react';
 import {
   NonPainterBoardStyle,
   CanvasStyle,
-} from 'components/GamePlay/CanvasSection/DrawingPlayGround/NonPainterBoard/NonPainterBoard.style';
-import NonPainterPen from 'components/GamePlay/CanvasSection/DrawingPlayGround/Tools/ToolType/NonPainterPen';
+} from 'components/GamePlay/CanvasSection/DrawingPlayGround/NonPainterPlayGround/NonPainterBoard/NonPainterBoard.style';
+import NonPainterPen from 'components/GamePlay/CanvasSection/DrawingPlayGround/PainterPlayGround/Tools/ToolType/NonPainterPen';
 import useCanvasDataReceive from 'hooks/DrawingPlayGround/useCanvasDataReceive';
 import useFabricCanvas from 'hooks/DrawingPlayGround/useFabricCanvas';
-
-NonPainterBoard.propTypes = {
-  size: PropTypes.shape({
-    width: PropTypes.number,
-    height: PropTypes.number,
-  }),
-};
-
-NonPainterBoard.defaultProps = {
-  size: {
-    width: 500,
-    height: 500,
-  },
-};
+import DrawingPlayGroundContext from 'components/GamePlay/CanvasSection/DrawingPlayGround/DrawingPlayGround.context';
 
 const pen = new NonPainterPen();
 
-export default function NonPainterBoard({ size }) {
-  const { width, height } = size;
-  const [fabricCanvas, setFabricCanvas] = useFabricCanvas(size);
+export default function NonPainterBoard() {
+  const { canvasSize } = useContext(DrawingPlayGroundContext);
+  const [fabricCanvas, setFabricCanvas] = useFabricCanvas(canvasSize);
 
   const setCanvasFromJson = (data) => {
     fabricCanvas.current.loadFromJSON(data);
@@ -64,7 +50,7 @@ export default function NonPainterBoard({ size }) {
 
   return (
     <NonPainterBoardStyle>
-      <CanvasStyle ref={setFabricCanvas} style={{ width, height }} />
+      <CanvasStyle ref={setFabricCanvas} />
     </NonPainterBoardStyle>
   );
 }
