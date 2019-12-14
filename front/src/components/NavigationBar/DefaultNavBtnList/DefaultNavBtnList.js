@@ -6,14 +6,14 @@ import {
   faHome,
   faSignOutAlt,
 } from '@fortawesome/free-solid-svg-icons';
-import Notice from 'components/NavigationBar/DefaultNavBtnContainer/Notice/Notice';
+import FriendRequestContainer from 'components/NavigationBar/DefaultNavBtnList/FriendRequestContainer/FriendRequestContainer';
 import {
   NavBtnContainerStyle,
   NavImageStyle,
-} from 'components/NavigationBar/DefaultNavBtnContainer/DefaultNavBtnContainer.style';
-import Invitation from 'components/NavigationBar/DefaultNavBtnContainer/Invitation/Invitation';
+} from 'components/NavigationBar/DefaultNavBtnList/DefaultNavBtnList.style';
+import InvitationContainer from 'components/NavigationBar/DefaultNavBtnList/InvitationContainer/InvitationContainer';
 
-export default function DefaultNavBtnContainer() {
+export default function DefaultNavBtnList() {
   const location = useLocation();
   const logout = () => {
     window.location.href = `${APP_URI.REACT_APP_API_URI}/auth/logout`;
@@ -21,8 +21,8 @@ export default function DefaultNavBtnContainer() {
 
   return (
     <NavBtnContainerStyle>
-      <Invitation />
-      <Notice />
+      <InvitationContainer />
+      <FriendRequestContainer />
       {location.pathname.includes('mypage') ? (
         <Link to="main">
           <NavImageStyle icon={faHome} />
