@@ -80,6 +80,8 @@
 - VCS
     - Git
     - Git Flow
+- TEST
+    - Jest
 - etc
     - ESLint (airbnb)
 
