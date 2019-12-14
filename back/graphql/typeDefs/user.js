@@ -1,9 +1,9 @@
 module.exports = `
   type User{
     id:Int!
-    userId:String!
-    nickname:String!
-    score:Int!
+    nickname:String
+    userId:String
+    score:Int
     createdAt:String
     updatedAt:String
   }

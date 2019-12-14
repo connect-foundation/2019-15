@@ -1,17 +1,10 @@
 module.exports = `
   type Friend{
-    id:Int!
+    id:ID!
     pFriend:User
     sFriend:User
     createdAt:String
     updatedAt:String
-  }
-
-  type BeforeFriend{
-    id:Int!
-    pFriendId:Int!
-    sFriendId:Int!
-    friendStateid:Int!
   }
   
   type FriendEdge{
@@ -24,20 +17,11 @@ module.exports = `
     pageInfo:PageInfo
   }
   
-  type FriendResult{
-    user: User!
-  }
-  
   extend type Query{
     friends(first:Int!,after:String):FriendConnection
-    addFriendForTest:[Friend]
   } 
 
   extend type Mutation{
-    deleteFriend(nickname:String):FriendResult
-    findFriendRequests:[User]
-    deleteFriendRequest(nickname:String):[BeforeFriend]
-    acceptFriendRequest(nickname:String):FriendResult
-    sendFriendRequest(nickname:String):FriendResult
+    deleteFriend(id:Int!,nickname:String!):User
   }
 `;

@@ -3,6 +3,7 @@ const rankingResolvers = require('./ranking');
 const friendResolvers = require('./friend');
 const wordResolvers = require('./word');
 const invitationResolvers = require('./invitation');
+const beforeFriendResolvers = require('./beforeFriend');
 
 module.exports = [
   userResolvers,
@@ -10,4 +11,5 @@ module.exports = [
   friendResolvers,
   wordResolvers,
   invitationResolvers,
+  beforeFriendResolvers,
 ];
