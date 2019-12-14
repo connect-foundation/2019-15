@@ -33,7 +33,9 @@ describe('deleteFriend resolvers test', () => {
       .send({
         query: `mutation deleteFriend {
                   deleteFriend(nickname: "배추김치") {
-                    nickname
+                    user {
+                      nickname
+                    }
                   }
                 }`,
       })
