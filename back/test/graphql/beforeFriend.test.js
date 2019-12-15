@@ -42,4 +42,45 @@ describe('친구 신청 목록 조회', () => {
   });
 });
 
+describe('친구 요청 삭제', () => {
+  it('ID가 17인 유저가 요청한 친구 요청 제거', async () => {
+    const id = 17;
+    const gqQuery = `mutation {
+        deleteFriendRequest(id:${id}) {
+          id
+        }
+      }`;
+    const res = await sendGqRequest(token, graphqlPath, gqQuery);
+    const { id: deletedId } = res.body.data.deleteFriendRequest;
+    expect(parseInt(deletedId, 0)).toBe(id);
+  });
+});
 
+describe('친구 요청 생성', () => {
+  it('nickname이 도라지인 유저에게 친구 요청', async () => {
+    const nickname = '도라지';
+    const gqQuery = `mutation {
+        sendFriendRequest(nickname:"${nickname}") {
+          nickname
+        }
+      }`;
+    const res = await sendGqRequest(token, graphqlPath, gqQuery);
+    console.log(res.data);
+    const { nickname: friendNickname } = res.body.data.sendFriendRequest;
+    expect(friendNickname).toBe(nickname);
+  });
+});
+
+describe('친구 요청 승낙', () => {
+  it('ID가 18인 친구의 친구 요청 승낙', async () => {
+    const id = 18;
+    const gqQuery = `mutation {
+        acceptFriendRequest(id:${id}) {
+          id
+        }
+      }`;
+    const res = await sendGqRequest(token, graphqlPath, gqQuery);
+    const { id: friendId } = res.body.data.acceptFriendRequest;
+    expect(parseInt(friendId, 0)).toBe(id);
+  });
+});

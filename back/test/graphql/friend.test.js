@@ -43,30 +43,15 @@ describe('친구 목록 조회', () => {
 
 describe('친구 삭제', () => {
   const id = 1;
-  const nickname = '강아지';
   it('ID가 1인 친구 삭제', async (done) => {
     const gqQuery = `mutation {
         deleteFriend(id:${id}) {
-          id nickname
+          id
         }
       }`;
     const res = await sendGqRequest(token, graphqlPath, gqQuery);
     const { deleteFriend } = res.body.data;
     expect(deleteFriend).toStrictEqual({ id });
     done();
-  });
-  afterEach(async () => {
-    const sendFriendRequestQuery = `mutation{
-        sendFriendRequest(nickname: "${nickname}") {
-          id
-        }
-      }`;
-    await sendGqRequest(token, graphqlPath, sendFriendRequestQuery);
-    const acceptFriendRequestQuery = `mutation{
-      acceptFriendRequest(id:${id},nickname:${nickname}{
-        id
-      }
-    `;
-    await sendGqRequest(token, graphqlPath, acceptFriendRequestQuery);
   });
 });
