@@ -5,12 +5,8 @@ import Room from 'logics/room';
 import { PRIVATE_ROOM_NAME } from 'constant/room/roomInfo';
 import useInput from 'hooks/Input/useInput';
 import useCarousel from 'hooks/Carousel/useCarousel';
-import {
-  connectGameSocket,
-  emitEnterPrivateRoom,
-  exitGameRoom,
-} from 'logics/socketLogic';
-import AvatarImg from './AvatarImg';
+import { emitEnterPrivateRoom, exitGameRoom } from 'logics/socketLogic';
+import Avatar from 'components/Avatar/Avatar';
 import {
   SettingStyle,
   NicknameSettingStyle,
@@ -18,9 +14,6 @@ import {
   Nickname,
   InputWrapper,
   AvatarSettingStyle,
-  AvatarChoiceStyle,
-  LeftBtn,
-  RightBtn,
 } from './Setting.style';
 
 export default function Setting() {
@@ -62,11 +55,11 @@ export default function Setting() {
       </NicknameSettingStyle>
       <AvatarSettingStyle>
         아바타
-        <AvatarChoiceStyle>
-          <LeftBtn onClick={clickLeftBtn}>{'<'}</LeftBtn>
-          <AvatarImg avatarIdx={avatar} />
-          <RightBtn onClick={clickRightBtn}>{'>'}</RightBtn>
-        </AvatarChoiceStyle>
+        <Avatar
+          avatar={avatar}
+          clickLeftBtn={clickLeftBtn}
+          clickRightBtn={clickRightBtn}
+        />
       </AvatarSettingStyle>
       <GameStartButtonStyle onClick={onClickGameStart}>
         게임 시작
