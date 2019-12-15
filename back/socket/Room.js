@@ -2,6 +2,7 @@ const { Op } = require('sequelize');
 const models = require('../db/models');
 const { roomState, defaultRoomSetting } = require('../config/roomConfig');
 const Timer = require('../util/timer/Timer');
+const makeReducerWithPromise = require('../util/makeReducerWithPromise');
 
 class Room {
   constructor(gameIo) {
@@ -171,45 +172,54 @@ class Room {
       answer: this.word,
     });
 
-    const users = await this.players.reduce(async (acc, player) => {
-      const user = await models.Users.findOne({
-        where: {
-          nickname: {
-            [Op.eq]: player.nickname,
-          },
-        },
-      });
-
-      if (acc instanceof Promise) acc = await acc;
-
-      acc.push({
-        id: user.dataValues.id,
-        score: user.dataValues.score + player.score,
-      });
-
-      return acc;
-    }, []);
-
-    users.reduce(async (acc, user) => {
-      const updatedUser = await models.Users.update(
-        {
-          score: user.score,
-        },
-        {
-          where: {
-            id: {
-              [Op.eq]: user.id,
+    const users = await this.players.reduce(
+      makeReducerWithPromise(
+        (player) => {
+          return models.Users.findOne({
+            where: {
+              nickname: {
+                [Op.eq]: player.nickname,
+              },
             },
-          },
+          });
         },
-      );
+        (acc, _user, _player) => {
+          acc.push({
+            id: _user.dataValues.id,
+            score: _user.dataValues.score + _player.score,
+          });
 
-      if (acc instanceof Promise) acc = await acc;
+          return acc;
+        },
+      ),
+      [],
+    );
 
-      acc += updatedUser[0];
+    const updatedUserNumber = await users.reduce(
+      makeReducerWithPromise(
+        (user) => {
+          return models.Users.update(
+            {
+              score: user.score,
+            },
+            {
+              where: {
+                id: {
+                  [Op.eq]: user.id,
+                },
+              },
+            },
+          );
+        },
+        (acc, updatedUser) => {
+          acc += updatedUser[0];
+          return acc;
+        },
+      ),
+      0,
+    );
 
-      return acc;
-    }, 0);
+    console.log('updatedUserNumber', updatedUserNumber);
   }
 
   getExaminerSocketId() {
