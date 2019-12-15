@@ -1,3 +1,5 @@
+const { Op } = require('sequelize');
+const models = require('../db/models');
 const { roomState, defaultRoomSetting } = require('../config/roomConfig');
 const Timer = require('../util/timer/Timer');
 
@@ -163,11 +165,51 @@ class Room {
     }, 5000);
   }
 
-  gameEndCallback(gameIo) {
+  async gameEndCallback(gameIo) {
     gameIo.in(this.roomId).emit('endGame', {
       _scores: this.getScores(),
       answer: this.word,
     });
+
+    const users = await this.players.reduce(async (acc, player) => {
+      const user = await models.Users.findOne({
+        where: {
+          nickname: {
+            [Op.eq]: player.nickname,
+          },
+        },
+      });
+
+      if (acc instanceof Promise) acc = await acc;
+
+      acc.push({
+        id: user.dataValues.id,
+        score: user.dataValues.score + player.score,
+      });
+
+      return acc;
+    }, []);
+
+    users.reduce(async (acc, user) => {
+      const updatedUser = await models.Users.update(
+        {
+          score: user.score,
+        },
+        {
+          where: {
+            id: {
+              [Op.eq]: user.id,
+            },
+          },
+        },
+      );
+
+      if (acc instanceof Promise) acc = await acc;
+
+      acc += updatedUser[0];
+
+      return acc;
+    }, 0);
   }
 
   getExaminerSocketId() {
