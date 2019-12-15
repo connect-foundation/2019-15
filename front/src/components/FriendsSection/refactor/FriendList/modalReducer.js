@@ -16,7 +16,11 @@ const modalReducer = (state, action) => {
       };
     case 'addRequest':
       if (!action.nickname)
-        return { ...state, content: '친구의 닉네임을 입력해주세요' };
+        return {
+          ...state,
+          content: '친구의 닉네임을 입력해주세요',
+          current: 'error',
+        };
       return {
         content: `${action.nickname}님을 추가하시겠습니까?`,
         nickname: action.nickname,
