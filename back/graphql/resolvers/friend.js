@@ -37,11 +37,11 @@ const friendResolvers = {
     },
   },
   Mutation: {
-    deleteFriend: async (obj, { id, nickname }, { BeforeFriends, Friends, req, sequelize }) => {
+    deleteFriend: async (obj, { id }, { BeforeFriends, Friends, req, sequelize }) => {
       let transaction;
       try {
         transaction = await sequelize.transaction();
-        await Friends.destroy({
+        const countFriendDeleted = await Friends.destroy({
           where: {
             [Op.or]: [
               { [Op.and]: [{ pFriendId: id }, { sFriendId: req.user.id }] },
@@ -50,7 +50,8 @@ const friendResolvers = {
           },
           transaction,
         });
-        await BeforeFriends.destroy({
+        if (!countFriendDeleted) throw new Error('삭제할 친구가 없습니다');
+        const countBeforeFriendDeleted = await BeforeFriends.destroy({
           where: {
             [Op.or]: [
               { [Op.and]: [{ pFriendId: id }, { sFriendId: req.user.id }] },
@@ -59,15 +60,15 @@ const friendResolvers = {
           },
           transaction,
         });
+        if (!countBeforeFriendDeleted) throw new Error('삭제할 친구 요청이 없습니다');
         transaction.commit();
         return {
           id,
-          nickname,
         };
       } catch (e) {
         console.log(e);
         if (transaction) await transaction.rollback();
-        throw new Error(`${nickname}님 친구 삭제에 실패했어요.`);
+        throw new Error('친구 삭제에 실패했어요.');
       }
     },
   },

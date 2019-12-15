@@ -21,19 +21,17 @@ export const GET_FRIEND_REQUESTS = gql`
 `;
 
 export const DELETE_FRIEND_REQUEST = gql`
-  mutation deleteFriendRequest($id: Int!, $nickname: String!) {
-    deleteFriendRequest(id: $id, nickname: $nickname) {
+  mutation deleteFriendRequest($id: Int!) {
+    deleteFriendRequest(id: $id) {
       id
-      nickname
     }
   }
 `;
 
 export const ACCEPT_FRIEND_REQUEST = gql`
-  mutation acceptFriendRequest($id: Int!, $nickname: String!) {
-    acceptFriendRequest(id: $id, nickname: $nickname) {
+  mutation acceptFriendRequest($id: Int!) {
+    acceptFriendRequest(id: $id) {
       id
-      nickname
     }
   }
 `;

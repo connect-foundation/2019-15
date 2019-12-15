@@ -38,22 +38,18 @@ const friendResolvers = {
     },
   },
   Mutation: {
-    deleteFriendRequest: async (obj, { id, nickname }, { BeforeFriends, req }) => {
+    deleteFriendRequest: async (obj, { id }, { BeforeFriends, req }) => {
       const count = await BeforeFriends.destroy({
         where: {
           [Op.and]: [{ pFriendId: id }, { sFriendId: req.user.id }],
         },
       });
       if (!count) {
-        throw new Error(`${nickname}님에게서의 친구 요청이 없습니다.`);
+        throw new Error('해당 친구 요청이 없습니다.');
       }
-      return { id, nickname };
+      return { id };
     },
-    acceptFriendRequest: async (
-      obj,
-      { id, nickname },
-      { BeforeFriends, Friends, req, sequelize },
-    ) => {
+    acceptFriendRequest: async (obj, { id }, { BeforeFriends, Friends, req, sequelize }) => {
       let transaction;
       try {
         transaction = await sequelize.transaction();
@@ -73,12 +69,11 @@ const friendResolvers = {
         await transaction.commit();
         return {
           id,
-          nickname,
         };
       } catch (e) {
         console.log(e);
         if (transaction) await transaction.rollback();
-        throw new Error(`에러로 인해 ${nickname}님과 친구가 되지 못하였습니다.`);
+        throw new Error(`에러로 인해 친구가 되지 못하였습니다.`);
       }
     },
 

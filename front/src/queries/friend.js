@@ -22,8 +22,8 @@ export const GET_FRIENDS = gql`
 `;
 
 export const DELETE_FRIEND = gql`
-  mutation deleteFriend($id: Int!, $nickname: String!) {
-    deleteFriend(id: $id, nickname: $nickname) {
+  mutation deleteFriend($id: Int!) {
+    deleteFriend(id: $id) {
       id
       nickname
     }

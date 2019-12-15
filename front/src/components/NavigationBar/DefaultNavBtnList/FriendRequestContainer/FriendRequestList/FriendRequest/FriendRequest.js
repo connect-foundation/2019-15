@@ -27,12 +27,12 @@ export default function FriendRequest({ id, nickname, remove }) {
   });
 
   const acceptRequest = async () => {
-    await acceptFriendRequest({ variables: { id, nickname } });
+    await acceptFriendRequest({ variables: { id } });
   };
 
   const declineRequest = async () => {
     await deleteFriendRequest({
-      variables: { id, nickname },
+      variables: { id },
     });
   };
   return (

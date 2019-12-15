@@ -30,10 +30,10 @@ export default function FriendModal({
   refetch,
 }) {
   const [deleteFriendRequest] = useMutation(DELETE_FRIEND, {
-    onCompleted({ deleteFriend: { nickname } }) {
+    onCompleted() {
       dispatchModalContent({
         type: 'deleteDone',
-        nickname,
+        nickname: modalContent.nickname,
       });
       refetch();
     },
@@ -75,7 +75,7 @@ export default function FriendModal({
         });
       case 'deleteRequest':
         return deleteFriendRequest({
-          variables: { id: modalContent.id, nickname: modalContent.nickname },
+          variables: { id: modalContent.id },
         });
       default:
         throw new Error(`${modalContent.current}cannot find current`);

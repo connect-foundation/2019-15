@@ -21,8 +21,8 @@ module.exports = `
   } 
 
   extend type Mutation{
-    deleteFriendRequest(id:Int!,nickname:String!):User
-    acceptFriendRequest(id:Int!,nickname:String!):User
+    deleteFriendRequest(id:Int!):User
+    acceptFriendRequest(id:Int!):User
     sendFriendRequest(nickname:String!):User
   }
 `;

@@ -22,6 +22,6 @@ module.exports = `
   } 
 
   extend type Mutation{
-    deleteFriend(id:Int!,nickname:String!):User
+    deleteFriend(id:Int!):User
   }
 `;

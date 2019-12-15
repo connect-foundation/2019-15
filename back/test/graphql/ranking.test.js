@@ -12,7 +12,7 @@ beforeAll(async (done) => {
 const attrs = ['id', 'score', 'nickname'];
 const rankingNode = {
   node: {
-    id: expect.any(String),
+    id: expect.any(Number),
     nickname: expect.any(String),
     score: expect.any(Number),
   },
