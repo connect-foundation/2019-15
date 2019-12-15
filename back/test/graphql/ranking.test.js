@@ -1,28 +1,7 @@
 const graphqlPath = require('../../config/graphqlPath');
 const signJWT = require('../../util/jwt/signJWT');
-const { sendGqRequest, getGqCursorQuery } = require('../../util/test/graphql');
-
-const testEdges = (values, testOptions) => {
-  const { edges, pageInfo, first } = values;
-  const { order } = testOptions;
-
-  expect(edges.length).toBeLessThanOrEqual(first);
-
-  let scoreExpectFunc = (idx) =>
-    expect(edges[idx].node.score).toBeLessThanOrEqual(edges[idx + 1].node.score);
-  if (order !== 'ASC') {
-    scoreExpectFunc = (idx) => {
-      expect(edges[idx].node.score).toBeGreaterThanOrEqual(edges[idx + 1].node.score);
-    };
-  }
-
-  edges.forEach((_, idx) => {
-    if (idx >= edges.length - 1) return;
-    scoreExpectFunc(idx);
-  });
-
-  if (edges.length) expect(edges[edges.length - 1].cursor).toEqual(pageInfo.endCursor);
-};
+const sendGqRequest = require('../../util/test/graphql');
+const { getGqCursorQuery, testCursorQuery } = require('../../util/test/cursor');
 
 let token;
 beforeAll(async (done) => {
@@ -31,14 +10,22 @@ beforeAll(async (done) => {
 });
 
 const attrs = ['id', 'score', 'nickname'];
+const rankingNode = {
+  node: {
+    id: expect.any(String),
+    nickname: expect.any(String),
+    score: expect.any(Number),
+  },
+  cursor: expect.any(String),
+};
 describe('랭킹 graphql 쿼리 테스트', () => {
   test(`순서: ASC, 개수:12개 커서:X`, async (done) => {
     const first = 12;
     const order = 'ASC';
     const gqQuery = getGqCursorQuery('query', 'rankingAll', { order, first }, attrs);
     const res = await sendGqRequest(token, graphqlPath, gqQuery);
-    const { pageInfo, edges } = res.body.data.rankingAll;
-    testEdges({ edges, pageInfo, first }, { order });
+    const { rankingAll } = res.body.data;
+    testCursorQuery(rankingAll, first, rankingNode);
     done();
   });
 
@@ -47,8 +34,8 @@ describe('랭킹 graphql 쿼리 테스트', () => {
     const first = 10;
     const gqQuery = getGqCursorQuery('query', 'rankingAll', { order, first }, attrs);
     const res = await sendGqRequest(token, graphqlPath, gqQuery);
-    const { pageInfo, edges } = res.body.data.rankingAll;
-    testEdges({ edges, pageInfo, first }, { order });
+    const { rankingAll } = res.body.data;
+    testCursorQuery(rankingAll, first, rankingNode, false);
     done();
   });
 
@@ -58,8 +45,8 @@ describe('랭킹 graphql 쿼리 테스트', () => {
     const after = '00000011110000001111';
     const gqQuery = getGqCursorQuery('query', 'rankingAll', { order, first, after }, attrs);
     const res = await sendGqRequest(token, graphqlPath, gqQuery);
-    const { pageInfo, edges } = res.body.data.rankingAll;
-    testEdges({ edges, pageInfo, first }, { order });
+    const { rankingAll } = res.body.data;
+    testCursorQuery(rankingAll, first, rankingNode, false);
     done();
   });
 });
@@ -70,8 +57,8 @@ describe('친구 랭킹 graphql 쿼리 테스트', () => {
     const order = 'ASC';
     const gqQuery = getGqCursorQuery('query', 'rankingFriends', { order, first }, attrs);
     const res = await sendGqRequest(token, graphqlPath, gqQuery);
-    const { pageInfo, edges } = res.body.data.rankingFriends;
-    testEdges({ edges, pageInfo, first }, { order });
+    const { rankingFriends } = res.body.data;
+    testCursorQuery(rankingFriends, first, rankingNode);
     done();
   });
 
@@ -80,8 +67,8 @@ describe('친구 랭킹 graphql 쿼리 테스트', () => {
     const order = 'DESC';
     const gqQuery = getGqCursorQuery('query', 'rankingFriends', { order, first }, attrs);
     const res = await sendGqRequest(token, graphqlPath, gqQuery);
-    const { pageInfo, edges } = res.body.data.rankingFriends;
-    testEdges({ edges, pageInfo, first }, { order });
+    const { rankingFriends } = res.body.data;
+    testCursorQuery(rankingFriends, first, rankingNode, false);
     done();
   });
 
@@ -91,8 +78,8 @@ describe('친구 랭킹 graphql 쿼리 테스트', () => {
     const after = '00000011110000001111';
     const gqQuery = getGqCursorQuery('query', 'rankingFriends', { order, first, after }, attrs);
     const res = await sendGqRequest(token, graphqlPath, gqQuery);
-    const { pageInfo, edges } = res.body.data.rankingFriends;
-    testEdges({ edges, pageInfo, first }, { order });
+    const { rankingFriends } = res.body.data;
+    testCursorQuery(rankingFriends, first, rankingNode, false);
     done();
   });
 });
