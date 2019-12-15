@@ -7,6 +7,7 @@ import useInput from 'hooks/Input/useInput';
 import useCarousel from 'hooks/Carousel/useCarousel';
 import { emitEnterPrivateRoom, exitGameRoom } from 'logics/socketLogic';
 import Avatar from 'components/Avatar/Avatar';
+import AVATAR_NUMBER from 'constant/avatar';
 import {
   SettingStyle,
   NicknameSettingStyle,
@@ -23,7 +24,7 @@ export default function Setting() {
   const history = useHistory();
   const { hash } = useParams();
   const [nickname, onChangeNickname] = useInput('부스트캠퍼');
-  const [avatar, clickLeftBtn, clickRightBtn] = useCarousel(3);
+  const [avatar, clickLeftBtn, clickRightBtn] = useCarousel(AVATAR_NUMBER);
 
   useEffect(() => {
     const privateRoomId = hash.slice(1, hash.length);
