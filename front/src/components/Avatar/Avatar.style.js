@@ -9,7 +9,12 @@ export const AvatarImage = styled.img`
 
 export const AvatarChoiceStyle = styled(FlexRowStyle)`
   justify-content: center;
+  margin: 5px 0;
 `;
 
-export const LeftBtn = styled(ButtonStyle)``;
-export const RightBtn = styled(ButtonStyle)``;
+export const LeftBtn = styled(ButtonStyle)`
+  margin-right: 5px;
+`;
+export const RightBtn = styled(ButtonStyle)`
+  margin-left: 5px;
+`;
