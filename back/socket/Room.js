@@ -172,50 +172,52 @@ class Room {
       answer: this.word,
     });
 
-    const users = await this.players.reduce(
-      makeReducerWithPromise(
-        (player) => {
-          return models.Users.findOne({
-            where: {
-              nickname: {
-                [Op.eq]: player.nickname,
-              },
-            },
-          });
+    function getPlayerByNickname(player) {
+      return models.Users.findOne({
+        where: {
+          nickname: {
+            [Op.eq]: player.nickname,
+          },
         },
-        (acc, _user, _player) => {
-          acc.push({
-            id: _user.dataValues.id,
-            score: _user.dataValues.score + _player.score,
-          });
+      });
+    }
 
-          return acc;
-        },
-      ),
+    function makeIdScoreTuple(acc, user, player) {
+      acc.push({
+        id: user.dataValues.id,
+        score: user.dataValues.score + player.score,
+      });
+
+      return acc;
+    }
+
+    const users = await this.players.reduce(
+      makeReducerWithPromise(getPlayerByNickname, makeIdScoreTuple),
       [],
     );
 
+    function updateUserScore(user) {
+      return models.Users.update(
+        {
+          score: user.score,
+        },
+        {
+          where: {
+            id: {
+              [Op.eq]: user.id,
+            },
+          },
+        },
+      );
+    }
+
+    function makeUpdatedUserNumber(acc, updatedUser) {
+      acc += updatedUser[0];
+      return acc;
+    }
+
     const updatedUserNumber = await users.reduce(
-      makeReducerWithPromise(
-        (user) => {
-          return models.Users.update(
-            {
-              score: user.score,
-            },
-            {
-              where: {
-                id: {
-                  [Op.eq]: user.id,
-                },
-              },
-            },
-          );
-        },
-        (acc, updatedUser) => {
-          acc += updatedUser[0];
-          return acc;
-        },
-      ),
+      makeReducerWithPromise(updateUserScore, makeUpdatedUserNumber),
       0,
     );
 
