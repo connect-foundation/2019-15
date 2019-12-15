@@ -4,6 +4,7 @@ module.exports = `
     userId:String!
     nickname:String!
     score:Int!
+    avatar:Int!
     createdAt:String
     updatedAt:String
   }
@@ -18,6 +19,11 @@ module.exports = `
     result:Boolean
   }
   
+  type AvatarResult{
+    avatar:Int,
+    result:Boolean
+  }
+
   extend type Query{
     users:[User]
     getWordByNickname(nickname:String):Word
@@ -29,5 +35,6 @@ module.exports = `
     updateUserNicknameById(id:String, nickname:String):[Int]
     createWord(userId:String, nickname:String):Word
     updateWordUserIdById(id:String, nickname:String):Word
+    changeAvatar(nickname:String!, avatar:Int!):AvatarResult
   }
 `;
