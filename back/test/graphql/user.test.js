@@ -63,4 +63,14 @@ describe('유저 닉네임 중복검사 및 변경 테스트', () => {
     expect(res.body.data.changeNickname.result).toBeTruthy();
     done();
   });
+
+  afterAll(async (done) => {
+    const query = `mutation {
+          changeNickname(nickname:"피자"){
+            result
+          }
+        }`;
+    const res = await sendGqRequest(token, graphqlPath, query);
+    done();
+  });
 });

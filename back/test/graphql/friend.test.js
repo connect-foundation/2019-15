@@ -41,6 +41,32 @@ describe('친구 목록 조회', () => {
   });
 });
 
+describe('친구 삭제', () => {
+  const id = 1;
+  const nickname = '강아지';
+  it('ID가 1이고 닉네임이 "강아지"인 친구 삭제', async (done) => {
+    const gqQuery = `mutation {
+        deleteFriend(id:${id},nickname: "${nickname}") {
+          id nickname
+        }
+      }`;
+    const res = await sendGqRequest(token, graphqlPath, gqQuery);
+    const { deleteFriend } = res.body.data;
+    expect(deleteFriend).toStrictEqual({ id, nickname });
     done();
+  });
+  afterEach(async () => {
+    const sendFriendRequestQuery = `mutation{
+        sendFriendRequest(nickname: "${nickname}") {
+          id
+        }
+      }`;
+    await sendGqRequest(token, graphqlPath, sendFriendRequestQuery);
+    const acceptFriendRequestQuery = `mutation{
+      acceptFriendRequest(id:${id},nickname:${nickname}{
+        id
+      }
+    `;
+    await sendGqRequest(token, graphqlPath, acceptFriendRequestQuery);
   });
 });
