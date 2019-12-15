@@ -1,2 +1,2 @@
-const AVATAR_NUMBER = 6;
+const AVATAR_NUMBER = 3;
 export default AVATAR_NUMBER;
