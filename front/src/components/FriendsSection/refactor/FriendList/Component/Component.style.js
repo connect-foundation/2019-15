@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 export const ComponentStyle = styled.div`
@@ -29,9 +30,8 @@ export const Icon = styled(FontAwesomeIcon).attrs({
   cursor: pointer;
 `;
 
-export const CircleStyle = styled(FontAwesomeIcon).attrs({
-  size: '1x',
-})`
+export const CircleStyle = styled(FontAwesomeIcon)`
   margin-right: 0.3rem;
-  color: ${(props) => (props.online ? props.theme.eastSide : '#606060')};
+  color: ${(props) =>
+    props.isonline === 1 ? props.theme.eastSide : '#606060'};
 `;

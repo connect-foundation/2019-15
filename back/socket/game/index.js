@@ -52,7 +52,10 @@ function setGameSocket(socket) {
       sendUserListToRoom(room.players, roomId, this.gameIo);
       gameSocket.leave();
 
-      if (resultCode === 1) room.timer.stop();
+      if (resultCode === 1) {
+        room.timer.stop();
+        gameSocket.in(roomId).emit('prepareNewGame');
+      }
       if (resultCode === 2) gameSocket.to(roomId).emit('gamestart', room.makeGameStartData());
       if (resultCode === 3) room.questionEndCallback(gameSocket);
     }

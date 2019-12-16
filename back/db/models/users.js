@@ -12,10 +12,12 @@ module.exports = (sequelize, DataTypes) => {
   Users.associate = function(models) {
     Users.hasMany(models.BeforeFriends, {
       foreignKey: 'pFriendId',
+      as: 'pBeforeFriend',
       sourceKey: 'id',
     });
     Users.hasMany(models.BeforeFriends, {
       foreignKey: 'sFriendId',
+      as: 'sBeforeFriend',
       sourceKey: 'id',
     });
     Users.hasMany(models.Friends, { foreignKey: 'pFriendId', sourceKey: 'id', as: 'pFriend' });

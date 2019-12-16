@@ -3,11 +3,17 @@ import makeModal from 'components/globalComponents/Modal/Modal';
 import Button from 'components/globalComponents/Button/Button';
 import { ButtonSection } from 'components/FriendsSection/refactor/FriendList/FriendModal/FriendModal.style';
 import PropTypes from 'prop-types';
-import { DELETE_FRIEND, SEND_FRIEND_REQUEST } from 'queries/friend';
+import { DELETE_FRIEND } from 'queries/friend';
 import { useMutation } from '@apollo/react-hooks';
+import { SEND_FRIEND_REQUEST } from 'queries/beforeFriend';
 
 FriendModal.propTypes = {
-  modalContent: PropTypes.objectOf(PropTypes.string),
+  modalContent: PropTypes.shape({
+    id: PropTypes.number,
+    current: PropTypes.string,
+    nickname: PropTypes.string,
+    content: PropTypes.string,
+  }),
   dispatchModalContent: PropTypes.func,
   refetch: PropTypes.func,
 };
@@ -24,10 +30,10 @@ export default function FriendModal({
   refetch,
 }) {
   const [deleteFriendRequest] = useMutation(DELETE_FRIEND, {
-    onCompleted(result) {
+    onCompleted() {
       dispatchModalContent({
         type: 'deleteDone',
-        nickname: result.deleteFriend.user.nickname,
+        nickname: modalContent.nickname,
       });
       refetch();
     },
@@ -42,7 +48,7 @@ export default function FriendModal({
     onCompleted(result) {
       dispatchModalContent({
         type: 'addDone',
-        nickname: result.sendFriendRequest.user.nickname,
+        nickname: result.sendFriendRequest.nickname,
       });
     },
     onError({ graphQLErrors }) {
@@ -69,7 +75,7 @@ export default function FriendModal({
         });
       case 'deleteRequest':
         return deleteFriendRequest({
-          variables: { nickname: modalContent.nickname },
+          variables: { id: modalContent.id },
         });
       default:
         throw new Error(`${modalContent.current}cannot find current`);

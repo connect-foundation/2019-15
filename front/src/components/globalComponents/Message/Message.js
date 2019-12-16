@@ -1,8 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Button from 'components/globalComponents/Button/Button';
-import { MessageBtnStyle, MessageStyle } from 'components/NavigationBar/DefaultNavBtnContainer/Notice/MessageList/Message/Message.style';
-
+import {
+  MessageBtnStyle,
+  MessageStyle,
+} from 'components/globalComponents/Message/Message.style';
 
 Message.propTypes = {
   content: PropTypes.string,

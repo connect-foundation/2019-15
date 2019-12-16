@@ -20,7 +20,6 @@ export const MessageListStyle = styled(AlarmModalStyle)`
   left: auto;
   right: 6rem;
   width: 27rem;
-  padding: 1rem;
-  padding-bottom: 0;
+  max-height: 20rem;
   z-index: 1;
 `;

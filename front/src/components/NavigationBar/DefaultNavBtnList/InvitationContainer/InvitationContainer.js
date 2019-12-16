@@ -1,14 +1,14 @@
 import React from 'react';
-import { NavImageStyle } from 'components/NavigationBar/DefaultNavBtnContainer/DefaultNavBtnContainer.style';
+import { NavImageStyle } from 'components/NavigationBar/DefaultNavBtnList/DefaultNavBtnList.style';
 import { faGamepad } from '@fortawesome/free-solid-svg-icons';
-import { NoticeStyle } from 'components/NavigationBar/DefaultNavBtnContainer/Notice/Notice.style';
-import MessageList from 'components/NavigationBar/DefaultNavBtnContainer/Invitation/MessageList';
+import { FriendRequestContainerStyle } from 'components/NavigationBar/DefaultNavBtnList/FriendRequestContainer/FriendRequestContainer.style';
+import InvitationList from 'components/NavigationBar/DefaultNavBtnList/InvitationContainer/InvitationList/InvitationList';
 import useCloseClicker from 'hooks/useCloseClicker';
 import useNotice from 'hooks/Alarm/useNotice';
 import useAlarm from 'hooks/Alarm/useAlarm';
-import Alarm from 'components/NavigationBar/DefaultNavBtnContainer/Notice/Alarm';
+import Alarm from 'components/NavigationBar/DefaultNavBtnList/FriendRequestContainer/Alarm';
 
-export default function Invitation() {
+export default function InvitationContainer() {
   const [alarmList, alarmListDispatch] = useAlarm();
   const [notice, noticeDispatch] = useNotice();
 
@@ -18,7 +18,7 @@ export default function Invitation() {
       notice.type === 'alarm' ? (
         <Alarm alarmList={alarmList} />
       ) : (
-        <MessageList />
+        <InvitationList />
       );
   }
 
@@ -33,9 +33,9 @@ export default function Invitation() {
   const closeClicker = useCloseClicker(closeMessages);
 
   return (
-    <NoticeStyle ref={closeClicker}>
+    <FriendRequestContainerStyle ref={closeClicker}>
       <NavImageStyle icon={faGamepad} onClick={openMessages} />
       {invitationContent}
-    </NoticeStyle>
+    </FriendRequestContainerStyle>
   );
 }

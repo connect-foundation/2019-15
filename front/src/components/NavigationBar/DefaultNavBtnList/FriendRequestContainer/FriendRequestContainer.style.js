@@ -1,5 +1,5 @@
 import styled from 'styled-components';
 
-export const NoticeStyle = styled.div`
+export const FriendRequestContainerStyle = styled.div`
   display: inline-block;
 `;

@@ -130,3 +130,7 @@ export function sendMessage(
 ) {
   socket.emit('sendMessage', { socketId, roomType, roomId, inputValue });
 }
+
+export function setPrepareNewGameHandler(socket, prepareNewGameCallback) {
+  socket.on('prepareNewGame', prepareNewGameCallback);
+}
