@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useReducer } from 'react';
+import React, { useCallback, useContext, useReducer, useState } from 'react';
 import Avatar from 'components/Avatar/Avatar';
 import useCarousel from 'hooks/Carousel/useCarousel';
 import { useMutation } from '@apollo/react-hooks';
@@ -23,6 +23,7 @@ const btnTextReducer = (state, action) => {
 
 const ChangeAvatar = () => {
   const { user, userDispatch } = useContext(GlobalContext);
+  const [disabled, setDisabled] = useState(false);
   const [btnText, btnTextDispatch] = useReducer(btnTextReducer, '저장');
   const [selectedAvatar, clickLeftBtn, clickRightBtn] = useCarousel(
     AVATAR_NUMBER,
@@ -31,9 +32,10 @@ const ChangeAvatar = () => {
 
   const onCompleted = ({ changeAvatar: { avatar, result } }) => {
     if (!result) return;
-    const newUser = { ...user };
-    userDispatch(newUser, avatar);
+    userDispatch({ avatar });
+    setDisabled(false);
     btnTextDispatch('success');
+
     setTimeout(() => {
       btnTextDispatch('base');
     }, 2000);
@@ -44,14 +46,16 @@ const ChangeAvatar = () => {
   });
 
   const changeAvatarByClick = useCallback(() => {
+    if (user.avatar === selectedAvatar) return;
     changeAvatar({
       variables: {
         nickname: user.nickname,
         avatar: selectedAvatar,
       },
     });
+    setDisabled(true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [changeAvatar, selectedAvatar]);
+  }, [changeAvatar, selectedAvatar, user.avatar, user.nickname]);
 
   return (
     <ChangeAvatarStyle>
@@ -60,7 +64,11 @@ const ChangeAvatar = () => {
         clickLeftBtn={clickLeftBtn}
         clickRightBtn={clickRightBtn}
       />
-      <SpectreButton onClick={changeAvatarByClick} loading={loading}>
+      <SpectreButton
+        onClick={changeAvatarByClick}
+        loading={loading}
+        disabled={disabled}
+      >
         {btnText}
       </SpectreButton>
     </ChangeAvatarStyle>
