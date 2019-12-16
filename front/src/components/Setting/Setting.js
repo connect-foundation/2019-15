@@ -1,13 +1,13 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useReducer } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import GlobalContext from 'global.context';
 import Room from 'logics/room';
 import { PRIVATE_ROOM_NAME } from 'constant/room/roomInfo';
-import useInput from 'hooks/Input/useInput';
 import useCarousel from 'hooks/Carousel/useCarousel';
 import { emitEnterPrivateRoom, exitGameRoom } from 'logics/socketLogic';
 import Avatar from 'components/Avatar/Avatar';
 import AVATAR_NUMBER from 'constant/avatar';
+import useInputByReducer from 'hooks/Input/useInputByReducer';
 import {
   SettingStyle,
   NicknameSettingStyle,
@@ -23,8 +23,9 @@ export default function Setting() {
   );
   const history = useHistory();
   const { hash } = useParams();
-  const [nickname, onChangeNickname] = useInput('부스트캠퍼');
   const [avatar, clickLeftBtn, clickRightBtn] = useCarousel(AVATAR_NUMBER);
+
+  const [nickname, onChangeNickname] = useInputByReducer();
 
   useEffect(() => {
     const privateRoomId = hash.slice(1, hash.length);
@@ -51,7 +52,7 @@ export default function Setting() {
       <NicknameSettingStyle>
         닉네임
         <InputWrapper>
-          <Nickname onChange={onChangeNickname} />
+          <Nickname onChange={onChangeNickname} maxLength="12" />
         </InputWrapper>
       </NicknameSettingStyle>
       <AvatarSettingStyle>
