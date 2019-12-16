@@ -54,6 +54,7 @@ function setGameSocket(socket) {
       switch (resultCode) {
         case escapeResultCode.IS_WAITING: {
           room.timer.stop();
+          room.resetAllPlayerPrivilege();
           gameSocket.in(roomId).emit('prepareNewGame');
           break;
         }
