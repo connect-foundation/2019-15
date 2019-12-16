@@ -1,4 +1,4 @@
-import React, { useState, useReducer } from 'react';
+import React, { useRef, useState, useReducer } from 'react';
 import { Route, Switch, HashRouter } from 'react-router-dom';
 import jwt from 'jsonwebtoken';
 import Home from 'pages/Home/Home';
@@ -13,6 +13,7 @@ import Room from 'logics/room';
 import User from 'logics/user';
 import RouterStyle from 'Router.style';
 import parseCookies from 'util/cookie';
+import { connectSocket } from 'logics/socketLogic/online';
 
 const changeUser = (prev, newUser) => {
   return { ...prev, ...newUser };
@@ -28,8 +29,9 @@ const Router = () => {
   }
   const [room, setRoom] = useState(new Room());
   const [user, userDispatch] = useReducer(changeUser, userInitial);
-  const [onlineSocket, setOnlineSocket] = useState(null);
   const [gameSocket, setGameSocket] = useState(null);
+  const onlineSocket = useRef(null);
+  if (!onlineSocket.current) onlineSocket.current = connectSocket();
 
   return (
     <RouterStyle id="Router">
@@ -40,8 +42,7 @@ const Router = () => {
           </Route>
           <GlobalContext.Provider
             value={{
-              onlineSocket,
-              setOnlineSocket,
+              onlineSocket: onlineSocket.current,
               user,
               userDispatch,
               room,

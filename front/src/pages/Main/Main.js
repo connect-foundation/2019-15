@@ -12,9 +12,7 @@ import { connectGameSocket, initConnectMsgHandler } from 'logics/socketLogic';
 import Button from '../../components/globalComponents/Button/Button';
 
 const Main = () => {
-  const { setOnlineSocket, setGameSocket, setRoom, userDispatch } = useContext(
-    GlobalContext,
-  );
+  const { setGameSocket, setRoom, userDispatch } = useContext(GlobalContext);
   const [nickName, setNickName] = useState('');
   const [isSignUp, setIsSignUp] = useState(
     parseCookies(document.cookie).isSignUp === 'true',
@@ -22,9 +20,6 @@ const Main = () => {
 
   useEffect(() => {
     const initSocket = () => {
-      const onlineSocket = connectSocket();
-      setOnlineSocket(onlineSocket);
-
       const gameSocket = connectGameSocket();
       setGameSocket(gameSocket);
       initConnectMsgHandler(gameSocket, { setRoom });
@@ -32,7 +27,7 @@ const Main = () => {
     };
     checkAuth(setNickName);
     initSocket();
-  }, [setGameSocket, setOnlineSocket, setRoom, userDispatch]);
+  }, [setGameSocket, setRoom, userDispatch]);
 
   function closeModal() {
     setIsSignUp(false);
