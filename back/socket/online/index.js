@@ -1,6 +1,6 @@
 const NodeCache = require('node-cache');
 const jwt = require('jsonwebtoken');
-const requestFriend = require('./requestFriend');
+const alarm = require('./alarm');
 const disconnect = require('./disconnect');
 const jwtOptions = require('../../config/jwtOptions');
 const SocketUser = require('./SocketUser');
@@ -61,7 +61,7 @@ async function setOnlineSockets(socket) {
 
   socket.on('deleteFriend', deleteFriend.bind(this, nodeCache, socketUser));
   socket.on('acceptFriendRequest', acceptFriendRequest.bind(this, nodeCache, socketUser));
-  socket.on('requestFriend', requestFriend.bind(this, nodeCache, socketUser));
+  socket.on('alarm', alarm.bind(this, nodeCache, socketUser));
   socket.on('disconnect', disconnect.bind(this, nodeCache, socketUser, socket));
 }
 

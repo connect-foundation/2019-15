@@ -10,21 +10,18 @@ export const connectSocket = () => {
   });
 };
 
-export const onRequestFriend = (socket, alarmListDispatch) => {
-  socket.on('requestFriend', (user) => {
-    alarmListDispatch({
-      type: 'push',
-      value: `${user.nickname}님이 친구가 되고 싶어 해요`,
-    });
+export const onAlarm = (socket, addFriendRequestAlarm) => {
+  socket.on('alarm', (message) => {
+    addFriendRequestAlarm(message);
   });
 };
 
-export const offRequestFriend = (socket) => {
-  socket.off('requestFriend');
+export const offAlarm = (socket) => {
+  socket.off('alarm');
 };
 
-export const emitRequestFriend = (socket, receiver) => {
-  socket.emit('requestFriend', receiver);
+export const emitAlarm = (socket, messageWithUser) => {
+  socket.emit('alarm', messageWithUser);
 };
 
 export const onFriendsOnline = (socket, onlineFriendsDispatch) => {
