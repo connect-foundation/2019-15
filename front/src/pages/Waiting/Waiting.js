@@ -1,31 +1,31 @@
-import React, { useEffect, useContext, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Redirect, useParams, useHistory } from 'react-router-dom';
 import Preparation from 'components/Preparation/Preparation';
-import {
-  initUserListMsgHandler,
-  initMovePrivateGame,
-  initSetRoomOwner,
-} from 'logics/socketLogic';
 import GlobalSocket from 'global.context';
 import NavigationBar from 'components/NavigationBar/NavigationBar';
+import useGameSocket from 'hooks/Socket/useGameSocket';
 
 export default function Waiting() {
-  const { gameSocket, setGameSocket } = useContext(GlobalSocket);
+  const { gameSocket } = useContext(GlobalSocket);
   const [userList, setUserList] = useState([]);
   const { hash } = useParams();
   const history = useHistory();
   const [roomOwner, setRoomOwner] = useState(false);
 
-  useEffect(() => {
-    if (!gameSocket) return;
-    initUserListMsgHandler(gameSocket, { setUserList });
-    initMovePrivateGame(gameSocket, () => {
-      history.push(`private${hash}`);
-    });
-    initSetRoomOwner(gameSocket, { setRoomOwner });
-  }, [gameSocket, hash, history, setGameSocket]);
+  useGameSocket('userList', ({ playerList }) => {
+    const parsedList = JSON.parse(playerList);
+    setUserList(parsedList);
+  });
 
-  if (!gameSocket || gameSocket.disconnected) {
+  useGameSocket('movePrivate', () => {
+    history.push(`private${hash}`);
+  });
+
+  useGameSocket('roomOwner', () => {
+    setRoomOwner(true);
+  });
+
+  if (!gameSocket) {
     return <Redirect to={`setting${hash}`} />;
   }
 
