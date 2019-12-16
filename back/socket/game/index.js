@@ -57,6 +57,9 @@ function setGameSocket(socket) {
       }
       if (resultCode === 2) gameSocket.to(roomId).emit('gamestart', room.makeGameStartData());
       if (resultCode === 3) room.questionEndCallback(gameSocket);
+      if (resultCode === 4) {
+        if (room.isAllPlayerAnswered()) room.questionEndCallback(gameSocket);
+      }
     }
 
     if (gameSocket.id === room.roomOwner) {
