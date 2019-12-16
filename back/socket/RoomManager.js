@@ -21,6 +21,7 @@ const RoomManager = {
     }
 
     newRoom.roomId = roomId;
+    newRoom.roomName = roomName;
     newRoom.state = roomState.EMPTY;
     this.room[roomName][roomId] = newRoom;
 

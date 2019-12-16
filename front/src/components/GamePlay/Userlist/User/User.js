@@ -6,6 +6,7 @@ import {
   UserStyle,
   UserInfoStyle,
   UserImage,
+  UserCharacterContainer,
   UserNickName,
   Text,
   Drawer,
@@ -37,7 +38,7 @@ export default function User({
   const [avatarRef] = useAvatar(avatar);
   return (
     <UserStyle className={className} privileged={privileged}>
-      <div ref={avatarRef} />
+      <UserCharacterContainer ref={avatarRef} />
       <UserInfoStyle>
         <UserNickName>
           <Ranking>#{index}</Ranking>
