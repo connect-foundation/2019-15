@@ -12,7 +12,6 @@ export default function PublicRoom() {
   const makeGameStartBtnHandler = (roomType) => {
     return () => {
       enterRandom(gameSocket, { nickname: user.nickname, roomType });
-      history.push('public');
     };
   };
 
