@@ -1,6 +1,6 @@
 const { Op } = require('sequelize');
 const models = require('../db/models');
-const { roomState, defaultRoomSetting } = require('../config/roomConfig');
+const { roomState, defaultRoomSetting, escapeResultCode } = require('../config/roomConfig');
 const Timer = require('../util/timer/Timer');
 const makeReducerWithPromise = require('../util/makeReducerWithPromise');
 const { PRIVATE_ROOM_NAME } = require('../config/roomConfig');
@@ -84,24 +84,21 @@ class Room {
     if (this.players.length) {
       // 출제자가 탈주한 경우
       if (userIndex === this.examinerIndex) {
-        // questionEndCallback() 이 호출되므로, 이중으로 examinerIndex를 변경하게 된다. 따라서 주석처리함.
-        /*this.examinerIndex = userIndex === 0 ? this.players.length - 1 : userIndex - 1;
-        this.players[this.examinerIndex].privileged = true;*/
         const nextExaminerIndex = userIndex === 0 ? this.players.length - 1 : userIndex - 1;
         this.players[nextExaminerIndex].privileged = true;
 
-        if (this.isPlayingQuestion()) return 3;
+        if (this.isPlayingQuestion()) return escapeResultCode.EXAMINER_IS_ESCAPED;
       }
       // 출제자가 아닌 플레이어가 탈주한 경우
       else {
         if (userIndex < this.examinerIndex) this.examinerIndex -= 1;
 
-        if (this.isPlayingQuestion()) return 4;
+        if (this.isPlayingQuestion()) return escapeResultCode.NON_EXAMINER_IS_ESCAPED;
       }
 
       // 누가 나가던 상관없는 경우
-      if (this.isWaiting()) return 1;
-      if (this.isSelectingWord()) return 2;
+      if (this.isWaiting()) return escapeResultCode.IS_WAITING;
+      if (this.isSelectingWord()) return escapeResultCode.IS_SELECTING_WORD;
     }
   }
 
