@@ -13,6 +13,7 @@ import {
   setStartQuestionHandler,
   setEndQuestionHandler,
   closeSocket,
+  setPrepareNewGameHandler,
 } from 'logics/socketLogic';
 import { setEndGameHandler } from '../../logics/socketLogic';
 
@@ -120,6 +121,11 @@ const GamePlay = () => {
     [resetQuestionStates],
   );
 
+  const prepareNewGameCallback = useCallback(() => {
+    setIsTimerGetReady(false);
+    setQuestionWord(initialQuestionWordState);
+  }, []);
+
   useEffect(() => {
     if (!gameSocket) return () => {};
     initUserListMsgHandler(gameSocket, { setUserList });
@@ -131,6 +137,7 @@ const GamePlay = () => {
     });
     setEndQuestionHandler(gameSocket, { endQuestionCallback });
     setEndGameHandler(gameSocket, endGameCallback);
+    setPrepareNewGameHandler(gameSocket, prepareNewGameCallback);
 
     return () => {
       closeSocket(gameSocket, { setGameSocket });

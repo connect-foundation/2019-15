@@ -1,5 +1,8 @@
+const { Op } = require('sequelize');
+const models = require('../db/models');
 const { roomState, defaultRoomSetting } = require('../config/roomConfig');
 const Timer = require('../util/timer/Timer');
+const makeReducerWithPromise = require('../util/makeReducerWithPromise');
 
 class Room {
   constructor(gameIo) {
@@ -163,11 +166,62 @@ class Room {
     }, 5000);
   }
 
-  gameEndCallback(gameIo) {
+  async gameEndCallback(gameIo) {
     gameIo.in(this.roomId).emit('endGame', {
       _scores: this.getScores(),
       answer: this.word,
     });
+
+    function getPlayerByNickname(player) {
+      return models.Users.findOne({
+        where: {
+          nickname: {
+            [Op.eq]: player.nickname,
+          },
+        },
+      });
+    }
+
+    function makeIdScoreTuple(acc, user, player) {
+      acc.push({
+        id: user.dataValues.id,
+        score: user.dataValues.score + player.score,
+      });
+
+      return acc;
+    }
+
+    const users = await this.players.reduce(
+      makeReducerWithPromise(getPlayerByNickname, makeIdScoreTuple),
+      [],
+    );
+
+    function updateUserScore(user) {
+      return models.Users.update(
+        {
+          score: user.score,
+        },
+        {
+          where: {
+            id: {
+              [Op.eq]: user.id,
+            },
+          },
+        },
+      );
+    }
+
+    function makeUpdatedUserNumber(acc, updatedUser) {
+      acc += updatedUser[0];
+      return acc;
+    }
+
+    const updatedUserNumber = await users.reduce(
+      makeReducerWithPromise(updateUserScore, makeUpdatedUserNumber),
+      0,
+    );
+
+    console.log('updatedUserNumber', updatedUserNumber);
   }
 
   getExaminerSocketId() {
