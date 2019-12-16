@@ -6,7 +6,7 @@ import { CHANGE_AVATAR as changeAvatarQuery } from 'queries/user';
 import GlobalContext from 'global.context';
 import SpectreButton from 'components/globalComponents/SpectreButton/SpectreButton';
 import AVATAR_NUMBER from 'constant/avatar';
-import ChangeCharacterStyle from './ChangeCharacter.style';
+import ChangeAvatarStyle from './ChangeAvatar.style';
 
 const btnTextReducer = (state, action) => {
   switch (action) {
@@ -21,7 +21,7 @@ const btnTextReducer = (state, action) => {
   }
 };
 
-const ChangeCharacter = () => {
+const ChangeAvatar = () => {
   const { user, userDispatch } = useContext(GlobalContext);
   const [btnText, btnTextDispatch] = useReducer(btnTextReducer, '저장');
   const [selectedAvatar, clickLeftBtn, clickRightBtn] = useCarousel(
@@ -54,7 +54,7 @@ const ChangeCharacter = () => {
   }, [changeAvatar, selectedAvatar]);
 
   return (
-    <ChangeCharacterStyle>
+    <ChangeAvatarStyle>
       <Avatar
         avatar={selectedAvatar}
         clickLeftBtn={clickLeftBtn}
@@ -63,8 +63,8 @@ const ChangeCharacter = () => {
       <SpectreButton onClick={changeAvatarByClick} loading={loading}>
         {btnText}
       </SpectreButton>
-    </ChangeCharacterStyle>
+    </ChangeAvatarStyle>
   );
 };
 
-export default ChangeCharacter;
+export default ChangeAvatar;

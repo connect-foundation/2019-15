@@ -10,7 +10,7 @@ export default function CurrentMyInfo() {
 
   return (
     <CurrentMyInfoStyle id="CurrentMyInfo">
-      <div alt="character" ref={avatarRef} />
+      <div alt="avatar" ref={avatarRef} />
       <div>
         <span className="user-card nickname">닉네임</span>
         <span className="user-card ranking">랭킹 xxx위</span>

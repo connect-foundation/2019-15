@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { FlexColumnStyle } from 'components/globalComponents/Container/Flex.style';
 
-const ChangeCharacterStyle = styled(FlexColumnStyle)`
+const ChangeAvatarStyle = styled(FlexColumnStyle)`
   background-color: dimgray;
   width: 100%;
   height: 150px;
@@ -9,4 +9,4 @@ const ChangeCharacterStyle = styled(FlexColumnStyle)`
   align-items: center;
 `;
 
-export default ChangeCharacterStyle;
+export default ChangeAvatarStyle;

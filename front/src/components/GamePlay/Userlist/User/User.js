@@ -5,8 +5,7 @@ import useAvatar from 'hooks/Avatar/useAvatar';
 import {
   UserStyle,
   UserInfoStyle,
-  UserImage,
-  UserCharacterContainer,
+  UserAvatarContainer,
   UserNickName,
   Text,
   Drawer,
@@ -38,7 +37,7 @@ export default function User({
   const [avatarRef] = useAvatar(avatar);
   return (
     <UserStyle className={className} privileged={privileged}>
-      <UserCharacterContainer ref={avatarRef} />
+      <UserAvatarContainer ref={avatarRef} />
       <UserInfoStyle>
         <UserNickName>
           <Ranking>#{index}</Ranking>

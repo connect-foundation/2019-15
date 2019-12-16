@@ -32,7 +32,7 @@ export const UserImage = styled.img`
   border-radius: 0.3rem;
 `;
 
-export const UserCharacterContainer = styled.div`
+export const UserAvatarContainer = styled.div`
   margin-left: 5px;
   width: 5rem;
   height: 5rem;
