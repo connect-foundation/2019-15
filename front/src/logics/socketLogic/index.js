@@ -35,10 +35,6 @@ export function emitEnterPrivateRoom(socket, { nickname, roomId, avatar }) {
   socket.emit('enterPrivate', { nickname, roomId, avatar });
 }
 
-export function startPrivateGame(socket, { roomId }) {
-  socket.emit('startPrivateGame', { roomId });
-}
-
 export function sendMessage(
   socket,
   { socketId, roomType, roomId, inputValue },
