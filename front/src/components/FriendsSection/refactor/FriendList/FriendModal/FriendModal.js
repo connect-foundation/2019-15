@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import makeModal from 'components/globalComponents/Modal/Modal';
 import Button from 'components/globalComponents/Button/Button';
 import { ButtonSection } from 'components/FriendsSection/refactor/FriendList/FriendModal/FriendModal.style';
@@ -6,6 +6,9 @@ import PropTypes from 'prop-types';
 import { DELETE_FRIEND } from 'queries/friend';
 import { useMutation } from '@apollo/react-hooks';
 import { SEND_FRIEND_REQUEST } from 'queries/beforeFriend';
+import FriendsSectionContext from 'components/FriendsSection/refactor/FriendsSection.context';
+import { emitAlarm, emitDeleteFriend } from 'logics/socketLogic/online';
+import GlobalContext from 'global.context';
 
 FriendModal.propTypes = {
   modalContent: PropTypes.shape({
@@ -29,8 +32,10 @@ export default function FriendModal({
   dispatchModalContent,
   refetch,
 }) {
+  const { onlineSocket } = useContext(GlobalContext);
   const [deleteFriendRequest] = useMutation(DELETE_FRIEND, {
-    onCompleted() {
+    onCompleted({ deleteFriend }) {
+      emitDeleteFriend(onlineSocket, deleteFriend);
       dispatchModalContent({
         type: 'deleteDone',
         nickname: modalContent.nickname,
@@ -45,10 +50,14 @@ export default function FriendModal({
     },
   });
   const [sendFriendRequest] = useMutation(SEND_FRIEND_REQUEST, {
-    onCompleted(result) {
+    onCompleted({ sendFriendRequest: friend }) {
+      emitAlarm(onlineSocket, {
+        user: friend,
+        message: `${friend.nickname}님이 친구가 되고 싶어해요`,
+      });
       dispatchModalContent({
         type: 'addDone',
-        nickname: result.sendFriendRequest.nickname,
+        nickname: friend.nickname,
       });
     },
     onError({ graphQLErrors }) {

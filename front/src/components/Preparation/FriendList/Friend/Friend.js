@@ -5,7 +5,7 @@ import { faPlay } from '@fortawesome/free-solid-svg-icons';
 import { INVITE } from 'queries/invitation';
 import { useMutation } from '@apollo/react-hooks';
 import GlobalContext from 'global.context';
-import APP_URI from 'util/uri';
+import { emitAlarm } from 'logics/socketLogic/online';
 import { FriendStyle, PlayIconStyle } from './Friend.style';
 
 Friend.propTypes = {
@@ -14,12 +14,18 @@ Friend.propTypes = {
 };
 
 export default function Friend({ id, nickname }) {
-  const { room } = useContext(GlobalContext);
+  const { room, onlineSocket } = useContext(GlobalContext);
 
   const [disabled, setDisabled] = useState(false);
   const [invite] = useMutation(INVITE, {
     onCompleted: () => {
       setDisabled(true);
+      if (onlineSocket) {
+        emitAlarm(onlineSocket, {
+          user: { id, nickname },
+          message: `${nickname}님이 게임에 초대하였습니다.`,
+        });
+      }
     },
   });
   const sendInvitation = () => {
