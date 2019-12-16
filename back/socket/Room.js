@@ -3,10 +3,12 @@ const models = require('../db/models');
 const { roomState, defaultRoomSetting } = require('../config/roomConfig');
 const Timer = require('../util/timer/Timer');
 const makeReducerWithPromise = require('../util/makeReducerWithPromise');
+const { PRIVATE_ROOM_NAME } = require('../config/roomConfig');
 
 class Room {
   constructor(gameIo) {
     this.roomId = null;
+    this.roomName = null;
     this.players = [];
     this.wordSet = null;
     this.word = null;
@@ -172,6 +174,10 @@ class Room {
       answer: this.word,
     });
 
+    if (this.roomName !== PRIVATE_ROOM_NAME) this.updateUserScore();
+  }
+
+  async updateUserScore() {
     function getPlayerByNickname(player) {
       return models.Users.findOne({
         where: {

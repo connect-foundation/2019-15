@@ -5,7 +5,6 @@ const { enterRandom, enterPrivate } = require('./enterGame');
 const { sendMessage } = require('./message');
 const selectWord = require('./selectWord');
 const { PRIVATE_ROOM_NAME } = require('../../config/roomConfig');
-const { Room } = require('../Room');
 const { startPrivateGame } = require('./startPrivateGame');
 const exitRoom = require('./exitRoom');
 
