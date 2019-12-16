@@ -9,7 +9,7 @@ export const UserStyle = styled(FlexRowStyle)`
   height: 5.5rem;
   margin: 0.3rem auto;
   background-color: ${(props) =>
-    props.privileged ? props.theme.paleRose : 'white'};
+    props.privileged ? props.theme.veryPaleOrange : 'white'};
   border-radius: 0.3rem;
   &:hover {
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
