@@ -31,7 +31,7 @@ function WordChoice({ setSelectedWord }) {
     return 'error';
   }
 
-  async function close(e) {
+  function close(e) {
     refetch();
     setIsWordChoiceOpen(false);
     const { roomType, roomId } = room;
