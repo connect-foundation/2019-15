@@ -1,9 +1,9 @@
 import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
-import getCharacter from 'logics/avatar';
 import GlobalContext from 'global.context';
 import crown from 'asset/crown.png';
-import { Avatar, UserStyle, RoomOwner, Text } from './UserList.style';
+import useAvatar from 'hooks/Avatar/useAvatar';
+import { UserStyle, RoomOwner, Text } from './UserList.style';
 
 User.propTypes = {
   user: PropTypes.shape({
@@ -16,10 +16,10 @@ User.propTypes = {
 
 export default function User({ user }) {
   const { gameSocket } = useContext(GlobalContext);
-
+  const [avatarRef] = useAvatar(user.avatar);
   return (
     <UserStyle>
-      <Avatar src={getCharacter(user.avatar)} />
+      <div ref={avatarRef} />
       <Text roomOwner={user.roomOwner} title={user.nickname}>
         <RoomOwner src={crown} />
         {user.nickname}
