@@ -1,9 +1,9 @@
 const defaultOptions = {
   watchQuery: {
-    fetchPolicy: 'no-cache',
+    fetchPolicy: 'network-only',
   },
   query: {
-    fetchPolicy: 'no-cache',
+    fetchPolicy: 'network-only',
   },
 };
 
