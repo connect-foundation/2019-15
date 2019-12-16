@@ -7,18 +7,12 @@ import UserList from 'components/GamePlay/Userlist/Userlist';
 import CanvasSection from 'components/GamePlay/CanvasSection/CanvasSection';
 import Chatting from 'components/GamePlay/Chatting/Chatting';
 import GamePlayContext from 'components/GamePlay/GamePlay.context';
-import {
-  initUserListMsgHandler,
-  initGameStartMsgHandler,
-  setStartQuestionHandler,
-  setEndQuestionHandler,
-  closeSocket,
-  setPrepareNewGameHandler,
-} from 'logics/socketLogic';
-import { setEndGameHandler } from '../../logics/socketLogic';
+import { closeSocket } from 'logics/socketLogic';
+import useGameSocket from 'hooks/Socket/useGameSocket';
+import Room from 'logics/room';
 
 const GamePlay = () => {
-  const { gameSocket, setGameSocket, user, room } = useContext(GlobalContext);
+  const { gameSocket, setGameSocket, setRoom } = useContext(GlobalContext);
   const history = useHistory();
 
   const [userList, setUserList] = useState([]);
@@ -118,32 +112,50 @@ const GamePlay = () => {
         }, 5000);
       }, 5000);
     },
-    [resetQuestionStates],
+    [history, resetQuestionStates],
   );
 
   const prepareNewGameCallback = useCallback(() => {
     setIsTimerGetReady(false);
     setQuestionWord(initialQuestionWordState);
-  }, []);
+  }, [initialQuestionWordState]);
+
+  useGameSocket('userList', ({ playerList }) => {
+    const parsedList = JSON.parse(playerList);
+    setUserList(parsedList);
+  });
+
+  useGameSocket('gamestart', ({ _painter, currentRound, totalRound }) => {
+    setPainter(_painter);
+    setRound({
+      currentRound,
+      totalRound,
+    });
+  });
+
+  useGameSocket(
+    'startQuestion',
+    ({ wordLength, openLetter, openIndex, _endTime }) => {
+      setQuestionWord({ wordLength, openLetter, openIndex });
+      setEndTime(_endTime);
+      setIsTimerGetReady(true);
+    },
+  );
+
+  useGameSocket('endQuestion', endQuestionCallback);
+
+  useGameSocket('endGame', endGameCallback);
+
+  useGameSocket('prepareNewGame', prepareNewGameCallback);
 
   useEffect(() => {
     if (!gameSocket) return () => {};
-    initUserListMsgHandler(gameSocket, { setUserList });
-    initGameStartMsgHandler(gameSocket, { setPainter, setRound, setEndTime });
-    setStartQuestionHandler(gameSocket, {
-      setQuestionWord,
-      setEndTime,
-      setIsTimerGetReady,
-    });
-    setEndQuestionHandler(gameSocket, { endQuestionCallback });
-    setEndGameHandler(gameSocket, endGameCallback);
-    setPrepareNewGameHandler(gameSocket, prepareNewGameCallback);
-
     return () => {
-      closeSocket(gameSocket, { setGameSocket });
+      if (!gameSocket) return;
+      gameSocket.close();
+      setGameSocket(null);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [gameSocket, setGameSocket, setPainter, setUserList]);
+  }, [gameSocket, setGameSocket]);
 
   if (!gameSocket || gameSocket.disconnected) {
     return <Redirect to="main" />;

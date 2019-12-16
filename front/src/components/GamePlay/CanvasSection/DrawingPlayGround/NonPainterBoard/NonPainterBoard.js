@@ -6,8 +6,8 @@ import {
   CanvasStyle,
 } from 'components/GamePlay/CanvasSection/DrawingPlayGround/NonPainterBoard/NonPainterBoard.style';
 import NonPainterPen from 'components/GamePlay/CanvasSection/DrawingPlayGround/Tools/ToolType/NonPainterPen';
-import useCanvasDataReceive from 'hooks/DrawingPlayGround/useCanvasDataReceive';
 import useFabricCanvas from 'hooks/DrawingPlayGround/useFabricCanvas';
+import useGameSocket from 'hooks/Socket/useGameSocket';
 
 NonPainterBoard.propTypes = {
   size: PropTypes.shape({
@@ -60,8 +60,9 @@ export default function NonPainterBoard({ size }) {
     });
   };
 
-  useCanvasDataReceive(setCanvas);
-
+  useGameSocket('drawing', ({ eventList }) => {
+    setCanvas(eventList);
+  });
   return (
     <NonPainterBoardStyle>
       <CanvasStyle ref={setFabricCanvas} style={{ width, height }} />

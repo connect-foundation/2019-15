@@ -251,7 +251,7 @@ class Room {
 
   makeGameStartData() {
     return {
-      painter: this.getExaminerSocketId(),
+      _painter: this.getExaminerSocketId(),
       currentRound: this.currentRound,
       totalRound: this.totalRound,
     };
@@ -262,7 +262,7 @@ class Room {
       wordLength: this.word.length,
       openLetter: this.word[this.openIndex],
       openIndex: this.openIndex,
-      endTime: this.timer.endTime,
+      _endTime: this.timer.endTime,
     };
   }
 
