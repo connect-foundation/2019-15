@@ -7,13 +7,13 @@ import {
 export const UserStyle = styled(FlexRowStyle)`
   width: 15rem;
   height: 5.5rem;
-  margin: 0.3rem;
-  margin-bottom: 0.6rem;
+  margin: 0.3rem auto;
   background-color: ${(props) =>
-    props.privileged ? props.theme.seaPink : 'white'};
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    props.privileged ? props.theme.paleRose : 'white'};
   border-radius: 0.3rem;
-
+  &:hover {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  }
   &.you {
     border: 3px solid black;
   }
@@ -30,6 +30,18 @@ export const UserImage = styled.img`
   min-width: 5rem;
   min-height: 5rem;
   border-radius: 0.3rem;
+`;
+
+export const UserCharacterContainer = styled.div`
+  margin-left: 5px;
+  width: 5rem;
+  height: 5rem;
+  min-width: 5rem;
+  min-height: 5rem;
+
+  & > canvas {
+    border-radius: 0.3rem;
+  }
 `;
 
 export const Ranking = styled.span`
