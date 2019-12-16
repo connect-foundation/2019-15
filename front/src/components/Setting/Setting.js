@@ -33,7 +33,7 @@ export default function Setting() {
 
   function onClickGameStart() {
     emitEnterPrivateRoom(gameSocket, {
-      nickname,
+      nickname: nickname.nickname,
       roomId: room.roomId,
       avatar,
     });
