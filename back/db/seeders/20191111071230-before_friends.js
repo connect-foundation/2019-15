@@ -139,6 +139,66 @@ module.exports = {
           sFriendId: 4,
           friendStateId: 2,
         },
+        {
+          pFriendId: 12,
+          sFriendId: 4,
+          friendStateId: 2,
+        },
+        {
+          pFriendId: 13,
+          sFriendId: 4,
+          friendStateId: 1,
+        },
+        {
+          pFriendId: 14,
+          sFriendId: 4,
+          friendStateId: 1,
+        },
+        {
+          pFriendId: 15,
+          sFriendId: 4,
+          friendStateId: 1,
+        },
+        {
+          pFriendId: 16,
+          sFriendId: 4,
+          friendStateId: 1,
+        },
+        {
+          pFriendId: 17,
+          sFriendId: 4,
+          friendStateId: 1,
+        },
+        {
+          pFriendId: 18,
+          sFriendId: 4,
+          friendStateId: 1,
+        },
+        {
+          pFriendId: 19,
+          sFriendId: 4,
+          friendStateId: 1,
+        },
+        {
+          pFriendId: 20,
+          sFriendId: 4,
+          friendStateId: 1,
+        },
+        {
+          pFriendId: 21,
+          sFriendId: 4,
+          friendStateId: 1,
+        },
+        {
+          pFriendId: 22,
+          sFriendId: 4,
+          friendStateId: 1,
+        },
+        {
+          pFriendId: 23,
+          sFriendId: 4,
+          friendStateId: 1,
+        },
       ],
       {},
     );

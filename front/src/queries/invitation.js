@@ -30,9 +30,7 @@ export const GET_INVITATIONS = gql`
 
 export const DELETE_INVITATION = gql`
   mutation deleteInvitation($id: Int!) {
-    deleteInvitation(id: $id) {
-      result
-    }
+    deleteInvitation(id: $id)
   }
 `;
 

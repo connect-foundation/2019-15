@@ -18,17 +18,12 @@ module.exports = `
     pageInfo:PageInfo
   }
   
-  type InvitationResult{
-    id:Int!
-    result:Boolean!
-  }
-  
   extend type Query{
     invitations(first:Int!,after:String):InvitationConnection
   }
   
   extend type Mutation{
     invite(id:Int!,roomId:String!):Int
-    deleteInvitation(id:Int!):InvitationResult
+    deleteInvitation(id:Int!):Int
   }
 `;

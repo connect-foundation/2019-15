@@ -9,7 +9,7 @@ const userResolvers = {
     users: (obj, args, { Users }) => {
       return Users.findAll();
     },
-    checkNicknameAvailable: async (obj, { nickname }, { Users, req }) => {
+    checkNicknameAvailable: async (obj, { nickname }, { Users }) => {
       const user = await Users.findOne({
         where: {
           nickname,
@@ -19,15 +19,6 @@ const userResolvers = {
         nickname,
         result: !user,
       };
-    },
-    getWordByNickname: (obj, { nickname }, { Words }) => {
-      return Words.findOne({
-        where: {
-          word: {
-            [Op.eq]: nickname,
-          },
-        },
-      });
     },
   },
   Mutation: {
@@ -62,7 +53,10 @@ const userResolvers = {
             transaction,
           },
         );
-        if (!changedRows) return { nickname, result: false };
+        if (!changedRows) {
+          transaction.rollback();
+          throw new Error('닉네임 변경에 실패하였습니다.');
+        }
 
         res.cookie(
           'jwt',
@@ -79,38 +73,8 @@ const userResolvers = {
         return { nickname, result: true };
       } catch (e) {
         if (transaction) await transaction.rollback();
-        throw new Error(e);
+        throw e;
       }
-    },
-    updateUserNicknameById: (obj, { id, nickname }, { Users }) => {
-      return Users.update(
-        { nickname: nickname },
-        {
-          where: {
-            id: {
-              [Op.eq]: id,
-            },
-          },
-        },
-      );
-    },
-    createWord: (obj, { userId, nickname }, { Words }) => {
-      return Words.create({
-        word: nickname,
-        userId: userId,
-      });
-    },
-    updateWordUserIdById: async (obj, { id, nickname }, { Words }) => {
-      return Words.update(
-        { nickname: nickname },
-        {
-          where: {
-            id: {
-              [Op.eq]: id,
-            },
-          },
-        },
-      );
     },
   },
 };

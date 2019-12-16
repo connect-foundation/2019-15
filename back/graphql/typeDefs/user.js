@@ -1,9 +1,9 @@
 module.exports = `
   type User{
     id:Int!
-    userId:String!
-    nickname:String!
-    score:Int!
+    nickname:String
+    userId:String
+    score:Int
     createdAt:String
     updatedAt:String
   }
@@ -20,14 +20,10 @@ module.exports = `
   
   extend type Query{
     users:[User]
-    getWordByNickname(nickname:String):Word
     checkNicknameAvailable(nickname:String!):NicknameResult
   }
   
   extend type Mutation{
     changeNickname(nickname:String!):NicknameResult
-    updateUserNicknameById(id:String, nickname:String):[Int]
-    createWord(userId:String, nickname:String):Word
-    updateWordUserIdById(id:String, nickname:String):Word
   }
 `;

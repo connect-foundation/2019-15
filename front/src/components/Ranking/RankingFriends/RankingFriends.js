@@ -11,6 +11,9 @@ import UserRankingListStyle from '../UserRankingList/UserRankingList.style';
 export default function RankingFriends() {
   const { data, loading, error, fetchMore, hasMore } = useCursorQuery(
     GET_RANKING_FRIENDS,
+    {
+      fetchPolicy: 'cache-first',
+    },
   );
   if (loading) return <Loading Wrapper={UserRankingListStyle} />;
   if (error) return <Alert type="error" Wrapper={UserRankingListStyle} />;
