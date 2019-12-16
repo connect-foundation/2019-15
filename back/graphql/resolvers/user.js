@@ -76,6 +76,31 @@ const userResolvers = {
         throw e;
       }
     },
+    changeAvatar: async (obj, { nickname, avatar }, { Users, req, res }) => {
+      const [changedRows] = await Users.update(
+        { avatar },
+        {
+          where: {
+            nickname: nickname,
+          },
+        },
+      );
+      if (!changedRows) return { avatar, result: false };
+
+      res.cookie(
+        'jwt',
+        jwt.sign(
+          {
+            ...req.user,
+            avatar,
+          },
+          process.env.JWT_SECRET,
+        ),
+        getCookieOptions(),
+      );
+
+      return { avatar, result: true };
+    },
   },
 };
 

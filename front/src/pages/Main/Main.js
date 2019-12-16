@@ -8,7 +8,10 @@ import RoomSelectSection from 'components/RoomSelectSection/RoomSelectSection';
 import FriendsSection from 'components/FriendsSection/refactor/FriendsSection';
 import makeModal from 'components/globalComponents/Modal/Modal';
 import parseCookies from 'util/cookie';
-import { connectGameSocket, initConnectMsgHandler } from 'logics/socketLogic';
+import { connectGameSocket } from 'logics/socketLogic';
+import Room from 'logics/room';
+import useGameSocket from 'hooks/Socket/useGameSocket';
+import { useHistory } from 'react-router-dom';
 import Button from '../../components/globalComponents/Button/Button';
 
 const Main = () => {
@@ -17,17 +20,21 @@ const Main = () => {
   const [isSignUp, setIsSignUp] = useState(
     parseCookies(document.cookie).isSignUp === 'true',
   );
-
+  const history = useHistory();
   useEffect(() => {
     const initSocket = () => {
       const gameSocket = connectGameSocket();
       setGameSocket(gameSocket);
-      initConnectMsgHandler(gameSocket, { setRoom });
       setRoom(null);
     };
     checkAuth(setNickName);
     initSocket();
-  }, [setGameSocket, setRoom, userDispatch]);
+  }, [setGameSocket, setOnlineSocket, setRoom]);
+
+  useGameSocket('connectRandom', ({ roomType, roomId }) => {
+    setRoom(new Room(roomId, roomType));
+    history.push('public');
+  });
 
   function closeModal() {
     setIsSignUp(false);

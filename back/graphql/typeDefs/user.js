@@ -1,9 +1,10 @@
 module.exports = `
   type User{
     id:Int!
-    nickname:String
     userId:String
+    nickname:String
     score:Int
+    avatar:Int
     createdAt:String
     updatedAt:String
   }
@@ -18,6 +19,11 @@ module.exports = `
     result:Boolean
   }
   
+  type AvatarResult{
+    avatar:Int,
+    result:Boolean
+  }
+
   extend type Query{
     users:[User]
     checkNicknameAvailable(nickname:String!):NicknameResult
@@ -25,5 +31,6 @@ module.exports = `
   
   extend type Mutation{
     changeNickname(nickname:String!):NicknameResult
+    changeAvatar(nickname:String!, avatar:Int!):AvatarResult
   }
 `;

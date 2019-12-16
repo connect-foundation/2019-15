@@ -20,4 +20,17 @@ const defaultRoomSetting = {
   totalRound: 3,
 };
 
-module.exports = { maxPeopleNum, roomState, defaultRoomSetting, PRIVATE_ROOM_NAME };
+const escapeResultCode = {
+  IS_WAITING: 1,
+  IS_SELECTING_WORD: 2,
+  EXAMINER_IS_ESCAPED: 3,
+  NON_EXAMINER_IS_ESCAPED: 4,
+};
+
+module.exports = {
+  maxPeopleNum,
+  roomState,
+  defaultRoomSetting,
+  PRIVATE_ROOM_NAME,
+  escapeResultCode,
+};

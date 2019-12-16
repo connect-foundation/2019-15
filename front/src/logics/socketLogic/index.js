@@ -1,6 +1,5 @@
 import socketIo from 'socket.io-client';
 import APP_URI from '../../util/uri';
-import Room from '../room';
 
 export function connectGameSocket() {
   return socketIo.connect(`${APP_URI.REACT_APP_API_URI}/game`, {
@@ -10,91 +9,7 @@ export function connectGameSocket() {
     reconnectionAttempts: 5,
   });
 }
-
-export function closeSocket(socket, { setGameSocket }) {
-  if (!socket) return;
-  socket.close();
-  setGameSocket(null);
-}
-
 // on-off
-
-export function initConnectMsgHandler(socket, { setRoom }) {
-  socket.on(`connectRandom`, ({ roomType, roomId }) => {
-    setRoom(new Room(roomId, roomType));
-  });
-}
-
-export function initUserListMsgHandler(socket, { setUserList }) {
-  socket.on('userList', ({ userList }) => {
-    const parsedList = JSON.parse(userList);
-    setUserList(parsedList);
-  });
-}
-
-export function initGameStartMsgHandler(socket, { setPainter, setRound }) {
-  socket.on('gamestart', ({ painter, currentRound, totalRound }) => {
-    setPainter(painter);
-    setRound({
-      currentRound,
-      totalRound,
-    });
-  });
-}
-
-export function initChattingHandler(socket, { setMessage }) {
-  socket.on('getMessage', ({ content, privileged }) => {
-    const splitRes = content.split(' : ');
-    if (splitRes.length === 2 && splitRes[1] === '') return;
-    setMessage({ content, privileged });
-  });
-}
-
-export function setStartQuestionHandler(
-  socket,
-  { setQuestionWord, setEndTime, setIsTimerGetReady },
-) {
-  socket.on(
-    'startQuestion',
-    ({ wordLength, openLetter, openIndex, endTime }) => {
-      setQuestionWord({ wordLength, openLetter, openIndex });
-      setEndTime(endTime);
-      setIsTimerGetReady(true);
-    },
-  );
-}
-
-export function setEndQuestionHandler(socket, { endQuestionCallback }) {
-  socket.on('endQuestion', endQuestionCallback);
-}
-
-export function setEndGameHandler(socket, endGameCallback) {
-  socket.on('endGame', endGameCallback);
-}
-
-export function onCanvasData(socket, setCanvas) {
-  socket.on('drawing', ({ eventList }) => {
-    setCanvas(eventList);
-  });
-}
-
-export function offCanvasData(socket) {
-  socket.off('drawing');
-}
-
-export function initMovePrivateGame(socket, moveGamePage) {
-  socket.on('movePrivate', () => {
-    moveGamePage();
-  });
-}
-
-export function initSetRoomOwner(socket, { setRoomOwner }) {
-  socket.on('roomOwner', () => {
-    setRoomOwner(true);
-  });
-}
-
-// emit
 
 export function exitGameRoom(socket, { roomType, roomId }) {
   socket.emit('exitRoom', { roomType, roomId });

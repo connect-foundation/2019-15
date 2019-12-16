@@ -1,11 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import PENCIL from 'asset/pencil.png';
-import getCharacter from 'logics/avatar';
+import useAvatar from 'hooks/Avatar/useAvatar';
 import {
   UserStyle,
   UserInfoStyle,
   UserImage,
+  UserCharacterContainer,
   UserNickName,
   Text,
   Drawer,
@@ -34,9 +35,10 @@ export default function User({
   avatar,
   drawer,
 }) {
+  const [avatarRef] = useAvatar(avatar);
   return (
     <UserStyle className={className} privileged={privileged}>
-      <UserImage src={getCharacter(avatar)} alt="avatar" />
+      <UserCharacterContainer ref={avatarRef} />
       <UserInfoStyle>
         <UserNickName>
           <Ranking>#{index}</Ranking>
