@@ -11,9 +11,10 @@ export const NavigationBarStyle = styled.div`
 
 export const LogoImage = styled(Image)`
   margin-top: 5px;
-  width: 20rem;
-  height: 10rem;
+  width: 25rem;
+  height: 13rem;
   margin-left: 50%;
+  margin-top: 3rem;
   transform: translateX(-50%);
 `;
 

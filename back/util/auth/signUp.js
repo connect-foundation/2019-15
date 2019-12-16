@@ -36,6 +36,7 @@ async function signUp(profile) {
     newUser = await Users.create({
       userId: profile.id,
       nickname: uuidv4(),
+      avatar: 0,
     });
     Words.create({
       word: newUser.nickname,
