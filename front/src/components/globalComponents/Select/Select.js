@@ -7,6 +7,7 @@ Select.propTypes = {
   defaultOption: PropTypes.string,
   onChangeSelect: PropTypes.func.isRequired,
   disabled: PropTypes.bool.isRequired,
+  reference: PropTypes.any.isRequired,
 };
 
 Select.defaultProps = {
@@ -19,13 +20,14 @@ export default function Select({
   defaultOption,
   onChangeSelect,
   disabled,
+  reference,
 }) {
   const options = option.map((optionValue) => (
     <option selected={optionValue === defaultOption}>{optionValue}</option>
   ));
 
   return (
-    <SelectStyle disabled={disabled} onChange={onChangeSelect}>
+    <SelectStyle ref={reference} disabled={disabled} onChange={onChangeSelect}>
       {options}
     </SelectStyle>
   );

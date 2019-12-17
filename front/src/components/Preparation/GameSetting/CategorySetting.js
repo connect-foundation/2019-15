@@ -7,9 +7,14 @@ import { useQuery } from '@apollo/react-hooks';
 CategorySetting.propTypes = {
   onChangeCategory: PropTypes.func.isRequired,
   disabled: PropTypes.bool.isRequired,
+  categoryRef: PropTypes.any.isRequired,
 };
 
-export default function CategorySetting({ onChangeCategory, disabled }) {
+export default function CategorySetting({
+  onChangeCategory,
+  disabled,
+  categoryRef,
+}) {
   const { data, loading, error } = useQuery(GET_CATEGORIES);
 
   if (loading)
@@ -32,6 +37,7 @@ export default function CategorySetting({ onChangeCategory, disabled }) {
             : Object.values(data.getCategories).map((dbData) => dbData.category)
         }
         onChangeSelect={onChangeCategory}
+        reference={categoryRef}
       />
     </>
   );
