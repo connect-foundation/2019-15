@@ -5,30 +5,12 @@ const disconnect = require('./disconnect');
 const jwtOptions = require('../../config/jwtOptions');
 const SocketUser = require('./SocketUser');
 const parseCookies = require('../../util/cookie/parseCookies');
-const { Friends } = require('../../db/models');
 const acceptFriendRequest = require('./acceptFriendRequest');
 const deleteFriend = require('./deleteFriend');
+const checkFriendsOnline = require('./checkFriendsOnline');
+const { Friends } = require('../../db/models');
 
 const nodeCache = new NodeCache({ useClones: false });
-
-async function emitOnline(socket, socketUser) {
-  const FriendsFound = await Friends.findAll({
-    where: {
-      pFriendId: socketUser.id,
-    },
-  });
-
-  const onlineFriends = FriendsFound.reduce((acc, { dataValues }) => {
-    const friendSocket = dataValues.sFriendId ? nodeCache.get(dataValues.sFriendId) : null;
-    if (friendSocket) {
-      friendSocket.emitToMySockets('friendsOnline', { [socketUser.id]: socketUser.user });
-      acc[friendSocket.id] = friendSocket.user;
-    }
-    return acc;
-  }, {});
-
-  this.onlineIo.to(socket.id).emit('friendsOnline', onlineFriends);
-}
 
 function getOrCreateSocketUser(id, nickname, socket, io) {
   let socketUser = nodeCache.get(id);
@@ -39,6 +21,21 @@ function getOrCreateSocketUser(id, nickname, socket, io) {
 
   socketUser.pushSocket(socket);
   return socketUser;
+}
+
+async function emitOnlineToFriends(socketUser) {
+  const FriendsFound = await Friends.findAll({
+    where: {
+      pFriendId: socketUser.id,
+    },
+  });
+
+  FriendsFound.forEach(({ dataValues }) => {
+    const friendSocket = dataValues.sFriendId ? nodeCache.get(dataValues.sFriendId) : null;
+    if (friendSocket) {
+      friendSocket.emitToMySockets('checkFriendsOnline', { [socketUser.id]: socketUser.user });
+    }
+  });
 }
 
 async function setOnlineSockets(socket) {
@@ -59,6 +56,7 @@ async function setOnlineSockets(socket) {
 
   if (!socketUser) return;
 
+  socket.on('checkFriendsOnline', checkFriendsOnline.bind(this, nodeCache, socketUser, socket));
   socket.on('deleteFriend', deleteFriend.bind(this, nodeCache, socketUser));
   socket.on('acceptFriendRequest', acceptFriendRequest.bind(this, nodeCache, socketUser));
   socket.on('alarm', alarm.bind(this, nodeCache, socketUser));

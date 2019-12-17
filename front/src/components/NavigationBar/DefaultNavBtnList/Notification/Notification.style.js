@@ -12,17 +12,20 @@ const slideRight = keyframes`
 `;
 
 export const NoticeStyle = styled.div`
-  animation: ${slideRight} 0.15s ease 1;
-  position: fixed;
-  left: 1rem;
-  top: 1rem;
+  animation: ${slideRight} 0.3s ease 1;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   background-color: #fff;
   opacity: 0.95;
   width: 20rem;
-  height: 5rem;
+  height: 3rem;
   border-radius: 1rem;
-  transition: all 1s ease;
+  margin: 1rem;
+  padding: 1rem;
+  vertical-align: middle;
 `;
 
-export const NotificationStyle = styled.div``;
+export const NotificationStyle = styled.div`
+  left: 1rem;
+  top: 1rem;
+  position: fixed;
+`;
