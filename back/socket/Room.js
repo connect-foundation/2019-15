@@ -1,9 +1,14 @@
-const { roomState, defaultRoomSetting } = require('../config/roomConfig');
+const { Op } = require('sequelize');
+const models = require('../db/models');
+const { roomState, defaultRoomSetting, escapeResultCode } = require('../config/roomConfig');
 const Timer = require('../util/timer/Timer');
+const makeReducerWithPromise = require('../util/makeReducerWithPromise');
+const { PRIVATE_ROOM_NAME } = require('../config/roomConfig');
 
 class Room {
   constructor(gameIo) {
     this.roomId = null;
+    this.roomName = null;
     this.players = [];
     this.wordSet = null;
     this.word = null;
@@ -74,19 +79,26 @@ class Room {
     if (this.players.length === 1) {
       this.state = roomState.WAITING;
     }
-    // 출제자가 나간 경우 && 게임을 계속 할 수 잇는 경우 && 단어를 아직 선택하지 않은 경우
-    if (removedPlayer.privileged && this.players.length) {
-      if (userIndex === 0) {
-        this.players[this.players.length - 1].privileged = true;
-        this.examinerIndex = this.players.length - 1;
-      } else {
-        this.players[userIndex - 1].privileged = true;
-        this.examinerIndex = userIndex - 1;
+
+    // 게임을 계속 할 수 있는 경우
+    if (this.players.length) {
+      // 출제자가 탈주한 경우
+      if (userIndex === this.examinerIndex) {
+        const nextExaminerIndex = userIndex === 0 ? this.players.length - 1 : userIndex - 1;
+        this.players[nextExaminerIndex].privileged = true;
+
+        if (this.isPlayingQuestion()) return escapeResultCode.EXAMINER_IS_ESCAPED;
+      }
+      // 출제자가 아닌 플레이어가 탈주한 경우
+      else {
+        if (userIndex < this.examinerIndex) this.examinerIndex -= 1;
+
+        if (this.isPlayingQuestion()) return escapeResultCode.NON_EXAMINER_IS_ESCAPED;
       }
 
-      if (this.isWaiting()) return 1;
-      if (this.isSelectingWord()) return 2;
-      if (this.isPlayingQuestion()) return 3;
+      // 누가 나가던 상관없는 경우
+      if (this.isWaiting()) return escapeResultCode.IS_WAITING;
+      if (this.isSelectingWord()) return escapeResultCode.IS_SELECTING_WORD;
     }
   }
 
@@ -163,11 +175,66 @@ class Room {
     }, 5000);
   }
 
-  gameEndCallback(gameIo) {
+  async gameEndCallback(gameIo) {
     gameIo.in(this.roomId).emit('endGame', {
       _scores: this.getScores(),
       answer: this.word,
     });
+
+    if (this.roomName !== PRIVATE_ROOM_NAME) this.updateUserScore();
+  }
+
+  async updateUserScore() {
+    function getPlayerByNickname(player) {
+      return models.Users.findOne({
+        where: {
+          nickname: {
+            [Op.eq]: player.nickname,
+          },
+        },
+      });
+    }
+
+    function makeIdScoreTuple(acc, user, player) {
+      acc.push({
+        id: user.dataValues.id,
+        score: user.dataValues.score + player.score,
+      });
+
+      return acc;
+    }
+
+    const users = await this.players.reduce(
+      makeReducerWithPromise(getPlayerByNickname, makeIdScoreTuple),
+      [],
+    );
+
+    function updateUserScore(user) {
+      return models.Users.update(
+        {
+          score: user.score,
+        },
+        {
+          where: {
+            id: {
+              [Op.eq]: user.id,
+            },
+          },
+        },
+      );
+    }
+
+    function makeUpdatedUserNumber(acc, updatedUser) {
+      acc += updatedUser[0];
+      return acc;
+    }
+
+    const updatedUserNumber = await users.reduce(
+      makeReducerWithPromise(updateUserScore, makeUpdatedUserNumber),
+      0,
+    );
+
+    console.log('updatedUserNumber', updatedUserNumber);
   }
 
   getExaminerSocketId() {
@@ -184,7 +251,7 @@ class Room {
 
   makeGameStartData() {
     return {
-      painter: this.getExaminerSocketId(),
+      _painter: this.getExaminerSocketId(),
       currentRound: this.currentRound,
       totalRound: this.totalRound,
     };
@@ -195,7 +262,7 @@ class Room {
       wordLength: this.word.length,
       openLetter: this.word[this.openIndex],
       openIndex: this.openIndex,
-      endTime: this.timer.endTime,
+      _endTime: this.timer.endTime,
     };
   }
 
@@ -217,6 +284,13 @@ class Room {
         gameSocket.emit('roomOwner');
       }, 100);
     }
+  }
+
+  resetAllPlayerPrivilege() {
+    this.players = this.players.map((player) => {
+      player.privileged = false;
+      return player;
+    });
   }
 }
 

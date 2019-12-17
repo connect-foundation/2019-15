@@ -1,8 +1,5 @@
 import styled from 'styled-components';
-import {
-  FlexColumnStyle,
-  FlexRowStyle,
-} from 'components/globalComponents/Container/Flex.style';
+import { FlexColumnStyle } from 'components/globalComponents/Container/Flex.style';
 import ButtonStyle from 'components/globalComponents/Button/Button.style';
 
 export const SettingStyle = styled(FlexColumnStyle)`
@@ -41,10 +38,6 @@ export const AvatarSettingStyle = styled(FlexColumnStyle)`
   margin: 2rem;
 `;
 
-export const AvatarChoiceStyle = styled(FlexRowStyle)`
-  justify-content: center;
-`;
-
 export const GameStartButtonStyle = styled(ButtonStyle)`
   width: 80%;
   height: 10%;
@@ -77,11 +70,3 @@ export const Nickname = styled.input`
   font-weight: normal;
   src: local('CookieRun'), url('./font/CookieRun Bold.otf') format('opentype');
 `;
-
-export const AvatarImage = styled.img`
-  width: 80px;
-  height: 80px;
-`;
-
-export const LeftBtn = styled(ButtonStyle)``;
-export const RightBtn = styled(ButtonStyle)``;

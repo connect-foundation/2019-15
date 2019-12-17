@@ -4,8 +4,7 @@ const sendGameImage = require('./gameImage');
 const { enterRandom, enterPrivate } = require('./enterGame');
 const { sendMessage } = require('./message');
 const selectWord = require('./selectWord');
-const { PRIVATE_ROOM_NAME } = require('../../config/roomConfig');
-const { Room } = require('../Room');
+const { PRIVATE_ROOM_NAME, escapeResultCode } = require('../../config/roomConfig');
 const { startPrivateGame } = require('./startPrivateGame');
 const exitRoom = require('./exitRoom');
 
@@ -27,6 +26,10 @@ function setGameSocket(socket) {
   socket.on('enterPrivate', ({ nickname, roomId, avatar }) => {
     roomInfo.roomType = PRIVATE_ROOM_NAME;
     roomInfo.roomId = roomId;
+  });
+
+  socket.on('changeRoomSetting', ({ selectType, selectedIndex }) => {
+    socket.to(roomInfo.roomId).emit('changeRoomSetting', { selectType, selectedIndex });
   });
 
   socket.on('exitRoom', exitRoom.bind(this, gameSocket));
@@ -52,9 +55,29 @@ function setGameSocket(socket) {
       sendUserListToRoom(room.players, roomId, this.gameIo);
       gameSocket.leave();
 
-      if (resultCode === 1) room.timer.stop();
-      if (resultCode === 2) gameSocket.to(roomId).emit('gamestart', room.makeGameStartData());
-      if (resultCode === 3) room.questionEndCallback(gameSocket);
+      switch (resultCode) {
+        case escapeResultCode.IS_WAITING: {
+          room.timer.stop();
+          room.resetAllPlayerPrivilege();
+          gameSocket.in(roomId).emit('prepareNewGame');
+          break;
+        }
+        case escapeResultCode.IS_SELECTING_WORD: {
+          gameSocket.to(roomId).emit('gamestart', room.makeGameStartData());
+          break;
+        }
+        case escapeResultCode.EXAMINER_IS_ESCAPED: {
+          room.questionEndCallback(gameSocket);
+          break;
+        }
+        case escapeResultCode.NON_EXAMINER_IS_ESCAPED: {
+          if (room.isAllPlayerAnswered()) room.questionEndCallback(gameSocket);
+          break;
+        }
+        default: {
+          break;
+        }
+      }
     }
 
     if (gameSocket.id === room.roomOwner) {

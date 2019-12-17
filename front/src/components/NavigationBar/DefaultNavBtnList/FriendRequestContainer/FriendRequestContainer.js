@@ -1,41 +1,24 @@
-import React, { useEffect } from 'react';
-import Alarm from 'components/NavigationBar/DefaultNavBtnList/FriendRequestContainer/Alarm';
-import FriendRequestList from 'components/NavigationBar/DefaultNavBtnList/FriendRequestContainer/FriendRequestList/FriendRequestList';
+import React, { useState } from 'react';
 import { faBell } from '@fortawesome/free-solid-svg-icons';
 import { NavImageStyle } from 'components/NavigationBar/DefaultNavBtnList/DefaultNavBtnList.style';
-import useAlarm from 'hooks/Alarm/useAlarm';
 import { FriendRequestContainerStyle } from 'components/NavigationBar/DefaultNavBtnList/FriendRequestContainer/FriendRequestContainer.style';
 import useCloseClicker from 'hooks/useCloseClicker';
-import useNotice from 'hooks/Alarm/useNotice';
+import FriendRequestList from 'components/NavigationBar/DefaultNavBtnList/FriendRequestContainer/FriendRequestList/FriendRequestList';
 
 export default function FriendRequestContainer() {
-  const [alarmList, alarmListDispatch] = useAlarm();
-  const [notice, noticeDispatch] = useNotice();
-
-  let FriendRequestElement = null;
-  if (notice.isOpen) {
-    FriendRequestElement =
-      notice.type === 'alarm' ? (
-        <Alarm alarmList={alarmList} />
-      ) : (
-        <FriendRequestList />
-      );
-  }
-
-  const openMessages = () => {
-    noticeDispatch({ open: true, type: 'messages' });
+  const [isOpen, setIsOpen] = useState(false);
+  const toggleIsOpen = () => {
+    setIsOpen((prevIsOpen) => !prevIsOpen);
   };
 
-  const closeMessages = () => {
-    noticeDispatch({ open: false, type: 'messages' });
-  };
-
-  const closeClicker = useCloseClicker(closeMessages);
+  const closeClicker = useCloseClicker(() => {
+    setIsOpen(false);
+  });
 
   return (
     <FriendRequestContainerStyle ref={closeClicker}>
-      <NavImageStyle icon={faBell} onClick={openMessages} />
-      {FriendRequestElement}
+      <NavImageStyle icon={faBell} onClick={toggleIsOpen} />
+      {isOpen ? <FriendRequestList /> : null}
     </FriendRequestContainerStyle>
   );
 }
