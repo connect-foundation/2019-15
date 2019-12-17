@@ -1,7 +1,8 @@
 import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import GlobalContext from 'global.context';
-import useInput from 'hooks/Input/useInput';
+import useGameSocket from 'hooks/Socket/useGameSocket';
+import useSelect from 'hooks/Select/useSelect';
 import { GameSettingStyle, StartBtn } from './GameSetting.style';
 import TimeSetting from './TimeSetting';
 import RoundSetting from './RoundSetting';
@@ -20,6 +21,15 @@ GameSetting.propTypes = {
 
 export default function GameSetting({ roomOwner, waitingUserList }) {
   const { gameSocket, room } = useContext(GlobalContext);
+  const [timer, onChangeTimer, timerRef, changeTimerValue] = useSelect('timer');
+  const [round, onChangeRound, roundRef, changeRoundValue] = useSelect('round');
+  const [
+    category,
+    onChangeCategory,
+    categoryRef,
+    changeCategoryValue,
+  ] = useSelect('category');
+
   useGameSocket('changeRoomSetting', ({ selectType, selectedIndex }) => {
     switch (selectType) {
       case 'timer': {
@@ -51,11 +61,20 @@ export default function GameSetting({ roomOwner, waitingUserList }) {
 
   return (
     <GameSettingStyle>
-      <TimeSetting disabled={!roomOwner} onChangeTimer={onChangeTimer} />
-      <RoundSetting disabled={!roomOwner} onChangeRound={onChangeRound} />
+      <TimeSetting
+        disabled={!roomOwner}
+        onChangeTimer={onChangeTimer}
+        timerRef={timerRef}
+      />
+      <RoundSetting
+        disabled={!roomOwner}
+        onChangeRound={onChangeRound}
+        roundRef={roundRef}
+      />
       <CategorySetting
         disabled={!roomOwner}
         onChangeCategory={onChangeCategory}
+        categoryRef={categoryRef}
       />
       <StartBtn disabled={!roomOwner} onClick={clickStartBtn}>
         게임 시작
