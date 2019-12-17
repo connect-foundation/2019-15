@@ -5,7 +5,11 @@ import { ToolsStyle } from 'components/GamePlay/CanvasSection/DrawingPlayGround/
 import { CenterSpanStyle } from 'components/GamePlay/CanvasSection/DrawingPlayGround/DrawingPlayGround.style';
 
 NonPainterPlayGround.propTypes = {
-  painterNickname: PropTypes.node.isRequired,
+  painterNickname: PropTypes.string,
+};
+
+NonPainterPlayGround.defaultProps = {
+  painterNickname: '',
 };
 
 export default function NonPainterPlayGround({ painterNickname }) {

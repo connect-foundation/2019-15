@@ -11,7 +11,7 @@ DrawingPlayGround.propTypes = {
     width: PropTypes.number,
     height: PropTypes.number,
   }),
-  painterNickname: PropTypes.node.isRequired,
+  painterNickname: PropTypes.string,
 };
 
 DrawingPlayGround.defaultProps = {
@@ -19,6 +19,7 @@ DrawingPlayGround.defaultProps = {
     width: 500,
     height: 500,
   },
+  painterNickname: '',
 };
 
 export default function DrawingPlayGround({

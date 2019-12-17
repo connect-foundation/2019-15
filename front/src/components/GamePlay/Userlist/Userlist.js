@@ -24,7 +24,6 @@ export default function UserList() {
       index <= painterIndex
         ? painterIndex - index
         : painterIndex + (userList.length - 1 - index) + 1;
-    console.log('Userlist', painterIndex, index, leftTurn);
 
     return (
       <User

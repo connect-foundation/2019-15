@@ -3,10 +3,13 @@ import React, { useContext } from 'react';
 import {
   NonPainterBoardStyle,
   CanvasStyle,
-} from 'components/GamePlay/CanvasSection/DrawingPlayGround/NonPainterBoard/NonPainterBoard.style';
-import NonPainterPen from 'components/GamePlay/CanvasSection/DrawingPlayGround/Tools/ToolType/NonPainterPen';
+} from 'components/GamePlay/CanvasSection/DrawingPlayGround/NonPainterPlayGround/NonPainterBoard/NonPainterBoard.style';
+
+import PropTypes from 'prop-types';
 import useFabricCanvas from 'hooks/DrawingPlayGround/useFabricCanvas';
 import useGameSocket from 'hooks/Socket/useGameSocket';
+import NonPainterPen from 'components/GamePlay/CanvasSection/DrawingPlayGround/PainterPlayGround/Tools/ToolType/NonPainterPen';
+import DrawingPlayGroundContext from 'components/GamePlay/CanvasSection/DrawingPlayGround/DrawingPlayGround.context';
 
 NonPainterBoard.propTypes = {
   size: PropTypes.shape({
@@ -25,7 +28,6 @@ NonPainterBoard.defaultProps = {
 const pen = new NonPainterPen();
 
 const jsonEventList = ['objectAdded', 'objectRemoved', 'objectsCleared'];
-
 export default function NonPainterBoard() {
   const { canvasSize } = useContext(DrawingPlayGroundContext);
   const [fabricCanvas, attachFabricCanvas] = useFabricCanvas(canvasSize);
