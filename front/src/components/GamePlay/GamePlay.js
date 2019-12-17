@@ -7,9 +7,7 @@ import UserList from 'components/GamePlay/Userlist/Userlist';
 import CanvasSection from 'components/GamePlay/CanvasSection/CanvasSection';
 import Chatting from 'components/GamePlay/Chatting/Chatting';
 import GamePlayContext from 'components/GamePlay/GamePlay.context';
-import { closeSocket } from 'logics/socketLogic';
 import useGameSocket from 'hooks/Socket/useGameSocket';
-import Room from 'logics/room';
 
 const GamePlay = () => {
   const { gameSocket, setGameSocket, setRoom } = useContext(GlobalContext);
