@@ -11,8 +11,9 @@ module.exports = `
     questionId: Int
     data: String
   }
-  
+
   extend type Query{
     getLatestWordsByUser:[DrawingHistory]
+    getCanvasDatasByQuestionId(questionId:Int!):[CanvasData]
   } 
 `;

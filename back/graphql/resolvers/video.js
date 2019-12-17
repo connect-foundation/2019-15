@@ -1,7 +1,3 @@
-const Sequelize = require('sequelize');
-
-const { Op } = Sequelize;
-
 module.exports = {
   Query: {
     getLatestWordsByUser: async (obj, args, { DrawingHistories, req }) => {
@@ -11,6 +7,14 @@ module.exports = {
         },
         order: [['id', 'DESC']],
         limit: 10,
+      });
+    },
+    getCanvasDatasByQuestionId: async (obj, { questionId }, { CanvasDatas }) => {
+      return CanvasDatas.findAll({
+        where: {
+          questionId: questionId,
+        },
+        order: [['id', 'ASC']],
       });
     },
   },
