@@ -56,14 +56,6 @@ export default function PainterBoard({ drawingOptions }) {
     };
     const onMouseUp = ({ pointer }) => {
       tool.onMouseUp(pointer);
-      eventListDispatch({
-        type: 'push',
-        value: {
-          drawingOptions,
-          data: fabricCanvas.toJSON(),
-          event: 'mouseUp',
-        },
-      });
       emitable = false;
     };
 
@@ -79,6 +71,7 @@ export default function PainterBoard({ drawingOptions }) {
 
   return (
     <PainterBoardStyle>
+      <History fabricCanvas={fabricCanvas} />
       <CanvasStyle ref={attachFabricCanvas} />
     </PainterBoardStyle>
   );

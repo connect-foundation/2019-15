@@ -11,6 +11,8 @@ import DrawingPlayGroundContext from 'components/GamePlay/CanvasSection/DrawingP
 
 const pen = new NonPainterPen();
 
+const jsonEventList = ['objectAdded', 'objectRemoved', 'objectsCleared'];
+
 export default function NonPainterBoard() {
   const { canvasSize } = useContext(DrawingPlayGroundContext);
   const [fabricCanvas, attachFabricCanvas] = useFabricCanvas(canvasSize);
@@ -23,20 +25,17 @@ export default function NonPainterBoard() {
     });
   };
 
-  const handleEvents = ({ pointer, event, data }) => {
+  const handleEvents = ({ pointer, event }) => {
     if (event === 'mouseDown') {
       pen.onMouseDown(pointer);
     } else if (event === 'mouseMove') {
       pen.onMouseMove(pointer);
-    } else if (event === 'mouseUp') {
-      setCanvasFromJson(data);
-      pen.onMouseUp();
     }
   };
 
   const setCanvas = (eventList) => {
     eventList.forEach((e) => {
-      if (e.drawingOptions.tool !== 'pen') {
+      if (jsonEventList.includes(e.event)) {
         setCanvasFromJson(e.data);
         return;
       }
