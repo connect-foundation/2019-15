@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import { useMutation } from '@apollo/react-hooks';
 import Message from 'components/globalComponents/Message/Message';
@@ -6,6 +6,7 @@ import {
   ACCEPT_FRIEND_REQUEST,
   DELETE_FRIEND_REQUEST,
 } from 'queries/beforeFriend';
+import GlobalContext from 'global.context';
 
 FriendRequest.propTypes = {
   id: PropTypes.number.isRequired,
@@ -14,6 +15,7 @@ FriendRequest.propTypes = {
 };
 
 export default function FriendRequest({ id, nickname, remove }) {
+  const { onlineSocket } = useContext(GlobalContext);
   const [deleteFriendRequest] = useMutation(DELETE_FRIEND_REQUEST, {
     onCompleted() {
       remove();
@@ -21,7 +23,8 @@ export default function FriendRequest({ id, nickname, remove }) {
   });
 
   const [acceptFriendRequest] = useMutation(ACCEPT_FRIEND_REQUEST, {
-    onCompleted() {
+    onCompleted({ acceptFriendRequest: friend }) {
+      onlineSocket.emit('acceptFriendRequest', friend);
       remove();
     },
   });
