@@ -17,16 +17,15 @@ export default function Video() {
   if (error) {
     return <div>error</div>;
   }
-
   return (
     <VideoSectionWrapper>
       {modalWord ? (
-        <VideoModal word={modalWord} setModalWord={setModalWord} />
+        <VideoModal question={modalWord} setModalWord={setModalWord} />
       ) : null}
-      {data.getLatestWordsByUser.map(({ word, createdAt }) => {
+      {data.getLatestWordsByUser.map(({ id, word, createdAt }) => {
         const date = new Date(Number(createdAt));
         return (
-          <WordButton onClick={() => setModalWord(word)}>
+          <WordButton onClick={() => setModalWord({ questionId: id, word })}>
             {word}
             <br />
             {dateFormat(date, 'yy.mm.dd')}
