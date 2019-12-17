@@ -28,6 +28,10 @@ function setGameSocket(socket) {
     roomInfo.roomId = roomId;
   });
 
+  socket.on('changeRoomSetting', ({ selectType, selectedIndex }) => {
+    socket.to(roomInfo.roomId).emit('changeRoomSetting', { selectType, selectedIndex });
+  });
+
   socket.on('exitRoom', exitRoom.bind(this, gameSocket));
   socket.on('startPrivateGame', startPrivateGame.bind(this, gameSocket));
   socket.on('enterPrivate', enterPrivate.bind(this, gameSocket));

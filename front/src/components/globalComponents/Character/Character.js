@@ -9,7 +9,7 @@ Character.propTypes = {
 Character.defaultProps = {
   src: null,
 };
-
+// deprecated ?
 export default function Character({ src }) {
   return <CharacterStyle id="Character" src={src} />;
 }

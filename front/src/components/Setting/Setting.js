@@ -3,19 +3,13 @@ import { useHistory, useParams } from 'react-router-dom';
 import GlobalContext from 'global.context';
 import Room from 'logics/room';
 import { PRIVATE_ROOM_NAME } from 'constant/room/roomInfo';
-import useInput from 'hooks/Input/useInput';
 import useCarousel from 'hooks/Carousel/useCarousel';
 import { emitEnterPrivateRoom, exitGameRoom } from 'logics/socketLogic';
-import Avatar from 'components/Avatar/Avatar';
 import AVATAR_NUMBER from 'constant/avatar';
-import {
-  SettingStyle,
-  NicknameSettingStyle,
-  GameStartButtonStyle,
-  Nickname,
-  InputWrapper,
-  AvatarSettingStyle,
-} from './Setting.style';
+import useInputByReducer from 'hooks/Input/useInputByReducer';
+import { SettingStyle, GameStartButtonStyle } from './Setting.style';
+import NicknameContainer from './NicknameContainer';
+import AvatarContainer from './AvatarContainer';
 
 export default function Setting() {
   const { setRoom, room, gameSocket, setGameSocket } = useContext(
@@ -23,8 +17,8 @@ export default function Setting() {
   );
   const history = useHistory();
   const { hash } = useParams();
-  const [nickname, onChangeNickname] = useInput('부스트캠퍼');
   const [avatar, clickLeftBtn, clickRightBtn] = useCarousel(AVATAR_NUMBER);
+  const [nickname, onChangeNickname] = useInputByReducer();
 
   useEffect(() => {
     const privateRoomId = hash.slice(1, hash.length);
@@ -39,7 +33,7 @@ export default function Setting() {
 
   function onClickGameStart() {
     emitEnterPrivateRoom(gameSocket, {
-      nickname,
+      nickname: nickname.nickname,
       roomId: room.roomId,
       avatar,
     });
@@ -48,20 +42,12 @@ export default function Setting() {
 
   return (
     <SettingStyle>
-      <NicknameSettingStyle>
-        닉네임
-        <InputWrapper>
-          <Nickname onChange={onChangeNickname} />
-        </InputWrapper>
-      </NicknameSettingStyle>
-      <AvatarSettingStyle>
-        아바타
-        <Avatar
-          avatar={avatar}
-          clickLeftBtn={clickLeftBtn}
-          clickRightBtn={clickRightBtn}
-        />
-      </AvatarSettingStyle>
+      <NicknameContainer onChangeNickname={onChangeNickname} />
+      <AvatarContainer
+        avatar={avatar}
+        clickLeftBtn={clickLeftBtn}
+        clickRightBtn={clickRightBtn}
+      />
       <GameStartButtonStyle onClick={onClickGameStart}>
         게임 시작
       </GameStartButtonStyle>
