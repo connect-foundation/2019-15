@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
-export default function useCarousel(maxValue) {
-  const [index, setIndex] = useState(0);
+export default function useCarousel(maxValue, defaultValue = 0) {
+  const [index, setIndex] = useState(defaultValue);
 
   function clickLeftBtn() {
     if (index <= 0) {

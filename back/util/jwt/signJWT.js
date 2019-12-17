@@ -3,7 +3,7 @@ const jwtOptions = require('../../config/jwtOptions');
 const { Users } = require('../../db/models');
 
 const signJWT = async (req, options = {}) => {
-  const { id, nickname } = await Users.findOne({
+  const { id, nickname, avatar } = await Users.findOne({
     where: {
       userId: req.user.id,
     },
@@ -16,6 +16,7 @@ const signJWT = async (req, options = {}) => {
       nickname,
       userId: req.user.id,
       displayName: req.user.displayName,
+      avatar,
     },
     process.env.JWT_SECRET,
     myOptions,

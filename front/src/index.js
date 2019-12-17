@@ -7,12 +7,14 @@ import globalStyle from 'themes/globalStyle';
 import * as serviceWorker from 'serviceWorker';
 import Router from 'Router';
 import APP_URI from 'util/uri';
+import defaultOptions from 'config/apollo-client';
 
 const graphqlPath = '/api/';
 const client = new ApolloClient({
   uri: `${APP_URI.REACT_APP_API_URI}${graphqlPath}`,
   credentials: 'include',
 });
+client.defaultOptions = defaultOptions;
 
 ReactDOM.render(
   <ApolloProvider client={client}>

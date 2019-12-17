@@ -20,3 +20,7 @@ export const PlayIconStyle = styled(FontAwesomeIcon).attrs({
 })`
   color: ${(props) => props.theme.ecstasy};
 `;
+
+export const NicknameStyle = styled.span`
+  overflow: hidden;
+`;

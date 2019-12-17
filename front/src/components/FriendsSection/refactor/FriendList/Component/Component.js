@@ -8,33 +8,34 @@ import {
 import PropTypes from 'prop-types';
 
 Component.propTypes = {
-  nickname: PropTypes.string,
+  id: PropTypes.number.isRequired,
+  nickname: PropTypes.string.isRequired,
   online: PropTypes.bool,
   isConfigMode: PropTypes.bool,
   dispatchModalContent: PropTypes.func,
 };
 
 Component.defaultProps = {
-  nickname: null,
   online: false,
   isConfigMode: false,
   dispatchModalContent: null,
 };
 
 export default function Component({
+  id,
   nickname,
   online,
   isConfigMode,
   dispatchModalContent,
 }) {
   function clickDeleteButton() {
-    dispatchModalContent({ type: 'deleteRequest', nickname });
+    dispatchModalContent({ type: 'deleteRequest', id, nickname });
   }
 
   return (
     <ComponentStyle>
       <span>{nickname}</span>
-      <CircleStyle icon={faCircle} online={online} />
+      <CircleStyle icon={faCircle} isonline={online ? 1 : 0} />
       {isConfigMode ? (
         <Icon icon={faMinusCircle} onClick={clickDeleteButton} />
       ) : null}

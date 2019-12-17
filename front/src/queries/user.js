@@ -17,3 +17,12 @@ export const CHANGE_NICKNAME = gql`
     }
   }
 `;
+
+export const CHANGE_AVATAR = gql`
+  mutation changeAvatar($nickname: String!, $avatar: Int!) {
+    changeAvatar(nickname: $nickname, avatar: $avatar) {
+      avatar
+      result
+    }
+  }
+`;

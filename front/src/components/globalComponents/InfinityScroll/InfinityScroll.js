@@ -5,7 +5,11 @@ import InfinityScrollStyle from './InfinityScroll.style';
 InfinityScroll.propTypes = {
   loadMore: PropTypes.func.isRequired,
   hasMore: PropTypes.bool.isRequired,
-  children: PropTypes.element.isRequired,
+  children: PropTypes.oneOfType([
+    PropTypes.array,
+    PropTypes.element,
+    PropTypes.elementType,
+  ]).isRequired,
 };
 
 export default function InfinityScroll({ loadMore, hasMore, children }) {

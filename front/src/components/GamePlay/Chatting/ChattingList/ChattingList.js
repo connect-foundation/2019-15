@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect, useContext } from 'react';
 import GlobalContext from 'global.context';
 import GamePlayContext from 'components/GamePlay/GamePlay.context';
-import { initChattingHandler } from 'logics/socketLogic';
+import useGameSocket from 'hooks/Socket/useGameSocket';
 import ChattingListStyle from './ChattingList.style';
 import Div from './Div.style';
 
@@ -11,25 +11,19 @@ export default function ChattingList() {
   const scrollRef = useRef(null);
   const [message, setMessage] = useState('');
   const [filteredMessageArr, pushFilteredMessage] = useState([]);
-  const [init, setInit] = useState(true);
   const isPrivileged = userList.findIndex((user) => {
     if (user.socketId === gameSocket.id) {
       return user.privileged;
     }
     return false;
   });
+  useGameSocket('getMessage', ({ content, privileged }) => {
+    const splitRes = content.split(' : ');
+    if (splitRes.length === 2 && splitRes[1] === '') return;
+    setMessage({ content, privileged });
+  });
 
   useEffect(() => {
-    const initSocket = async () => {
-      initChattingHandler(gameSocket, {
-        setMessage,
-      });
-    };
-    if (init) {
-      setInit(false);
-      initSocket();
-    }
-
     if (!(isPrivileged === -1 && message.privileged === true)) {
       const isMessageIn = filteredMessageArr.findIndex((value) => {
         return value === message;
@@ -42,7 +36,7 @@ export default function ChattingList() {
 
     scrollRef.current.scrollTop =
       scrollRef.current.scrollHeight - scrollRef.current.clientHeight;
-  }, [filteredMessageArr, init, gameSocket, message, isPrivileged, userList]);
+  }, [filteredMessageArr, message, isPrivileged]);
 
   return (
     <ChattingListStyle ref={scrollRef}>

@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import TimerStyle from './Timer.style';
+import timerConfig from '../../constant/timerConfig';
 
 Timer.propTypes = {
   isTimerGetReady: PropTypes.bool.isRequired,
@@ -19,7 +20,7 @@ export default function Timer({ isTimerGetReady, setIsLetterOpen, endTime }) {
 
   useEffect(() => {
     function resetTimer() {
-      setRemainTime(getRemainTime(Date.now() + 30000));
+      setRemainTime(getRemainTime(Date.now() + timerConfig.defaultExpireTime));
     }
 
     function countDown() {

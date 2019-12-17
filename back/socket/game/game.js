@@ -12,7 +12,7 @@ function sendUserListToRoom(list, roomId, io) {
       roomOwner: user.roomOwner,
     };
   });
-  io.in(roomId).emit('userList', { userList: JSON.stringify(userList) });
+  io.in(roomId).emit('userList', { playerList: JSON.stringify(userList) });
 }
 
 function personEnterRoom(nickname, socket, roomType, io, roomId, avatar) {

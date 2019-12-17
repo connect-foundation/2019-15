@@ -13,6 +13,7 @@ import Room from 'logics/room';
 import User from 'logics/user';
 import RouterStyle from 'Router.style';
 import parseCookies from 'util/cookie';
+import useInitSocket from 'hooks/Socket/useInitSocket';
 
 const changeUser = (prev, newUser) => {
   return { ...prev, ...newUser };
@@ -23,14 +24,14 @@ const Router = () => {
 
   let userInitial = new User();
   if (jwtToken) {
-    const { id, nickname } = jwt.decode(jwtToken);
-    userInitial = new User(nickname, id);
+    const { id, nickname, avatar } = jwt.decode(jwtToken);
+    userInitial = new User(nickname, id, avatar);
   }
+
   const [room, setRoom] = useState(new Room());
   const [user, userDispatch] = useReducer(changeUser, userInitial);
-  const [onlineSocket, setOnlineSocket] = useState(null);
   const [gameSocket, setGameSocket] = useState(null);
-
+  const [onlineSocket] = useInitSocket('/online');
   return (
     <RouterStyle id="Router">
       <HashRouter>
@@ -41,7 +42,6 @@ const Router = () => {
           <GlobalContext.Provider
             value={{
               onlineSocket,
-              setOnlineSocket,
               user,
               userDispatch,
               room,

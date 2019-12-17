@@ -64,16 +64,15 @@ const invitationResolvers = {
       if (!Invitation) throw new Error('create error');
       return Invitation.dataValues.id;
     },
-    deleteInvitation: (obj, { id }, { Invitations }) => {
-      const result = Invitations.destroy({
+    deleteInvitation: async (obj, { id }, { Invitations }) => {
+      const result = await Invitations.destroy({
         where: {
           id: id,
         },
       });
-      return {
-        id,
-        result: !!result,
-      };
+      if (!result) throw new Error(`에러 발생으로 초대 삭제에 실패하였습니다.`);
+
+      return id;
     },
   },
 };

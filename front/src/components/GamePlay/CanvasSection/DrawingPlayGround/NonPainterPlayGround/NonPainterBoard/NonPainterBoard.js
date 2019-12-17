@@ -3,11 +3,24 @@ import React, { useContext } from 'react';
 import {
   NonPainterBoardStyle,
   CanvasStyle,
-} from 'components/GamePlay/CanvasSection/DrawingPlayGround/NonPainterPlayGround/NonPainterBoard/NonPainterBoard.style';
-import NonPainterPen from 'components/GamePlay/CanvasSection/DrawingPlayGround/PainterPlayGround/Tools/ToolType/NonPainterPen';
-import useCanvasDataReceive from 'hooks/DrawingPlayGround/useCanvasDataReceive';
+} from 'components/GamePlay/CanvasSection/DrawingPlayGround/NonPainterBoard/NonPainterBoard.style';
+import NonPainterPen from 'components/GamePlay/CanvasSection/DrawingPlayGround/Tools/ToolType/NonPainterPen';
 import useFabricCanvas from 'hooks/DrawingPlayGround/useFabricCanvas';
-import DrawingPlayGroundContext from 'components/GamePlay/CanvasSection/DrawingPlayGround/DrawingPlayGround.context';
+import useGameSocket from 'hooks/Socket/useGameSocket';
+
+NonPainterBoard.propTypes = {
+  size: PropTypes.shape({
+    width: PropTypes.number,
+    height: PropTypes.number,
+  }),
+};
+
+NonPainterBoard.defaultProps = {
+  size: {
+    width: 500,
+    height: 500,
+  },
+};
 
 const pen = new NonPainterPen();
 
@@ -45,8 +58,9 @@ export default function NonPainterBoard() {
     });
   };
 
-  useCanvasDataReceive(setCanvas);
-
+  useGameSocket('drawing', ({ eventList }) => {
+    setCanvas(eventList);
+  });
   return (
     <NonPainterBoardStyle>
       <CanvasStyle ref={attachFabricCanvas} />
