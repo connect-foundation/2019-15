@@ -7,7 +7,7 @@ import avatar1 from 'asset/character/lion.json';
 import avatar2 from 'asset/character/gaonasi.json';
 import avatar3 from 'asset/character/kerbi.json';
 
-export function getCharacter(index) {
+export function getAvatar(index) {
   switch (index) {
     case 0:
       return character1;
@@ -23,7 +23,7 @@ export function getCharacter(index) {
   }
 }
 
-export function getCharacterJSON(index) {
+export function getAvatarJSON(index) {
   switch (index) {
     case 0:
       return avatar1;
@@ -37,7 +37,7 @@ export function getCharacterJSON(index) {
 }
 
 export function makeScene(ref, index) {
-  const character = getCharacterJSON(index);
+  const avatar = getAvatarJSON(index);
   // 장면 생성
   const scene = new THREE.Scene();
 
@@ -60,7 +60,7 @@ export function makeScene(ref, index) {
   const loader = new THREE.ObjectLoader();
 
   // Alternatively, to parse a previously loaded JSON structure
-  const object = loader.parse(character);
+  const object = loader.parse(avatar);
 
   scene.add(object);
 
