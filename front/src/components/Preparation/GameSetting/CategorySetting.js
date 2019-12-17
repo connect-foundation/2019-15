@@ -6,16 +6,17 @@ import { useQuery } from '@apollo/react-hooks';
 
 CategorySetting.propTypes = {
   onChangeCategory: PropTypes.func.isRequired,
+  disabled: PropTypes.bool.isRequired,
 };
 
-export default function CategorySetting({ onChangeCategory }) {
+export default function CategorySetting({ onChangeCategory, disabled }) {
   const { data, loading, error } = useQuery(GET_CATEGORIES);
 
   if (loading)
     return (
       <>
         {'카테고리'}
-        <Select />
+        <Select disabled={disabled} />
       </>
     );
   if (error) return <></>;
@@ -24,12 +25,13 @@ export default function CategorySetting({ onChangeCategory }) {
     <>
       {'카테고리'}
       <Select
+        disabled={disabled}
         option={
           loading
             ? []
             : Object.values(data.getCategories).map((dbData) => dbData.category)
         }
-        onChange={onChangeCategory}
+        onChangeSelect={onChangeCategory}
       />
     </>
   );
