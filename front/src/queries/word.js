@@ -1,8 +1,8 @@
 import { gql } from 'apollo-boost';
 
 const GET_RANDOM_WORDS = gql`
-  query getRandomWords {
-    getRandomWords {
+  query getRandomWords($categoryId: Int) {
+    getRandomWords(categoryId: $categoryId) {
       id
       word
     }
