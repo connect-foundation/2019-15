@@ -9,6 +9,7 @@
     "@fortawesome/free-solid-svg-icons": "^5.11.2",
     "@fortawesome/react-fontawesome": "^0.1.7",
     "apollo-boost": "^0.4.4",
+    "dateformat": "^3.0.3",
     "dotenv": "^8.2.0",
     "fabric": "^3.5.1",
     "faker": "^4.1.0",
