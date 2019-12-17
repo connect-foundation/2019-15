@@ -10,7 +10,7 @@ class Room {
     this.roomId = null;
     this.roomName = null;
     this.players = [];
-    this.wordSet = null;
+    this.categoryId = null;
     this.word = null;
     this.openIndex = 0;
     this.timer = new Timer();
@@ -30,7 +30,7 @@ class Room {
   }
 
   initRoomState() {
-    this.wordSet = null;
+    this.categoryId = null;
     this.word = null;
     this.openIndex = 0;
     this.state = roomState.EMPTY;
