@@ -13,11 +13,11 @@ const pen = new NonPainterPen();
 
 export default function NonPainterBoard() {
   const { canvasSize } = useContext(DrawingPlayGroundContext);
-  const [fabricCanvas, setFabricCanvas] = useFabricCanvas(canvasSize);
+  const [fabricCanvas, attachFabricCanvas] = useFabricCanvas(canvasSize);
 
   const setCanvasFromJson = (data) => {
-    fabricCanvas.current.loadFromJSON(data);
-    fabricCanvas.current.forEachObject((obj) => {
+    fabricCanvas.loadFromJSON(data);
+    fabricCanvas.forEachObject((obj) => {
       obj.selectable = false;
       obj.evented = false;
     });
@@ -41,7 +41,7 @@ export default function NonPainterBoard() {
         return;
       }
 
-      pen.setCanvas(fabricCanvas.current, e.drawingOptions);
+      pen.setCanvas(fabricCanvas, e.drawingOptions);
       handleEvents(e);
     });
   };
@@ -50,7 +50,7 @@ export default function NonPainterBoard() {
 
   return (
     <NonPainterBoardStyle>
-      <CanvasStyle ref={setFabricCanvas} />
+      <CanvasStyle ref={attachFabricCanvas} />
     </NonPainterBoardStyle>
   );
 }

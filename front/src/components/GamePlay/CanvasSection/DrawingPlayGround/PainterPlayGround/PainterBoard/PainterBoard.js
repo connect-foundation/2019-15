@@ -8,6 +8,7 @@ import ToolManager from 'components/GamePlay/CanvasSection/DrawingPlayGround/Pai
 import useCanvasDataEmitWithCaching from 'hooks/DrawingPlayGround/useCanvasDataEmitWithCaching';
 import useFabricCanvas from 'hooks/DrawingPlayGround/useFabricCanvas';
 import DrawingPlayGroundContext from 'components/GamePlay/CanvasSection/DrawingPlayGround/DrawingPlayGround.context';
+import History from 'components/GamePlay/CanvasSection/DrawingPlayGround/PainterPlayGround/PainterBoard/History/History';
 
 PainterBoard.propTypes = {
   drawingOptions: PropTypes.shape({
@@ -27,12 +28,12 @@ export default function PainterBoard({ drawingOptions }) {
   const { canvasSize } = useContext(DrawingPlayGroundContext);
   const { tool: toolName } = drawingOptions;
   const eventListDispatch = useCanvasDataEmitWithCaching();
-  const [fabricCanvas, setFabricCanvas] = useFabricCanvas(canvasSize);
+  const [fabricCanvas, attachFabricCanvas] = useFabricCanvas(canvasSize);
 
   useEffect(() => {
+    if (!fabricCanvas) return () => {};
     const tool = ToolManager[toolName];
-    tool.setCanvas(fabricCanvas.current, drawingOptions);
-    const fabricCopy = fabricCanvas.current;
+    tool.setCanvas(fabricCanvas, drawingOptions);
     let emitable = false;
 
     const onMouseDown = ({ pointer }) => {
@@ -59,26 +60,26 @@ export default function PainterBoard({ drawingOptions }) {
         type: 'push',
         value: {
           drawingOptions,
-          data: fabricCanvas.current.toJSON(),
+          data: fabricCanvas.toJSON(),
           event: 'mouseUp',
         },
       });
       emitable = false;
     };
 
-    fabricCopy.on('mouse:down', onMouseDown);
-    fabricCopy.on('mouse:move', onMouseMove);
-    fabricCopy.on('mouse:up', onMouseUp);
+    fabricCanvas.on('mouse:down', onMouseDown);
+    fabricCanvas.on('mouse:move', onMouseMove);
+    fabricCanvas.on('mouse:up', onMouseUp);
     return () => {
-      fabricCopy.off('mouse:down');
-      fabricCopy.off('mouse:move');
-      fabricCopy.off('mouse:up');
+      fabricCanvas.off('mouse:down');
+      fabricCanvas.off('mouse:move');
+      fabricCanvas.off('mouse:up');
     };
   }, [drawingOptions, eventListDispatch, fabricCanvas, toolName]);
 
   return (
     <PainterBoardStyle>
-      <CanvasStyle ref={setFabricCanvas} />
+      <CanvasStyle ref={attachFabricCanvas} />
     </PainterBoardStyle>
   );
 }
