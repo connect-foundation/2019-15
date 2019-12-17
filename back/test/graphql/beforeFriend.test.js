@@ -65,7 +65,6 @@ describe('친구 요청 생성', () => {
         }
       }`;
     const res = await sendGqRequest(token, graphqlPath, gqQuery);
-    console.log(res.data);
     const { nickname: friendNickname } = res.body.data.sendFriendRequest;
     expect(friendNickname).toBe(nickname);
   });
