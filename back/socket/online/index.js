@@ -51,7 +51,7 @@ async function setOnlineSockets(socket) {
     });
 
     socketUser = getOrCreateSocketUser(id, nickname, socket, this.onlineIo);
-    await emitOnline(socket, socketUser);
+    await emitOnlineToFriends(socketUser);
   } catch (e) {
     console.log(e);
     socket.disconnect();

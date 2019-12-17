@@ -6,7 +6,6 @@ import {
   ACCEPT_FRIEND_REQUEST,
   DELETE_FRIEND_REQUEST,
 } from 'queries/beforeFriend';
-import { emitAcceptFriendRequest } from 'logics/socketLogic/online';
 import GlobalContext from 'global.context';
 
 FriendRequest.propTypes = {
@@ -24,8 +23,8 @@ export default function FriendRequest({ id, nickname, remove }) {
   });
 
   const [acceptFriendRequest] = useMutation(ACCEPT_FRIEND_REQUEST, {
-    onCompleted({ acceptFriendRequest: user }) {
-      emitAcceptFriendRequest(onlineSocket, user);
+    onCompleted({ acceptFriendRequest: friend }) {
+      onlineSocket.emit('acceptFriendRequest', friend);
       remove();
     },
   });

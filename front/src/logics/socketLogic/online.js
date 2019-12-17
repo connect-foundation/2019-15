@@ -20,9 +20,6 @@ export const offAlarm = (socket) => {
   socket.off('alarm');
 };
 
-export const emitAlarm = (socket, messageWithUser) => {
-  socket.emit('alarm', messageWithUser);
-};
 
 export const onFriendsOnline = (socket, onlineFriendsDispatch) => {
   socket.on('friendsOnline', (friends) => {
@@ -44,10 +41,3 @@ export const offFriendOffline = (socket) => {
   socket.off('friendOffline');
 };
 
-export const emitAcceptFriendRequest = (socket, friend) => {
-  socket.emit('acceptFriendRequest', friend);
-};
-
-export const emitDeleteFriend = (socket, friend) => {
-  socket.emit('deleteFriend', friend);
-};

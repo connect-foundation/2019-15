@@ -6,8 +6,6 @@ import PropTypes from 'prop-types';
 import { DELETE_FRIEND } from 'queries/friend';
 import { useMutation } from '@apollo/react-hooks';
 import { SEND_FRIEND_REQUEST } from 'queries/beforeFriend';
-import FriendsSectionContext from 'components/FriendsSection/refactor/FriendsSection.context';
-import { emitAlarm, emitDeleteFriend } from 'logics/socketLogic/online';
 import GlobalContext from 'global.context';
 
 FriendModal.propTypes = {
@@ -35,7 +33,7 @@ export default function FriendModal({
   const { onlineSocket } = useContext(GlobalContext);
   const [deleteFriendRequest] = useMutation(DELETE_FRIEND, {
     onCompleted({ deleteFriend }) {
-      emitDeleteFriend(onlineSocket, deleteFriend);
+      onlineSocket.emit('deleteFriend', deleteFriend);
       dispatchModalContent({
         type: 'deleteDone',
         nickname: modalContent.nickname,
@@ -51,7 +49,7 @@ export default function FriendModal({
   });
   const [sendFriendRequest] = useMutation(SEND_FRIEND_REQUEST, {
     onCompleted({ sendFriendRequest: friend }) {
-      emitAlarm(onlineSocket, {
+      onlineSocket.emit('alarm', {
         user: friend,
         message: `${friend.nickname}님이 친구가 되고 싶어해요`,
       });
