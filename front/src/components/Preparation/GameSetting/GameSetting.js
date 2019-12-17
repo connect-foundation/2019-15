@@ -20,9 +20,24 @@ GameSetting.propTypes = {
 
 export default function GameSetting({ roomOwner, waitingUserList }) {
   const { gameSocket, room } = useContext(GlobalContext);
-  const [timer, onChangeTimer] = useInput();
-  const [round, onChangeRound] = useInput();
-  const [category, onChangeCategory] = useInput();
+  useGameSocket('changeRoomSetting', ({ selectType, selectedIndex }) => {
+    switch (selectType) {
+      case 'timer': {
+        changeTimerValue(selectedIndex);
+        break;
+      }
+      case 'round': {
+        changeRoundValue(selectedIndex);
+        break;
+      }
+      case 'category': {
+        changeCategoryValue(selectedIndex);
+        break;
+      }
+      default:
+        throw new Error();
+    }
+  });
 
   function clickStartBtn() {
     if (waitingUserList.length < 2) return;

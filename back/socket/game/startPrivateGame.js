@@ -1,8 +1,7 @@
 const { PRIVATE_ROOM_NAME } = require('../../config/roomConfig');
 const { sendUserListToRoom } = require('./game');
 
-function startPrivateGame(gameSocket, { roomId }) {
-  // 난입 시나리오 추가해야됨
+function startPrivateGame(gameSocket, { roomId, timer, round, category }) {
   const room = this.RoomManager.room[PRIVATE_ROOM_NAME][roomId];
   if (room.isPlayable()) {
     this.gameIo.to(roomId).emit('movePrivate');
