@@ -285,6 +285,13 @@ class Room {
       }, 100);
     }
   }
+
+  resetAllPlayerPrivilege() {
+    this.players = this.players.map((player) => {
+      player.privileged = false;
+      return player;
+    });
+  }
 }
 
 module.exports = { Room };

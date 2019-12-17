@@ -12,6 +12,7 @@ import {
   NavImageStyle,
 } from 'components/NavigationBar/DefaultNavBtnList/DefaultNavBtnList.style';
 import InvitationContainer from 'components/NavigationBar/DefaultNavBtnList/InvitationContainer/InvitationContainer';
+import Notification from 'components/NavigationBar/DefaultNavBtnList/Notification/Notification';
 
 export default function DefaultNavBtnList() {
   const location = useLocation();
@@ -21,6 +22,7 @@ export default function DefaultNavBtnList() {
 
   return (
     <NavBtnContainerStyle>
+      <Notification />
       <InvitationContainer />
       <FriendRequestContainer />
       {location.pathname.includes('mypage') ? (

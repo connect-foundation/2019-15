@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import PENCIL from 'asset/pencil.png';
 import useAvatar from 'hooks/Avatar/useAvatar';
@@ -24,6 +24,8 @@ User.propTypes = {
   privileged: PropTypes.bool.isRequired,
   avatar: PropTypes.number.isRequired,
   drawer: PropTypes.bool.isRequired,
+  score: PropTypes.number.isRequired,
+  leftTurn: PropTypes.number.isRequired,
 };
 
 export default function User({
@@ -33,8 +35,13 @@ export default function User({
   privileged,
   avatar,
   drawer,
+  score,
+  leftTurn,
 }) {
   const [avatarRef] = useAvatar(avatar);
+
+  useEffect(() => {}, [leftTurn]);
+
   return (
     <UserStyle className={className} privileged={privileged}>
       <UserAvatarContainer ref={avatarRef} />
@@ -44,8 +51,8 @@ export default function User({
           <Text>{nickname}</Text>
           <Drawer drawer={drawer} src={PENCIL} />
         </UserNickName>
-        <Score>1200</Score>
-        <small>그리는 순서가 n 차례 남았습니다.</small>
+        <Score>{score}</Score>
+        <small>그리는 순서가 {leftTurn} 차례 남았습니다.</small>
       </UserInfoStyle>
     </UserStyle>
   );

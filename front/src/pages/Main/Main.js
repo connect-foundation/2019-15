@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import GlobalContext from 'global.context';
 import checkAuth from 'logics/auth/checkAuth';
-import { connectSocket } from 'logics/socketLogic/online';
 import NavigationBar from 'components/NavigationBar/NavigationBar';
 import Background from 'components/globalComponents/Container/Background.style';
 import RoomSelectSection from 'components/RoomSelectSection/RoomSelectSection';
@@ -15,9 +14,7 @@ import { useHistory } from 'react-router-dom';
 import Button from '../../components/globalComponents/Button/Button';
 
 const Main = () => {
-  const { setOnlineSocket, setGameSocket, setRoom, userDispatch } = useContext(
-    GlobalContext,
-  );
+  const { setGameSocket, setRoom, userDispatch } = useContext(GlobalContext);
   const [nickName, setNickName] = useState('');
   const [isSignUp, setIsSignUp] = useState(
     parseCookies(document.cookie).isSignUp === 'true',
@@ -25,16 +22,13 @@ const Main = () => {
   const history = useHistory();
   useEffect(() => {
     const initSocket = () => {
-      const onlineSocket = connectSocket();
-      setOnlineSocket(onlineSocket);
-
       const gameSocket = connectGameSocket();
       setGameSocket(gameSocket);
       setRoom(null);
     };
     checkAuth(setNickName);
     initSocket();
-  }, [setGameSocket, setOnlineSocket, setRoom]);
+  }, [setGameSocket, setRoom]);
 
   useGameSocket('connectRandom', ({ roomType, roomId }) => {
     setRoom(new Room(roomId, roomType));
