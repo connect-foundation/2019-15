@@ -154,9 +154,9 @@
 - cursor based lazy loading and infinite scroll
     
 ## Document
-### [그라운드 룰](https://github.com/connect-foundation/2019-15/wiki/%EA%B7%B8%EB%9D%BC%EC%9A%B4%EB%93%9C-%EB%A3%B0)
+### [Ground Rule](https://github.com/connect-foundation/2019-15/wiki/%EA%B7%B8%EB%9D%BC%EC%9A%B4%EB%93%9C-%EB%A3%B0)
 
-### [기술 공유](https://github.com/connect-foundation/2019-15/wiki/%EA%B8%B0%EC%88%A0-%EA%B3%B5%EC%9C%A0)
+### [Sharing Technology](https://github.com/connect-foundation/2019-15/wiki/%EA%B8%B0%EC%88%A0-%EA%B3%B5%EC%9C%A0)
 
 ### [Wiki](https://github.com/connect-foundation/2019-15/wiki)
 
