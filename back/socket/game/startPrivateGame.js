@@ -8,6 +8,7 @@ function startPrivateGame(gameSocket, { roomId, expireTime, round, categoryId })
     room.totalRound = round;
     room.categoryId = categoryId;
     this.gameIo.to(roomId).emit('movePrivate');
+    this.gameIo.to(roomId).emit('roomCategory', { categoryId: room.categoryId });
 
     setTimeout(() => {
       room.prepareFirstQuestion();
