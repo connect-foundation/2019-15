@@ -1,4 +1,4 @@
-import React, { useReducer, useContext } from 'react';
+import React, { useReducer, useMemo, useContext } from 'react';
 import Header from 'components/FriendsSection/refactor/FriendList/Header/Header';
 import Component from 'components/FriendsSection/refactor/FriendList/Component/Component';
 import Alert from 'components/globalComponents/Alert/Alert';
@@ -11,18 +11,25 @@ import useCursorQuery from 'hooks/useCursorQuery';
 import InfinityScroll from 'components/globalComponents/InfinityScroll/InfinityScroll';
 import FriendModal from 'components/FriendsSection/refactor/FriendList/FriendModal/FriendModal';
 import modalReducer from 'components/FriendsSection/refactor/FriendList/modalReducer';
-import FriendsSectionContext from 'components/FriendsSection/refactor/FriendsSection.context';
+import useOnlineFriends from 'hooks/Online/useOnlineFriends';
 
 function changeModeReducer(state) {
   return !state.current;
 }
 
 export default function FriendList() {
-  const { onlineFriends } = useContext(FriendsSectionContext);
   const [isConfigMode, changeMode] = useReducer(changeModeReducer, false);
   const { data, loading, error, fetchMore, hasMore, refetch } = useCursorQuery(
     GET_FRIENDS,
   );
+
+  const friends = useMemo(
+    () => (data ? data.map(({ sFriend }) => sFriend) : null),
+    [data],
+  );
+
+  const [onlineFriends] = useOnlineFriends(friends);
+
   const [modalContent, dispatchModalContent] = useReducer(modalReducer, {
     id: null,
     content: null,

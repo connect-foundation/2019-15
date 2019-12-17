@@ -1,10 +1,5 @@
 import { useEffect, useContext, useReducer } from 'react';
-import {
-  onFriendOffline,
-  offFriendOffline,
-  onFriendsOnline,
-  offFriendsOnline,
-} from 'logics/socketLogic/online';
+import useOnlineSocket from 'hooks/Socket/useOnlineSocket';
 import GlobalContext from 'global.context';
 
 const friendsOnlineReducer = (state, action) => {
@@ -18,26 +13,23 @@ const friendsOnlineReducer = (state, action) => {
   }
 };
 
-export default function useOnlineFriends() {
+export default function useOnlineFriends(friends) {
   const { onlineSocket } = useContext(GlobalContext);
-  const [onlineFriends, onlineFriendsDispatch] = useReducer(
+
+  const [onlineFriends, dispatchOnlineFriends] = useReducer(
     friendsOnlineReducer,
     {},
   );
 
   useEffect(() => {
-    if (onlineSocket) {
-      onFriendsOnline(onlineSocket, onlineFriendsDispatch);
-      onFriendOffline(onlineSocket, onlineFriendsDispatch);
-    }
+    onlineSocket.emit('checkFriendsOnline', friends);
+  }, [friends, onlineSocket]);
 
-    return () => {
-      if (onlineSocket) {
-        offFriendsOnline(onlineSocket);
-        offFriendOffline(onlineSocket);
-      }
-    };
-  }, [onlineFriendsDispatch, onlineSocket]);
-
-  return [onlineFriends, onlineFriendsDispatch];
+  useOnlineSocket('offlineFriend', (friend) => {
+    dispatchOnlineFriends({ type: 'delete', value: friend });
+  });
+  useOnlineSocket('checkFriendsOnline', (newOnlineFriends) => {
+    dispatchOnlineFriends({ type: 'add', value: newOnlineFriends });
+  });
+  return [onlineFriends, dispatchOnlineFriends];
 }

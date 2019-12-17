@@ -12,7 +12,7 @@ async function disconnect(nodeCache, socketUser, socket) {
   FriendsFound.forEach(({ dataValues }) => {
     const friend = nodeCache.get(dataValues.sFriendId);
     if (friend) {
-      friend.emitToMySockets('friendOffline', socketUser.user);
+      friend.emitToMySockets('offlineFriend', socketUser.user);
     }
   });
 }
