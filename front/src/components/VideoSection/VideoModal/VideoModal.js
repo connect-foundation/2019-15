@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import {
   NonPainterBoardStyle,
@@ -9,6 +9,7 @@ import Button from 'components/globalComponents/Button/Button';
 import { GET_CANVAS_DATA_BY_QUESTION_ID } from 'queries/video';
 import { useQuery } from '@apollo/react-hooks';
 import useFabricCanvas from 'hooks/DrawingPlayGround/useFabricCanvas';
+import ButtonSectionStyle from 'components/VideoSection/VideoModal/VideoModal.style';
 
 VideoModal.propTypes = {
   question: PropTypes.shape({
@@ -33,6 +34,8 @@ export default function VideoModal({ question, setModalWord, size }) {
     variables: { questionId: question.questionId },
   });
   const [fabricCanvas, setFabricCanvas] = useFabricCanvas(size);
+  const [speed, setSpeed] = useState(1);
+  const [restart, setRestart] = useState(true);
 
   useEffect(() => {
     const setCanvasFromJson = (event) => {
@@ -46,26 +49,51 @@ export default function VideoModal({ question, setModalWord, size }) {
     if (data) {
       const eventList = data.getCanvasDatasByQuestionId;
 
-      eventList.forEach((e) => {
-        const eventJSON = { version: '3.5.1', objects: JSON.parse(e.data) };
-        setCanvasFromJson(eventJSON);
+      eventList.forEach((e, idx) => {
+        setTimeout(() => {
+          const eventJSON = { version: '3.5.1', objects: JSON.parse(e.data) };
+          setCanvasFromJson(eventJSON);
+        }, 500 * speed * idx);
       });
+      setRestart(false);
     }
-  }, [data, fabricCanvas]);
+  }, [data, fabricCanvas, restart, speed]);
 
   if (loading) return <div>loading</div>;
   if (error) return <div>error</div>;
-
-  function close() {
-    setModalWord(null);
-  }
 
   const Body = () => (
     <NonPainterBoardStyle>
       <CanvasStyle ref={setFabricCanvas} style={size} />
     </NonPainterBoardStyle>
   );
-  const Footer = () => <Button onClick={close}>닫기</Button>;
+
+  function makeSlow() {
+    setSpeed(2);
+    setRestart(true);
+  }
+
+  function makeFast() {
+    setSpeed(1);
+    setRestart(true);
+  }
+
+  function makeRestart() {
+    setRestart(true);
+  }
+
+  function close() {
+    setModalWord(null);
+  }
+
+  const Footer = () => (
+    <ButtonSectionStyle>
+      <Button onClick={makeRestart}>다시 시작</Button>
+      <Button onClick={makeSlow}>느리게</Button>
+      <Button onClick={makeFast}>빠르게</Button>
+      <Button onClick={close}>닫기</Button>
+    </ButtonSectionStyle>
+  );
 
   const Modal = makeModal(null, Body, Footer);
 
