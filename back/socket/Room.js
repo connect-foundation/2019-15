@@ -300,6 +300,32 @@ class Room {
       return player;
     });
   }
+
+  roomSettingAfterUserRemove(removeResult, gameSocket) {
+    switch (removeResult) {
+      case escapeResultCode.IS_WAITING: {
+        this.timer.stop();
+        this.resetAllPlayerPrivilege();
+        gameSocket.to(this.roomId).emit('prepareNewGame');
+        break;
+      }
+      case escapeResultCode.IS_SELECTING_WORD: {
+        gameSocket.to(this.roomId).emit('gamestart', this.makeGameStartData());
+        break;
+      }
+      case escapeResultCode.EXAMINER_IS_ESCAPED: {
+        this.questionEndCallback(gameSocket);
+        break;
+      }
+      case escapeResultCode.NON_EXAMINER_IS_ESCAPED: {
+        if (this.isAllPlayerAnswered()) this.questionEndCallback(gameSocket);
+        break;
+      }
+      default: {
+        break;
+      }
+    }
+  }
 }
 
 module.exports = { Room };
