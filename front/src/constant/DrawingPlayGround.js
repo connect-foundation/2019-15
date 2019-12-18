@@ -47,3 +47,9 @@ export const DEFAULT_LINE_OPTIONS = {
   originY: 'center',
 };
 
+export const getClientPointer = (elementOffset, eventOffset) => {
+  return {
+    clientX: elementOffset.left + eventOffset.x,
+    clientY: elementOffset.top + eventOffset.y,
+  };
+};

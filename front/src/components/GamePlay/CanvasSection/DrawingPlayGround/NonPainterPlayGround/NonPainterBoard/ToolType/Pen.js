@@ -1,5 +1,6 @@
 /* eslint no-param-reassign:0 */
 import Tool from 'components/GamePlay/CanvasSection/DrawingPlayGround/PainterPlayGround/Tools/ToolType/Tool';
+import { getClientPointer } from 'constant/DrawingPlayGround';
 
 class Pen extends Tool {
   setCanvas(fabricCanvas, { strokeWidth, strokeColor }) {
@@ -9,30 +10,18 @@ class Pen extends Tool {
   }
 
   onMouseDown(pointers) {
-    console.log('mousedown');
-    const mouseDownEvt = this.getMouseEvent('onmousedown', pointers);
-    this.fc._onMouseDown(mouseDownEvt);
+    const clientPointer = getClientPointer(this.fc._offset, pointers);
+    this.fc._onMouseDownInDrawingMode(clientPointer);
   }
 
   onMouseMove(pointers) {
-    console.log('mousemove');
-    const mouseMoveEvt = this.getMouseEvent('onmousemove', pointers);
-    this.fc._onMouseMove(mouseMoveEvt);
+    const clientPointer = getClientPointer(this.fc._offset, pointers);
+    this.fc._onMouseMoveInDrawingMode(clientPointer);
   }
 
   onMouseUp(pointers) {
-    console.log('mouseup');
-    const mouseUpEvt = this.getMouseEvent('onmouseup', pointers);
-    this.fc._onMouseUp(mouseUpEvt);
-  }
-
-  getMouseEvent(event, pointers) {
-    return new MouseEvent(event, {
-      bubbles: true,
-      cancelable: true,
-      view: window,
-      ...pointers,
-    });
+    const clientPointer = getClientPointer(this.fc._offset, pointers);
+    this.fc._onMouseUpInDrawingMode(clientPointer);
   }
 }
 

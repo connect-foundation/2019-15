@@ -1,7 +1,11 @@
 /* eslint no-param-reassign:0 */
 import Tool from 'components/GamePlay/CanvasSection/DrawingPlayGround/PainterPlayGround/Tools/ToolType/Tool';
+import {
+  DEFAULT_ERASER_OPTIONS,
+  getClientPointer,
+} from 'constant/DrawingPlayGround';
 
-class Pen extends Tool {
+class Eraser extends Tool {
   setCanvas(fabricCanvas) {
     super.setCanvas(fabricCanvas);
     const { width, color } = DEFAULT_ERASER_OPTIONS;
@@ -10,28 +14,19 @@ class Pen extends Tool {
   }
 
   onMouseDown(pointers) {
-    const mouseDownEvt = this.getMouseEvent('onmousedown', pointers);
-    this.fc._onMouseDownInDrawingMode(mouseDownEvt);
+    const clientPointer = getClientPointer(this.fc._offset, pointers);
+    this.fc._onMouseDownInDrawingMode(clientPointer);
   }
 
   onMouseMove(pointers) {
-    const mouseMoveEvt = this.getMouseEvent('onmousemove', pointers);
-    this.fc._onMouseMoveInDrawingMode(mouseMoveEvt);
+    const clientPointer = getClientPointer(this.fc._offset, pointers);
+    this.fc._onMouseMoveInDrawingMode(clientPointer);
   }
 
   onMouseUp(pointers) {
-    const mouseUpEvt = this.getMouseEvent('onmouseup', pointers);
-    this.fc._onMouseUpInDrawingMode(mouseUpEvt);
-  }
-
-  getMouseEvent(event, pointers) {
-    return new MouseEvent(event, {
-      bubbles: true,
-      cancelable: true,
-      view: window,
-      ...pointers,
-    });
+    const clientPointer = getClientPointer(this.fc._offset, pointers);
+    this.fc._onMouseUpInDrawingMode(clientPointer);
   }
 }
 
-export default Pen;
+export default Eraser;
