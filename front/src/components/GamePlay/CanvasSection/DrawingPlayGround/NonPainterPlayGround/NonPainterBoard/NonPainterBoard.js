@@ -8,8 +8,9 @@ import {
 import PropTypes from 'prop-types';
 import useFabricCanvas from 'hooks/DrawingPlayGround/useFabricCanvas';
 import useGameSocket from 'hooks/Socket/useGameSocket';
-import NonPainterPen from 'components/GamePlay/CanvasSection/DrawingPlayGround/PainterPlayGround/Tools/ToolType/NonPainterPen';
 import DrawingPlayGroundContext from 'components/GamePlay/CanvasSection/DrawingPlayGround/DrawingPlayGround.context';
+import ToolManager from 'components/GamePlay/CanvasSection/DrawingPlayGround/NonPainterPlayGround/NonPainterBoard/ToolType/ToolManager';
+import Pen from 'components/GamePlay/CanvasSection/DrawingPlayGround/NonPainterPlayGround/NonPainterBoard/ToolType/Pen';
 
 NonPainterBoard.propTypes = {
   size: PropTypes.shape({
@@ -25,38 +26,30 @@ NonPainterBoard.defaultProps = {
   },
 };
 
-const pen = new NonPainterPen();
-
-const jsonEventList = ['objectAdded', 'objectRemoved', 'objectsCleared'];
 export default function NonPainterBoard() {
   const { canvasSize } = useContext(DrawingPlayGroundContext);
   const [fabricCanvas, attachFabricCanvas] = useFabricCanvas(canvasSize);
 
-  const setCanvasFromJson = (data) => {
-    fabricCanvas.loadFromJSON(data);
-    fabricCanvas.forEachObject((obj) => {
-      obj.selectable = false;
-      obj.evented = false;
-    });
-  };
+  const handlePenEvents = (e) => {
+    const { pointers, event, drawingOptions } = e;
+    const curToolType = ToolManager[drawingOptions.tool];
 
-  const handleEvents = ({ pointer, event }) => {
+    curToolType.setCanvas(fabricCanvas, drawingOptions);
     if (event === 'mouseDown') {
-      pen.onMouseDown(pointer);
+      curToolType.onMouseDown(pointers);
     } else if (event === 'mouseMove') {
-      pen.onMouseMove(pointer);
+      curToolType.onMouseMove(pointers);
+    } else if (event === 'mouseUp') {
+      curToolType.onMouseUp(pointers);
     }
   };
 
   const setCanvas = (eventList) => {
     eventList.forEach((e) => {
-      if (jsonEventList.includes(e.event)) {
-        setCanvasFromJson(e.data);
-        return;
+      if (!ToolManager.freeDrawingTools.includes(e.drawingOptions.tool)) {
+        ToolManager[e.drawingOptions.tool].draw(fabricCanvas, e);
       }
-
-      pen.setCanvas(fabricCanvas, e.drawingOptions);
-      handleEvents(e);
+      handlePenEvents(e);
     });
   };
 
