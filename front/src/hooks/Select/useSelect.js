@@ -1,8 +1,8 @@
 import { useContext, useState, useRef } from 'react';
 import GlobalContext from 'global.context';
 
-export default function useSelect(selectType) {
-  const [value, setValue] = useState(null);
+export default function useSelect(selectType, initValue) {
+  const [value, setValue] = useState(initValue);
   const selectRef = useRef(null);
   const { gameSocket } = useContext(GlobalContext);
 

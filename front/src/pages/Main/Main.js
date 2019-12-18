@@ -14,7 +14,7 @@ import { useHistory } from 'react-router-dom';
 import Button from '../../components/globalComponents/Button/Button';
 
 const Main = () => {
-  const { setGameSocket, setRoom, userDispatch } = useContext(GlobalContext);
+  const { setGameSocket, setRoom } = useContext(GlobalContext);
   const [nickName, setNickName] = useState('');
   const [isSignUp, setIsSignUp] = useState(
     parseCookies(document.cookie).isSignUp === 'true',

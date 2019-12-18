@@ -8,7 +8,6 @@ import { PublicRoomButton } from './PublicRoomButton.style';
 
 export default function PublicRoom() {
   const { gameSocket, user } = useContext(GlobalContext);
-  const history = useHistory();
   const makeGameStartBtnHandler = (roomType) => {
     return () => {
       enterRandom(gameSocket, { nickname: user.nickname, roomType });

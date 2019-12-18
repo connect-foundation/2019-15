@@ -1,4 +1,4 @@
-import React, { useReducer, useMemo, useContext } from 'react';
+import React, { useReducer, useMemo } from 'react';
 import Header from 'components/FriendsSection/refactor/FriendList/Header/Header';
 import Component from 'components/FriendsSection/refactor/FriendList/Component/Component';
 import Alert from 'components/globalComponents/Alert/Alert';

@@ -1,18 +1,24 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import PropTypes from 'prop-types';
 import SelectStyle from './Select.style';
 
 Select.propTypes = {
-  option: PropTypes.arrayOf(PropTypes.string),
+  option: PropTypes.arrayOf(
+    PropTypes.objectOf(
+      PropTypes.shape({ value: PropTypes.string, text: PropTypes.string }),
+    ),
+  ),
   defaultOption: PropTypes.string,
-  onChangeSelect: PropTypes.func.isRequired,
+  onChangeSelect: PropTypes.func,
   disabled: PropTypes.bool.isRequired,
-  reference: PropTypes.any.isRequired,
+  reference: PropTypes.shape(useRef),
 };
 
 Select.defaultProps = {
-  option: [],
-  defaultOption: null,
+  option: [{ value: '0', text: '0' }],
+  defaultOption: '',
+  onChangeSelect: () => {},
+  reference: null,
 };
 
 export default function Select({
@@ -22,8 +28,15 @@ export default function Select({
   disabled,
   reference,
 }) {
-  const options = option.map((optionValue) => (
-    <option selected={optionValue === defaultOption}>{optionValue}</option>
+  let options = [];
+  options = option.map((optionValue) => (
+    <option
+      key={optionValue.value}
+      value={optionValue.value}
+      defaultValue={optionValue === defaultOption}
+    >
+      {optionValue.text}
+    </option>
   ));
 
   return (
