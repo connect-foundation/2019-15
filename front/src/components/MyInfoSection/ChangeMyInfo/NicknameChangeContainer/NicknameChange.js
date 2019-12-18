@@ -39,29 +39,17 @@ export default function NicknameChange({
 
   useEffect(() => {
     if (!data || !data.checkNicknameAvailable) {
+      setDisabled(true);
       return;
     }
     const { nickname: nicknameChecked, result } = data.checkNicknameAvailable;
+    if (result) setDisabled(false);
 
     resultTextDispatch({
       type: `${result ? 'usable' : 'notUsable'}`,
       nickname: nicknameChecked,
     });
-  }, [data, resultTextDispatch]);
-
-  useEffect(() => {
-    if (!data || !data.checkNicknameAvailable) {
-      setDisabled(true);
-    } else {
-      const { result } = data.checkNicknameAvailable;
-      if (result) setDisabled(false);
-      else setDisabled(true);
-    }
-
-    return () => {
-      setDisabled(true);
-    };
-  }, [data, nickname, userNickname]);
+  }, [data]);
 
   const checkNickname = (input) => {
     checkInputNicknameAvailable(input);
