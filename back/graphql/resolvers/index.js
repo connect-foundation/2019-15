@@ -4,6 +4,7 @@ const friendResolvers = require('./friend');
 const wordResolvers = require('./word');
 const invitationResolvers = require('./invitation');
 const beforeFriendResolvers = require('./beforeFriend');
+const videoResolvers = require('./video');
 const categoryResolvers = require('./categories');
 
 module.exports = [
@@ -13,5 +14,6 @@ module.exports = [
   wordResolvers,
   invitationResolvers,
   beforeFriendResolvers,
+  videoResolvers,
   categoryResolvers,
 ];
