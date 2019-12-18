@@ -55,6 +55,19 @@ export default function NonPainterBoard() {
     });
   };
 
+  useEffect(() => {
+    if (!fabricCanvas) return () => {};
+
+    const onObjectAdded = ({ target }) => {
+      target.selectable = false;
+      target.evented = false;
+    };
+    fabricCanvas.on('object:added', onObjectAdded);
+    return () => {
+      fabricCanvas.off('object:added');
+    };
+  }, [fabricCanvas]);
+
   useGameSocket('drawing', ({ eventList }) => {
     setCanvas(eventList);
   });

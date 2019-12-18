@@ -98,15 +98,20 @@ export default function PainterBoard({ drawingOptions }) {
       emitable = false;
       startPoint = null;
       endPoint = null;
+    const onObjectAdded = ({ target }) => {
+      target.selectable = false;
+      target.evented = false;
     };
 
     fabricCanvas.on('mouse:down', onMouseDown);
     fabricCanvas.on('mouse:move', onMouseMove);
     fabricCanvas.on('mouse:up', onMouseUp);
+    fabricCanvas.on('object:added', onObjectAdded);
     return () => {
       fabricCanvas.off('mouse:down');
       fabricCanvas.off('mouse:move');
       fabricCanvas.off('mouse:up');
+      fabricCanvas.on('object:added');
     };
   }, [drawingOptions, eventListDispatch, fabricCanvas, toolName]);
 
