@@ -4,12 +4,15 @@ import ContentSection from 'components/globalComponents/ContentSection/ContentSe
 import Background from 'components/globalComponents/Container/Background.style';
 import NavigationBar from 'components/NavigationBar/NavigationBar';
 import Ranking from 'components/Ranking/Ranking';
+import VideoSection from 'components/VideoSection/VideoSection';
 
 const MyPage = () => (
   <>
     <NavigationBar />
     <Background id="MyPage">
-      <ContentSection title="움짤" />
+      <ContentSection title="움짤">
+        <VideoSection />
+      </ContentSection>
       <ContentSection title="랭킹">
         <Ranking />
       </ContentSection>
