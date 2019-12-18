@@ -22,7 +22,10 @@ function WordChoice({ setSelectedWord }) {
     isWordChoiceOpen,
     setIsWordChoiceOpen,
   } = useContext(GamePlayContext);
-  const { data, loading, error, refetch } = useQuery(GET_RANDOM_WORDS);
+
+  const { data, loading, error, refetch } = useQuery(GET_RANDOM_WORDS, {
+    variables: { categoryId: Number(room.categoryId) },
+  });
 
   if (loading) {
     return <></>;
