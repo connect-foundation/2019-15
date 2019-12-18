@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import GET_RANDOM_WORDS from 'queries/word';
 import GlobalContext from 'global.context';
 import GamePlayContext from 'components/GamePlay/GamePlay.context';
-import { selectWord } from 'logics/socketLogic';
 import { faSync } from '@fortawesome/free-solid-svg-icons';
 import Background from './Background.style';
 import WordSet from './WordSet.style';
@@ -22,7 +21,10 @@ function WordChoice({ setSelectedWord }) {
     isWordChoiceOpen,
     setIsWordChoiceOpen,
   } = useContext(GamePlayContext);
-  const { data, loading, error, refetch } = useQuery(GET_RANDOM_WORDS);
+
+  const { data, loading, error, refetch } = useQuery(GET_RANDOM_WORDS, {
+    variables: { categoryId: Number(room.categoryId) },
+  });
 
   if (loading) {
     return <></>;
@@ -37,7 +39,7 @@ function WordChoice({ setSelectedWord }) {
     const { roomType, roomId } = room;
     const answer = e.target.textContent;
     setSelectedWord(answer);
-    selectWord(gameSocket, { answer, roomType, roomId });
+    gameSocket.emit('selectWord', { answer, roomType, roomId });
   }
 
   async function wordsChange() {
