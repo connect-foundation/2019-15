@@ -103,6 +103,7 @@ class Room {
         const nextExaminerIndex = userIndex === 0 ? this.players.length - 1 : userIndex - 1;
         this.players[nextExaminerIndex].privileged = true;
 
+        if (this.isSelectingWord()) this.examinerIndex = nextExaminerIndex;
         if (this.isPlayingQuestion()) return escapeResultCode.EXAMINER_IS_ESCAPED;
       }
       // 출제자가 아닌 플레이어가 탈주한 경우
