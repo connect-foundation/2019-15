@@ -7,6 +7,7 @@ export const ToolsStyle = styled.div`
   height: 6rem;
   border-radius: 0.5rem;
   text-align: center;
+  justify-content: center;
   > * {
     margin: 0.5rem 1rem;
   }

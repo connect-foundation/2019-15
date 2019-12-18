@@ -7,6 +7,7 @@ const ColorBoxStyle = styled.div`
   display: inline-block;
   background-color: ${(props) => props.rgb};
   border: ${(props) => (props.rgb === '#FFFFFF' ? '1px solid #c0c0c0' : '')};
+  border-radius: 0.2rem;
   width: ${colorBoxSize};
   height: ${colorBoxSize};
   cursor: pointer;

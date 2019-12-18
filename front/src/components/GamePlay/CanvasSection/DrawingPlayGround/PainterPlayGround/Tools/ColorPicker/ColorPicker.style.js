@@ -3,13 +3,15 @@ import styled from 'styled-components';
 const colorBoxMargin = '4px';
 
 export const ColorPickerStyle = styled.div`
-  box-shadow: rgba(0, 0, 0, 0.12) 0px 2px 10px, rgba(0, 0, 0, 0.16) 0px 2px 5px;
+  border: rgba(105, 105, 105, 0.5) 0.5px solid;
+  border-radius: 0.3rem;
 `;
 
 export const ColorBoxList = styled.div`
-  display: flex;
-  flex-wrap: wrap;
   width: 7rem;
+  display: grid;
+  justify-content: space-around;
+  grid-template-columns: auto auto auto auto;
   > * {
     margin: 3px ${colorBoxMargin};
   }

@@ -5,8 +5,10 @@ export const ToolTypeStyle = styled.div`
 `;
 
 export const ToolTypeSelectionStyle = styled.div`
-  display: flex;
   flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: auto auto;
+  justify-content: space-around;
   width: 9rem;
   > * {
     margin: 2px;
