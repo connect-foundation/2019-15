@@ -1,3 +1,4 @@
+/* eslint no-param-reassign:0 */
 import React, { useContext, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import {
@@ -8,7 +9,7 @@ import PainterToolManager from 'components/GamePlay/CanvasSection/DrawingPlayGro
 import useCanvasDataEmitWithCaching from 'hooks/DrawingPlayGround/useCanvasDataEmitWithCaching';
 import useFabricCanvas from 'hooks/DrawingPlayGround/useFabricCanvas';
 import DrawingPlayGroundContext from 'components/GamePlay/CanvasSection/DrawingPlayGround/DrawingPlayGround.context';
-import History from 'components/GamePlay/CanvasSection/DrawingPlayGround/PainterPlayGround/PainterBoard/History/History';
+import { getOffset } from 'constant/DrawingPlayGround';
 
 PainterBoard.propTypes = {
   drawingOptions: PropTypes.shape({
@@ -22,21 +23,6 @@ PainterBoard.defaultProps = {
     tool: PainterToolManager.toolList[0],
     strokeColor: '#000000',
   }),
-};
-
-const POINTER_LIST = [
-  'offsetX',
-  'offsetY',
-  'screenX',
-  'screenY',
-  'clientX',
-  'clientY',
-];
-const getPointers = (e) => {
-  return POINTER_LIST.reduce((acc, cur) => {
-    acc[cur] = e[cur];
-    return acc;
-  }, {});
 };
 
 export default function PainterBoard({ drawingOptions }) {
@@ -54,50 +40,56 @@ export default function PainterBoard({ drawingOptions }) {
     let startPoint;
     let endPoint;
 
-    const onMouseDown = (e) => {
-      startPoint = e.pointer;
-      tool.onMouseDown(e.pointer);
-
-      emitable = true;
-      eventListDispatch({
-        type: 'push',
-        value: {
-          drawingOptions,
-          pointers: getPointers(e.e),
-          event: 'mouseDown',
-        },
-      });
-    };
-    const onMouseMove = (e) => {
-      tool.onMouseMove(e.pointer);
-
-      eventListDispatch({
-        type: 'push',
-        value: {
-          drawingOptions,
-          pointers: getPointers(e.e),
-          event: 'mouseMove',
-        },
-      if (!PainterToolManager.freeDrawingTools.includes(toolName)) return;
-      });
-    };
-    const onMouseUp = (e) => {
-      endPoint = e.pointer;
-      tool.onMouseUp(e.pointer);
-      eventListDispatch({
-        type: 'push',
-        value: {
-          drawingOptions,
-          startPoint,
-          endPoint,
-          pointers: getPointers(e.e),
-          event: 'mouseUp',
-        },
-      if (!PainterToolManager.freeDrawingTools.includes(toolName) || !emitable)
-      });
+    const clear = () => {
       emitable = false;
       startPoint = null;
       endPoint = null;
+    };
+
+    const pushEventListDispatch = (event, options) => {
+      eventListDispatch({
+        type: 'push',
+        value: {
+          ...options,
+          event,
+        },
+      });
+    };
+
+    const onMouseDown = ({ pointer, e }) => {
+      startPoint = pointer;
+      tool.onMouseDown(pointer);
+      if (!PainterToolManager.freeDrawingTools.includes(toolName)) return;
+
+      pushEventListDispatch('onMouseDown', {
+        drawingOptions,
+        offset: getOffset(e),
+      });
+      emitable = true;
+    };
+    const onMouseMove = ({ pointer, e }) => {
+      tool.onMouseMove(pointer);
+      if (!PainterToolManager.freeDrawingTools.includes(toolName) || !emitable)
+        return;
+
+      pushEventListDispatch('onMouseMove', {
+        drawingOptions,
+        offset: getOffset(e),
+      });
+    };
+    const onMouseUp = ({ pointer, e }) => {
+      endPoint = pointer;
+      tool.onMouseUp(pointer);
+      let options;
+      if (PainterToolManager.freeDrawingTools.includes(toolName)) {
+        options = { drawingOptions, offset: getOffset(e) };
+      } else {
+        options = { drawingOptions, startPoint, endPoint };
+      }
+      pushEventListDispatch('onMouseUp', options);
+      clear();
+    };
+
     const onObjectAdded = ({ target }) => {
       target.selectable = false;
       target.evented = false;

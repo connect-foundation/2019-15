@@ -2,11 +2,11 @@
 import { fabric } from 'fabric';
 import Tool from 'components/GamePlay/CanvasSection/DrawingPlayGround/PainterPlayGround/Tools/ToolType/Tool';
 import { getDistance, getAngle } from 'util/Circle';
+import { DEFAULT_CIRCLE_OPTIONS } from 'constant/DrawingPlayGround';
 
 class Circle extends Tool {
-  draw(fc, e) {
-    const { startPoint, endPoint } = e;
-    const { strokeColor, fillColor, strokeWidth } = e.drawingOptions;
+  draw({ startPoint, endPoint, drawingOptions }) {
+    const { strokeColor, fillColor, strokeWidth } = drawingOptions;
     const circle = new fabric.Circle({
       left: startPoint.x,
       top: startPoint.y,
@@ -21,8 +21,8 @@ class Circle extends Tool {
       angle: getAngle(startPoint, endPoint),
     });
     circle.setCoords();
-    fc.add(circle);
-    fc.renderAll();
+    this.fc.add(circle);
+    this.fc.renderAll();
   }
 }
 

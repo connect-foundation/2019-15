@@ -15,6 +15,23 @@ export const RGB_LIST = [
   '#C0C0C0',
   '#FFFFFF',
 ];
+
+export const getOffset = (e) => {
+  return {
+    x: e.offsetX,
+    y: e.offsetY,
+  };
+};
+
+export const getMouseEvent = (event, options) => {
+  return new MouseEvent(event, {
+    bubbles: true,
+    cancelable: true,
+    view: window,
+    ...options,
+  });
+};
+
 export const DEFAULT_CIRCLE_OPTIONS = {
   originX: 'left',
   originY: 'center',
