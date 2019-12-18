@@ -11,7 +11,7 @@ module.exports = {
       let randomInt = [];
 
       const availableRowsQuantity = await Words.count({ where: { categoryId: { [Op.ne]: null } } });
-      if (availableRowsQuantity <= 3) return [];
+      if (availableRowsQuantity <= howmany) return [];
 
       let endFlag = true;
       while (endFlag) {
