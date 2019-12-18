@@ -8,7 +8,7 @@ export default function Chatting() {
   const [inputValue, setValue] = useState('');
 
   function inputChangeHandler(e) {
-    setValue(e.target.value);
+    if (e.target.value.length < 50) setValue(e.target.value);
   }
 
   async function pressKeyHandler(e) {
