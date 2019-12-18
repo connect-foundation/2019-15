@@ -34,7 +34,7 @@ function setGameSocket(socket) {
 
   socket.on('exitRoom', exitRoom.bind(this, gameSocket));
   socket.on('startPrivateGame', startPrivateGame.bind(this, gameSocket));
-  socket.on('enterPrivate', enterPrivate.bind(this, gameSocket));
+  socket.on('enterPrivate', enterPrivate.bind(this, gameSocket, roomInfo));
   socket.on('selectWord', selectWord.bind(this, gameSocket));
   socket.on('sendMessage', sendMessage.bind(this, gameSocket));
   socket.on('enterRandom', enterRandom.bind(this, gameSocket, roomInfo));
