@@ -8,8 +8,7 @@ const pen = new Pen();
 const circle = new Circle();
 const eraser = new Eraser();
 
-// eraser또한 pen으로 취급하여 해결
-const ToolManager = {
+const NonPainterToolManager = {
   pen,
   line,
   circle,
@@ -18,4 +17,4 @@ const ToolManager = {
   freeDrawingTools: ['pen', 'eraser'],
 };
 
-export default ToolManager;
+export default NonPainterToolManager;
