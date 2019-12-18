@@ -87,7 +87,6 @@ const GamePlay = () => {
 
   const endGameCallback = useCallback(
     ({ _scores, answer }) => {
-      console.log('end game callback');
       // 타이머 멈추기
       setIsTimerGetReady(false);
 
@@ -98,13 +97,11 @@ const GamePlay = () => {
 
       // 게임 결과 띄우기
       setTimeout(() => {
-        console.log('show game result');
         resetQuestionStates();
         setShowGameResult(true);
 
         // 게임 결과 지우고 메인으로 나가기
         setTimeout(() => {
-          console.log('go to main page');
           setShowGameResult(false);
           history.push('main');
         }, 5000);

@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import ColorBoxStyle from 'components/GamePlay/CanvasSection/DrawingPlayGround/Tools/ColorPicker/ColorBox.style';
+import ColorBoxStyle from 'components/GamePlay/CanvasSection/DrawingPlayGround/PainterPlayGround/Tools/ColorPicker/ColorBox.style';
 
 ColorBox.propTypes = {
   rgb: PropTypes.string.isRequired,
