@@ -5,9 +5,9 @@ class Eraser extends Tool {
   setCanvas(fabricCanvas) {
     super.setCanvas(fabricCanvas);
     this.fc.isDrawingMode = true;
-    this.fc.selection = false;
-    this.fc.freeDrawingBrush.width = 50;
-    this.fc.freeDrawingBrush.color = '#FFFFFF';
+    const { width, color } = DEFAULT_ERASER_OPTIONS;
+    this.fc.freeDrawingBrush.width = width;
+    this.fc.freeDrawingBrush.color = color;
   }
 }
 

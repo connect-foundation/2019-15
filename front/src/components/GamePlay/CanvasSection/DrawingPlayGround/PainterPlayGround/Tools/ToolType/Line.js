@@ -12,7 +12,7 @@ class Line extends Tool {
       obj.evented = false;
     });
     this.options = {
-      ...Line.defaultOptions(),
+      ...DEFAULT_LINE_OPTIONS,
       stroke: strokeColor,
       fill: strokeColor,
       strokeWidth,

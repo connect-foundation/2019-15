@@ -15,3 +15,18 @@ export const RGB_LIST = [
   '#C0C0C0',
   '#FFFFFF',
 ];
+export const DEFAULT_CIRCLE_OPTIONS = {
+  originX: 'left',
+  originY: 'center',
+};
+
+export const DEFAULT_ERASER_OPTIONS = {
+  width: 50,
+  color: '#FFFFFF',
+};
+
+export const DEFAULT_LINE_OPTIONS = {
+  originX: 'center',
+  originY: 'center',
+};
+

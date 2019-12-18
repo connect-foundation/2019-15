@@ -13,19 +13,10 @@ class Circle extends Tool {
       obj.evented = false;
     });
     this.options = {
-      ...Circle.defaultOptions(),
+      ...DEFAULT_CIRCLE_OPTIONS,
       stroke: strokeColor,
       fill: fillColor,
       strokeWidth,
-    };
-  }
-
-  static defaultOptions() {
-    return {
-      originX: 'left',
-      originY: 'center',
-      selectable: false,
-      evented: false,
     };
   }
 

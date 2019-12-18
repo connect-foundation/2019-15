@@ -4,22 +4,13 @@ import Tool from 'components/GamePlay/CanvasSection/DrawingPlayGround/PainterPla
 import { getDistance, getAngle } from 'util/Circle';
 
 class Circle extends Tool {
-  static defaultOptions() {
-    return {
-      originX: 'left',
-      originY: 'center',
-      selectable: false,
-      evented: false,
-    };
-  }
-
   draw(fc, e) {
     const { startPoint, endPoint } = e;
     const { strokeColor, fillColor, strokeWidth } = e.drawingOptions;
     const circle = new fabric.Circle({
       left: startPoint.x,
       top: startPoint.y,
-      ...Circle.defaultOptions(),
+      ...DEFAULT_CIRCLE_OPTIONS,
       stroke: strokeColor,
       fill: fillColor,
       strokeWidth,
