@@ -1,12 +1,26 @@
+const models = require('../../db/models');
+
 const getRandomInt = require('../../util/getRandomInt');
 const { roomState } = require('../../config/roomConfig');
 const { DrawingHistories } = require('../../db/models');
 
 async function saveDrawingHistories(playerId, word) {
-  await DrawingHistories.create({
-    userId: playerId,
-    word: word,
-  });
+  let transaction;
+
+  try {
+    transaction = await models.sequelize.transaction();
+
+    await DrawingHistories.bulkCreate([
+      {
+        userId: playerId,
+        word: word,
+      },
+    ]);
+    await transaction.commit();
+  } catch (e) {
+    if (transaction) await transaction.rollback();
+    throw new Error(e);
+  }
 }
 
 function selectWord(gameSocket, { answer, roomType, roomId }) {
