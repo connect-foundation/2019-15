@@ -1,4 +1,3 @@
-const { personEnterPrivateRoom, sendUserListToRoom } = require('./game');
 const { RoomManager } = require('../RoomManager');
 const sendGameImage = require('./gameImage');
 const { enterRandom, enterPrivate } = require('./enterGame');
@@ -52,7 +51,7 @@ function setGameSocket(socket) {
 
       // 방에 있는 플레이어 업데이트
       const resultCode = room.removePlayer(userIdx);
-      sendUserListToRoom(room.players, roomId, this.gameIo);
+      room.sendUserList(this.gameIo);
       gameSocket.leave();
 
       switch (resultCode) {
@@ -82,7 +81,7 @@ function setGameSocket(socket) {
 
     if (gameSocket.id === room.roomOwner) {
       room.passRoomOwnerToNext();
-      sendUserListToRoom(room.players, roomId, this.gameIo);
+      room.sendUserList(this.gameIo);
     }
 
     if (roomType !== PRIVATE_ROOM_NAME && room.players.length < 1) {

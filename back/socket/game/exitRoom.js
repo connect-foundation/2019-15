@@ -1,4 +1,3 @@
-const { sendUserListToRoom } = require('./game');
 const { RoomManager } = require('../RoomManager');
 
 function exitRoom(gameSocket, { roomType, roomId }) {
@@ -9,12 +8,12 @@ function exitRoom(gameSocket, { roomType, roomId }) {
   room.removePlayer(userIndex);
 
   gameSocket.leave(roomId);
-  // 리뷰: 유저리스트를 다보내지 말고 제외된 유저 아이디만 보내자
-  sendUserListToRoom(room.players, roomId, this.gameIo);
+
+  room.sendUserList(this.gameIo);
 
   if (gameSocket.id === room.roomOwner) {
     room.passRoomOwnerToNext();
-    sendUserListToRoom(room.players, roomId, this.gameIo);
+    room.sendUserList(this.gameIo);
   }
 }
 

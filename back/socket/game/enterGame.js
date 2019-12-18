@@ -1,4 +1,3 @@
-const { sendUserListToRoom } = require('./game');
 const User = require('../User');
 const { WAIT_UNTIL_USER_ADD_EVENT } = require('../../config/roomConfig');
 
@@ -19,8 +18,7 @@ function enterRandom(gameSocket, roomInfo, { nickname, avatar }) {
     gameSocket.emit('gamestart', room.makeGameStartData());
     gameSocket.emit('startQuestion', room.makeStartQuestionData());
   }
-
-  sendUserListToRoom(room.players, roomInfo.roomId, this.gameIo);
+  room.sendUserList(this.gameIo);
 }
 
 function enterPrivate(gameSocket, roomInfo, { nickname, roomId, avatar }) {
@@ -40,7 +38,7 @@ function enterPrivate(gameSocket, roomInfo, { nickname, roomId, avatar }) {
   room.checkAndEmitRoomOwner(gameSocket.id, gameSocket);
 
   setTimeout(() => {
-    sendUserListToRoom(room.players, roomId, this.gameIo);
+    room.sendUserList(this.gameIo);
   }, 0);
 
   if (room.isPlayingQuestion()) {
@@ -49,8 +47,7 @@ function enterPrivate(gameSocket, roomInfo, { nickname, roomId, avatar }) {
     }, 0);
 
     setTimeout(() => {
-      sendUserListToRoom(room.players, roomId, this.gameIo);
-
+      room.sendUserList(this.gameIo);
       gameSocket.emit('gamestart', room.makeGameStartData());
       gameSocket.emit('startQuestion', room.makeStartQuestionData());
     }, WAIT_UNTIL_USER_ADD_EVENT);
