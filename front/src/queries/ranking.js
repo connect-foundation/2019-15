@@ -39,3 +39,9 @@ export const GET_RANKING_FRIENDS = gql`
     }
   }
 `;
+
+export const GET_RANKING_BY_ID = gql`
+  query getRankingById($id: Int!) {
+    getRankingById(id: $id)
+  }
+`;

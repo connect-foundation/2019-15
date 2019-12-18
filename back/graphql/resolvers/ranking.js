@@ -85,6 +85,13 @@ const rankingResolvers = {
 
       return getPageResult(edges, first);
     },
+    getRankingById: async (obj, { id }, { Users }) => {
+      const allRanking = await Users.findAll({
+        order: [['score', 'DESC']],
+      });
+
+      return allRanking.findIndex((user) => user.id === id) + 1;
+    },
   },
 };
 
