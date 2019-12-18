@@ -1,15 +1,9 @@
-import React, { useReducer } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-import Tools from 'components/GamePlay/CanvasSection/DrawingPlayGround/Tools/Tools';
-import PainterBoard from 'components/GamePlay/CanvasSection/DrawingPlayGround/PainterBoard/PainterBoard';
-import NonPainterBoard from 'components/GamePlay/CanvasSection/DrawingPlayGround/NonPainterBoard/NonPainterBoard';
-import { ToolsStyle } from 'components/GamePlay/CanvasSection/DrawingPlayGround/Tools/Tools.style';
-
-import { DEFAULT_DRAWING_OPTIONS } from 'constant/DrawingPlayGround';
-import {
-  DrawingPlayGroundStyle,
-  CenterSpanStyle,
-} from './DrawingPlayGround.style';
+import PainterPlayGround from 'components/GamePlay/CanvasSection/DrawingPlayGround/PainterPlayGround/PainterPlayGround';
+import NonPainterPlayGround from 'components/GamePlay/CanvasSection/DrawingPlayGround/NonPainterPlayGround/NonPainterPlayGround';
+import DrawingPlayGroundContext from 'components/GamePlay/CanvasSection/DrawingPlayGround/DrawingPlayGround.context';
+import { DrawingPlayGroundStyle } from './DrawingPlayGround.style';
 
 DrawingPlayGround.propTypes = {
   drawable: PropTypes.bool.isRequired,
@@ -17,7 +11,7 @@ DrawingPlayGround.propTypes = {
     width: PropTypes.number,
     height: PropTypes.number,
   }),
-  painterNickname: PropTypes.node.isRequired,
+  painterNickname: PropTypes.string,
 };
 
 DrawingPlayGround.defaultProps = {
@@ -25,21 +19,7 @@ DrawingPlayGround.defaultProps = {
     width: 500,
     height: 500,
   },
-};
-
-const setDrawingOptions = (prev, { type, value }) => {
-  switch (type) {
-    case 'tool':
-      return { ...prev, tool: value };
-    case 'strokeColor':
-      return { ...prev, strokeColor: value };
-    case 'strokeWidth':
-      return { ...prev, strokeWidth: value };
-    case 'fillColor':
-      return { ...prev, fillColor: value };
-    default:
-      throw new Error(`${type} is wrong action type`);
-  }
+  painterNickname: '',
 };
 
 export default function DrawingPlayGround({
@@ -47,31 +27,15 @@ export default function DrawingPlayGround({
   canvasSize,
   painterNickname,
 }) {
-  const [drawingOptions, drawingOptionsDispatcher] = useReducer(
-    setDrawingOptions,
-    DEFAULT_DRAWING_OPTIONS,
-  );
-
   return (
-    <DrawingPlayGroundStyle>
-      {drawable || painterNickname === null ? (
-        <>
-          <PainterBoard drawingOptions={drawingOptions} size={canvasSize} />
-          <Tools
-            drawingOptions={drawingOptions}
-            setDrawingOptions={drawingOptionsDispatcher}
-          />
-        </>
-      ) : (
-        <>
-          <NonPainterBoard size={canvasSize} />
-          <ToolsStyle>
-            <CenterSpanStyle>
-              {painterNickname}님이 그림을 그리고 있습니다.
-            </CenterSpanStyle>
-          </ToolsStyle>
-        </>
-      )}
-    </DrawingPlayGroundStyle>
+    <DrawingPlayGroundContext.Provider value={{ canvasSize }}>
+      <DrawingPlayGroundStyle>
+        {drawable || painterNickname === null ? (
+          <PainterPlayGround />
+        ) : (
+          <NonPainterPlayGround painterNickname={painterNickname} />
+        )}
+      </DrawingPlayGroundStyle>
+    </DrawingPlayGroundContext.Provider>
   );
 }
