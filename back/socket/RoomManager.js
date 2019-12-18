@@ -62,6 +62,13 @@ const RoomManager = {
     return roomType && roomId && this.room[roomType].hasOwnProperty(roomId);
   },
 
+  getRoom({ roomType, roomId }) {
+    if (this.isExistRoom(roomType, roomId)) {
+      return this.room[roomType][roomId];
+    }
+    return null;
+  },
+
   getRoomByRoomId(roomName, roomId) {
     return this.room[roomName][roomId];
   },
