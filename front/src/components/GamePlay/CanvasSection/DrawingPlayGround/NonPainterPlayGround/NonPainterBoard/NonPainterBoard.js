@@ -1,5 +1,5 @@
 /* eslint no-param-reassign:0 */
-import React, { useContext } from 'react';
+import React, { useEffect, useContext } from 'react';
 import {
   NonPainterBoardStyle,
   CanvasStyle,
@@ -29,29 +29,19 @@ export default function NonPainterBoard() {
   const { canvasSize } = useContext(DrawingPlayGroundContext);
   const [fabricCanvas, attachFabricCanvas] = useFabricCanvas(canvasSize);
 
-  const handlePenEvents = (e) => {
-    const { pointers, event, drawingOptions } = e;
-    const curToolType = ToolManager[drawingOptions.tool];
-
-    curToolType.setCanvas(fabricCanvas, drawingOptions);
-    if (event === 'mouseDown') {
-      curToolType.onMouseDown(pointers);
-    } else if (event === 'mouseMove') {
-      curToolType.onMouseMove(pointers);
-    } else if (event === 'mouseUp') {
-      curToolType.onMouseUp(pointers);
-    }
-  };
-
   const setCanvas = (eventList) => {
     eventList.forEach((e) => {
+      const { offset, event, drawingOptions } = e;
+      const curToolType = NonPainterToolManager[drawingOptions.tool];
+      curToolType.setCanvas(fabricCanvas, drawingOptions);
+
       if (
         !NonPainterToolManager.freeDrawingTools.includes(drawingOptions.tool)
       ) {
         NonPainterToolManager[drawingOptions.tool].draw(e);
         return;
       }
-      handlePenEvents(e);
+      curToolType[event](offset);
     });
   };
 
