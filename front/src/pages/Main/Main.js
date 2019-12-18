@@ -7,10 +7,10 @@ import RoomSelectSection from 'components/RoomSelectSection/RoomSelectSection';
 import FriendsSection from 'components/FriendsSection/refactor/FriendsSection';
 import makeModal from 'components/globalComponents/Modal/Modal';
 import parseCookies from 'util/cookie';
-import { connectGameSocket } from 'logics/socketLogic';
 import Room from 'logics/room';
 import useGameSocket from 'hooks/Socket/useGameSocket';
 import { useHistory } from 'react-router-dom';
+import useInitGameSocket from 'hooks/Socket/useInitGameSocket';
 import Button from '../../components/globalComponents/Button/Button';
 
 const Main = () => {
@@ -21,14 +21,11 @@ const Main = () => {
   );
   const history = useHistory();
   useEffect(() => {
-    const initSocket = () => {
-      const gameSocket = connectGameSocket();
-      setGameSocket(gameSocket);
-      setRoom(null);
-    };
     checkAuth(setNickName);
-    initSocket();
-  }, [setGameSocket, setRoom]);
+    setRoom(null);
+  }, [setRoom]);
+
+  setGameSocket(useInitGameSocket());
 
   useGameSocket('connectRandom', ({ roomType, roomId }) => {
     setRoom(new Room(roomId, roomType));

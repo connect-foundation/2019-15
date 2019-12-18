@@ -1,5 +1,5 @@
 const { PRIVATE_ROOM_NAME } = require('../../config/roomConfig');
-const { sendUserListToRoom } = require('./game');
+const { WAIT_UNTIL_USER_ADD_EVENT } = require('../../config/roomConfig');
 
 function startPrivateGame(gameSocket, { roomId, expireTime, round, categoryId }) {
   const room = this.RoomManager.room[PRIVATE_ROOM_NAME][roomId];
@@ -12,9 +12,9 @@ function startPrivateGame(gameSocket, { roomId, expireTime, round, categoryId })
 
     setTimeout(() => {
       room.prepareFirstQuestion();
-      sendUserListToRoom(room.players, roomId, this.gameIo);
+      room.sendUserList(this.gameIo);
       this.gameIo.to(roomId).emit('gamestart', room.makeGameStartData());
-    }, 1000);
+    }, WAIT_UNTIL_USER_ADD_EVENT);
   }
 }
 

@@ -3,7 +3,6 @@ import uuid from 'uuid/v1';
 import { useHistory } from 'react-router-dom';
 import GlobalContext from 'global.context';
 import { PrivateRoomList } from 'constant/room/roomInfo';
-import { emitMakePrivateRoom } from 'logics/socketLogic';
 import RoomContainer from '../RoomContainer/RoomContainer';
 import PrivateRoomButton from './privateRoomButton.style';
 
@@ -13,7 +12,7 @@ export default function PrivateRoom() {
   const onClickMakeRoomBtn = () => {
     const privateRoomId = uuid();
     history.push(`setting:${privateRoomId}`);
-    emitMakePrivateRoom(gameSocket, { roomId: privateRoomId });
+    gameSocket.emit('makePrivate', { roomId: privateRoomId });
   };
   const buttonComponents = PrivateRoomList.map((text) => (
     <PrivateRoomButton key={text} onClick={onClickMakeRoomBtn}>

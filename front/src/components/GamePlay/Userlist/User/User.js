@@ -1,17 +1,17 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import PENCIL from 'asset/pencil.png';
-import useAvatar from 'hooks/Avatar/useAvatar';
 import {
   UserStyle,
   UserInfoStyle,
-  UserAvatarContainer,
   UserNickName,
   Text,
   Drawer,
   Score,
   Ranking,
+  UserImage,
 } from './User.style';
+import { getAvatar } from 'logics/avatar';
 
 User.defaultProps = {
   className: '',
@@ -38,13 +38,11 @@ export default function User({
   score,
   leftTurn,
 }) {
-  const [avatarRef] = useAvatar(avatar);
-
   useEffect(() => {}, [leftTurn]);
 
   return (
     <UserStyle className={className} privileged={privileged}>
-      <UserAvatarContainer ref={avatarRef} />
+      <UserImage src={getAvatar(avatar)} />
       <UserInfoStyle>
         <UserNickName>
           <Ranking>#{index}</Ranking>

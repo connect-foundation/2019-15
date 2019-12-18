@@ -25,7 +25,10 @@ const escapeResultCode = {
   IS_SELECTING_WORD: 2,
   EXAMINER_IS_ESCAPED: 3,
   NON_EXAMINER_IS_ESCAPED: 4,
+  NOT_PROPER: 0,
 };
+
+const WAIT_UNTIL_USER_ADD_EVENT = 1000;
 
 module.exports = {
   maxPeopleNum,
@@ -33,4 +36,5 @@ module.exports = {
   defaultRoomSetting,
   PRIVATE_ROOM_NAME,
   escapeResultCode,
+  WAIT_UNTIL_USER_ADD_EVENT,
 };
