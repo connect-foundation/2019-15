@@ -1,20 +1,22 @@
-import { useRef, useCallback } from 'react';
+import { useState, useCallback } from 'react';
 import { fabric } from 'fabric';
 
 export default function useFabricCanvas({ width, height }) {
-  const fabricCanvas = useRef(null);
+  const [fabricCanvas, setFabricCanvas] = useState(null);
 
-  const setFabricCanvas = useCallback(
+  const attachFabricCanvas = useCallback(
     (canvas) => {
-      fabricCanvas.current = new fabric.Canvas(canvas, {
-        isDrawingMode: false,
-        selection: false,
-        width,
-        height,
-      });
+      setFabricCanvas(
+        new fabric.Canvas(canvas, {
+          isDrawingMode: false,
+          selection: false,
+          width,
+          height,
+        }),
+      );
     },
     [height, width],
   );
 
-  return [fabricCanvas, setFabricCanvas];
+  return [fabricCanvas, attachFabricCanvas];
 }

@@ -4,10 +4,10 @@ import {
   VerticalAlignDiv,
   ToolsStyle,
   ToolTitleStyle,
-} from 'components/GamePlay/CanvasSection/DrawingPlayGround/Tools/Tools.style';
-import ColorPicker from 'components/GamePlay/CanvasSection/DrawingPlayGround/Tools/ColorPicker/ColorPicker';
-import ToolType from 'components/GamePlay/CanvasSection/DrawingPlayGround/Tools/ToolType/ToolType';
-import ToolManager from 'components/GamePlay/CanvasSection/DrawingPlayGround/Tools/ToolType/ToolManager';
+} from 'components/GamePlay/CanvasSection/DrawingPlayGround/PainterPlayGround/Tools/Tools.style';
+import ColorPicker from 'components/GamePlay/CanvasSection/DrawingPlayGround/PainterPlayGround/Tools/ColorPicker/ColorPicker';
+import ToolType from 'components/GamePlay/CanvasSection/DrawingPlayGround/PainterPlayGround/Tools/ToolType/ToolType';
+import ToolManager from 'components/GamePlay/CanvasSection/DrawingPlayGround/PainterPlayGround/Tools/ToolType/ToolManager';
 import Slider from 'components/globalComponents/Slider/Slider';
 
 Tools.propTypes = {

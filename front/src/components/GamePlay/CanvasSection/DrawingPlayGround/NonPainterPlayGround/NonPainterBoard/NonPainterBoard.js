@@ -1,13 +1,15 @@
 /* eslint no-param-reassign:0 */
-import React from 'react';
-import PropTypes from 'prop-types';
+import React, { useContext } from 'react';
 import {
   NonPainterBoardStyle,
   CanvasStyle,
-} from 'components/GamePlay/CanvasSection/DrawingPlayGround/NonPainterBoard/NonPainterBoard.style';
-import NonPainterPen from 'components/GamePlay/CanvasSection/DrawingPlayGround/Tools/ToolType/NonPainterPen';
+} from 'components/GamePlay/CanvasSection/DrawingPlayGround/NonPainterPlayGround/NonPainterBoard/NonPainterBoard.style';
+
+import PropTypes from 'prop-types';
 import useFabricCanvas from 'hooks/DrawingPlayGround/useFabricCanvas';
 import useGameSocket from 'hooks/Socket/useGameSocket';
+import NonPainterPen from 'components/GamePlay/CanvasSection/DrawingPlayGround/PainterPlayGround/Tools/ToolType/NonPainterPen';
+import DrawingPlayGroundContext from 'components/GamePlay/CanvasSection/DrawingPlayGround/DrawingPlayGround.context';
 
 NonPainterBoard.propTypes = {
   size: PropTypes.shape({
@@ -25,37 +27,35 @@ NonPainterBoard.defaultProps = {
 
 const pen = new NonPainterPen();
 
-export default function NonPainterBoard({ size }) {
-  const { width, height } = size;
-  const [fabricCanvas, setFabricCanvas] = useFabricCanvas(size);
+const jsonEventList = ['objectAdded', 'objectRemoved', 'objectsCleared'];
+export default function NonPainterBoard() {
+  const { canvasSize } = useContext(DrawingPlayGroundContext);
+  const [fabricCanvas, attachFabricCanvas] = useFabricCanvas(canvasSize);
 
   const setCanvasFromJson = (data) => {
-    fabricCanvas.current.loadFromJSON(data);
-    fabricCanvas.current.forEachObject((obj) => {
+    fabricCanvas.loadFromJSON(data);
+    fabricCanvas.forEachObject((obj) => {
       obj.selectable = false;
       obj.evented = false;
     });
   };
 
-  const handleEvents = ({ pointer, event, data }) => {
+  const handleEvents = ({ pointer, event }) => {
     if (event === 'mouseDown') {
       pen.onMouseDown(pointer);
     } else if (event === 'mouseMove') {
       pen.onMouseMove(pointer);
-    } else if (event === 'mouseUp') {
-      setCanvasFromJson(data);
-      pen.onMouseUp();
     }
   };
 
   const setCanvas = (eventList) => {
     eventList.forEach((e) => {
-      if (e.drawingOptions.tool !== 'pen') {
+      if (jsonEventList.includes(e.event)) {
         setCanvasFromJson(e.data);
         return;
       }
 
-      pen.setCanvas(fabricCanvas.current, e.drawingOptions);
+      pen.setCanvas(fabricCanvas, e.drawingOptions);
       handleEvents(e);
     });
   };
@@ -65,7 +65,7 @@ export default function NonPainterBoard({ size }) {
   });
   return (
     <NonPainterBoardStyle>
-      <CanvasStyle ref={setFabricCanvas} style={{ width, height }} />
+      <CanvasStyle ref={attachFabricCanvas} />
     </NonPainterBoardStyle>
   );
 }

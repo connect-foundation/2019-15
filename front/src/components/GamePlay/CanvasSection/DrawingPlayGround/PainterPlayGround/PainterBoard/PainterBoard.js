@@ -1,21 +1,19 @@
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import {
   PainterBoardStyle,
   CanvasStyle,
-} from 'components/GamePlay/CanvasSection/DrawingPlayGround/PainterBoard/PainterBoard.style';
-import ToolManager from 'components/GamePlay/CanvasSection/DrawingPlayGround/Tools/ToolType/ToolManager';
+} from 'components/GamePlay/CanvasSection/DrawingPlayGround/PainterPlayGround/PainterBoard/PainterBoard.style';
+import ToolManager from 'components/GamePlay/CanvasSection/DrawingPlayGround/PainterPlayGround/Tools/ToolType/ToolManager';
 import useCanvasDataEmitWithCaching from 'hooks/DrawingPlayGround/useCanvasDataEmitWithCaching';
 import useFabricCanvas from 'hooks/DrawingPlayGround/useFabricCanvas';
+import DrawingPlayGroundContext from 'components/GamePlay/CanvasSection/DrawingPlayGround/DrawingPlayGround.context';
+import History from 'components/GamePlay/CanvasSection/DrawingPlayGround/PainterPlayGround/PainterBoard/History/History';
 
 PainterBoard.propTypes = {
   drawingOptions: PropTypes.shape({
     tool: PropTypes.oneOf(ToolManager.toolList),
     strokeColor: PropTypes.string,
-  }),
-  size: PropTypes.shape({
-    width: PropTypes.number,
-    height: PropTypes.number,
   }),
 };
 
@@ -24,22 +22,18 @@ PainterBoard.defaultProps = {
     tool: ToolManager.toolList[0],
     strokeColor: '#000000',
   }),
-  size: {
-    width: 500,
-    height: 500,
-  },
 };
 
-export default function PainterBoard({ drawingOptions, size }) {
+export default function PainterBoard({ drawingOptions }) {
+  const { canvasSize } = useContext(DrawingPlayGroundContext);
   const { tool: toolName } = drawingOptions;
-  const { width, height } = size;
   const eventListDispatch = useCanvasDataEmitWithCaching();
-  const [fabricCanvas, setFabricCanvas] = useFabricCanvas(size);
+  const [fabricCanvas, attachFabricCanvas] = useFabricCanvas(canvasSize);
 
   useEffect(() => {
+    if (!fabricCanvas) return () => {};
     const tool = ToolManager[toolName];
-    tool.setCanvas(fabricCanvas.current, drawingOptions);
-    const fabricCopy = fabricCanvas.current;
+    tool.setCanvas(fabricCanvas, drawingOptions);
     let emitable = false;
 
     const onMouseDown = ({ pointer }) => {
@@ -62,30 +56,23 @@ export default function PainterBoard({ drawingOptions, size }) {
     };
     const onMouseUp = ({ pointer }) => {
       tool.onMouseUp(pointer);
-      eventListDispatch({
-        type: 'push',
-        value: {
-          drawingOptions,
-          data: fabricCanvas.current.toJSON(),
-          event: 'mouseUp',
-        },
-      });
       emitable = false;
     };
 
-    fabricCopy.on('mouse:down', onMouseDown);
-    fabricCopy.on('mouse:move', onMouseMove);
-    fabricCopy.on('mouse:up', onMouseUp);
+    fabricCanvas.on('mouse:down', onMouseDown);
+    fabricCanvas.on('mouse:move', onMouseMove);
+    fabricCanvas.on('mouse:up', onMouseUp);
     return () => {
-      fabricCopy.off('mouse:down');
-      fabricCopy.off('mouse:move');
-      fabricCopy.off('mouse:up');
+      fabricCanvas.off('mouse:down');
+      fabricCanvas.off('mouse:move');
+      fabricCanvas.off('mouse:up');
     };
   }, [drawingOptions, eventListDispatch, fabricCanvas, toolName]);
 
   return (
     <PainterBoardStyle>
-      <CanvasStyle ref={setFabricCanvas} style={{ width, height }} />
+      <History fabricCanvas={fabricCanvas} />
+      <CanvasStyle ref={attachFabricCanvas} />
     </PainterBoardStyle>
   );
 }
