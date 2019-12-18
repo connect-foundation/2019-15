@@ -35,7 +35,7 @@ function enterPrivate(gameSocket, { nickname, roomId, avatar }) {
 
       gameSocket.emit('gamestart', room.makeGameStartData());
       gameSocket.emit('startQuestion', room.makeStartQuestionData());
-    }, 1000);
+    }, WAIT_UNTIL_USER_ADD_EVENT);
   }
 }
 

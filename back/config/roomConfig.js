@@ -27,10 +27,13 @@ const escapeResultCode = {
   NON_EXAMINER_IS_ESCAPED: 4,
 };
 
+const WAIT_UNTIL_USER_ADD_EVENT = 1000;
+
 module.exports = {
   maxPeopleNum,
   roomState,
   defaultRoomSetting,
   PRIVATE_ROOM_NAME,
   escapeResultCode,
+  WAIT_UNTIL_USER_ADD_EVENT,
 };
