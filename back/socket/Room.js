@@ -93,7 +93,9 @@ class Room {
     if (this.players.length === 1) {
       this.state = roomState.WAITING;
     }
+  }
 
+  getRoomStateAfterRemovePlayer(userIndex) {
     // 게임을 계속 할 수 있는 경우
     if (this.players.length) {
       // 출제자가 탈주한 경우
@@ -114,6 +116,7 @@ class Room {
       if (this.isWaiting()) return escapeResultCode.IS_WAITING;
       if (this.isSelectingWord()) return escapeResultCode.IS_SELECTING_WORD;
     }
+    return escapeResultCode.NOT_PROPER;
   }
 
   // 방이 대기중인 상태인 경우
