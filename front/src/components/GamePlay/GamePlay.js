@@ -10,7 +10,7 @@ import GamePlayContext from 'components/GamePlay/GamePlay.context';
 import useGameSocket from 'hooks/Socket/useGameSocket';
 
 const GamePlay = () => {
-  const { gameSocket, setGameSocket, setRoom } = useContext(GlobalContext);
+  const { gameSocket, setGameSocket, room } = useContext(GlobalContext);
   const history = useHistory();
 
   const [userList, setUserList] = useState([]);
@@ -118,6 +118,10 @@ const GamePlay = () => {
   useGameSocket('userList', ({ playerList }) => {
     const parsedList = JSON.parse(playerList);
     setUserList(parsedList);
+  });
+
+  useGameSocket('roomCategory', ({ categoryId }) => {
+    room.categoryId = categoryId;
   });
 
   useGameSocket('gamestart', ({ _painter, currentRound, totalRound }) => {

@@ -8,7 +8,7 @@ import RoomContainer from '../RoomContainer/RoomContainer';
 import PrivateRoomButton from './privateRoomButton.style';
 
 export default function PrivateRoom() {
-  const { user, gameSocket } = useContext(GlobalContext);
+  const { gameSocket } = useContext(GlobalContext);
   const history = useHistory();
   const onClickMakeRoomBtn = () => {
     const privateRoomId = uuid();

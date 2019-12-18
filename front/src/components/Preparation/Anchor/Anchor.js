@@ -24,7 +24,7 @@ export default function Anchor() {
       <AnchorImageStyle src={AnchorImage} />
       <AnchorLinkText id="link-url">{settingURL}</AnchorLinkText>
       <AnchorCopyButton onClick={onClickCopyButton}>복사</AnchorCopyButton>
-      <CopyTextArea ref={textArea} value={settingURL} />
+      <CopyTextArea ref={textArea} defaultValue={settingURL} />
     </AnchorStyle>
   );
 }

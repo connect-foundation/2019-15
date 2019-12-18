@@ -9,6 +9,6 @@ module.exports = `
   }
 
   extend type Query{
-    getRandomWords:[Word]
+    getRandomWords(categoryId:Int):[Word]
   }
 `;

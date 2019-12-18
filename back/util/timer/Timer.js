@@ -7,6 +7,7 @@ function Timer(roomId, roomName, io) {
   this.endTime = 0;
   this.intervalId = 0;
   this.timeOutCallback = null;
+  this.expireTime = defaultExpireTime;
 }
 
 Timer.prototype.countDown = function() {
@@ -18,7 +19,7 @@ Timer.prototype.countDown = function() {
 };
 
 Timer.prototype.start = function() {
-  this.endTime = Date.now() + defaultExpireTime;
+  this.endTime = Date.now() + this.expireTime;
   this.intervalId = setInterval(this.countDown.bind(this), 1000);
 };
 
@@ -41,7 +42,7 @@ Timer.prototype.getRemainTime = function() {
 };
 
 Timer.prototype.getDefaultExpireTime = function() {
-  return defaultExpireTime;
+  return this.expireTime;
 };
 
 module.exports = Timer;

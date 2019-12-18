@@ -18,21 +18,15 @@ export default function CanvasSection() {
     painter,
     questionWord,
     isTimerGetReady,
-    setIsTimerGetReady,
     isLetterOpen,
     setIsLetterOpen,
     selectedWord,
     setSelectedWord,
     showQuestionResult,
-    setShowQuestionResult,
     scores,
-    setScores,
     round,
-    setRound,
     endTime,
-    setEndTime,
     showGameResult,
-    setShowGameResult,
   } = useContext(GamePlayContext);
 
   const [drawable, setDrawable] = useState(false);
