@@ -53,3 +53,7 @@ export const getClientPointer = (elementOffset, eventOffset) => {
     clientY: elementOffset.top + eventOffset.y,
   };
 };
+
+export const isEventInCanvas = (e) => {
+  return e.target.tagName === 'CANVAS';
+};

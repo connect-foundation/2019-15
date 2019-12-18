@@ -69,7 +69,12 @@ export default function PainterBoard({ drawingOptions }) {
     };
     const onMouseMove = ({ pointer, e }) => {
       tool.onMouseMove(pointer);
-      if (!PainterToolManager.freeDrawingTools.includes(toolName) || !emitable)
+
+      if (
+        !PainterToolManager.freeDrawings.includes(toolName) ||
+        !emitable ||
+        !isEventInCanvas(e)
+      )
         return;
 
       pushEventListDispatch('onMouseMove', {
