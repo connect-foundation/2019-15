@@ -1,19 +1,14 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext } from 'react';
 import GlobalContext from 'global.context';
 import Setting from 'components/Setting/Setting';
 import NavigationBar from 'components/NavigationBar/NavigationBar';
 import Background from 'components/globalComponents/Container/Background.style';
-import { connectGameSocket } from 'logics/socketLogic';
+import useInitGameSocket from 'hooks/Socket/useInitGameSocket';
 
 export default function SettingPage() {
-  const { gameSocket, setGameSocket } = useContext(GlobalContext);
+  const { setGameSocket } = useContext(GlobalContext);
+  setGameSocket(useInitGameSocket());
 
-  useEffect(() => {
-    if (!gameSocket) {
-      const socket = connectGameSocket();
-      setGameSocket(socket);
-    }
-  }, [gameSocket, setGameSocket]);
   return (
     <>
       <NavigationBar />
