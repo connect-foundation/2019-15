@@ -15,15 +15,6 @@ class Line extends Tool {
     };
   }
 
-  static defaultOptions() {
-    return {
-      originX: 'center',
-      originY: 'center',
-      selectable: false,
-      evented: false,
-    };
-  }
-
   onMouseDown({ x, y }) {
     this.isDown = true;
     this.line = new fabric.Line([x, y, x, y], this.options);

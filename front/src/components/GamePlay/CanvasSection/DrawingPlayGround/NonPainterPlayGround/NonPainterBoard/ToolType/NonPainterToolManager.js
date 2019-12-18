@@ -14,7 +14,7 @@ const NonPainterToolManager = {
   circle,
   eraser,
   toolList: ['pen', 'line', 'circle', 'eraser'],
-  freeDrawingTools: ['pen', 'eraser'],
+  freeDrawings: ['pen', 'eraser'],
 };
 
 export default NonPainterToolManager;

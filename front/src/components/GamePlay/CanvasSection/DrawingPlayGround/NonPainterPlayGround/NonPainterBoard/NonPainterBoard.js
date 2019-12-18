@@ -35,9 +35,7 @@ export default function NonPainterBoard() {
       const curToolType = NonPainterToolManager[drawingOptions.tool];
       curToolType.setCanvas(fabricCanvas, drawingOptions);
 
-      if (
-        !NonPainterToolManager.freeDrawingTools.includes(drawingOptions.tool)
-      ) {
+      if (!NonPainterToolManager.freeDrawings.includes(drawingOptions.tool)) {
         NonPainterToolManager[drawingOptions.tool].draw(e);
         return;
       }

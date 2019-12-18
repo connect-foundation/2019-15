@@ -9,7 +9,7 @@ import PainterToolManager from 'components/GamePlay/CanvasSection/DrawingPlayGro
 import useCanvasDataEmitWithCaching from 'hooks/DrawingPlayGround/useCanvasDataEmitWithCaching';
 import useFabricCanvas from 'hooks/DrawingPlayGround/useFabricCanvas';
 import DrawingPlayGroundContext from 'components/GamePlay/CanvasSection/DrawingPlayGround/DrawingPlayGround.context';
-import { getOffset } from 'constant/DrawingPlayGround';
+import { getOffset, isEventInCanvas } from 'constant/DrawingPlayGround';
 
 PainterBoard.propTypes = {
   drawingOptions: PropTypes.shape({
@@ -59,7 +59,7 @@ export default function PainterBoard({ drawingOptions }) {
     const onMouseDown = ({ pointer, e }) => {
       startPoint = pointer;
       tool.onMouseDown(pointer);
-      if (!PainterToolManager.freeDrawingTools.includes(toolName)) return;
+      if (!PainterToolManager.freeDrawings.includes(toolName)) return;
 
       pushEventListDispatch('onMouseDown', {
         drawingOptions,
@@ -81,7 +81,7 @@ export default function PainterBoard({ drawingOptions }) {
       endPoint = pointer;
       tool.onMouseUp(pointer);
       let options;
-      if (PainterToolManager.freeDrawingTools.includes(toolName)) {
+      if (PainterToolManager.freeDrawings.includes(toolName)) {
         options = { drawingOptions, offset: getOffset(e) };
       } else {
         options = { drawingOptions, startPoint, endPoint };

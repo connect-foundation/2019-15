@@ -14,7 +14,7 @@ const PainterToolManager = {
   circle,
   eraser,
   toolList: ['pen', 'eraser', 'line', 'circle'],
-  freeDrawingTools: ['pen', 'eraser'],
+  freeDrawings: ['pen', 'eraser'],
 };
 
 export default PainterToolManager;
