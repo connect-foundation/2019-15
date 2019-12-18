@@ -24,6 +24,21 @@ PainterBoard.defaultProps = {
   }),
 };
 
+const POINTER_LIST = [
+  'offsetX',
+  'offsetY',
+  'screenX',
+  'screenY',
+  'clientX',
+  'clientY',
+];
+const getPointers = (e) => {
+  return POINTER_LIST.reduce((acc, cur) => {
+    acc[cur] = e[cur];
+    return acc;
+  }, {});
+};
+
 export default function PainterBoard({ drawingOptions }) {
   const { canvasSize } = useContext(DrawingPlayGroundContext);
   const { tool: toolName } = drawingOptions;
@@ -35,28 +50,53 @@ export default function PainterBoard({ drawingOptions }) {
     const tool = ToolManager[toolName];
     tool.setCanvas(fabricCanvas, drawingOptions);
     let emitable = false;
+    let startPoint;
+    let endPoint;
 
-    const onMouseDown = ({ pointer }) => {
-      tool.onMouseDown(pointer);
+    const onMouseDown = (e) => {
+      startPoint = e.pointer;
+      tool.onMouseDown(e.pointer);
       if (!ToolManager.freeDrawingTools.includes(toolName)) return;
+
       emitable = true;
       eventListDispatch({
         type: 'push',
-        value: { drawingOptions, pointer, event: 'mouseDown' },
+        value: {
+          drawingOptions,
+          pointers: getPointers(e.e),
+          event: 'mouseDown',
+        },
       });
     };
-    const onMouseMove = ({ pointer }) => {
-      tool.onMouseMove(pointer);
+    const onMouseMove = (e) => {
+      tool.onMouseMove(e.pointer);
       if (!ToolManager.freeDrawingTools.includes(toolName) || !emitable) return;
 
       eventListDispatch({
         type: 'push',
-        value: { drawingOptions, pointer, event: 'mouseMove' },
+        value: {
+          drawingOptions,
+          pointers: getPointers(e.e),
+          event: 'mouseMove',
+        },
       });
     };
-    const onMouseUp = ({ pointer }) => {
-      tool.onMouseUp(pointer);
+    const onMouseUp = (e) => {
+      endPoint = e.pointer;
+      tool.onMouseUp(e.pointer);
+      eventListDispatch({
+        type: 'push',
+        value: {
+          drawingOptions,
+          startPoint,
+          endPoint,
+          pointers: getPointers(e.e),
+          event: 'mouseUp',
+        },
+      });
       emitable = false;
+      startPoint = null;
+      endPoint = null;
     };
 
     fabricCanvas.on('mouse:down', onMouseDown);
@@ -71,7 +111,7 @@ export default function PainterBoard({ drawingOptions }) {
 
   return (
     <PainterBoardStyle>
-      <History fabricCanvas={fabricCanvas} />
+      {/* <History fabricCanvas={fabricCanvas} /> */}
       <CanvasStyle ref={attachFabricCanvas} />
     </PainterBoardStyle>
   );
