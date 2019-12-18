@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const CurrentMyInfoStyle = styled.section`
+export const CurrentMyInfoStyle = styled.section`
   margin-top: -1.5rem;
   display: flex;
   align-items: center;
@@ -29,4 +29,7 @@ const CurrentMyInfoStyle = styled.section`
   }
 `;
 
-export default CurrentMyInfoStyle;
+export const AvatarImage = styled.img`
+  width: 80px;
+  height: 80px;
+`;
