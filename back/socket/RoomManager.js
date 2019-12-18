@@ -63,7 +63,7 @@ const RoomManager = {
   },
 
   getRoom({ roomType, roomId }) {
-    if (this.isExistRoom(roomType, roomId)) {
+    if (this.isExistRoom({ roomType, roomId })) {
       return this.room[roomType][roomId];
     }
     return null;

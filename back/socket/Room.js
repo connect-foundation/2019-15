@@ -73,6 +73,20 @@ class Room {
     if (this.state === roomState.EMPTY) this.state = roomState.WAITING;
   }
 
+  sendUserList(gameIo) {
+    const userList = this.players.map((user) => {
+      const userName = user.nickname || '부스트캠퍼';
+      return {
+        nickname: userName,
+        socketId: user.socket.id,
+        privileged: user.privileged,
+        avatar: user.avatar,
+        roomOwner: user.roomOwner,
+      };
+    });
+    gameIo.in(this.roomId).emit('userList', { playerList: JSON.stringify(userList) });
+  }
+
   removePlayer(userIndex) {
     if (userIndex < 0) return;
     const [removedPlayer] = this.players.splice(userIndex, 1);
@@ -162,16 +176,7 @@ class Room {
       totalRound: this.totalRound,
     });
     setTimeout(() => {
-      const userList = this.players.map((user) => {
-        const userName = user.nickname || '부스트캠퍼';
-        return {
-          nickname: userName,
-          socketId: user.socket.id,
-          privileged: user.privileged,
-          avatar: user.avatar,
-        };
-      });
-      gameIo.in(this.roomId).emit('userList', { userList: JSON.stringify(userList) });
+      this.sendUserList(gameIo);
     }, 5000);
   }
 
