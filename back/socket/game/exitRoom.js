@@ -9,12 +9,10 @@ function exitRoom(gameSocket, { roomType, roomId }) {
 
   gameSocket.leave(roomId);
 
-  room.sendUserList(this.gameIo);
-
   if (gameSocket.id === room.roomOwner) {
     room.passRoomOwnerToNext();
-    room.sendUserList(this.gameIo);
   }
+  room.sendUserList(this.gameIo);
 }
 
 module.exports = exitRoom;
