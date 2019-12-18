@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 const leftPadding = '1rem';
 
 const notActive = css`
+  cursor: ${(props) => (props.disabled ? 'not-allowed' : 'pointer')};
   :hover,
   :focus {
     color: ${(props) =>
@@ -17,7 +18,6 @@ const notActive = css`
 export const SpectreButtonStyle = styled.button`
   white-space: nowrap;
   text-align: center;
-  border: 1px solid transparent;
   box-shadow: 0 2px 0 rgba(0, 0, 0, 0.015);
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
