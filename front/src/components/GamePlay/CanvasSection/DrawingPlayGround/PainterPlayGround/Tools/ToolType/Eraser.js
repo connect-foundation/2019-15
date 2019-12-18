@@ -1,5 +1,6 @@
 /* eslint no-param-reassign:0 */
 import Tool from 'components/GamePlay/CanvasSection/DrawingPlayGround/PainterPlayGround/Tools/ToolType/Tool';
+import { DEFAULT_ERASER_OPTIONS } from 'constant/DrawingPlayGround';
 
 class Eraser extends Tool {
   setCanvas(fabricCanvas) {

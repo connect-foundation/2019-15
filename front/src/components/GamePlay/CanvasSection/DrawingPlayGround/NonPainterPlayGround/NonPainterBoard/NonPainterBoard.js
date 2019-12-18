@@ -9,8 +9,7 @@ import PropTypes from 'prop-types';
 import useFabricCanvas from 'hooks/DrawingPlayGround/useFabricCanvas';
 import useGameSocket from 'hooks/Socket/useGameSocket';
 import DrawingPlayGroundContext from 'components/GamePlay/CanvasSection/DrawingPlayGround/DrawingPlayGround.context';
-import ToolManager from 'components/GamePlay/CanvasSection/DrawingPlayGround/NonPainterPlayGround/NonPainterBoard/ToolType/ToolManager';
-import Pen from 'components/GamePlay/CanvasSection/DrawingPlayGround/NonPainterPlayGround/NonPainterBoard/ToolType/Pen';
+import NonPainterToolManager from 'components/GamePlay/CanvasSection/DrawingPlayGround/NonPainterPlayGround/NonPainterBoard/ToolType/NonPainterToolManager';
 
 NonPainterBoard.propTypes = {
   size: PropTypes.shape({
@@ -46,8 +45,11 @@ export default function NonPainterBoard() {
 
   const setCanvas = (eventList) => {
     eventList.forEach((e) => {
-      if (!ToolManager.freeDrawingTools.includes(e.drawingOptions.tool)) {
-        ToolManager[e.drawingOptions.tool].draw(fabricCanvas, e);
+      if (
+        !NonPainterToolManager.freeDrawingTools.includes(drawingOptions.tool)
+      ) {
+        NonPainterToolManager[drawingOptions.tool].draw(e);
+        return;
       }
       handlePenEvents(e);
     });

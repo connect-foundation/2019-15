@@ -4,7 +4,7 @@ import {
   PainterBoardStyle,
   CanvasStyle,
 } from 'components/GamePlay/CanvasSection/DrawingPlayGround/PainterPlayGround/PainterBoard/PainterBoard.style';
-import ToolManager from 'components/GamePlay/CanvasSection/DrawingPlayGround/PainterPlayGround/Tools/ToolType/ToolManager';
+import PainterToolManager from 'components/GamePlay/CanvasSection/DrawingPlayGround/PainterPlayGround/Tools/ToolType/PainterToolManager';
 import useCanvasDataEmitWithCaching from 'hooks/DrawingPlayGround/useCanvasDataEmitWithCaching';
 import useFabricCanvas from 'hooks/DrawingPlayGround/useFabricCanvas';
 import DrawingPlayGroundContext from 'components/GamePlay/CanvasSection/DrawingPlayGround/DrawingPlayGround.context';
@@ -12,14 +12,14 @@ import History from 'components/GamePlay/CanvasSection/DrawingPlayGround/Painter
 
 PainterBoard.propTypes = {
   drawingOptions: PropTypes.shape({
-    tool: PropTypes.oneOf(ToolManager.toolList),
+    tool: PropTypes.oneOf(PainterToolManager.toolList),
     strokeColor: PropTypes.string,
   }),
 };
 
 PainterBoard.defaultProps = {
   drawingOptions: PropTypes.shape({
-    tool: ToolManager.toolList[0],
+    tool: PainterToolManager.toolList[0],
     strokeColor: '#000000',
   }),
 };
@@ -47,8 +47,9 @@ export default function PainterBoard({ drawingOptions }) {
 
   useEffect(() => {
     if (!fabricCanvas) return () => {};
-    const tool = ToolManager[toolName];
+    const tool = PainterToolManager[toolName];
     tool.setCanvas(fabricCanvas, drawingOptions);
+
     let emitable = false;
     let startPoint;
     let endPoint;
@@ -56,7 +57,6 @@ export default function PainterBoard({ drawingOptions }) {
     const onMouseDown = (e) => {
       startPoint = e.pointer;
       tool.onMouseDown(e.pointer);
-      if (!ToolManager.freeDrawingTools.includes(toolName)) return;
 
       emitable = true;
       eventListDispatch({
@@ -70,7 +70,6 @@ export default function PainterBoard({ drawingOptions }) {
     };
     const onMouseMove = (e) => {
       tool.onMouseMove(e.pointer);
-      if (!ToolManager.freeDrawingTools.includes(toolName) || !emitable) return;
 
       eventListDispatch({
         type: 'push',
@@ -79,6 +78,7 @@ export default function PainterBoard({ drawingOptions }) {
           pointers: getPointers(e.e),
           event: 'mouseMove',
         },
+      if (!PainterToolManager.freeDrawingTools.includes(toolName)) return;
       });
     };
     const onMouseUp = (e) => {
@@ -93,6 +93,7 @@ export default function PainterBoard({ drawingOptions }) {
           pointers: getPointers(e.e),
           event: 'mouseUp',
         },
+      if (!PainterToolManager.freeDrawingTools.includes(toolName) || !emitable)
       });
       emitable = false;
       startPoint = null;
@@ -111,7 +112,6 @@ export default function PainterBoard({ drawingOptions }) {
 
   return (
     <PainterBoardStyle>
-      {/* <History fabricCanvas={fabricCanvas} /> */}
       <CanvasStyle ref={attachFabricCanvas} />
     </PainterBoardStyle>
   );
