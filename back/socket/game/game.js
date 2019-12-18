@@ -1,5 +1,8 @@
+const jwt = require('jsonwebtoken');
 const User = require('../User');
 const { RoomManager } = require('../RoomManager');
+const jwtOptions = require('../../config/jwtOptions');
+const parseCookies = require('../../util/cookie/parseCookies');
 
 function sendUserListToRoom(list, roomId, io) {
   const userList = list.map((user) => {
@@ -17,7 +20,14 @@ function sendUserListToRoom(list, roomId, io) {
 
 function personEnterRoom(nickname, socket, roomType, io, roomId, avatar) {
   const room = RoomManager.room[roomType][roomId];
-  room.addPlayer(new User(nickname, socket, null, false, avatar));
+
+  const { jwt: jwtToken } = parseCookies(socket.handshake.headers.cookie);
+  const { id } = jwt.verify(jwtToken, process.env.JWT_SECRET, {
+    issuer: jwtOptions.issuer,
+    subject: jwtOptions.subject,
+  });
+
+  room.addPlayer(new User(nickname, socket, id, false, avatar));
 
   socket.join(roomId);
   socket.emit(`connectRandom`, {
