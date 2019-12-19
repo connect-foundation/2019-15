@@ -1,13 +1,10 @@
-function exitRoom(gameSocket, roomInfo) {
-  if (!roomInfo) return;
+const { RoomManager } = require('../RoomManager');
 
-  const { roomType, roomId } = roomInfo;
-  if (!this.RoomManager.isExistRoom({ roomId, roomType })) return;
+function exitRoom(gameSocket, { roomType, roomId }) {
+  if (!RoomManager.isExistRoom({ roomId, roomType })) return;
 
-  const room = this.RoomManager.getRoom(roomInfo);
+  const room = RoomManager.room[roomType][roomId];
   const userIndex = room.getUserIndexBySocketId(gameSocket);
-  if (userIndex < 0) return; // 방에서 유저 정보를 못 찾은경우 종료
-
   room.removePlayer(userIndex);
 
   gameSocket.leave(roomId);
