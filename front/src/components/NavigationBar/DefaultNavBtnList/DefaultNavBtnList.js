@@ -25,13 +25,13 @@ export default function DefaultNavBtnList() {
       <Notification />
       <InvitationContainer />
       <FriendRequestContainer />
-      {location.pathname.includes('mypage') ? (
-        <Link to="main">
-          <NavImageStyle icon={faHome} />
-        </Link>
-      ) : (
+      {location.pathname.includes('main') ? (
         <Link to="mypage">
           <NavImageStyle icon={faUserAlt} />
+        </Link>
+      ) : (
+        <Link to="main">
+          <NavImageStyle icon={faHome} />
         </Link>
       )}
       <NavImageStyle icon={faSignOutAlt} onClick={logout} />
