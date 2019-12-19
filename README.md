@@ -46,7 +46,7 @@
 🙋‍♂️ [최형준](https://github.com/Einere) - 🌐지속 가능한 웹 개발자를 지향합니다.  
 
 ### Sprint
-|          | 손진아                     | 이지영             | 이창권             | 최형준                    |
+|          | [손진아](https://github.com/connect-foundation/2019-15/commits/develop?author=hos101010) | [이지영](https://github.com/connect-foundation/2019-15/commits/develop?author=eminem54) | [이창권](https://github.com/connect-foundation/2019-15/commits/develop?author=changgunyee) | [최형준](https://github.com/connect-foundation/2019-15/commits/develop?author=Einere) |
 | -------- | ----------------------- | --------------- | --------------- | ---------------------- |
 | Sprint 1 | 친구 기능 구현             | 웹소켓으로 게임시작기능 구현 | CI/CD 및 환경 설정   | OAuth 구현               |
 | Sprint 2 | 단어 db 구축, 단어 선택 기능 구현 | 게임화면 유저리스트 구현   | 전체 랭킹, 친구 랭킹 구현 | 자동 로그인, 배포 환경에서의 OAuth |
