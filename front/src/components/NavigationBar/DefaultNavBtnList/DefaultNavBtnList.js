@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { useLocation, useHistory } from 'react-router-dom';
 import APP_URI from 'util/uri';
 import {
   faUserAlt,
@@ -16,6 +16,14 @@ import Notification from 'components/NavigationBar/DefaultNavBtnList/Notificatio
 
 export default function DefaultNavBtnList() {
   const location = useLocation();
+  const history = useHistory();
+
+  const replaceMyPage = () => {
+    if (location.pathname.includes('main')) history.push('/mypage');
+    else history.replace('/mypage');
+  };
+  const moveMain = () => history.push('/main');
+
   const logout = () => {
     window.location.href = `${APP_URI.REACT_APP_API_URI}/auth/logout`;
   };
@@ -26,13 +34,9 @@ export default function DefaultNavBtnList() {
       <InvitationContainer />
       <FriendRequestContainer />
       {location.pathname.includes('main') ? (
-        <Link to="mypage">
-          <NavImageStyle icon={faUserAlt} />
-        </Link>
+        <NavImageStyle onClick={replaceMyPage} icon={faUserAlt} />
       ) : (
-        <Link to="main">
-          <NavImageStyle icon={faHome} />
-        </Link>
+        <NavImageStyle onClick={moveMain} icon={faHome} />
       )}
       <NavImageStyle icon={faSignOutAlt} onClick={logout} />
     </NavBtnContainerStyle>

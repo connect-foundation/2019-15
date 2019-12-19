@@ -1,16 +1,14 @@
 /* eslint no-param-reassign:0 */
-import React, { useContext } from 'react';
+import React, { useEffect, useContext } from 'react';
 import {
   NonPainterBoardStyle,
   CanvasStyle,
 } from 'components/GamePlay/CanvasSection/DrawingPlayGround/NonPainterPlayGround/NonPainterBoard/NonPainterBoard.style';
-
 import PropTypes from 'prop-types';
 import useFabricCanvas from 'hooks/DrawingPlayGround/useFabricCanvas';
 import useGameSocket from 'hooks/Socket/useGameSocket';
 import DrawingPlayGroundContext from 'components/GamePlay/CanvasSection/DrawingPlayGround/DrawingPlayGround.context';
-import ToolManager from 'components/GamePlay/CanvasSection/DrawingPlayGround/NonPainterPlayGround/NonPainterBoard/ToolType/ToolManager';
-import Pen from 'components/GamePlay/CanvasSection/DrawingPlayGround/NonPainterPlayGround/NonPainterBoard/ToolType/Pen';
+import NonPainterToolManager from 'components/GamePlay/CanvasSection/DrawingPlayGround/NonPainterPlayGround/NonPainterBoard/ToolType/NonPainterToolManager';
 
 NonPainterBoard.propTypes = {
   size: PropTypes.shape({
@@ -30,28 +28,33 @@ export default function NonPainterBoard() {
   const { canvasSize } = useContext(DrawingPlayGroundContext);
   const [fabricCanvas, attachFabricCanvas] = useFabricCanvas(canvasSize);
 
-  const handlePenEvents = (e) => {
-    const { pointers, event, drawingOptions } = e;
-    const curToolType = ToolManager[drawingOptions.tool];
-
-    curToolType.setCanvas(fabricCanvas, drawingOptions);
-    if (event === 'mouseDown') {
-      curToolType.onMouseDown(pointers);
-    } else if (event === 'mouseMove') {
-      curToolType.onMouseMove(pointers);
-    } else if (event === 'mouseUp') {
-      curToolType.onMouseUp(pointers);
-    }
-  };
-
   const setCanvas = (eventList) => {
     eventList.forEach((e) => {
-      if (!ToolManager.freeDrawingTools.includes(e.drawingOptions.tool)) {
-        ToolManager[e.drawingOptions.tool].draw(fabricCanvas, e);
+      const { pointer, event, drawingOptions } = e;
+      const curToolType = NonPainterToolManager[drawingOptions.tool];
+
+      if (!NonPainterToolManager.freeDrawings.includes(drawingOptions.tool)) {
+        NonPainterToolManager[drawingOptions.tool].draw(e);
+        return;
       }
-      handlePenEvents(e);
+      curToolType.setOptions(drawingOptions);
+      curToolType[event](pointer);
     });
   };
+
+  useEffect(() => {
+    if (!fabricCanvas) return () => {};
+
+    NonPainterToolManager.initialize(fabricCanvas);
+    const onObjectAdded = ({ target }) => {
+      target.selectable = false;
+      target.evented = false;
+    };
+    fabricCanvas.on('object:added', onObjectAdded);
+    return () => {
+      fabricCanvas.off('object:added');
+    };
+  }, [fabricCanvas]);
 
   useGameSocket('drawing', ({ eventList }) => {
     setCanvas(eventList);

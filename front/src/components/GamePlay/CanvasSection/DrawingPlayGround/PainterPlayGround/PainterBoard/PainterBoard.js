@@ -4,42 +4,26 @@ import {
   PainterBoardStyle,
   CanvasStyle,
 } from 'components/GamePlay/CanvasSection/DrawingPlayGround/PainterPlayGround/PainterBoard/PainterBoard.style';
-import ToolManager from 'components/GamePlay/CanvasSection/DrawingPlayGround/PainterPlayGround/Tools/ToolType/ToolManager';
+import PainterToolManager from 'components/GamePlay/CanvasSection/DrawingPlayGround/PainterPlayGround/Tools/ToolType/PainterToolManager';
 import useCanvasDataEmitWithCaching from 'hooks/DrawingPlayGround/useCanvasDataEmitWithCaching';
 import useFabricCanvas from 'hooks/DrawingPlayGround/useFabricCanvas';
 import DrawingPlayGroundContext from 'components/GamePlay/CanvasSection/DrawingPlayGround/DrawingPlayGround.context';
-import History from 'components/GamePlay/CanvasSection/DrawingPlayGround/PainterPlayGround/PainterBoard/History/History';
 import { useMutation } from '@apollo/react-hooks';
 import { SAVE_CANVAS_DATA } from 'queries/video';
 import GamePlayContext from 'components/GamePlay/GamePlay.context';
 
 PainterBoard.propTypes = {
   drawingOptions: PropTypes.shape({
-    tool: PropTypes.oneOf(ToolManager.toolList),
+    tool: PropTypes.oneOf(PainterToolManager.toolList),
     strokeColor: PropTypes.string,
   }),
 };
 
 PainterBoard.defaultProps = {
   drawingOptions: PropTypes.shape({
-    tool: ToolManager.toolList[0],
+    tool: PainterToolManager.toolList[0],
     strokeColor: '#000000',
   }),
-};
-
-const POINTER_LIST = [
-  'offsetX',
-  'offsetY',
-  'screenX',
-  'screenY',
-  'clientX',
-  'clientY',
-];
-const getPointers = (e) => {
-  return POINTER_LIST.reduce((acc, cur) => {
-    acc[cur] = e[cur];
-    return acc;
-  }, {});
 };
 
 export default function PainterBoard({ drawingOptions }) {
@@ -53,57 +37,64 @@ export default function PainterBoard({ drawingOptions }) {
 
   useEffect(() => {
     if (!fabricCanvas) return () => {};
-    const tool = ToolManager[toolName];
+    const tool = PainterToolManager[toolName];
     tool.setCanvas(fabricCanvas, drawingOptions);
+
     let emitable = false;
     let startPoint;
     let endPoint;
 
-    const onMouseDown = (e) => {
-      startPoint = e.pointer;
-      tool.onMouseDown(e.pointer);
-      if (!ToolManager.freeDrawingTools.includes(toolName)) return;
-
-      emitable = true;
-      eventListDispatch({
-        type: 'push',
-        value: {
-          drawingOptions,
-          pointers: getPointers(e.e),
-          event: 'mouseDown',
-        },
-      });
-    };
-    const onMouseMove = (e) => {
-      tool.onMouseMove(e.pointer);
-      if (!ToolManager.freeDrawingTools.includes(toolName) || !emitable) return;
-
-      eventListDispatch({
-        type: 'push',
-        value: {
-          drawingOptions,
-          pointers: getPointers(e.e),
-          event: 'mouseMove',
-        },
-      });
-    };
-    const onMouseUp = (e) => {
-      endPoint = e.pointer;
-      tool.onMouseUp(e.pointer);
-      eventListDispatch({
-        type: 'push',
-        value: {
-          drawingOptions,
-          startPoint,
-          endPoint,
-          pointers: getPointers(e.e),
-          event: 'mouseUp',
-        },
-      });
+    const clear = () => {
       emitable = false;
       startPoint = null;
       endPoint = null;
     };
+
+    const pushEventListDispatch = (event, options) => {
+      eventListDispatch({
+        type: 'push',
+        value: {
+          ...options,
+          event,
+        },
+      });
+    };
+
+    const onMouseDown = ({ pointer }) => {
+      startPoint = pointer;
+      tool.onMouseDown(pointer);
+      if (!PainterToolManager.freeDrawings.includes(toolName)) return;
+
+      pushEventListDispatch('onMouseDown', {
+        drawingOptions,
+        pointer,
+      });
+      emitable = true;
+    };
+    const onMouseMove = ({ pointer }) => {
+      tool.onMouseMove(pointer);
+
+      if (!PainterToolManager.freeDrawings.includes(toolName) || !emitable)
+        return;
+
+      pushEventListDispatch('onMouseMove', {
+        drawingOptions,
+        pointer,
+      });
+    };
+    const onMouseUp = ({ pointer }) => {
+      endPoint = pointer;
+      tool.onMouseUp(pointer);
+      let options;
+      if (PainterToolManager.freeDrawings.includes(toolName)) {
+        options = { drawingOptions, pointer };
+      } else {
+        options = { drawingOptions, startPoint, endPoint };
+      }
+      pushEventListDispatch('onMouseUp', options);
+      clear();
+    };
+
     fabricCanvas.on('mouse:down', onMouseDown);
     fabricCanvas.on('mouse:move', onMouseMove);
     fabricCanvas.on('mouse:up', onMouseUp);
@@ -116,18 +107,22 @@ export default function PainterBoard({ drawingOptions }) {
 
   useEffect(() => {
     if (!fabricCanvas) return () => {};
-    const saveFullCanvasData = async () => {
+
+    const saveFullCanvasData = async ({ target }) => {
+      target.selectable = false;
+      target.evented = false;
+
       const dataObject = fabricCanvas.toJSON();
       const currentTime = new Date();
-      if (currentTime - lastDrawingTime > 3000) {
-        await saveCanvasData({
-          variables: {
-            data: JSON.stringify(dataObject.objects),
-            questionWord: selectedWord,
-          },
-        });
-        setLastDrawingTime(currentTime);
-      }
+      if (currentTime - lastDrawingTime <= 3000) return;
+
+      await saveCanvasData({
+        variables: {
+          data: JSON.stringify(dataObject.objects),
+          questionWord: selectedWord,
+        },
+      });
+      setLastDrawingTime(currentTime);
     };
     fabricCanvas.on('object:added', saveFullCanvasData);
     return () => {
@@ -137,7 +132,6 @@ export default function PainterBoard({ drawingOptions }) {
 
   return (
     <PainterBoardStyle>
-      {/* <History fabricCanvas={fabricCanvas} /> */}
       <CanvasStyle ref={attachFabricCanvas} />
     </PainterBoardStyle>
   );

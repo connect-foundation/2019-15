@@ -11,7 +11,7 @@ import Room from 'logics/room';
 import useGameSocket from 'hooks/Socket/useGameSocket';
 import { useHistory } from 'react-router-dom';
 import useInitGameSocket from 'hooks/Socket/useInitGameSocket';
-import Button from '../../components/globalComponents/Button/Button';
+import Button from 'components/globalComponents/Button/Button';
 
 const Main = () => {
   const { setGameSocket, setRoom, setIsLogin } = useContext(GlobalContext);

@@ -5,7 +5,6 @@ class Pen extends Tool {
   setCanvas(fabricCanvas, { strokeWidth, strokeColor }) {
     super.setCanvas(fabricCanvas);
     this.fc.isDrawingMode = true;
-    this.fc.selection = false;
     this.fc.freeDrawingBrush.width = strokeWidth;
     this.fc.freeDrawingBrush.color = strokeColor;
   }
