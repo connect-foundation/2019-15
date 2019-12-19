@@ -5,6 +5,7 @@ import Room from 'utils/catchmymind/Room';
 import useCarousel from 'hooks/commons/useCarousel';
 import AVATAR_NUMBER from 'constants/avatar';
 import useNicknameInput from 'hooks/Setting/useNicknameInput';
+import { PRIVATE_ROOM_NAME } from 'constants/room/roomInfo';
 import { SettingStyle, GameStartButtonStyle } from './Setting.style';
 import NicknameContainer from './NicknameContainer';
 import AvatarContainer from './AvatarContainer';

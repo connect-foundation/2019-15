@@ -4,12 +4,12 @@ import {
   DoneButton,
   Input,
 } from 'components/FriendsSection/FriendList/Header/Header.style';
-import {
-  ComponentStyle,
-  Icon,
-} from 'components/FriendsSection/refactor/FriendList/Component/Component.style';
 import regex from 'constants/nicknameRegex';
 import PropTypes from 'prop-types';
+import {
+  Icon,
+  ComponentStyle,
+} from 'components/FriendsSection/FriendList/Component/Component.style';
 
 Header.propTypes = {
   isConfigMode: PropTypes.bool,
@@ -56,11 +56,11 @@ export default function Header({
           </ComponentStyle>
         </>
       ) : (
-          <ComponentStyle>
-            <span>친구 목록</span>
-            <Icon icon={faCog} onClick={switchMode} />
-          </ComponentStyle>
-        )}
+        <ComponentStyle>
+          <span>친구 목록</span>
+          <Icon icon={faCog} onClick={switchMode} />
+        </ComponentStyle>
+      )}
     </>
   );
 }

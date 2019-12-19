@@ -9,9 +9,9 @@ import {
 import { GET_FRIENDS } from 'queries/friend';
 import useCursorQuery from 'hooks/commons/useCursorQuery';
 import InfinityScroll from 'components/globalComponents/InfinityScroll/InfinityScroll';
-import FriendModal from 'components/FriendsSection/refactor/FriendList/FriendModal/FriendModal';
-import modalReducer from 'components/FriendsSection/refactor/FriendList/modalReducer';
 import useOnlineFriends from 'hooks/FriendsSection/useOnlineFriends';
+import FriendModal from 'components/FriendsSection/FriendList/FriendModal/FriendModal';
+import modalReducer from 'components/FriendsSection/FriendList/modalReducer';
 
 const changeModeReducer = (state) => {
   return !state.current;

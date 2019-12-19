@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
-import ListPopUpButton from './ListPopUpButton.style';
+import React, { useReducer } from 'react';
+import FriendList from 'components/FriendsSection/FriendList/FriendList';
+import { ListPopUpButton } from 'components/FriendsSection/FriendsSection.style';
 
 function switchListOpenReducer(state, action) {
   return !action.current;
