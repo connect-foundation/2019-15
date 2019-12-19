@@ -101,7 +101,6 @@ const rankingResolvers = {
           ],
         },
       });
-      console.log(rank);
       return {
         userId: user.dataValues.id,
         nickname: user.dataValues.nickname,
