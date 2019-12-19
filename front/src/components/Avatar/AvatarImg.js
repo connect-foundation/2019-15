@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import useAvatar from 'hooks/Avatar/useAvatar';
+import { getAvatar } from 'logics/avatar';
+import { AvatarImage } from './Avatar.style';
 
 AvatarImg.propTypes = {
   avatarIdx: PropTypes.number,
@@ -11,6 +12,5 @@ AvatarImg.defaultProps = {
 };
 
 export default function AvatarImg({ avatarIdx }) {
-  const [avatarRef] = useAvatar(avatarIdx);
-  return <div ref={avatarRef} />;
+  return <AvatarImage src={getAvatar(avatarIdx)} />;
 }

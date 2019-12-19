@@ -1,24 +1,23 @@
 import React, { useContext, useState } from 'react';
 import GlobalContext from 'global.context';
-import { sendMessage } from 'logics/socketLogic';
 import TextInputStyle from './TextInput.style';
 
 export default function Chatting() {
   const { gameSocket, room } = useContext(GlobalContext);
   const [inputValue, setValue] = useState('');
 
-  function inputChangeHandler(e) {
+  const inputChangeHandler = (e) => {
     if (e.target.value.length < 50) setValue(e.target.value);
-  }
+  };
 
-  async function pressKeyHandler(e) {
+  const pressKeyHandler = async (e) => {
     const { roomType, roomId } = room;
 
     if (e.key === 'Enter') {
-      sendMessage(gameSocket, { roomType, roomId, inputValue });
+      gameSocket.emit('sendMessage', { roomType, roomId, inputValue });
       setValue('');
     }
-  }
+  };
 
   return (
     <TextInputStyle

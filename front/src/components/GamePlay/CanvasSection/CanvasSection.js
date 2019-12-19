@@ -18,21 +18,15 @@ export default function CanvasSection() {
     painter,
     questionWord,
     isTimerGetReady,
-    setIsTimerGetReady,
     isLetterOpen,
     setIsLetterOpen,
     selectedWord,
     setSelectedWord,
     showQuestionResult,
-    setShowQuestionResult,
     scores,
-    setScores,
     round,
-    setRound,
     endTime,
-    setEndTime,
     showGameResult,
-    setShowGameResult,
   } = useContext(GamePlayContext);
 
   const [drawable, setDrawable] = useState(false);
@@ -50,7 +44,7 @@ export default function CanvasSection() {
     return () => {
       setDrawable(false);
     };
-  }, [drawable, gameSocket.id, painter, userList]);
+  }, [gameSocket.id, painter, userList]);
 
   return (
     <CanvasSectionStyle>

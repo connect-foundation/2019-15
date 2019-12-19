@@ -18,3 +18,12 @@ export const GET_CANVAS_DATA_BY_QUESTION_ID = gql`
     }
   }
 `;
+
+export const SAVE_CANVAS_DATA = gql`
+  mutation saveCanvasData($data: String!, $questionWord: String!) {
+    saveCanvasData(data: $data, questionWord: $questionWord) {
+      dataLength
+      questionId
+    }
+  }
+`;

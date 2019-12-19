@@ -1,16 +1,14 @@
 import React, { useContext } from 'react';
 import GlobalContext from 'global.context';
-import useAvatar from 'hooks/Avatar/useAvatar';
-import CurrentMyInfoStyle from './CurrentMyInfo.style';
+import { getAvatar } from 'logics/avatar';
+import { CurrentMyInfoStyle, AvatarImage } from './CurrentMyInfo.style';
 
 export default function CurrentMyInfo() {
   const { user } = useContext(GlobalContext);
 
-  const [avatarRef] = useAvatar(user.avatar);
-
   return (
     <CurrentMyInfoStyle id="CurrentMyInfo">
-      <div alt="avatar" ref={avatarRef} />
+      <AvatarImage alt="avatar" src={getAvatar(user.avatar)} />
       <div>
         <span className="user-card nickname">닉네임</span>
         <span className="user-card ranking">랭킹 xxx위</span>

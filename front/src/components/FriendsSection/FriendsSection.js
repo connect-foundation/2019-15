@@ -8,9 +8,9 @@ export default function FriendsSection() {
   const [onlineFriends, onlineFriendsDispatch] = useOnlineFriends();
   const [open, setOpen] = useState(false);
 
-  function changeOpen() {
+  const changeOpen = () => {
     setOpen((currentOpen) => !currentOpen);
-  }
+  };
 
   return (
     <FriendsSectionContext.Provider

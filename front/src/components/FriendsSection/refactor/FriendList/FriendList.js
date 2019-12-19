@@ -1,4 +1,4 @@
-import React, { useReducer, useMemo, useContext } from 'react';
+import React, { useReducer, useMemo } from 'react';
 import Header from 'components/FriendsSection/refactor/FriendList/Header/Header';
 import Component from 'components/FriendsSection/refactor/FriendList/Component/Component';
 import Alert from 'components/globalComponents/Alert/Alert';
@@ -13,9 +13,9 @@ import FriendModal from 'components/FriendsSection/refactor/FriendList/FriendMod
 import modalReducer from 'components/FriendsSection/refactor/FriendList/modalReducer';
 import useOnlineFriends from 'hooks/Online/useOnlineFriends';
 
-function changeModeReducer(state) {
+const changeModeReducer = (state) => {
   return !state.current;
-}
+};
 
 export default function FriendList() {
   const [isConfigMode, changeMode] = useReducer(changeModeReducer, false);
@@ -53,9 +53,9 @@ export default function FriendList() {
     );
   }
 
-  function switchMode() {
+  const switchMode = () => {
     changeMode();
-  }
+  };
   return (
     <>
       <FriendModal
