@@ -22,7 +22,6 @@ class Circle extends Tool {
     });
     circle.setCoords();
     this.fc.add(circle);
-    this.fc.renderAll();
   }
 }
 

@@ -4,7 +4,6 @@ import {
   NonPainterBoardStyle,
   CanvasStyle,
 } from 'components/GamePlay/CanvasSection/DrawingPlayGround/NonPainterPlayGround/NonPainterBoard/NonPainterBoard.style';
-
 import PropTypes from 'prop-types';
 import useFabricCanvas from 'hooks/DrawingPlayGround/useFabricCanvas';
 import useGameSocket from 'hooks/Socket/useGameSocket';
@@ -31,21 +30,22 @@ export default function NonPainterBoard() {
 
   const setCanvas = (eventList) => {
     eventList.forEach((e) => {
-      const { offset, event, drawingOptions } = e;
+      const { pointer, event, drawingOptions } = e;
       const curToolType = NonPainterToolManager[drawingOptions.tool];
-      curToolType.setCanvas(fabricCanvas, drawingOptions);
 
       if (!NonPainterToolManager.freeDrawings.includes(drawingOptions.tool)) {
         NonPainterToolManager[drawingOptions.tool].draw(e);
         return;
       }
-      curToolType[event](offset);
+      curToolType.setOptions(drawingOptions);
+      curToolType[event](pointer);
     });
   };
 
   useEffect(() => {
     if (!fabricCanvas) return () => {};
 
+    NonPainterToolManager.initialize(fabricCanvas);
     const onObjectAdded = ({ target }) => {
       target.selectable = false;
       target.evented = false;

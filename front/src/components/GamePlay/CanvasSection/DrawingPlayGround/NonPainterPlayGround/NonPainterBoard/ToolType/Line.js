@@ -17,7 +17,7 @@ class Line extends Tool {
     line.set({ x2, y2 });
     line.setCoords();
     this.fc.add(line);
-    this.fc.renderAll();
+    this.fc.bringForward(line);
   }
 }
 

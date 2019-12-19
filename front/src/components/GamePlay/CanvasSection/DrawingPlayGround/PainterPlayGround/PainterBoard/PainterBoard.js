@@ -8,7 +8,6 @@ import PainterToolManager from 'components/GamePlay/CanvasSection/DrawingPlayGro
 import useCanvasDataEmitWithCaching from 'hooks/DrawingPlayGround/useCanvasDataEmitWithCaching';
 import useFabricCanvas from 'hooks/DrawingPlayGround/useFabricCanvas';
 import DrawingPlayGroundContext from 'components/GamePlay/CanvasSection/DrawingPlayGround/DrawingPlayGround.context';
-import History from 'components/GamePlay/CanvasSection/DrawingPlayGround/PainterPlayGround/PainterBoard/History/History';
 import { useMutation } from '@apollo/react-hooks';
 import { SAVE_CANVAS_DATA } from 'queries/video';
 import GamePlayContext from 'components/GamePlay/GamePlay.context';
@@ -37,7 +36,7 @@ export default function PainterBoard({ drawingOptions }) {
   const { selectedWord } = useContext(GamePlayContext);
 
   useEffect(() => {
-    if (!fabricCanvas) return () => { };
+    if (!fabricCanvas) return () => {};
     const tool = PainterToolManager[toolName];
     tool.setCanvas(fabricCanvas, drawingOptions);
 
@@ -61,38 +60,34 @@ export default function PainterBoard({ drawingOptions }) {
       });
     };
 
-    const onMouseDown = ({ pointer, e }) => {
+    const onMouseDown = ({ pointer }) => {
       startPoint = pointer;
       tool.onMouseDown(pointer);
       if (!PainterToolManager.freeDrawings.includes(toolName)) return;
 
       pushEventListDispatch('onMouseDown', {
         drawingOptions,
-        offset: getOffset(e),
+        pointer,
       });
       emitable = true;
     };
-    const onMouseMove = ({ pointer, e }) => {
+    const onMouseMove = ({ pointer }) => {
       tool.onMouseMove(pointer);
 
-      if (
-        !PainterToolManager.freeDrawings.includes(toolName) ||
-        !emitable ||
-        !isEventInCanvas(e)
-      )
+      if (!PainterToolManager.freeDrawings.includes(toolName) || !emitable)
         return;
 
       pushEventListDispatch('onMouseMove', {
         drawingOptions,
-        offset: getOffset(e),
+        pointer,
       });
     };
-    const onMouseUp = ({ pointer, e }) => {
+    const onMouseUp = ({ pointer }) => {
       endPoint = pointer;
       tool.onMouseUp(pointer);
       let options;
       if (PainterToolManager.freeDrawings.includes(toolName)) {
-        options = { drawingOptions, offset: getOffset(e) };
+        options = { drawingOptions, pointer };
       } else {
         options = { drawingOptions, startPoint, endPoint };
       }
@@ -100,36 +95,34 @@ export default function PainterBoard({ drawingOptions }) {
       clear();
     };
 
-    const onObjectAdded = ({ target }) => {
-      target.selectable = false;
-      target.evented = false;
-    };
     fabricCanvas.on('mouse:down', onMouseDown);
     fabricCanvas.on('mouse:move', onMouseMove);
     fabricCanvas.on('mouse:up', onMouseUp);
-    fabricCanvas.on('object:added', onObjectAdded);
     return () => {
       fabricCanvas.off('mouse:down');
       fabricCanvas.off('mouse:move');
       fabricCanvas.off('mouse:up');
-      fabricCanvas.on('object:added');
     };
   }, [drawingOptions, eventListDispatch, fabricCanvas, toolName]);
 
   useEffect(() => {
-    if (!fabricCanvas) return () => { };
-    const saveFullCanvasData = async () => {
+    if (!fabricCanvas) return () => {};
+
+    const saveFullCanvasData = async ({ target }) => {
+      target.selectable = false;
+      target.evented = false;
+
       const dataObject = fabricCanvas.toJSON();
       const currentTime = new Date();
-      if (currentTime - lastDrawingTime > 3000) {
-        await saveCanvasData({
-          variables: {
-            data: JSON.stringify(dataObject.objects),
-            questionWord: selectedWord,
-          },
-        });
-        setLastDrawingTime(currentTime);
-      }
+      if (currentTime - lastDrawingTime <= 3000) return;
+
+      await saveCanvasData({
+        variables: {
+          data: JSON.stringify(dataObject.objects),
+          questionWord: selectedWord,
+        },
+      });
+      setLastDrawingTime(currentTime);
     };
     fabricCanvas.on('object:added', saveFullCanvasData);
     return () => {
