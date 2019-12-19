@@ -9,7 +9,7 @@ import RoundSetting from './RoundSetting';
 import CategorySetting from './CategorySetting';
 
 GameSetting.propTypes = {
-  roomOwner: PropTypes.bool.isRequired,
+  isRoomOwner: PropTypes.bool.isRequired,
   waitingUserList: PropTypes.arrayOf(
     PropTypes.shape({
       nickname: PropTypes.string,
@@ -19,7 +19,7 @@ GameSetting.propTypes = {
   ).isRequired,
 };
 
-export default function GameSetting({ roomOwner, waitingUserList }) {
+export default function GameSetting({ isRoomOwner, waitingUserList }) {
   const { gameSocket } = useContext(GlobalContext);
   const [timer, onChangeTimer, timerRef, changeTimerValue] = useSelect(
     'timer',
@@ -67,21 +67,21 @@ export default function GameSetting({ roomOwner, waitingUserList }) {
   return (
     <GameSettingStyle>
       <TimeSetting
-        disabled={!roomOwner}
+        disabled={!isRoomOwner}
         onChangeTimer={onChangeTimer}
         timerRef={timerRef}
       />
       <RoundSetting
-        disabled={!roomOwner}
+        disabled={!isRoomOwner}
         onChangeRound={onChangeRound}
         roundRef={roundRef}
       />
       <CategorySetting
-        disabled={!roomOwner}
+        disabled={!isRoomOwner}
         onChangeCategory={onChangeCategory}
         categoryRef={categoryRef}
       />
-      <StartBtn disabled={!roomOwner} onClick={clickStartBtn}>
+      <StartBtn disabled={!isRoomOwner} onClick={clickStartBtn}>
         게임 시작
       </StartBtn>
     </GameSettingStyle>

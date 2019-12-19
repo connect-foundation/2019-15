@@ -44,6 +44,6 @@ export const Text = styled.div`
   word-wrap: normal;
   overflow: hidden;
   img {
-    display: ${({ roomOwner }) => (roomOwner ? 'inline' : 'none')};
+    display: ${({ isRoomOwner }) => (isRoomOwner ? 'inline' : 'none')};
   }
 `;
