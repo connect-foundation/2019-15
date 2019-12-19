@@ -11,19 +11,16 @@ class Pen extends Tool {
   }
 
   onMouseDown(pointers) {
-    console.log('mousedown');
     const mouseDownEvt = this.getMouseEvent('onmousedown', pointers);
     this.fc._onMouseDown(mouseDownEvt);
   }
 
   onMouseMove(pointers) {
-    console.log('mousemove');
     const mouseMoveEvt = this.getMouseEvent('onmousemove', pointers);
     this.fc._onMouseMove(mouseMoveEvt);
   }
 
   onMouseUp(pointers) {
-    console.log('mouseup');
     const mouseUpEvt = this.getMouseEvent('onmouseup', pointers);
     this.fc._onMouseUp(mouseUpEvt);
   }
