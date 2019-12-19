@@ -1,13 +1,7 @@
 <h1 align="center"><img src="https://github.com/connect-foundation/2019-15/blob/master/front/src/asset/mainlogo_yellowpink.png?raw=true" style="width: 80%;"></h1>
-<p>
-  <a href="https://github.com/connect-foundation/2019-15/wiki" target="_blank">
-    <img alt="Documentation" src="https://img.shields.io/badge/documentation-yes-brightgreen.svg" />
-  </a>
-  <a href="https://travis-ci.org/connect-foundation/2019-15" target="_blank">
-    <img alt="travis-build-status" src="https://travis-ci.org/connect-foundation/2019-15.svg?branch=master" />
-  </a>
-</p>
 
+![Documentation](https://img.shields.io/badge/documentation-yes-brightgreen.svg)
+![travis-build-status](https://travis-ci.org/connect-foundation/2019-15.svg?branch=master)
 ![GitHub language count](https://img.shields.io/github/languages/count/connect-foundation/2019-15)
 ![GitHub top language](https://img.shields.io/github/languages/top/connect-foundation/2019-15)
 ![W3C Validation](https://img.shields.io/w3c-validation/html?preset=HTML%2C%20SVG%201.1%2C%20MathML%203.0&targetUrl=http%3A%2F%2Fcatchmymind.shop)
