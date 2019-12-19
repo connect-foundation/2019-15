@@ -190,9 +190,13 @@ npm start
 npm run test:local
 ```
 
+## License
+[MIT license](https://github.com/connect-foundation/2019-15/blob/master/LICENSE)
+
+## Copyright
+Copyright 2019. Catch My Mind. All rights reserved.
+
 ## Show your support
-
-
 Give a ⭐️ if this project helped you!
 
 ---
