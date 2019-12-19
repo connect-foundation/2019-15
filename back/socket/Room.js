@@ -6,9 +6,9 @@ const makeReducerWithPromise = require('../util/makeReducerWithPromise');
 const { PRIVATE_ROOM_NAME } = require('../config/roomConfig');
 
 class Room {
-  constructor(gameIo) {
-    this.roomId = null;
-    this.roomName = null;
+  constructor(gameIo, roomId, roomType) {
+    this.roomId = roomId;
+    this.roomType = roomType;
     this.players = [];
     this.categoryId = null;
     this.word = null;
@@ -54,7 +54,6 @@ class Room {
     try {
       this.resetRoomState();
       this.examinerIndex -= 1;
-      // 주의!!!
       this.players[this.examinerIndex].privileged = true;
     } catch (e) {
       console.log(e);
@@ -89,7 +88,8 @@ class Room {
 
   removePlayer(userIndex) {
     if (userIndex < 0) return;
-    const [removedPlayer] = this.players.splice(userIndex, 1);
+    this.players.splice(userIndex, 1);
+
     if (this.players.length === 1) {
       this.state = roomState.WAITING;
     }
@@ -184,17 +184,17 @@ class Room {
     }, 5000);
   }
 
-  async gameEndCallback(gameIo) {
+  gameEndCallback(gameIo) {
     gameIo.in(this.roomId).emit('endGame', {
       _scores: this.getScores(),
       answer: this.word,
     });
 
-    if (this.roomName !== PRIVATE_ROOM_NAME) this.updateUserScore();
+    if (this.roomType !== PRIVATE_ROOM_NAME) this.updateUserScore();
   }
 
   async updateUserScore() {
-    function getPlayerByNickname(player) {
+    const getPlayerByNickname = (player) => {
       return models.Users.findOne({
         where: {
           nickname: {
@@ -202,23 +202,23 @@ class Room {
           },
         },
       });
-    }
+    };
 
-    function makeIdScoreTuple(acc, user, player) {
+    const makeIdScoreTuple = (acc, user, player) => {
       acc.push({
         id: user.dataValues.id,
         score: user.dataValues.score + player.score,
       });
 
       return acc;
-    }
+    };
 
     const users = await this.players.reduce(
       makeReducerWithPromise(getPlayerByNickname, makeIdScoreTuple),
       [],
     );
 
-    function updateUserScore(user) {
+    const updateUserScore = (user) => {
       return models.Users.update(
         {
           score: user.score,
@@ -231,17 +231,14 @@ class Room {
           },
         },
       );
-    }
+    };
 
-    function makeUpdatedUserNumber(acc, updatedUser) {
+    const makeUpdatedUserNumber = (acc, updatedUser) => {
       acc += updatedUser[0];
       return acc;
-    }
+    };
 
-    const updatedUserNumber = await users.reduce(
-      makeReducerWithPromise(updateUserScore, makeUpdatedUserNumber),
-      0,
-    );
+    await users.reduce(makeReducerWithPromise(updateUserScore, makeUpdatedUserNumber), 0);
   }
 
   getExaminerSocketId() {

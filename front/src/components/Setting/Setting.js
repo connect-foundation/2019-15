@@ -22,10 +22,7 @@ export default function Setting() {
     setRoom(new Room(privateRoomId, PRIVATE_ROOM_NAME));
 
     if (!gameSocket) return;
-    gameSocket.emit('exitRoom', {
-      roomType: PRIVATE_ROOM_NAME,
-      roomId: privateRoomId,
-    });
+    gameSocket.emit('exitRoom');
   }, [gameSocket, hash, setRoom]);
 
   const onClickGameStart = () => {
