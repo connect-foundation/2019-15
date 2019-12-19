@@ -24,7 +24,7 @@ const app = express();
 const server = http.createServer(app);
 
 // create socket handler
-const io = socketIo(server);
+const io = socketIo(server, { transports: ['websocket'] });
 const initSocketIO = require('./socket');
 
 // initSocket
