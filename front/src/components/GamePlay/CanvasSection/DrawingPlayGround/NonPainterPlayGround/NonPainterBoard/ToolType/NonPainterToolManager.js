@@ -1,21 +1,23 @@
 import Line from 'components/GamePlay/CanvasSection/DrawingPlayGround/NonPainterPlayGround/NonPainterBoard/ToolType/Line';
-import Pen from 'components/GamePlay/CanvasSection/DrawingPlayGround/NonPainterPlayGround/NonPainterBoard/ToolType/Pen';
 import Circle from 'components/GamePlay/CanvasSection/DrawingPlayGround/NonPainterPlayGround/NonPainterBoard/ToolType/Circle';
 import Eraser from 'components/GamePlay/CanvasSection/DrawingPlayGround/NonPainterPlayGround/NonPainterBoard/ToolType/Eraser';
+import Pen from 'components/GamePlay/CanvasSection/DrawingPlayGround/NonPainterPlayGround/NonPainterBoard/ToolType/Brush';
 
 const line = new Line();
 const pen = new Pen();
-const circle = new Circle();
 const eraser = new Eraser();
+const circle = new Circle();
 
-// eraser또한 pen으로 취급하여 해결
-const ToolManager = {
+const NonPainterToolManager = {
   pen,
   line,
   circle,
   eraser,
   toolList: ['pen', 'line', 'circle', 'eraser'],
-  freeDrawingTools: ['pen', 'eraser'],
+  freeDrawings: ['pen', 'eraser'],
+  initialize(fc) {
+    this.toolList.forEach((tool) => this[tool].setCanvas(fc));
+  },
 };
 
-export default ToolManager;
+export default NonPainterToolManager;

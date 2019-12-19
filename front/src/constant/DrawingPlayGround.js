@@ -15,3 +15,45 @@ export const RGB_LIST = [
   '#C0C0C0',
   '#FFFFFF',
 ];
+
+export const getOffset = (e) => {
+  return {
+    x: e.offsetX,
+    y: e.offsetY,
+  };
+};
+
+export const getMouseEvent = (event, options) => {
+  return new MouseEvent(event, {
+    bubbles: true,
+    cancelable: true,
+    view: window,
+    ...options,
+  });
+};
+
+export const DEFAULT_CIRCLE_OPTIONS = {
+  originX: 'left',
+  originY: 'center',
+};
+
+export const DEFAULT_ERASER_OPTIONS = {
+  width: 50,
+  color: '#FFFFFF',
+};
+
+export const DEFAULT_LINE_OPTIONS = {
+  originX: 'center',
+  originY: 'center',
+};
+
+export const getClientPointer = (elementOffset, eventOffset) => {
+  return {
+    clientX: elementOffset.left + eventOffset.x,
+    clientY: elementOffset.top + eventOffset.y,
+  };
+};
+
+export const isEventInCanvas = (e) => {
+  return e.target.tagName === 'CANVAS';
+};

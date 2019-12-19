@@ -7,12 +7,12 @@ import {
 } from 'components/GamePlay/CanvasSection/DrawingPlayGround/PainterPlayGround/Tools/Tools.style';
 import ColorPicker from 'components/GamePlay/CanvasSection/DrawingPlayGround/PainterPlayGround/Tools/ColorPicker/ColorPicker';
 import ToolType from 'components/GamePlay/CanvasSection/DrawingPlayGround/PainterPlayGround/Tools/ToolType/ToolType';
-import ToolManager from 'components/GamePlay/CanvasSection/DrawingPlayGround/PainterPlayGround/Tools/ToolType/ToolManager';
+import PainterToolManager from 'components/GamePlay/CanvasSection/DrawingPlayGround/PainterPlayGround/Tools/ToolType/PainterToolManager';
 import Slider from 'components/globalComponents/Slider/Slider';
 
 Tools.propTypes = {
   drawingOptions: PropTypes.shape({
-    tool: PropTypes.oneOf(ToolManager.toolList),
+    tool: PropTypes.oneOf(PainterToolManager.toolList),
     fillColor: PropTypes.string,
     strokeColor: PropTypes.string,
     strokeWidth: PropTypes.number,
@@ -22,7 +22,7 @@ Tools.propTypes = {
 
 Tools.defaultProps = {
   drawingOptions: PropTypes.shape({
-    tool: ToolManager.toolList[0],
+    tool: PainterToolManager.toolList[0],
     fillColor: '#FFFFFF',
     strokeColor: '#000000',
     strokeWidth: 10,

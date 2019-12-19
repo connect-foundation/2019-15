@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 const RouterStyle = styled.div`
-  height: calc(100% - 4.5rem);
+  height: 100%;
   width: 100%;
 `;
 

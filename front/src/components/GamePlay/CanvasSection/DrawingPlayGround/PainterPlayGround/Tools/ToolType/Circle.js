@@ -2,30 +2,17 @@
 import { fabric } from 'fabric';
 import Tool from 'components/GamePlay/CanvasSection/DrawingPlayGround/PainterPlayGround/Tools/ToolType/Tool';
 import { getDistance, getAngle } from 'util/Circle';
+import { DEFAULT_CIRCLE_OPTIONS } from 'constant/DrawingPlayGround';
 
 class Circle extends Tool {
   setCanvas(fabricCanvas, { fillColor, strokeWidth, strokeColor }) {
     super.setCanvas(fabricCanvas);
     this.fc.isDrawingMode = false;
-    this.fc.selection = false;
-    this.fc.forEachObject((obj) => {
-      obj.selectable = false;
-      obj.evented = false;
-    });
     this.options = {
-      ...Circle.defaultOptions(),
+      ...DEFAULT_CIRCLE_OPTIONS,
       stroke: strokeColor,
       fill: fillColor,
       strokeWidth,
-    };
-  }
-
-  static defaultOptions() {
-    return {
-      originX: 'left',
-      originY: 'center',
-      selectable: false,
-      evented: false,
     };
   }
 
