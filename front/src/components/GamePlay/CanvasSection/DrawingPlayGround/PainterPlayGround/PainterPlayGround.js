@@ -1,7 +1,7 @@
 import React, { useReducer } from 'react';
 import Tools from 'components/GamePlay/CanvasSection/DrawingPlayGround/PainterPlayGround/Tools/Tools';
 import PainterBoard from 'components/GamePlay/CanvasSection/DrawingPlayGround/PainterPlayGround/PainterBoard/PainterBoard';
-import { DEFAULT_DRAWING_OPTIONS } from 'constant/DrawingPlayGround';
+import { DEFAULT_DRAWING_OPTIONS } from 'constants/DrawingPlayGround';
 
 const setDrawingOptions = (prev, { type, value }) => {
   switch (type) {

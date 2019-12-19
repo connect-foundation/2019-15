@@ -4,11 +4,12 @@ import PropTypes from 'prop-types';
 import { useMutation } from '@apollo/react-hooks';
 import makeModal from 'components/globalComponents/Modal/Modal';
 import Button from 'components/globalComponents/Button/Button';
-import message from 'constant/messages';
-import { DELETE_FRIEND, SEND_FRIEND_REQUEST } from 'queries/friend';
+import message from 'constants/messages';
+import { DELETE_FRIEND } from 'queries/friend';
 import GlobalContext from 'global.context';
-import { emitDeleteFriend, emitRequestFriend } from 'logics/socketLogic/online';
 import ButtonSectionStyle from './ButtonSection.style';
+import { SEND_FRIEND_REQUEST } from 'queries/beforeFriend';
+import useOnlineSocket from 'hooks/Socket/useOnlineSocket';
 
 FriendsSetModal.propTypes = {
   mode: PropTypes.string,
@@ -35,7 +36,7 @@ export default function FriendsSetModal({
   const [deleteFriendFunc] = useMutation(DELETE_FRIEND, {
     onCompleted({ deleteFriend: { user: friend, result } }) {
       if (!result || !onlineSocket) return;
-      emitDeleteFriend(onlineSocket, friend);
+      useOnlineSocket(onlineSocket, friend);
     },
   });
   const [sendFriendRequestFunc] = useMutation(SEND_FRIEND_REQUEST, {

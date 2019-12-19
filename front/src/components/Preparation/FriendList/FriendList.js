@@ -1,11 +1,11 @@
 import React, { useMemo } from 'react';
-import useCursorQuery from 'hooks/useCursorQuery';
+import useCursorQuery from 'hooks/commons/useCursorQuery';
 import { GET_FRIENDS } from 'queries/friend';
 import Loading from 'components/globalComponents/Loading/Loading';
 import Alert from 'components/globalComponents/Alert/Alert';
 import Friend from 'components/Preparation/FriendList/Friend/Friend';
 import InfinityScroll from 'components/globalComponents/InfinityScroll/InfinityScroll';
-import useOnlineFriends from 'hooks/Online/useOnlineFriends';
+import useOnlineFriends from 'hooks/FriendsSection/useOnlineFriends';
 import { FriendListStyle } from './FriendList.style';
 
 export default function FriendList() {

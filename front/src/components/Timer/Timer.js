@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import TimerStyle from './Timer.style';
-import timerConfig from '../../constant/timerConfig';
+import timerConfig from '../../constants/timerConfig';
 
 Timer.propTypes = {
   isTimerGetReady: PropTypes.bool.isRequired,

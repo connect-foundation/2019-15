@@ -1,6 +1,6 @@
 import React, { useEffect, useReducer, useCallback } from 'react';
 import PropTypes from 'prop-types';
-import makeEmptyArray from 'logics/wordPreview/makeEmptyArray';
+import makeEmptyArray from 'utils/makeEmptyArray';
 import WordPreviewStyle from './WordPreview.style';
 
 WordPreview.propTypes = {

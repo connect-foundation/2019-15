@@ -8,7 +8,7 @@ import {
   ComponentStyle,
   Icon,
 } from 'components/FriendsSection/refactor/FriendList/Component/Component.style';
-import regex from 'constant/TextInput';
+import regex from 'constants/nicknameRegex';
 import PropTypes from 'prop-types';
 
 Header.propTypes = {

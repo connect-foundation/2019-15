@@ -12,7 +12,7 @@ import {
   LineStyle,
   SliderStyle,
 } from 'components/globalComponents/Slider/Slider.style';
-import { getNodeCenterPos } from 'util/Slider';
+import { getNodeCenterPos } from 'utils/Slider';
 
 Slider.propTypes = {
   max: PropTypes.number,

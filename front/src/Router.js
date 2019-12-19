@@ -9,10 +9,10 @@ import PrivateGame from 'pages/PrivateGame';
 import PublicGame from 'pages/PublicGame';
 import SettingPage from 'pages/Setting';
 import Waiting from 'pages/Waiting';
-import Room from 'logics/room';
-import User from 'logics/user';
+import Room from 'utils/catchmymind/Room';
+import User from 'utils/catchmymind/User';
 import RouterStyle from 'Router.style';
-import parseCookies from 'util/cookie';
+import parseCookies from 'utils/cookie';
 import useInitSocket from 'hooks/Socket/useInitSocket';
 
 const changeUser = (prev, newUser) => {

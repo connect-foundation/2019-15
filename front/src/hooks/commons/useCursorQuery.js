@@ -6,7 +6,7 @@ import {
   getLoadMore,
   getNodes,
   getNullPage,
-} from 'logics/hooks/cursorQuery';
+} from 'utils/catchmymind/cursorQuery';
 
 const useCursorQuery = (query, options = {}) => {
   const [data, setData] = useState(null);

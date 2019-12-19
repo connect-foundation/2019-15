@@ -2,7 +2,7 @@ import React from 'react';
 import { MessageListStyle } from 'components/globalComponents/Message/MessageList.style';
 import Loading from 'components/globalComponents/Loading/Loading';
 import Alert from 'components/globalComponents/Alert/Alert';
-import useCursorQuery from 'hooks/useCursorQuery';
+import useCursorQuery from 'hooks/commons/useCursorQuery';
 import { GET_FRIEND_REQUESTS } from 'queries/beforeFriend';
 import FriendRequest from 'components/NavigationBar/DefaultNavBtnList/FriendRequestContainer/FriendRequestList/FriendRequest/FriendRequest';
 import InfinityScroll from 'components/globalComponents/InfinityScroll/InfinityScroll';

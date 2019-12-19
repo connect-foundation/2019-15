@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import PropTypes from 'prop-types';
 import Select from 'components/globalComponents/Select/Select';
-import timerConfig from 'constant/timerConfig';
+import timerConfig from 'constants/timerConfig';
 
 TimeSetting.propTypes = {
   onChangeTimer: PropTypes.func.isRequired,

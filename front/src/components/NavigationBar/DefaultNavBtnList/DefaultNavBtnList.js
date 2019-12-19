@@ -1,6 +1,6 @@
 import React from 'react';
 import { useLocation, useHistory } from 'react-router-dom';
-import APP_URI from 'util/uri';
+import APP_URI from 'constants/uri';
 import {
   faUserAlt,
   faHome,

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import FriendsSectionContext from 'components/FriendsSection/FriendsSection.context';
-import useOnlineFriends from 'hooks/Online/useOnlineFriends';
+import useOnlineFriends from 'hooks/FriendsSection/useOnlineFriends';
 import FriendsList from './FriendsList/FriendsList';
 import ListPopUpButton from './ListPopUpButton.style';
 

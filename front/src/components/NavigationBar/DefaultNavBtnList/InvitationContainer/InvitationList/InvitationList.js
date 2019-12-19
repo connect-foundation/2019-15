@@ -3,7 +3,7 @@ import { MessageListStyle } from 'components/globalComponents/Message/MessageLis
 import Loading from 'components/globalComponents/Loading/Loading';
 import Alert from 'components/globalComponents/Alert/Alert';
 import { GET_INVITATIONS } from 'queries/invitation';
-import useCursorQuery from 'hooks/useCursorQuery';
+import useCursorQuery from 'hooks/commons/useCursorQuery';
 import Invitation from 'components/NavigationBar/DefaultNavBtnList/InvitationContainer/InvitationList/Invitation/Invitation';
 import { InvitationListStyle } from 'components/NavigationBar/DefaultNavBtnList/InvitationContainer/InvitationList/InvitationList.style';
 import InfinityScroll from 'components/globalComponents/InfinityScroll/InfinityScroll';

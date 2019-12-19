@@ -3,7 +3,7 @@ import Loading from 'components/globalComponents/Loading/Loading';
 import Alert from 'components/globalComponents/Alert/Alert';
 import InfinityScroll from 'components/globalComponents/InfinityScroll/InfinityScroll';
 import { GET_RANKING_FRIENDS } from 'queries/ranking';
-import useCursorQuery from 'hooks/useCursorQuery';
+import useCursorQuery from 'hooks/commons/useCursorQuery';
 import { RankingAllStyle } from 'components/Ranking/RankingAll/RankingAll.style';
 import UserRankingList from '../UserRankingList/UserRankingList';
 import UserRankingListStyle from '../UserRankingList/UserRankingList.style';

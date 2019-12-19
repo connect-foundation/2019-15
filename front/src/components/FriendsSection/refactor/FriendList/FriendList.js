@@ -7,11 +7,11 @@ import {
   FriendListScrollStyle,
 } from 'components/FriendsSection/refactor/FriendList/FriendList.style';
 import { GET_FRIENDS } from 'queries/friend';
-import useCursorQuery from 'hooks/useCursorQuery';
+import useCursorQuery from 'hooks/commons/useCursorQuery';
 import InfinityScroll from 'components/globalComponents/InfinityScroll/InfinityScroll';
 import FriendModal from 'components/FriendsSection/refactor/FriendList/FriendModal/FriendModal';
 import modalReducer from 'components/FriendsSection/refactor/FriendList/modalReducer';
-import useOnlineFriends from 'hooks/Online/useOnlineFriends';
+import useOnlineFriends from 'hooks/FriendsSection/useOnlineFriends';
 
 const changeModeReducer = (state) => {
   return !state.current;
