@@ -1,5 +1,4 @@
 const getScore = require('../../util/getScore');
-const { sendUserListToRoom } = require('./game');
 
 function sendMessage(gameSocket, { roomType, roomId, inputValue }) {
   let answer;
@@ -27,7 +26,7 @@ function sendMessage(gameSocket, { roomType, roomId, inputValue }) {
     returnMessage.privileged = 'notice';
 
     this.gameIo.in(roomId).emit('getMessage', returnMessage);
-    sendUserListToRoom(room.players, roomId, this.gameIo);
+    room.sendUserList(this.gameIo);
 
     // 점수 계산
     const defaultScore = 100;

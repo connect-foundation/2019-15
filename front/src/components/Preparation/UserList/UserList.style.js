@@ -25,8 +25,8 @@ export const UserStyle = styled(FlexColumnStyle)`
 `;
 
 export const Avatar = styled.img`
-  width: 90px;
-  height: 90px;
+  width: 80px;
+  height: 80px;
 `;
 
 export const RoomOwner = styled.img`

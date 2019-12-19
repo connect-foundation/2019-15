@@ -1,7 +1,8 @@
 import React, { useContext } from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import GlobalContext from 'global.context';
-import CurrentMyInfoStyle from './CurrentMyInfo.style';
+import { CurrentMyInfoStyle, AvatarImage } from './CurrentMyInfo.style';
+import { getAvatar } from 'logics/avatar';
 import { GET_RANKING_BY_ID } from '../../../queries/ranking';
 
 export default function CurrentMyInfo() {
@@ -15,6 +16,7 @@ export default function CurrentMyInfo() {
 
   return (
     <CurrentMyInfoStyle id="CurrentMyInfo">
+      <AvatarImage alt="avatar" src={getAvatar(user.avatar)} />
       <div>
         <span className="user-card nickname">{user.nickname}</span>
         <span className="user-card ranking">랭킹 {data.getRankingById}위</span>

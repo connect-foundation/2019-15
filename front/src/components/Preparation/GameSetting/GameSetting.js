@@ -21,14 +21,20 @@ GameSetting.propTypes = {
 
 export default function GameSetting({ roomOwner, waitingUserList }) {
   const { gameSocket, room } = useContext(GlobalContext);
-  const [timer, onChangeTimer, timerRef, changeTimerValue] = useSelect('timer');
-  const [round, onChangeRound, roundRef, changeRoundValue] = useSelect('round');
+  const [timer, onChangeTimer, timerRef, changeTimerValue] = useSelect(
+    'timer',
+    '40',
+  );
+  const [round, onChangeRound, roundRef, changeRoundValue] = useSelect(
+    'round',
+    '3',
+  );
   const [
-    category,
+    categoryId,
     onChangeCategory,
     categoryRef,
     changeCategoryValue,
-  ] = useSelect('category');
+  ] = useSelect('category', '1');
 
   useGameSocket('changeRoomSetting', ({ selectType, selectedIndex }) => {
     switch (selectType) {
@@ -53,9 +59,9 @@ export default function GameSetting({ roomOwner, waitingUserList }) {
     if (waitingUserList.length < 2) return;
     gameSocket.emit('startPrivateGame', {
       roomId: room.roomId,
-      timer,
+      expireTime: timer,
       round,
-      category,
+      categoryId,
     });
   }
 

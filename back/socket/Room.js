@@ -10,7 +10,7 @@ class Room {
     this.roomId = null;
     this.roomName = null;
     this.players = [];
-    this.wordSet = null;
+    this.categoryId = null;
     this.word = null;
     this.openIndex = 0;
     this.timer = new Timer();
@@ -30,7 +30,7 @@ class Room {
   }
 
   initRoomState() {
-    this.wordSet = null;
+    this.categoryId = null;
     this.word = null;
     this.openIndex = 0;
     this.state = roomState.EMPTY;
@@ -73,13 +73,29 @@ class Room {
     if (this.state === roomState.EMPTY) this.state = roomState.WAITING;
   }
 
+  sendUserList(gameIo) {
+    const userList = this.players.map((user) => {
+      const userName = user.nickname || '부스트캠퍼';
+      return {
+        nickname: userName,
+        socketId: user.socket.id,
+        privileged: user.privileged,
+        avatar: user.avatar,
+        roomOwner: user.roomOwner,
+      };
+    });
+    gameIo.in(this.roomId).emit('userList', { playerList: JSON.stringify(userList) });
+  }
+
   removePlayer(userIndex) {
     if (userIndex < 0) return;
     const [removedPlayer] = this.players.splice(userIndex, 1);
     if (this.players.length === 1) {
       this.state = roomState.WAITING;
     }
+  }
 
+  getRoomStateAfterRemovePlayer(userIndex) {
     // 게임을 계속 할 수 있는 경우
     if (this.players.length) {
       // 출제자가 탈주한 경우
@@ -87,6 +103,7 @@ class Room {
         const nextExaminerIndex = userIndex === 0 ? this.players.length - 1 : userIndex - 1;
         this.players[nextExaminerIndex].privileged = true;
 
+        if (this.isSelectingWord()) this.examinerIndex = nextExaminerIndex;
         if (this.isPlayingQuestion()) return escapeResultCode.EXAMINER_IS_ESCAPED;
       }
       // 출제자가 아닌 플레이어가 탈주한 경우
@@ -100,6 +117,7 @@ class Room {
       if (this.isWaiting()) return escapeResultCode.IS_WAITING;
       if (this.isSelectingWord()) return escapeResultCode.IS_SELECTING_WORD;
     }
+    return escapeResultCode.NOT_PROPER;
   }
 
   // 방이 대기중인 상태인 경우
@@ -162,16 +180,7 @@ class Room {
       totalRound: this.totalRound,
     });
     setTimeout(() => {
-      const userList = this.players.map((user) => {
-        const userName = user.nickname || '부스트캠퍼';
-        return {
-          nickname: userName,
-          socketId: user.socket.id,
-          privileged: user.privileged,
-          avatar: user.avatar,
-        };
-      });
-      gameIo.in(this.roomId).emit('userList', { userList: JSON.stringify(userList) });
+      this.sendUserList(gameIo);
     }, 5000);
   }
 
@@ -233,8 +242,6 @@ class Room {
       makeReducerWithPromise(updateUserScore, makeUpdatedUserNumber),
       0,
     );
-
-    console.log('updatedUserNumber', updatedUserNumber);
   }
 
   getExaminerSocketId() {
@@ -291,6 +298,32 @@ class Room {
       player.privileged = false;
       return player;
     });
+  }
+
+  roomSettingAfterUserRemove(removeResult, gameSocket) {
+    switch (removeResult) {
+      case escapeResultCode.IS_WAITING: {
+        this.timer.stop();
+        this.resetAllPlayerPrivilege();
+        gameSocket.to(this.roomId).emit('prepareNewGame');
+        break;
+      }
+      case escapeResultCode.IS_SELECTING_WORD: {
+        gameSocket.to(this.roomId).emit('gamestart', this.makeGameStartData());
+        break;
+      }
+      case escapeResultCode.EXAMINER_IS_ESCAPED: {
+        this.questionEndCallback(gameSocket);
+        break;
+      }
+      case escapeResultCode.NON_EXAMINER_IS_ESCAPED: {
+        if (this.isAllPlayerAnswered()) this.questionEndCallback(gameSocket);
+        break;
+      }
+      default: {
+        break;
+      }
+    }
   }
 }
 

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext } from 'react';
 import GamePlayContext from 'components/GamePlay/GamePlay.context';
 import GlobalContext from 'global.context';
 import UserListStyle from './Userlist.style';
@@ -18,7 +18,7 @@ export default function UserList() {
       : 0;
 
     const painterIndex = userList.findIndex(
-      (user) => user.socketId === painter,
+      (user_) => user_.socketId === painter,
     );
     const leftTurn =
       index <= painterIndex

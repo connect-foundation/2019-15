@@ -4,7 +4,6 @@ import GlobalContext from 'global.context';
 import Room from 'logics/room';
 import { PRIVATE_ROOM_NAME } from 'constant/room/roomInfo';
 import useCarousel from 'hooks/Carousel/useCarousel';
-import { emitEnterPrivateRoom, exitGameRoom } from 'logics/socketLogic';
 import AVATAR_NUMBER from 'constant/avatar';
 import useInputByReducer from 'hooks/Input/useInputByReducer';
 import { SettingStyle, GameStartButtonStyle } from './Setting.style';
@@ -12,9 +11,7 @@ import NicknameContainer from './NicknameContainer';
 import AvatarContainer from './AvatarContainer';
 
 export default function Setting() {
-  const { setRoom, room, gameSocket, setGameSocket } = useContext(
-    GlobalContext,
-  );
+  const { setRoom, room, gameSocket } = useContext(GlobalContext);
   const history = useHistory();
   const { hash } = useParams();
   const [avatar, clickLeftBtn, clickRightBtn] = useCarousel(AVATAR_NUMBER);
@@ -25,14 +22,14 @@ export default function Setting() {
     setRoom(new Room(privateRoomId, PRIVATE_ROOM_NAME));
 
     if (!gameSocket) return;
-    exitGameRoom(gameSocket, {
+    gameSocket.emit('exitRoom', {
       roomType: PRIVATE_ROOM_NAME,
       roomId: privateRoomId,
     });
-  }, [gameSocket, hash, setGameSocket, setRoom]);
+  }, [gameSocket, hash, setRoom]);
 
   function onClickGameStart() {
-    emitEnterPrivateRoom(gameSocket, {
+    gameSocket.emit('enterPrivate', {
       nickname: nickname.nickname,
       roomId: room.roomId,
       avatar,

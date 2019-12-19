@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import {
   PainterBoardStyle,
@@ -9,6 +9,9 @@ import useCanvasDataEmitWithCaching from 'hooks/DrawingPlayGround/useCanvasDataE
 import useFabricCanvas from 'hooks/DrawingPlayGround/useFabricCanvas';
 import DrawingPlayGroundContext from 'components/GamePlay/CanvasSection/DrawingPlayGround/DrawingPlayGround.context';
 import History from 'components/GamePlay/CanvasSection/DrawingPlayGround/PainterPlayGround/PainterBoard/History/History';
+import { useMutation } from '@apollo/react-hooks';
+import { SAVE_CANVAS_DATA } from 'queries/video';
+import GamePlayContext from 'components/GamePlay/GamePlay.context';
 
 PainterBoard.propTypes = {
   drawingOptions: PropTypes.shape({
@@ -44,6 +47,9 @@ export default function PainterBoard({ drawingOptions }) {
   const { tool: toolName } = drawingOptions;
   const eventListDispatch = useCanvasDataEmitWithCaching();
   const [fabricCanvas, attachFabricCanvas] = useFabricCanvas(canvasSize);
+  const [lastDrawingTime, setLastDrawingTime] = useState(new Date());
+  const [saveCanvasData] = useMutation(SAVE_CANVAS_DATA);
+  const { selectedWord } = useContext(GamePlayContext);
 
   useEffect(() => {
     if (!fabricCanvas) return () => {};
@@ -98,7 +104,6 @@ export default function PainterBoard({ drawingOptions }) {
       startPoint = null;
       endPoint = null;
     };
-
     fabricCanvas.on('mouse:down', onMouseDown);
     fabricCanvas.on('mouse:move', onMouseMove);
     fabricCanvas.on('mouse:up', onMouseUp);
@@ -108,6 +113,27 @@ export default function PainterBoard({ drawingOptions }) {
       fabricCanvas.off('mouse:up');
     };
   }, [drawingOptions, eventListDispatch, fabricCanvas, toolName]);
+
+  useEffect(() => {
+    if (!fabricCanvas) return () => {};
+    const saveFullCanvasData = async () => {
+      const dataObject = fabricCanvas.toJSON();
+      const currentTime = new Date();
+      if (currentTime - lastDrawingTime > 3000) {
+        await saveCanvasData({
+          variables: {
+            data: JSON.stringify(dataObject.objects),
+            questionWord: selectedWord,
+          },
+        });
+        setLastDrawingTime(currentTime);
+      }
+    };
+    fabricCanvas.on('object:added', saveFullCanvasData);
+    return () => {
+      fabricCanvas.off('object:added');
+    };
+  }, [selectedWord, fabricCanvas, lastDrawingTime, saveCanvasData]);
 
   return (
     <PainterBoardStyle>
