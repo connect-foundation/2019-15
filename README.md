@@ -23,7 +23,11 @@
 ![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/connect-foundation/2019-15)
 ![Website](https://img.shields.io/website?url=http%3A%2F%2Fcatchmymind.shop)
 
-### :house: http://catchmymind.shop/
+## Link
+### Release
+:house: http://catchmymind.shop/
+### Develop
+:computer: http://catchyourmind.shop/
 
 ## Introduction
 
@@ -50,12 +54,13 @@
 ### Sprint
 |          | 손진아                     | 이지영             | 이창권             | 최형준                    |
 | -------- | ----------------------- | --------------- | --------------- | ---------------------- |
-| Sprint_1 | 친구 기능 구현             | 웹소켓으로 게임시작기능 구현 | CI/CD 및 환경 설정   | OAuth 구현               |
-| Sprint_2 | 단어 db 구축, 단어 선택 기능 구현 | 게임화면 유저리스트 구현   | 전체 랭킹, 친구 랭킹 구현 | 자동 로그인, 배포 환경에서의 OAuth |
-| Sprint_3 | 채팅 기능 구현                       |비밀게임 시작구현                 | 친구 초대 알람, 닉네임 변경 | 전체적인UI, 타이머, 단어 미리보기  |
-| Sprint_4 | 디자인 변경  | 리팩토링, 버그픽스    | 캔버스 소켓 통신, 알림 리팩토링 |  문제 종료, 라운드 변경, 프론트 코드 리팩토링(지영이와 페어 코딩) |
-| Sprint_5 |   정답 기능 구현, 친구 리팩토링     |  아바타 선택 기능  | 캔버스 툴 추가, 게임 초대 | 타이머 정확도 개선, 난입에 대한 예외처리, 게임 종료 로직 구현 |
-| Sprint_6 |                         |                 |                 |                        |
+| Sprint 1 | 친구 기능 구현             | 웹소켓으로 게임시작기능 구현 | CI/CD 및 환경 설정   | OAuth 구현               |
+| Sprint 2 | 단어 db 구축, 단어 선택 기능 구현 | 게임화면 유저리스트 구현   | 전체 랭킹, 친구 랭킹 구현 | 자동 로그인, 배포 환경에서의 OAuth |
+| Sprint 3 | 채팅 기능 구현                       |비밀게임 시작구현                 | 친구 초대 알람, 닉네임 변경 | 전체적인UI, 타이머, 단어 미리보기  |
+| Sprint 4 | 디자인 변경  | 리팩토링, 버그픽스    | 캔버스 소켓 통신, 알림 리팩토링 |  문제 종료, 라운드 변경, 프론트 코드 리팩토링(지영이와 페어 코딩) |
+| Sprint 5 |   정답 기능 구현, 친구 리팩토링     |  아바타 선택 기능  | 캔버스 툴 추가, 게임 초대 | 타이머 정확도 개선, 난입에 대한 예외처리, 게임 종료 로직 구현 |
+| Sprint 6 |                         |                 |                 |                        |
+
 ## Environment
 - FRONT
     - React
