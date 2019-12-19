@@ -1,11 +1,11 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useContext } from 'react';
 import PropTypes from 'prop-types';
 import TimerStyle from './Timer.style';
 import timerConfig from '../../constant/timerConfig';
+import GamePlayContext from '../GamePlay/GamePlay.context';
 
 Timer.propTypes = {
   isTimerGetReady: PropTypes.bool.isRequired,
-  setIsLetterOpen: PropTypes.func.isRequired,
   endTime: PropTypes.number.isRequired,
 };
 
@@ -14,7 +14,8 @@ const getRemainTime = (endTime) => {
   return gap >= 0 ? gap : 0;
 };
 
-export default function Timer({ isTimerGetReady, setIsLetterOpen, endTime }) {
+export default function Timer({ isTimerGetReady, endTime }) {
+  const { gameStateDispatch } = useContext(GamePlayContext);
   const [remainTime, setRemainTime] = useState(getRemainTime(endTime));
   const requestId = useRef(0);
 
@@ -25,7 +26,8 @@ export default function Timer({ isTimerGetReady, setIsLetterOpen, endTime }) {
 
     const countDown = () => {
       setRemainTime(getRemainTime(endTime));
-      if (getRemainTime(endTime) <= 10) setIsLetterOpen(true);
+      if (getRemainTime(endTime) <= 10)
+        gameStateDispatch({ type: 'setIsLetterOpen', isLetterOpen: true });
       if (isTimerGetReady) requestId.current = requestAnimationFrame(countDown);
     };
 
@@ -35,7 +37,7 @@ export default function Timer({ isTimerGetReady, setIsLetterOpen, endTime }) {
     return () => {
       cancelAnimationFrame(requestId.current);
     };
-  }, [endTime, isTimerGetReady, setIsLetterOpen]);
+  }, [endTime, isTimerGetReady]);
 
   return (
     <>

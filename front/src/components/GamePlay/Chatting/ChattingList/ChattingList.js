@@ -7,7 +7,8 @@ import Div from './Div.style';
 
 export default function ChattingList() {
   const { gameSocket } = useContext(GlobalContext);
-  const { userList } = useContext(GamePlayContext);
+  const { gameState } = useContext(GamePlayContext);
+  const { userList } = gameState;
   const scrollRef = useRef(null);
   const [message, setMessage] = useState('');
   const [filteredMessageArr, pushFilteredMessage] = useState([]);
