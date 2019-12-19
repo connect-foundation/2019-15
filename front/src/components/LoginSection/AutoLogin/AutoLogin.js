@@ -2,7 +2,7 @@ import React from 'react';
 import {
   autoLoginCheckboxEventHandler,
   getAutoLogIn,
-} from 'logics/auth/autoLogIn';
+} from 'utils/catchmymind/auth';
 import AutoLoginStyle from './AutoLogin.style';
 
 export default function AutoLogin() {

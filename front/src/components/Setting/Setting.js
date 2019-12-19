@@ -1,11 +1,11 @@
 import React, { useContext, useEffect } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import GlobalContext from 'global.context';
-import Room from 'logics/room';
-import { PRIVATE_ROOM_NAME } from 'constant/room/roomInfo';
-import useCarousel from 'hooks/Carousel/useCarousel';
-import AVATAR_NUMBER from 'constant/avatar';
-import useInputByReducer from 'hooks/Input/useInputByReducer';
+import Room from 'utils/catchmymind/Room';
+import useCarousel from 'hooks/commons/useCarousel';
+import AVATAR_NUMBER from 'constants/avatar';
+import useNicknameInput from 'hooks/Setting/useNicknameInput';
+import { PRIVATE_ROOM_NAME } from 'constants/room/roomInfo';
 import { SettingStyle, GameStartButtonStyle } from './Setting.style';
 import NicknameContainer from './NicknameContainer';
 import AvatarContainer from './AvatarContainer';
@@ -15,11 +15,11 @@ export default function Setting() {
   const history = useHistory();
   const { hash } = useParams();
   const [avatar, clickLeftBtn, clickRightBtn] = useCarousel(AVATAR_NUMBER);
-  const [nickname, onChangeNickname] = useInputByReducer();
+  const [nickname, onChangeNickname] = useNicknameInput();
 
   useEffect(() => {
     const privateRoomId = hash.slice(1, hash.length);
-    setRoom(new Room(privateRoomId, PRIVATE_ROOM_NAME));
+    setRoom(new Room(privateRoomId));
 
     if (!gameSocket) return;
     gameSocket.emit('exitRoom', {

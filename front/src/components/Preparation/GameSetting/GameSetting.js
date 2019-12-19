@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import GlobalContext from 'global.context';
 import useGameSocket from 'hooks/Socket/useGameSocket';
-import useSelect from 'hooks/Select/useSelect';
+import useSelect from 'hooks/Setting/useSelect';
 import { GameSettingStyle, StartBtn } from './GameSetting.style';
 import TimeSetting from './TimeSetting';
 import RoundSetting from './RoundSetting';

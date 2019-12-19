@@ -1,5 +1,5 @@
 import Brush from 'components/GamePlay/CanvasSection/DrawingPlayGround/NonPainterPlayGround/NonPainterBoard/ToolType/Brush';
-import { DEFAULT_ERASER_OPTIONS } from 'constant/DrawingPlayGround';
+import { DEFAULT_ERASER_OPTIONS } from 'constants/DrawingPlayGround';
 
 class Eraser extends Brush {
   setOptions() {

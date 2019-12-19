@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import PENCIL from 'asset/pencil.png';
+import { getAvatar } from 'utils/catchmymind/avatar';
 import {
   UserStyle,
   UserInfoStyle,
@@ -11,7 +12,6 @@ import {
   Ranking,
   UserImage,
 } from './User.style';
-import { getAvatar } from 'logics/avatar';
 
 User.defaultProps = {
   className: '',

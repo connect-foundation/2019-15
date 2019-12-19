@@ -4,12 +4,12 @@ import {
   DoneButton,
   Input,
 } from 'components/FriendsSection/FriendList/Header/Header.style';
-import {
-  ComponentStyle,
-  Icon,
-} from 'components/FriendsSection/FriendList/Component/Component.style';
-import regex from 'constant/TextInput';
+import regex from 'constants/nicknameRegex';
 import PropTypes from 'prop-types';
+import {
+  Icon,
+  ComponentStyle,
+} from 'components/FriendsSection/FriendList/Component/Component.style';
 
 Header.propTypes = {
   isConfigMode: PropTypes.bool,

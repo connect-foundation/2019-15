@@ -1,8 +1,9 @@
 import React, { useContext } from 'react';
 import GlobalContext from 'global.context';
-import { getAvatar } from 'logics/avatar';
+import { getAvatar } from 'utils/catchmymind/avatar';
 import { GET_RANK_BY_ID } from 'queries/ranking';
 import { useQuery } from '@apollo/react-hooks';
+
 import { CurrentMyInfoStyle, AvatarImage } from './CurrentMyInfo.style';
 
 export default function CurrentMyInfo() {

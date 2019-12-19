@@ -1,8 +1,8 @@
 /* eslint no-param-reassign:0 */
 import { fabric } from 'fabric';
 import Tool from 'components/GamePlay/CanvasSection/DrawingPlayGround/PainterPlayGround/Tools/ToolType/Tool';
-import { getDistance, getAngle } from 'util/Circle';
-import { DEFAULT_CIRCLE_OPTIONS } from 'constant/DrawingPlayGround';
+import { getDistance, getAngle } from 'utils/Circle';
+import { DEFAULT_CIRCLE_OPTIONS } from 'constants/DrawingPlayGround';
 
 class Circle extends Tool {
   draw({ startPoint, endPoint, drawingOptions }) {

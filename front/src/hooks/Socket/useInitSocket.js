@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import socketIo from 'socket.io-client';
-import APP_URI from 'util/uri';
+import APP_URI from 'constants/uri';
 import socketOptions from 'config/socket';
 
 export default function useInitSocket(path) {

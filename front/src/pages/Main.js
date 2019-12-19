@@ -1,17 +1,17 @@
 import React, { useState, useEffect, useContext } from 'react';
 import GlobalContext from 'global.context';
-import checkAuth from 'logics/auth/checkAuth';
 import NavigationBar from 'components/NavigationBar/NavigationBar';
 import Background from 'components/globalComponents/Container/Background.style';
 import RoomSelectSection from 'components/RoomSelectSection/RoomSelectSection';
 import FriendsSection from 'components/FriendsSection/FriendsSection';
 import makeModal from 'components/globalComponents/Modal/Modal';
-import parseCookies from 'util/cookie';
-import Room from 'logics/room';
+import parseCookies from 'utils/cookie';
+import Room from 'utils/catchmymind/Room';
 import useGameSocket from 'hooks/Socket/useGameSocket';
 import { useHistory } from 'react-router-dom';
 import useInitGameSocket from 'hooks/Socket/useInitGameSocket';
 import Button from 'components/globalComponents/Button/Button';
+import { checkAuth } from 'utils/catchmymind/auth';
 
 const Main = () => {
   const { setGameSocket, setRoom, setIsLogin } = useContext(GlobalContext);
@@ -27,8 +27,8 @@ const Main = () => {
 
   setGameSocket(useInitGameSocket());
 
-  useGameSocket('connectRandom', ({ roomType, roomId }) => {
-    setRoom(new Room(roomId, roomType));
+  useGameSocket('connectRandom', ({ roomId }) => {
+    setRoom(new Room(roomId));
     history.push('/public');
   });
 

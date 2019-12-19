@@ -1,6 +1,6 @@
 import React, { useContext, useRef } from 'react';
 import AnchorImage from 'asset/anchor.png';
-import APP_URI from 'util/uri';
+import APP_URI from 'constants/uri';
 import GlobalContext from 'global.context';
 import {
   AnchorStyle,

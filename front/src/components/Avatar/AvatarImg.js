@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { getAvatar } from 'logics/avatar';
+import { getAvatar } from 'utils/catchmymind/avatar';
 import { AvatarImage } from './Avatar.style';
 
 AvatarImg.propTypes = {

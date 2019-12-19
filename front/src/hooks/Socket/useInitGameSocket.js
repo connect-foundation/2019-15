@@ -2,7 +2,7 @@ import { useContext } from 'react';
 import GlobalContext from 'global.context';
 import socketIo from 'socket.io-client';
 import socketOptions from 'config/socket';
-import APP_URI from '../../util/uri';
+import APP_URI from 'constants/uri';
 
 export default function useInitGameSocket() {
   const { gameSocket, setGameSocket } = useContext(GlobalContext);
