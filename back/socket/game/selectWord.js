@@ -23,9 +23,12 @@ async function saveDrawingHistories(playerId, word) {
   }
 }
 
-function selectWord(gameSocket, { answer, roomType, roomId }) {
-  const room = this.RoomManager.room[roomType][roomId];
+function selectWord(gameSocket, roomInfo, { answer }) {
+  const room = this.RoomManager.getRoomIfExist(roomInfo);
   if (!room) return;
+
+  const { roomId } = roomInfo;
+
   room.state = roomState.PLAYING_QUESTION;
   room.word = answer;
   room.timer.start();

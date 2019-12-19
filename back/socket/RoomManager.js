@@ -1,5 +1,6 @@
 const uuid = require('uuid/v1');
-const { maxPeopleNum, roomState } = require('../config/roomConfig');
+const NodeCache = require('node-cache');
+const { maxPeopleNum } = require('../config/roomConfig');
 const { Room } = require('./Room');
 
 const makeRoomId = () => {
@@ -8,69 +9,49 @@ const makeRoomId = () => {
 
 const RoomManager = {
   roomList: ['3명', '6명', '12명', '100명', '비밀방'],
-  room: { '3명': {}, '6명': {}, '12명': {}, '100명': {}, 비밀방: {} },
+  room: new NodeCache({ useClones: false }),
   maxPeopleNum,
 
   // 방이 없을 때 새로운 방을 만들고 반환.
-  addRoom(roomName, gameIo, privateRoomId) {
-    const newRoom = new Room(gameIo);
-    let roomId = makeRoomId();
-
-    if (privateRoomId) {
-      roomId = privateRoomId;
-    }
-
-    newRoom.roomId = roomId;
-    newRoom.roomName = roomName;
-    newRoom.state = roomState.EMPTY;
-    this.room[roomName][roomId] = newRoom;
-
+  addRoom(roomType, roomId, gameIo) {
+    this.room.set(roomId, new Room(gameIo, roomId, roomType));
     return roomId;
   },
 
-  deleteRoom(roomName, gameIo) {
-    this.room[roomName][gameIo].timer.stop();
-    delete this.room[roomName][gameIo];
+  deleteRoom(roomId) {
+    this.room.del(roomId);
   },
 
   // 수용가능한 방을 하나 반환, 없으면 생성해서 반환
-  getEnableRoomId(roomName, gameIo) {
-    const nRooms = this.room[roomName];
+  getEnableRoomId(roomType, gameIo) {
+    const roomIdList = this.room.keys();
 
-    // find의 반환값이 undefined일 수 있으므로, destructuring은 불가능
-    // room[0] : key, room[1] : room
-    let room = Object.entries(nRooms).find(
-      ([roomId, _room]) => _room.players.length < maxPeopleNum[roomName],
-    );
+    const roomIdIndex = roomIdList.findIndex((roomId) => {
+      const room = this.room.get(roomId);
+      if (room.roomType === roomType) return true;
+      return false;
+    });
 
-    if (!room) {
-      room = [];
-      room.push(this.addRoom(roomName, gameIo));
+    if (roomIdIndex < 0) {
+      const roomId = makeRoomId();
+      this.addRoom(roomType, roomId, gameIo);
+      return roomId;
     }
-    return room[0];
+    return roomIdList[roomIdIndex];
   },
 
-  getEnableSecretRoom(roomId) {
-    const secretRoomList = this.room['비밀방'];
-
-    if (!secretRoomList.hasOwnProperty(roomId)) secretRoomList[roomId] = new Room();
-
-    return secretRoomList[roomId];
+  isExistRoom(roomId) {
+    return this.room.has(roomId);
   },
 
-  isExistRoom({ roomType, roomId }) {
-    return roomType && roomId && this.room[roomType].hasOwnProperty(roomId);
+  getRoom(roomId) {
+    if (this.isExistRoom(roomId)) return this.room.get(roomId);
+    return false;
   },
 
-  getRoom({ roomType, roomId }) {
-    if (this.isExistRoom({ roomType, roomId })) {
-      return this.room[roomType][roomId];
-    }
-    return null;
-  },
-
-  getRoomByRoomId(roomName, roomId) {
-    return this.room[roomName][roomId];
+  getRoomIfExist(roomInfo) {
+    if (!roomInfo) return false;
+    return this.getRoom(roomInfo.roomId);
   },
 };
 

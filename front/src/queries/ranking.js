@@ -39,3 +39,13 @@ export const GET_RANKING_FRIENDS = gql`
     }
   }
 `;
+
+export const GET_RANK_BY_ID = gql`
+  query getRankById {
+    getRankById {
+      userId
+      nickname
+      rank
+    }
+  }
+`;

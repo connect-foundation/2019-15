@@ -5,7 +5,7 @@ import { faCircle, faPlay } from '@fortawesome/free-solid-svg-icons';
 import { INVITE } from 'queries/invitation';
 import { useMutation } from '@apollo/react-hooks';
 import GlobalContext from 'global.context';
-import { CircleStyle } from 'components/FriendsSection/refactor/FriendList/Component/Component.style';
+import { CircleStyle } from 'components/FriendsSection/FriendList/Component/Component.style';
 import { FriendStyle, NicknameStyle, PlayIconStyle } from './Friend.style';
 
 Friend.propTypes = {

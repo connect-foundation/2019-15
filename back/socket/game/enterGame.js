@@ -1,12 +1,14 @@
+const jwt = require('jsonwebtoken');
 const User = require('../User');
 const { WAIT_UNTIL_USER_ADD_EVENT } = require('../../config/roomConfig');
-const jwt = require('jsonwebtoken');
 const jwtOptions = require('../../config/jwtOptions');
 const parseCookies = require('../../util/cookie/parseCookies');
 
-function enterRandom(gameSocket, roomInfo, { nickname, avatar }) {
-  const room = this.RoomManager.getRoom(roomInfo);
+function enterRandom(gameSocket, roomInfo, { nickname, avatar, roomType }) {
+  const room = this.RoomManager.getRoomIfExist(roomInfo);
+  if (!room) return;
 
+  const { roomId } = roomInfo;
   const { jwt: jwtToken } = parseCookies(gameSocket.handshake.headers.cookie);
   const { id } = jwt.verify(jwtToken, process.env.JWT_SECRET, {
     issuer: jwtOptions.issuer,
@@ -15,12 +17,12 @@ function enterRandom(gameSocket, roomInfo, { nickname, avatar }) {
 
   room.addPlayer(new User(nickname, gameSocket, id, false, avatar));
 
-  gameSocket.join(roomInfo.roomId);
+  gameSocket.join(roomId);
   gameSocket.emit(`connectRandom`, roomInfo);
 
   if (room.isPlayable()) {
     room.prepareFirstQuestion();
-    this.gameIo.to(roomInfo.roomId).emit('gamestart', room.makeGameStartData());
+    this.gameIo.to(roomId).emit('gamestart', room.makeGameStartData());
   } else if (room.isSelectingWord()) {
     gameSocket.emit('gamestart', room.makeGameStartData());
   } else if (room.isPlayingQuestion()) {
@@ -30,9 +32,11 @@ function enterRandom(gameSocket, roomInfo, { nickname, avatar }) {
   room.sendUserList(this.gameIo);
 }
 
-function enterPrivate(gameSocket, roomInfo, { nickname, roomId, avatar }) {
-  const room = this.RoomManager.getRoom(roomInfo);
+function enterPrivate(gameSocket, roomInfo, { nickname, avatar }) {
+  const room = this.RoomManager.getRoomIfExist(roomInfo);
   if (!room) return;
+
+  const { roomId } = roomInfo;
 
   let roomOwner = false;
   if (room.players.length === 0) {

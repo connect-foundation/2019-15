@@ -18,7 +18,7 @@ function setGameSocket(socket) {
   });
 
   socket.on('makePrivate', ({ roomId }) => {
-    this.RoomManager.addRoom(PRIVATE_ROOM_NAME, this.gameIo, roomId);
+    this.RoomManager.addRoom(PRIVATE_ROOM_NAME, roomId, this.gameIo);
     this.RoomManager.room[PRIVATE_ROOM_NAME][roomId].roomOwner = gameSocket.id;
   });
 
@@ -31,22 +31,18 @@ function setGameSocket(socket) {
     socket.to(roomInfo.roomId).emit('changeRoomSetting', { selectType, selectedIndex });
   });
 
-  socket.on('exitRoom', exitRoom.bind(this, gameSocket));
-  socket.on('startPrivateGame', startPrivateGame.bind(this, gameSocket));
+  socket.on('exitRoom', exitRoom.bind(this, gameSocket, roomInfo));
+  socket.on('startPrivateGame', startPrivateGame.bind(this, gameSocket, roomInfo));
   socket.on('enterPrivate', enterPrivate.bind(this, gameSocket, roomInfo));
-  socket.on('selectWord', selectWord.bind(this, gameSocket));
-  socket.on('sendMessage', sendMessage.bind(this, gameSocket));
+  socket.on('selectWord', selectWord.bind(this, gameSocket, roomInfo));
+  socket.on('sendMessage', sendMessage.bind(this, gameSocket, roomInfo));
   socket.on('enterRandom', enterRandom.bind(this, gameSocket, roomInfo));
-  socket.on('drawing', sendGameImage.bind(this, gameSocket));
+  socket.on('drawing', sendGameImage.bind(this, gameSocket, roomInfo));
   socket.on('disconnect', () => {
-    if (!roomInfo) return; // 방정보가 없는 경우 게임중이 아니었으므로 종료
+    const room = RoomManager.getRoomIfExist(roomInfo);
+    if (!room) return;
 
-    if (!RoomManager.isExistRoom(roomInfo)) return; // 방정보가 있으나 이미 삭제된 방일 경우 종료
-
-    const { roomType, roomId } = roomInfo;
-    const room = RoomManager.getRoom(roomInfo);
     const userIdx = room.getUserIndexBySocketId(gameSocket);
-
     if (userIdx < 0) return; // 방에서 유저 정보를 못 찾은경우 종료
 
     // 방에 유저가 2명 이하면 방 정보 초기화
@@ -60,7 +56,7 @@ function setGameSocket(socket) {
     room.roomSettingAfterUserRemove(removeResult, gameSocket);
     room.sendUserList(this.gameIo);
 
-    if (roomType === PRIVATE_ROOM_NAME) {
+    if (roomInfo.roomType === PRIVATE_ROOM_NAME) {
       if (gameSocket.id === room.roomOwner) {
         room.passRoomOwnerToNext();
         room.sendUserList(this.gameIo);
@@ -70,7 +66,8 @@ function setGameSocket(socket) {
         room.timer.stop();
       }
     } else if (room.players.length < 1) {
-      RoomManager.deleteRoom(roomType, roomId);
+      room.timer.stop();
+      RoomManager.deleteRoom(roomInfo.roomId);
     }
   });
 }
