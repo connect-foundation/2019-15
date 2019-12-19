@@ -7,7 +7,9 @@ import User from './User/User';
 
 export default function UserList() {
   const { gameSocket } = useContext(GlobalContext);
-  const { userList, painter, scores } = useContext(GamePlayContext);
+  // const { userList, painter, scores } = useContext(GamePlayContext);
+  const { gameState } = useContext(GamePlayContext);
+  const { userList, painter, scores } = gameState;
 
   const UserComponents = userList.map((user, index) => {
     const order = index + 1;

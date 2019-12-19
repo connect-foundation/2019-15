@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useReducer } from 'react';
+import produce from 'immer';
 
 export default function useGamePlay() {
   const initialQuestionWordState = {
@@ -7,63 +8,103 @@ export default function useGamePlay() {
     openIndex: 0,
   };
 
-  // 설정 : startQuestion 시그널을 받을 때
-  // 초기화 : endQuestion 시그널을 받을 때
-  const [questionWord, setQuestionWord] = useState(initialQuestionWordState);
-  // 설정 : GamePlay 컴포넌트에서 startQuestion 시그널을 받을 때
-  // 초기화 : endQuestion 시그널을 받을 때
-  const [isTimerGetReady, setIsTimerGetReady] = useState(false);
-  // 설정 : Timer 컴포넌트에서 일정 시간이 지났을 때
-  // 초기화 : endQuestion 시그널을 받을 때
-  const [isLetterOpen, setIsLetterOpen] = useState(false);
-  // 설정 : WordChoice 컴포넌트에서 단어 선택 시, endQuestion 시그널을 받을 때
-  // 초기화 : QuestionResult 컴포넌트가 사라질 때
-  const [selectedWord, setSelectedWord] = useState('');
-  // 설정 : endQuestion 시그널을 받을 때
-  // 초기화 : QuestionResult 컴포넌트가 렌더링되고 3초 후
-  const [showQuestionResult, setShowQuestionResult] = useState(false);
-  // 설정 : endQuestion 시그널을 받을 때
-  // 초기화 : QuestionResult 컴포넌트가 렌더링되고 3초 후
-  const [scores, setScores] = useState([]);
-  // 설정 : gamestart, endQuestion 시그널을 받을 때
-  const [round, setRound] = useState({
+  const initialRoundState = {
     currentRound: 1,
     totalRound: 3,
-  });
-
-  const [userList, setUserList] = useState([]);
-  const [painter, setPainter] = useState(null);
-  const [endTime, setEndTime] = useState(0);
-  const [isWordChoiceOpen, setIsWordChoiceOpen] = useState(true);
-  const [showGameResult, setShowGameResult] = useState(false);
-
-  const contextValue = {
-    userList,
-    setUserList,
-    painter,
-    setPainter,
-    questionWord,
-    setQuestionWord,
-    isTimerGetReady,
-    setIsTimerGetReady,
-    isLetterOpen,
-    setIsLetterOpen,
-    selectedWord,
-    setSelectedWord,
-    showQuestionResult,
-    setShowQuestionResult,
-    scores,
-    setScores,
-    round,
-    setRound,
-    endTime,
-    setEndTime,
-    isWordChoiceOpen,
-    setIsWordChoiceOpen,
-    showGameResult,
-    setShowGameResult,
-    initialQuestionWordState,
   };
 
-  return contextValue;
+  const initialGameState = {
+    questionWord: initialQuestionWordState,
+    isTimerGetReady: false,
+    isLetterOpen: false,
+    selectedWord: '',
+    showQuestionResult: false,
+    scores: [],
+    round: initialRoundState,
+    userList: [],
+    painter: undefined,
+    endTime: 0,
+    isWordChoiceOpen: true,
+    showGameResult: false,
+  };
+
+  const gameStateReducer = (state, action) => {
+    switch (action.type) {
+      case 'setQuestionWord': {
+        return produce(state, (draftState) => {
+          draftState.questionWord = action.questionWord;
+        });
+      }
+      case 'setIsTimerGetReady': {
+        return produce(state, (draftState) => {
+          draftState.isTimerGetReady = action.isTimerGetReady;
+        });
+      }
+      case 'setIsLetterOpen': {
+        return produce(state, (draftState) => {
+          draftState.isLetterOpen = action.isLetterOpen;
+        });
+      }
+      case 'setSelectedWord': {
+        return produce(state, (draftState) => {
+          draftState.selectedWord = action.selectedWord;
+        });
+      }
+      case 'setShowQuestionResult': {
+        return produce(state, (draftState) => {
+          draftState.showQuestionResult = action.showQuestionResult;
+        });
+      }
+      case 'setScores': {
+        return produce(state, (draftState) => {
+          draftState.scores = action.scores;
+        });
+      }
+      case 'setRound': {
+        return produce(state, (draftState) => {
+          draftState.round = action.round;
+        });
+      }
+      case 'setUserList': {
+        return produce(state, (draftState) => {
+          draftState.userList = action.userList;
+        });
+      }
+      case 'setPainter': {
+        return produce(state, (draftState) => {
+          draftState.painter = action.painter;
+        });
+      }
+      case 'setEndTime': {
+        return produce(state, (draftState) => {
+          draftState.endTime = action.endTime;
+        });
+      }
+      case 'setIsWordChoiceOpen': {
+        return produce(state, (draftState) => {
+          draftState.isWordChoiceOpen = action.isWordChoiceOpen;
+        });
+      }
+      case 'setShowGameResult': {
+        return produce(state, (draftState) => {
+          draftState.showGameResult = action.showGameResult;
+        });
+      }
+      default: {
+        throw new Error(`no such action type : ${action.type}`);
+      }
+    }
+  };
+
+  const [gameState, gameStateDispatch] = useReducer(
+    gameStateReducer,
+    initialGameState,
+  );
+
+  return [
+    gameState,
+    gameStateDispatch,
+    initialQuestionWordState,
+    initialRoundState,
+  ];
 }

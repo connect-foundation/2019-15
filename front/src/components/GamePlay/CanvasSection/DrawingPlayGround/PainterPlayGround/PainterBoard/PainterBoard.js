@@ -33,7 +33,8 @@ export default function PainterBoard({ drawingOptions }) {
   const [fabricCanvas, attachFabricCanvas] = useFabricCanvas(canvasSize);
   const [lastDrawingTime, setLastDrawingTime] = useState(new Date());
   const [saveCanvasData] = useMutation(SAVE_CANVAS_DATA);
-  const { selectedWord } = useContext(GamePlayContext);
+  const { gameState } = useContext(GamePlayContext);
+  const { selectedWord } = gameState;
 
   useEffect(() => {
     if (!fabricCanvas) return () => {};
