@@ -5,15 +5,17 @@ import {
   WordButtonsWrapper,
 } from 'components/VideoSection/VideoSection.style';
 import { GET_LATEST_WORDS_BY_USER } from 'queries/video';
-import { useQuery } from '@apollo/react-hooks';
 import dateFormat from 'dateformat';
 import VideoModal from 'components/VideoSection/VideoModal/VideoModal';
 import Loading from 'components/globalComponents/Loading/Loading';
 import Alert from 'components/globalComponents/Alert/Alert';
 import InfinityScroll from 'components/globalComponents/InfinityScroll/InfinityScroll';
+import useCursorQuery from 'hooks/useCursorQuery';
 
 export default function Video() {
-  const { data, loading, error } = useQuery(GET_LATEST_WORDS_BY_USER);
+  const { data, loading, error, fetchMore, hasMore } = useCursorQuery(
+    GET_LATEST_WORDS_BY_USER,
+  );
   const [modalWord, setModalWord] = useState(null);
 
   if (error) {
@@ -23,20 +25,25 @@ export default function Video() {
   if (loading) {
     return <Loading Wrapper={VideoSectionWrapper} />;
   }
+
+  if (!data || !data.length) return <></>;
+
   return (
     <VideoSectionWrapper>
       {modalWord ? (
         <VideoModal question={modalWord} setModalWord={setModalWord} />
       ) : null}
-      <InfinityScroll>
+      <InfinityScroll loadMore={fetchMore} hasMore={hasMore}>
         <WordButtonsWrapper>
-          {data.getLatestWordsByUser.map(({ id, word, createdAt }) => {
-            const date = new Date(Number(createdAt));
+          {data.map((value) => {
+            const date = new Date(Number(value.createdAt));
             return (
               <WordButton
-                onClick={() => setModalWord({ questionId: id, word })}
+                onClick={() =>
+                  setModalWord({ questionId: value.id, word: value.word })
+                }
               >
-                {word}
+                {value.word}
                 <br />
                 {dateFormat(date, 'yy.mm.dd')}
               </WordButton>

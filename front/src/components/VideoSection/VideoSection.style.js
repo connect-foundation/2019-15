@@ -11,7 +11,7 @@ export const VideoSectionWrapper = styled.div`
 `;
 
 export const WordButtonsWrapper = styled.div`
-  max-height: 33rem;
+  max-height: 31rem;
   display: flex;
   flex-wrap: wrap;
   margin-left: 1rem;
