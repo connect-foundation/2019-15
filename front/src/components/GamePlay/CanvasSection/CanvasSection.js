@@ -44,7 +44,7 @@ export default function CanvasSection() {
     return () => {
       setDrawable(false);
     };
-  }, [drawable, gameSocket.id, painter, userList]);
+  }, [gameSocket.id, painter, userList]);
 
   return (
     <CanvasSectionStyle>

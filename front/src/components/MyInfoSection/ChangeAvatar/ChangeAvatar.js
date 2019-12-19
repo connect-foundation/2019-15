@@ -54,7 +54,6 @@ const ChangeAvatar = () => {
       },
     });
     setDisabled(true);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [changeAvatar, selectedAvatar, user.avatar, user.nickname]);
 
   return (

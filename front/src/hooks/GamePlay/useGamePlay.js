@@ -1,13 +1,12 @@
 import { useState } from 'react';
 
 export default function useGamePlay() {
-  const [userList, setUserList] = useState([]);
-  const [painter, setPainter] = useState(null);
   const initialQuestionWordState = {
     wordLength: 0,
     openLetter: '',
     openIndex: 0,
   };
+
   // 설정 : startQuestion 시그널을 받을 때
   // 초기화 : endQuestion 시그널을 받을 때
   const [questionWord, setQuestionWord] = useState(initialQuestionWordState);
@@ -31,6 +30,9 @@ export default function useGamePlay() {
     currentRound: 1,
     totalRound: 3,
   });
+
+  const [userList, setUserList] = useState([]);
+  const [painter, setPainter] = useState(null);
   const [endTime, setEndTime] = useState(0);
   const [isWordChoiceOpen, setIsWordChoiceOpen] = useState(true);
   const [showGameResult, setShowGameResult] = useState(false);
