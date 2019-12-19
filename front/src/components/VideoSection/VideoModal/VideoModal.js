@@ -6,6 +6,7 @@ import Button from 'components/globalComponents/Button/Button';
 import { GET_CANVAS_DATA_BY_QUESTION_ID } from 'queries/video';
 import { useQuery } from '@apollo/react-hooks';
 import ButtonSectionStyle from 'components/VideoSection/VideoModal/VideoModal.style';
+import Alert from 'components/globalComponents/Alert/Alert';
 import Canvas from './Canvas/Canvas';
 
 VideoModal.propTypes = {
@@ -28,19 +29,6 @@ export default function VideoModal({ question, setModalWord }) {
   const [speed, setSpeed] = useState(1);
   const [restart, setRestart] = useState(true);
 
-  if (loading) return <div>loading</div>;
-  if (error) return <div>error</div>;
-
-  const Body = () => (
-    <NonPainterBoardStyle>
-      <Canvas
-        canvasDatas={data.getCanvasDatasByQuestionId}
-        speed={speed}
-        setRestart={setRestart}
-      />
-    </NonPainterBoardStyle>
-  );
-
   const makeSlow = () => {
     setSpeed(2);
     setRestart(true);
@@ -58,6 +46,27 @@ export default function VideoModal({ question, setModalWord }) {
   const close = () => {
     setModalWord(null);
   };
+
+  if (error) {
+    const Body = () => <Alert type="error" Wrapper={ButtonSectionStyle} />;
+    const Footer = () => <Button onClick={close}>닫기</Button>;
+    const Modal = makeModal(null, Body, Footer);
+    return <Modal />;
+  }
+
+  if (loading) {
+    return <></>;
+  }
+
+  const Body = () => (
+    <NonPainterBoardStyle>
+      <Canvas
+        canvasDatas={data.getCanvasDatasByQuestionId}
+        speed={speed}
+        setRestart={setRestart}
+      />
+    </NonPainterBoardStyle>
+  );
 
   const Footer = () => (
     <ButtonSectionStyle>

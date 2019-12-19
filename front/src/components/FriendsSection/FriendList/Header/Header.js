@@ -3,11 +3,11 @@ import { faCog, faUserPlus } from '@fortawesome/free-solid-svg-icons';
 import {
   DoneButton,
   Input,
-} from 'components/FriendsSection/refactor/FriendList/Header/Header.style';
+} from 'components/FriendsSection/FriendList/Header/Header.style';
 import {
   ComponentStyle,
   Icon,
-} from 'components/FriendsSection/refactor/FriendList/Component/Component.style';
+} from 'components/FriendsSection/FriendList/Component/Component.style';
 import regex from 'constant/TextInput';
 import PropTypes from 'prop-types';
 

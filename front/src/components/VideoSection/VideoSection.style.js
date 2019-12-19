@@ -1,11 +1,22 @@
 import styled from 'styled-components';
 
-const VideoSectionWrapper = styled.div`
+export const VideoSectionWrapper = styled.div`
+  margin-top: -1rem;
   display: flex;
   width: 100%;
   height: auto;
-  flex-wrap: wrap;
-  justify-content: center;
+  > * {
+    width: 100%;
+  }
 `;
 
-export default VideoSectionWrapper;
+export const WordButtonsWrapper = styled.div`
+  max-height: 31rem;
+  display: flex;
+  flex-wrap: wrap;
+  margin-left: 1rem;
+  @media (max-width: 1300px) {
+    margin-left: 0;
+    justify-content: center;
+  }
+`;
