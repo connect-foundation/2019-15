@@ -15,17 +15,17 @@ export default function FriendsList() {
   const [inputValue, setValue] = useState('');
   const [refresh, setRefresh] = useState(true);
 
-  function changeConfigMode() {
+  const changeConfigMode = () => {
     switchMode((currentConfigMode) => !currentConfigMode);
-  }
+  };
 
-  function modalOnOff(mode, nickname) {
+  const modalOnOff = (mode, nickname) => {
     setModal({ mode, nickname });
-  }
+  };
 
-  function inputChangeHandler(e) {
+  const inputChangeHandler = (e) => {
     setValue(e.target.value);
-  }
+  };
 
   return (
     <>

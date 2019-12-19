@@ -13,9 +13,9 @@ import FriendModal from 'components/FriendsSection/refactor/FriendList/FriendMod
 import modalReducer from 'components/FriendsSection/refactor/FriendList/modalReducer';
 import useOnlineFriends from 'hooks/Online/useOnlineFriends';
 
-function changeModeReducer(state) {
+const changeModeReducer = (state) => {
   return !state.current;
-}
+};
 
 export default function FriendList() {
   const [isConfigMode, changeMode] = useReducer(changeModeReducer, false);
@@ -53,9 +53,9 @@ export default function FriendList() {
     );
   }
 
-  function switchMode() {
+  const switchMode = () => {
     changeMode();
-  }
+  };
   return (
     <>
       <FriendModal

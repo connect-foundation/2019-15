@@ -15,10 +15,10 @@ export default function Anchor() {
   const settingURL = `${APP_URI.REACT_APP_URI}/#/setting:${room.roomId}`;
   const textArea = useRef(null);
 
-  function onClickCopyButton() {
+  const onClickCopyButton = () => {
     textArea.current.select();
     document.execCommand('copy');
-  }
+  };
   return (
     <AnchorStyle>
       <AnchorImageStyle src={AnchorImage} />

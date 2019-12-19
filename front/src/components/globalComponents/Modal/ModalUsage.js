@@ -5,13 +5,13 @@ import Modal from './Modal';
 const ModalUsage = () => {
   const [open, setOpen] = useState(false);
 
-  function modalOn() {
+  const modalOn = () => {
     setOpen(true);
-  }
+  };
 
-  function modalOff() {
+  const modalOff = () => {
     setOpen(false);
-  }
+  };
 
   return (
     <>

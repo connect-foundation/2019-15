@@ -11,7 +11,7 @@ export default function PrivateRoom() {
   const history = useHistory();
   const onClickMakeRoomBtn = () => {
     const privateRoomId = uuid();
-    history.push(`setting:${privateRoomId}`);
+    history.push(`/setting:${privateRoomId}`);
     gameSocket.emit('makePrivate', { roomId: privateRoomId });
   };
   const buttonComponents = PrivateRoomList.map((text) => (

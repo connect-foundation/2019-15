@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import GlobalContext from 'global.context';
-import { CurrentMyInfoStyle, AvatarImage } from './CurrentMyInfo.style';
 import { getAvatar } from 'logics/avatar';
+import { CurrentMyInfoStyle, AvatarImage } from './CurrentMyInfo.style';
 
 export default function CurrentMyInfo() {
   const { user } = useContext(GlobalContext);

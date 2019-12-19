@@ -1,5 +1,5 @@
-import React, { useState, useContext, useEffect, useCallback } from 'react';
-import { Redirect, useHistory } from 'react-router-dom';
+import React, { useContext, useEffect, useCallback } from 'react';
+import { useHistory } from 'react-router-dom';
 import NavigationBar from 'components/NavigationBar/NavigationBar';
 import { FlexRowStyle } from 'components/globalComponents/Container/Flex.style';
 import GlobalContext from 'global.context';
@@ -8,47 +8,33 @@ import CanvasSection from 'components/GamePlay/CanvasSection/CanvasSection';
 import Chatting from 'components/GamePlay/Chatting/Chatting';
 import GamePlayContext from 'components/GamePlay/GamePlay.context';
 import useGameSocket from 'hooks/Socket/useGameSocket';
+import useGamePlay from 'hooks/GamePlay/useGamePlay';
 
 const GamePlay = () => {
-  const { gameSocket, setGameSocket, room } = useContext(GlobalContext);
+  const { gameSocket, setGameSocket, room, isLogin } = useContext(
+    GlobalContext,
+  );
+  const contextValue = useGamePlay();
+  const {
+    setUserList,
+    setPainter,
+    setQuestionWord,
+    setIsTimerGetReady,
+    setIsLetterOpen,
+    setSelectedWord,
+    setShowQuestionResult,
+    setScores,
+    setRound,
+    setEndTime,
+    setIsWordChoiceOpen,
+    setShowGameResult,
+    initialQuestionWordState,
+  } = contextValue;
+
   const history = useHistory();
 
-  const [userList, setUserList] = useState([]);
-  const [painter, setPainter] = useState(null);
-  const initialQuestionWordState = {
-    wordLength: 0,
-    openLetter: '',
-    openIndex: 0,
-  };
-  // 설정 : startQuestion 시그널을 받을 때
-  // 초기화 : endQuestion 시그널을 받을 때
-  const [questionWord, setQuestionWord] = useState(initialQuestionWordState);
-  // 설정 : GamePlay 컴포넌트에서 startQuestion 시그널을 받을 때
-  // 초기화 : endQuestion 시그널을 받을 때
-  const [isTimerGetReady, setIsTimerGetReady] = useState(false);
-  // 설정 : Timer 컴포넌트에서 일정 시간이 지났을 때
-  // 초기화 : endQuestion 시그널을 받을 때
-  const [isLetterOpen, setIsLetterOpen] = useState(false);
-  // 설정 : WordChoice 컴포넌트에서 단어 선택 시, endQuestion 시그널을 받을 때
-  // 초기화 : QuestionResult 컴포넌트가 사라질 때
-  const [selectedWord, setSelectedWord] = useState('');
-  // 설정 : endQuestion 시그널을 받을 때
-  // 초기화 : QuestionResult 컴포넌트가 렌더링되고 3초 후
-  const [showQuestionResult, setShowQuestionResult] = useState(false);
-  // 설정 : endQuestion 시그널을 받을 때
-  // 초기화 : QuestionResult 컴포넌트가 렌더링되고 3초 후
-  const [scores, setScores] = useState([]);
-  // 설정 : gamestart, endQuestion 시그널을 받을 때
-  const [round, setRound] = useState({
-    currentRound: 1,
-    totalRound: 3,
-  });
-  const [endTime, setEndTime] = useState(0);
-  const [isWordChoiceOpen, setIsWordChoiceOpen] = useState(true);
-  const [showGameResult, setShowGameResult] = useState(false);
-
   const resetQuestionStates = useCallback(
-    function resetQuestionStates(nextExaminerSocketId) {
+    (nextExaminerSocketId) => {
       if (nextExaminerSocketId) setPainter(nextExaminerSocketId);
       setQuestionWord(initialQuestionWordState);
       setIsLetterOpen(false);
@@ -56,7 +42,14 @@ const GamePlay = () => {
       setShowQuestionResult(false);
       // todo: 캔버스 데이터 초기화
     },
-    [initialQuestionWordState],
+    [
+      initialQuestionWordState,
+      setIsLetterOpen,
+      setPainter,
+      setQuestionWord,
+      setSelectedWord,
+      setShowQuestionResult,
+    ],
   );
 
   const endQuestionCallback = useCallback(
@@ -82,7 +75,15 @@ const GamePlay = () => {
         setIsWordChoiceOpen(true);
       }, 5000);
     },
-    [resetQuestionStates],
+    [
+      resetQuestionStates,
+      setIsTimerGetReady,
+      setIsWordChoiceOpen,
+      setRound,
+      setScores,
+      setSelectedWord,
+      setShowQuestionResult,
+    ],
   );
 
   const endGameCallback = useCallback(
@@ -103,27 +104,33 @@ const GamePlay = () => {
         // 게임 결과 지우고 메인으로 나가기
         setTimeout(() => {
           setShowGameResult(false);
-          history.push('main');
+          history.replace('/main');
         }, 5000);
       }, 5000);
     },
-    [history, resetQuestionStates],
+    [
+      history,
+      resetQuestionStates,
+      setIsTimerGetReady,
+      setScores,
+      setSelectedWord,
+      setShowGameResult,
+      setShowQuestionResult,
+    ],
   );
 
   const prepareNewGameCallback = useCallback(() => {
     setIsTimerGetReady(false);
     setQuestionWord(initialQuestionWordState);
-  }, [initialQuestionWordState]);
+  }, [initialQuestionWordState, setIsTimerGetReady, setQuestionWord]);
 
   useGameSocket('userList', ({ playerList }) => {
     const parsedList = JSON.parse(playerList);
     setUserList(parsedList);
   });
-
   useGameSocket('roomCategory', ({ categoryId }) => {
     room.categoryId = categoryId;
   });
-
   useGameSocket('gamestart', ({ _painter, currentRound, totalRound }) => {
     setPainter(_painter);
     setRound({
@@ -131,7 +138,6 @@ const GamePlay = () => {
       totalRound,
     });
   });
-
   useGameSocket(
     'startQuestion',
     ({ wordLength, openLetter, openIndex, _endTime }) => {
@@ -140,11 +146,8 @@ const GamePlay = () => {
       setIsTimerGetReady(true);
     },
   );
-
   useGameSocket('endQuestion', endQuestionCallback);
-
   useGameSocket('endGame', endGameCallback);
-
   useGameSocket('prepareNewGame', prepareNewGameCallback);
 
   useEffect(() => {
@@ -156,36 +159,10 @@ const GamePlay = () => {
     };
   }, [gameSocket, setGameSocket]);
 
-  if (!gameSocket || gameSocket.disconnected) {
-    return <Redirect to="main" />;
+  if (!isLogin || !gameSocket || gameSocket.disconnected) {
+    history.replace('/main');
+    return <></>;
   }
-
-  const contextValue = {
-    userList,
-    setUserList,
-    painter,
-    setPainter,
-    questionWord,
-    setQuestionWord,
-    isTimerGetReady,
-    setIsTimerGetReady,
-    isLetterOpen,
-    setIsLetterOpen,
-    selectedWord,
-    setSelectedWord,
-    showQuestionResult,
-    setShowQuestionResult,
-    scores,
-    setScores,
-    round,
-    setRound,
-    endTime,
-    setEndTime,
-    isWordChoiceOpen,
-    setIsWordChoiceOpen,
-    showGameResult,
-    setShowGameResult,
-  };
 
   return (
     <GamePlayContext.Provider value={contextValue}>

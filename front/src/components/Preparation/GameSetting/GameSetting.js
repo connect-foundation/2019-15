@@ -55,7 +55,7 @@ export default function GameSetting({ roomOwner, waitingUserList }) {
     }
   });
 
-  function clickStartBtn() {
+  const clickStartBtn = () => {
     if (waitingUserList.length < 2) return;
     gameSocket.emit('startPrivateGame', {
       roomId: room.roomId,
@@ -63,7 +63,7 @@ export default function GameSetting({ roomOwner, waitingUserList }) {
       round,
       categoryId,
     });
-  }
+  };
 
   return (
     <GameSettingStyle>

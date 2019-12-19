@@ -15,7 +15,7 @@ WordPreview.defaultProps = {
   selectedWord: '',
 };
 
-function lettersReducer(state, action) {
+const lettersReducer = (state, action) => {
   switch (action.type) {
     case 'makeNewArray': {
       return makeEmptyArray(action.arg);
@@ -32,7 +32,7 @@ function lettersReducer(state, action) {
       throw Error('please check action type');
     }
   }
-}
+};
 
 export default function WordPreview({
   wordLength,

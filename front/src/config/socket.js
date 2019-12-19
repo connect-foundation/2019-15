@@ -3,6 +3,7 @@ const socketOptions = {
   reconnectionDelay: 1000,
   reconnectionDelayMax: 20000,
   reconnectionAttempts: 5,
+  transports: ['websocket'],
 };
 
 export default socketOptions;
