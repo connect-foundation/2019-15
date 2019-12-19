@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import makeModal from 'components/globalComponents/Modal/Modal';
 import Button from 'components/globalComponents/Button/Button';
-import { ButtonSection } from 'components/FriendsSection/refactor/FriendList/FriendModal/FriendModal.style';
+import { ButtonSection } from 'components/FriendsSection/FriendList/FriendModal/FriendModal.style';
 import PropTypes from 'prop-types';
 import { DELETE_FRIEND } from 'queries/friend';
 import { useMutation } from '@apollo/react-hooks';

@@ -1,25 +1,24 @@
-import React, { useState } from 'react';
-import FriendsSectionContext from 'components/FriendsSection/FriendsSection.context';
-import useOnlineFriends from 'hooks/Online/useOnlineFriends';
-import FriendsList from './FriendsList/FriendsList';
-import ListPopUpButton from './ListPopUpButton.style';
+import React, { useReducer } from 'react';
+import { ListPopUpButton } from 'components/FriendsSection/FriendsSection.style';
+import FriendList from 'components/FriendsSection/FriendList/FriendList';
+
+function switchListOpenReducer(state, action) {
+  return !action.current;
+}
 
 export default function FriendsSection() {
-  const [onlineFriends, onlineFriendsDispatch] = useOnlineFriends();
-  const [open, setOpen] = useState(false);
+  const [listOpen, dispatchListOpen] = useReducer(switchListOpenReducer, false);
 
-  function changeOpen() {
-    setOpen((currentOpen) => !currentOpen);
+  function switchListOpen() {
+    dispatchListOpen({ current: listOpen });
   }
 
   return (
-    <FriendsSectionContext.Provider
-      value={{ onlineFriends, onlineFriendsDispatch }}
-    >
-      {open ? <FriendsList /> : null}
-      <ListPopUpButton onClick={changeOpen}>
-        {open ? '목록 숨기기' : '친구 목록'}
+    <div>
+      {listOpen ? <FriendList /> : null}
+      <ListPopUpButton onClick={switchListOpen}>
+        {listOpen ? '목록 숨기기' : '친구 목록'}
       </ListPopUpButton>
-    </FriendsSectionContext.Provider>
+    </div>
   );
 }

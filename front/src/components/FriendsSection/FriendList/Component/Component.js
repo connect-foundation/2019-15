@@ -4,7 +4,7 @@ import {
   ComponentStyle,
   CircleStyle,
   Icon,
-} from 'components/FriendsSection/refactor/FriendList/Component/Component.style';
+} from 'components/FriendsSection/FriendList/Component/Component.style';
 import PropTypes from 'prop-types';
 
 Component.propTypes = {

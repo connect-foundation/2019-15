@@ -4,7 +4,7 @@ import checkAuth from 'logics/auth/checkAuth';
 import NavigationBar from 'components/NavigationBar/NavigationBar';
 import Background from 'components/globalComponents/Container/Background.style';
 import RoomSelectSection from 'components/RoomSelectSection/RoomSelectSection';
-import FriendsSection from 'components/FriendsSection/refactor/FriendsSection';
+import FriendsSection from 'components/FriendsSection/FriendsSection';
 import makeModal from 'components/globalComponents/Modal/Modal';
 import parseCookies from 'util/cookie';
 import Room from 'logics/room';
