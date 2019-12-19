@@ -1,7 +1,7 @@
 import React from 'react';
 import Loading from 'components/globalComponents/Loading/Loading';
 import Alert from 'components/globalComponents/Alert/Alert';
-import useCursorQuery from 'hooks/useCursorQuery';
+import useCursorQuery from 'hooks/commons/useCursorQuery';
 import { GET_RANKING_ALL } from 'queries/ranking';
 import InfinityScroll from 'components/globalComponents/InfinityScroll/InfinityScroll';
 import UserRankingList from '../UserRankingList/UserRankingList';

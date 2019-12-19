@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { RGB_LIST } from 'constant/DrawingPlayGround';
+import { RGB_LIST } from 'constants/DrawingPlayGround';
 import {
   ColorPickerStyle,
   ColorBoxList,

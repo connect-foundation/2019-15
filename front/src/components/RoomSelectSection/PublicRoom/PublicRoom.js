@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import GlobalContext from 'global.context';
-import { PublicRoomList } from 'constant/room/roomInfo';
+import { PublicRoomList } from 'constants/room/roomInfo';
 import RoomContainer from '../RoomContainer/RoomContainer';
 import { PublicRoomButton } from './PublicRoomButton.style';
 

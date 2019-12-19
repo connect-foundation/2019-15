@@ -14,42 +14,33 @@ const GamePlay = () => {
   const { gameSocket, setGameSocket, room, isLogin } = useContext(
     GlobalContext,
   );
-  const contextValue = useGamePlay();
-  const {
-    setUserList,
-    setPainter,
-    setQuestionWord,
-    setIsTimerGetReady,
-    setIsLetterOpen,
-    setSelectedWord,
-    setShowQuestionResult,
-    setScores,
-    setRound,
-    setEndTime,
-    setIsWordChoiceOpen,
-    setShowGameResult,
+  const [
+    gameState,
+    gameStateDispatch,
     initialQuestionWordState,
-  } = contextValue;
+  ] = useGamePlay();
 
   const history = useHistory();
 
   const resetQuestionStates = useCallback(
     (nextExaminerSocketId) => {
-      if (nextExaminerSocketId) setPainter(nextExaminerSocketId);
-      setQuestionWord(initialQuestionWordState);
-      setIsLetterOpen(false);
-      setSelectedWord('');
-      setShowQuestionResult(false);
-      // todo: 캔버스 데이터 초기화
+      if (nextExaminerSocketId)
+        gameStateDispatch({
+          type: 'setPainter',
+          painter: nextExaminerSocketId,
+        });
+      gameStateDispatch({
+        type: 'setQuestionWord',
+        questionWord: initialQuestionWordState,
+      });
+      gameStateDispatch({ type: 'setIsLetterOpen', isLetterOpen: false });
+      gameStateDispatch({ type: 'setSelectedWord', selectedWord: '' });
+      gameStateDispatch({
+        type: 'setShowQuestionResult',
+        showQuestionResult: false,
+      });
     },
-    [
-      initialQuestionWordState,
-      setIsLetterOpen,
-      setPainter,
-      setQuestionWord,
-      setSelectedWord,
-      setShowQuestionResult,
-    ],
+    [initialQuestionWordState],
   );
 
   const endQuestionCallback = useCallback(
@@ -60,90 +51,94 @@ const GamePlay = () => {
       currentRound,
       totalRound,
     }) {
-      // 타이머 멈추기
-      setIsTimerGetReady(false);
-
-      // 결과 화면 띄우기
-      setSelectedWord(answer);
-      setScores(_scores);
-      setShowQuestionResult(true);
+      gameStateDispatch({ type: 'setIsTimerGetReady', isTimerGetReady: false });
+      gameStateDispatch({ type: 'setSelectedWord', selectedWord: answer });
+      gameStateDispatch({ type: 'setScores', scores: _scores });
+      gameStateDispatch({
+        type: 'setShowQuestionResult',
+        showQuestionResult: true,
+      });
 
       setTimeout(() => {
         // 각종 상태 초기화하기
         resetQuestionStates(nextExaminerSocketId);
-        setRound({ currentRound, totalRound });
-        setIsWordChoiceOpen(true);
+        gameStateDispatch({
+          type: 'setRound',
+          round: { currentRound, totalRound },
+        });
+        gameStateDispatch({
+          type: 'setIsWordChoiceOpen',
+          isWordChoiceOpen: true,
+        });
       }, 5000);
     },
-    [
-      resetQuestionStates,
-      setIsTimerGetReady,
-      setIsWordChoiceOpen,
-      setRound,
-      setScores,
-      setSelectedWord,
-      setShowQuestionResult,
-    ],
+    [resetQuestionStates],
   );
 
   const endGameCallback = useCallback(
     ({ _scores, answer }) => {
-      // 타이머 멈추기
-      setIsTimerGetReady(false);
-
-      // 결과 화면 띄우기
-      setSelectedWord(answer);
-      setScores(_scores);
-      setShowQuestionResult(true);
+      gameStateDispatch({ type: 'setIsTimerGetReady', isTimerGetReady: false });
+      gameStateDispatch({ type: 'setSelectedWord', selectedWord: answer });
+      gameStateDispatch({ type: 'setScores', scores: _scores });
+      gameStateDispatch({
+        type: 'setShowQuestionResult',
+        showQuestionResult: true,
+      });
 
       // 게임 결과 띄우기
       setTimeout(() => {
         resetQuestionStates();
-        setShowGameResult(true);
+        // setShowGameResult(true);
+        gameStateDispatch({ type: 'setShowGameResult', showGameResult: true });
 
         // 게임 결과 지우고 메인으로 나가기
         setTimeout(() => {
-          setShowGameResult(false);
+          // setShowGameResult(false);
+          gameStateDispatch({
+            type: 'setShowGameResult',
+            showGameResult: false,
+          });
           history.replace('/main');
         }, 5000);
       }, 5000);
     },
-    [
-      history,
-      resetQuestionStates,
-      setIsTimerGetReady,
-      setScores,
-      setSelectedWord,
-      setShowGameResult,
-      setShowQuestionResult,
-    ],
+    [history, resetQuestionStates],
   );
 
   const prepareNewGameCallback = useCallback(() => {
-    setIsTimerGetReady(false);
-    setQuestionWord(initialQuestionWordState);
-  }, [initialQuestionWordState, setIsTimerGetReady, setQuestionWord]);
+    gameStateDispatch({ type: 'setIsTimerGetReady', isTimerGetReady: false });
+    gameStateDispatch({
+      type: 'setQuestionWord',
+      questionWord: initialQuestionWordState,
+    });
+  }, [initialQuestionWordState]);
 
   useGameSocket('userList', ({ playerList }) => {
     const parsedList = JSON.parse(playerList);
-    setUserList(parsedList);
+    gameStateDispatch({ type: 'setUserList', userList: parsedList });
   });
   useGameSocket('roomCategory', ({ categoryId }) => {
     room.categoryId = categoryId;
   });
   useGameSocket('gamestart', ({ _painter, currentRound, totalRound }) => {
-    setPainter(_painter);
-    setRound({
-      currentRound,
-      totalRound,
+    gameStateDispatch({ type: 'setPainter', painter: _painter });
+    gameStateDispatch({
+      type: 'setRound',
+      round: {
+        currentRound,
+        totalRound,
+      },
     });
   });
   useGameSocket(
     'startQuestion',
     ({ wordLength, openLetter, openIndex, _endTime }) => {
-      setQuestionWord({ wordLength, openLetter, openIndex });
-      setEndTime(_endTime);
-      setIsTimerGetReady(true);
+      gameStateDispatch({
+        type: 'setQuestionWord',
+        questionWord: { wordLength, openLetter, openIndex },
+      });
+      gameStateDispatch({ type: 'setEndTime', endTime: _endTime });
+      gameStateDispatch({ type: 'setIsTimerGetReady', isTimerGetReady: true });
     },
   );
   useGameSocket('endQuestion', endQuestionCallback);
@@ -165,7 +160,7 @@ const GamePlay = () => {
   }
 
   return (
-    <GamePlayContext.Provider value={contextValue}>
+    <GamePlayContext.Provider value={{ gameState, gameStateDispatch }}>
       <NavigationBar />
       <>
         <FlexRowStyle>

@@ -1,7 +1,6 @@
 class Room {
-  constructor(roomId, roomType) {
+  constructor(roomId) {
     this.roomId = roomId;
-    this.roomType = roomType;
     this.categoryId = null;
   }
 }

@@ -10,7 +10,7 @@ import VideoModal from 'components/VideoSection/VideoModal/VideoModal';
 import Loading from 'components/globalComponents/Loading/Loading';
 import Alert from 'components/globalComponents/Alert/Alert';
 import InfinityScroll from 'components/globalComponents/InfinityScroll/InfinityScroll';
-import useCursorQuery from 'hooks/useCursorQuery';
+import useCursorQuery from 'hooks/commons/useCursorQuery';
 
 export default function Video() {
   const { data, loading, error, fetchMore, hasMore } = useCursorQuery(

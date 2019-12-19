@@ -1,7 +1,7 @@
 /* eslint no-param-reassign:0 */
 import { fabric } from 'fabric';
 import Tool from 'components/GamePlay/CanvasSection/DrawingPlayGround/PainterPlayGround/Tools/ToolType/Tool';
-import { DEFAULT_LINE_OPTIONS } from 'constant/DrawingPlayGround';
+import { DEFAULT_LINE_OPTIONS } from 'constants/DrawingPlayGround';
 
 class Line extends Tool {
   draw({ startPoint, endPoint, drawingOptions }) {

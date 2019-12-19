@@ -1,11 +1,11 @@
 import React, { useCallback, useContext, useReducer, useState } from 'react';
 import Avatar from 'components/Avatar/Avatar';
-import useCarousel from 'hooks/Carousel/useCarousel';
+import useCarousel from 'hooks/commons/useCarousel';
 import { useMutation } from '@apollo/react-hooks';
 import { CHANGE_AVATAR as changeAvatarQuery } from 'queries/user';
 import GlobalContext from 'global.context';
 import SpectreButton from 'components/globalComponents/SpectreButton/SpectreButton';
-import AVATAR_NUMBER from 'constant/avatar';
+import AVATAR_NUMBER from 'constants/avatar';
 import ChangeAvatarStyle from './ChangeAvatar.style';
 
 const btnTextReducer = (state, action) => {
@@ -41,7 +41,7 @@ export default function ChangeAvatar() {
     }, 2000);
   };
 
-  const [changeAvatar, { loading, error }] = useMutation(changeAvatarQuery, {
+  const [changeAvatar, { loading }] = useMutation(changeAvatarQuery, {
     onCompleted,
   });
 

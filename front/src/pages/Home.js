@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import LoginSection from 'components/LoginSection/LoginSection';
-import { getAutoLogIn } from 'logics/auth/autoLogIn';
-import checkAutoLogIn from 'logics/auth/checkAutoLogIn';
+import { checkAutoLogIn, getAutoLogIn } from 'utils/catchmymind/auth';
 import Background from 'components/globalComponents/Container/Background.style';
 
 const Home = () => {

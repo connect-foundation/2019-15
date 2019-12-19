@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import GlobalContext from 'global.context';
 import crown from 'asset/crown.png';
-import { getAvatar } from 'logics/avatar';
+import { getAvatar } from 'utils/catchmymind/avatar';
 import { UserStyle, RoomOwner, Text, Avatar } from './UserList.style';
 
 User.propTypes = {

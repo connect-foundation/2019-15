@@ -1,5 +1,5 @@
 import React from 'react';
-import APP_URI from 'util/uri';
+import APP_URI from 'constants/uri';
 import LoginGoogleStyle from './LoginGoogle.style';
 import GLogo from './GLogo/GLogo';
 

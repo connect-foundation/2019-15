@@ -3,7 +3,7 @@ import GlobalContext from 'global.context';
 import TextInputStyle from './TextInput.style';
 
 export default function Chatting() {
-  const { gameSocket } = useContext(GlobalContext);
+  const { gameSocket, room } = useContext(GlobalContext);
   const [inputValue, setValue] = useState('');
 
   const inputChangeHandler = (e) => {
@@ -11,8 +11,10 @@ export default function Chatting() {
   };
 
   const pressKeyHandler = async (e) => {
+    const { roomType, roomId } = room;
+
     if (e.key === 'Enter') {
-      gameSocket.emit('sendMessage', { inputValue });
+      gameSocket.emit('sendMessage', { roomType, roomId, inputValue });
       setValue('');
     }
   };
