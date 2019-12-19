@@ -33,10 +33,10 @@ export default function DefaultNavBtnList() {
       <Notification />
       <InvitationContainer />
       <FriendRequestContainer />
-      {location.pathname.includes('mypage') ? (
-        <NavImageStyle onClick={moveMain} icon={faHome} />
-      ) : (
+      {location.pathname.includes('main') ? (
         <NavImageStyle onClick={replaceMyPage} icon={faUserAlt} />
+      ) : (
+        <NavImageStyle onClick={moveMain} icon={faHome} />
       )}
       <NavImageStyle icon={faSignOutAlt} onClick={logout} />
     </NavBtnContainerStyle>

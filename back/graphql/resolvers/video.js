@@ -1,17 +1,33 @@
 const Sequelize = require('sequelize');
 
 const { Op } = Sequelize;
+const { getPageResult, getEdgesFromNodes } = require('../../util/graphql/cursor');
 
 module.exports = {
   Query: {
-    getLatestWordsByUser: async (obj, args, { DrawingHistories, req }) => {
-      return DrawingHistories.findAll({
+    getLatestWordsByUser: async (obj, { first, after }, { DrawingHistories, req }) => {
+      const afterClause = after
+        ? {
+            id: {
+              [Op.lt]: after,
+            },
+          }
+        : {};
+      const nodes = await DrawingHistories.findAll({
         where: {
-          userId: req.user.id,
+          [Op.and]: [
+            {
+              userId: req.user.id,
+            },
+            afterClause,
+          ],
         },
         order: [['id', 'DESC']],
-        limit: 10,
+        limit: first,
       });
+
+      const edges = getEdgesFromNodes(nodes, (node) => node.id);
+      return getPageResult(edges, first);
     },
     getCanvasDatasByQuestionId: async (obj, { questionId }, { CanvasDatas }) => {
       return CanvasDatas.findAll({

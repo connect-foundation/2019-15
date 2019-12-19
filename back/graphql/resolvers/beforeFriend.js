@@ -91,7 +91,7 @@ const friendResolvers = {
       });
 
       if (isFriend.length) throw new Error(`${nickname}님과는 이미 친구입니다.`);
-
+      if (req.user.id === friend.dataValues.id) throw new Error(`자신에게는 친구요청을 보낼 수 없습니다.`);
       try {
         await BeforeFriends.create({
           pFriendId: req.user.id,

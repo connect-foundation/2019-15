@@ -1,11 +1,11 @@
 import React, { useReducer, useMemo } from 'react';
-import Header from 'components/FriendsSection/refactor/FriendList/Header/Header';
-import Component from 'components/FriendsSection/refactor/FriendList/Component/Component';
+import Header from 'components/FriendsSection/FriendList/Header/Header';
+import Component from 'components/FriendsSection/FriendList/Component/Component';
 import Alert from 'components/globalComponents/Alert/Alert';
 import {
   FriendListStyle,
   FriendListScrollStyle,
-} from 'components/FriendsSection/refactor/FriendList/FriendList.style';
+} from 'components/FriendsSection/FriendList/FriendList.style';
 import { GET_FRIENDS } from 'queries/friend';
 import useCursorQuery from 'hooks/commons/useCursorQuery';
 import InfinityScroll from 'components/globalComponents/InfinityScroll/InfinityScroll';

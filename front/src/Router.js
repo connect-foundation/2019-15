@@ -1,7 +1,7 @@
 import React, { useState, useReducer } from 'react';
 import { Route, Switch, HashRouter, Redirect } from 'react-router-dom';
 import jwt from 'jsonwebtoken';
-import Home from 'pages/Home';
+import Home from 'pages/Home/Home';
 import GlobalContext from 'global.context';
 import Main from 'pages/Main';
 import MyPage from 'pages/MyPage';

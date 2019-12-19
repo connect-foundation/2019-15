@@ -1,8 +1,8 @@
 const { defaultExpireTime } = require('../../config/timerConfig');
 
-function Timer(roomId, roomType, io) {
+function Timer(roomId, roomName, io) {
   this.roomId = roomId;
-  this.roomType = roomType;
+  this.roomName = roomName;
   this.io = io;
   this.endTime = 0;
   this.intervalId = 0;

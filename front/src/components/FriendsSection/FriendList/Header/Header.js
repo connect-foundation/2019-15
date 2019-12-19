@@ -3,7 +3,7 @@ import { faCog, faUserPlus } from '@fortawesome/free-solid-svg-icons';
 import {
   DoneButton,
   Input,
-} from 'components/FriendsSection/refactor/FriendList/Header/Header.style';
+} from 'components/FriendsSection/FriendList/Header/Header.style';
 import {
   ComponentStyle,
   Icon,
@@ -56,11 +56,11 @@ export default function Header({
           </ComponentStyle>
         </>
       ) : (
-        <ComponentStyle>
-          <span>친구 목록</span>
-          <Icon icon={faCog} onClick={switchMode} />
-        </ComponentStyle>
-      )}
+          <ComponentStyle>
+            <span>친구 목록</span>
+            <Icon icon={faCog} onClick={switchMode} />
+          </ComponentStyle>
+        )}
     </>
   );
 }
