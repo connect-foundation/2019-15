@@ -20,7 +20,7 @@ GameSetting.propTypes = {
 };
 
 export default function GameSetting({ isRoomOwner, waitingUserList }) {
-  const { gameSocket } = useContext(GlobalContext);
+  const { gameSocket, room } = useContext(GlobalContext);
   const [timer, onChangeTimer, timerRef, changeTimerValue] = useSelect(
     'timer',
     '40',
