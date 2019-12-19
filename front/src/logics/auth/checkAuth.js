@@ -1,6 +1,6 @@
 import APP_URI from 'util/uri';
 
-function checkAuth(setNickName) {
+function checkAuth(setNickName, setIsLogin) {
   fetch(`${APP_URI.REACT_APP_API_URI}/auth/authenticate`, {
     method: 'GET',
     credentials: 'include',
@@ -11,6 +11,10 @@ function checkAuth(setNickName) {
     .then((response) => {
       if (response.status === 401 || response.status === 403) {
         window.location.href = `#/`;
+        setIsLogin(false);
+      }
+      if (response.status === 200) {
+        setIsLogin(true);
       }
       return response.text();
     })

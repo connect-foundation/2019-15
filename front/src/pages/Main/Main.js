@@ -14,16 +14,16 @@ import useInitGameSocket from 'hooks/Socket/useInitGameSocket';
 import Button from '../../components/globalComponents/Button/Button';
 
 const Main = () => {
-  const { setGameSocket, setRoom } = useContext(GlobalContext);
+  const { setGameSocket, setRoom, setIsLogin } = useContext(GlobalContext);
   const [nickName, setNickName] = useState('');
   const [isSignUp, setIsSignUp] = useState(
     parseCookies(document.cookie).isSignUp === 'true',
   );
   const history = useHistory();
   useEffect(() => {
-    checkAuth(setNickName);
+    checkAuth(setNickName, setIsLogin);
     setRoom(null);
-  }, [setRoom]);
+  }, [setIsLogin, setRoom]);
 
   setGameSocket(useInitGameSocket());
 
