@@ -8,13 +8,13 @@ const eraser = new Eraser();
 const line = new Line();
 const circle = new Circle();
 
-const ToolManager = {
+const PainterToolManager = {
   pen,
   line,
   circle,
   eraser,
   toolList: ['pen', 'eraser', 'line', 'circle'],
-  freeDrawingTools: ['pen', 'eraser'],
+  freeDrawings: ['pen', 'eraser'],
 };
 
-export default ToolManager;
+export default PainterToolManager;

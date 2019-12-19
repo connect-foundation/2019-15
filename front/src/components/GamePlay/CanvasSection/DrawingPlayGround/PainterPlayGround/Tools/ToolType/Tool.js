@@ -4,6 +4,8 @@ class Tool {
     this.fc = fabricCanvas;
   }
 
+  setOptions() {}
+
   onMouseDown() {}
 
   onMouseMove() {}
