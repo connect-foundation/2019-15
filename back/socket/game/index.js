@@ -18,7 +18,7 @@ function setGameSocket(socket) {
   });
 
   socket.on('makePrivate', ({ roomId }) => {
-    this.RoomManager.addRoom(PRIVATE_ROOM_NAME, this.gameIo, roomId);
+    this.RoomManager.addRoom(PRIVATE_ROOM_NAME, roomId, this.gameIo);
     this.RoomManager.room[PRIVATE_ROOM_NAME][roomId].roomOwner = gameSocket.id;
   });
 

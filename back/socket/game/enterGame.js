@@ -1,6 +1,6 @@
+const jwt = require('jsonwebtoken');
 const User = require('../User');
 const { WAIT_UNTIL_USER_ADD_EVENT } = require('../../config/roomConfig');
-const jwt = require('jsonwebtoken');
 const jwtOptions = require('../../config/jwtOptions');
 const parseCookies = require('../../util/cookie/parseCookies');
 
