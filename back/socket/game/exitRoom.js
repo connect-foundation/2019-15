@@ -5,6 +5,8 @@ function exitRoom(gameSocket, { roomType, roomId }) {
 
   const room = RoomManager.room[roomType][roomId];
   const userIndex = room.getUserIndexBySocketId(gameSocket);
+  if (userIndex < 0) return; // 방에서 유저 정보를 못 찾은경우 종료
+
   room.removePlayer(userIndex);
 
   gameSocket.leave(roomId);

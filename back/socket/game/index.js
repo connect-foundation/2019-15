@@ -70,6 +70,7 @@ function setGameSocket(socket) {
         room.timer.stop();
       }
     } else if (room.players.length < 1) {
+      room.timer.stop();
       RoomManager.deleteRoom(roomType, roomId);
     }
   });
