@@ -23,15 +23,15 @@ export const SmallLogoImage = styled(Image)`
   margin-top: 5px;
   cursor: pointer;
   ${(props) =>
-    props.pathname.includes('mypage')
+    props.pathname.includes('public') || props.pathname.includes('private')
       ? `
-      width : 12rem;
-      height: 5rem;
-      margin-left: 1rem;
-      `
-      : `
       width : 9rem;
       height: 3.8rem;
       margin-left: 6.5rem;
+      `
+      : `
+      width : 12rem;
+      height: 5rem;
+      margin-left: 1rem;
       `}
 `;

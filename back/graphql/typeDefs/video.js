@@ -17,8 +17,18 @@ module.exports = `
     dataLength: Int
   }
 
+  type LatestWordEdge{
+    node:DrawingHistory
+    cursor:String
+  }
+
+  type LatestWordConnection{
+    edges:[LatestWordEdge]
+    pageInfo:PageInfo
+  }
+
   extend type Query {
-    getLatestWordsByUser:[DrawingHistory]
+    getLatestWordsByUser(first:Int!, after:String):LatestWordConnection
     getCanvasDatasByQuestionId(questionId:Int!):[CanvasData]
   } 
 

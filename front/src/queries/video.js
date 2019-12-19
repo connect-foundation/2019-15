@@ -1,11 +1,20 @@
 import { gql } from 'apollo-boost';
 
 export const GET_LATEST_WORDS_BY_USER = gql`
-  query getLatestWordsByUser {
-    getLatestWordsByUser {
-      id
-      word
-      createdAt
+  query getLatestWordsByUser($first: Int = 10, $after: String) {
+    getLatestWordsByUser(first: $first, after: $after) {
+      pageInfo {
+        endCursor
+        hasNextPage
+      }
+      edges {
+        node {
+          id
+          word
+          createdAt
+        }
+        cursor
+      }
     }
   }
 `;
