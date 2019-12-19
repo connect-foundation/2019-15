@@ -85,6 +85,29 @@ const rankingResolvers = {
 
       return getPageResult(edges, first);
     },
+    getRankById: async (obj, args, { Users, req }) => {
+      const user = await Users.findOne({
+        where: {
+          id: req.user.id,
+        },
+      });
+      const rank = await Users.count({
+        where: {
+          [Op.or]: [
+            { score: { [Op.gt]: user.dataValues.score } },
+            {
+              [Op.and]: [{ score: user.dataValues.score }, { id: { [Op.gt]: user.dataValues.id } }],
+            },
+          ],
+        },
+      });
+      console.log(rank);
+      return {
+        userId: user.dataValues.id,
+        nickname: user.dataValues.nickname,
+        rank: rank + 1,
+      };
+    },
   },
 };
 
