@@ -34,7 +34,7 @@ export default function Setting() {
       roomId: room.roomId,
       avatar,
     });
-    history.push(`waiting:${room.roomId}`);
+    history.replace(`/waiting:${room.roomId}`);
   }
 
   return (

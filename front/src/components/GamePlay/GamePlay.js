@@ -103,7 +103,7 @@ const GamePlay = () => {
         // 게임 결과 지우고 메인으로 나가기
         setTimeout(() => {
           setShowGameResult(false);
-          history.push('main');
+          history.replace('/main');
         }, 5000);
       }, 5000);
     },

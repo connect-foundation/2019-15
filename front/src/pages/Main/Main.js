@@ -29,7 +29,7 @@ const Main = () => {
 
   useGameSocket('connectRandom', ({ roomType, roomId }) => {
     setRoom(new Room(roomId, roomType));
-    history.push('public');
+    history.push('/public');
   });
 
   function closeModal() {
