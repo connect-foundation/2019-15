@@ -152,6 +152,7 @@
 - requestAnimationFrame in React
 - canvas with Fabric.js and custom drawing tool
 - cursor based lazy loading and infinite scroll
+- components without style library (vanilla components!)
     
 ## Document
 ### [Ground Rule](https://github.com/connect-foundation/2019-15/wiki/%EA%B7%B8%EB%9D%BC%EC%9A%B4%EB%93%9C-%EB%A3%B0)
