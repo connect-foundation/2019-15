@@ -37,7 +37,7 @@ function setGameSocket(socket) {
   socket.on('selectWord', selectWord.bind(this, gameSocket, roomInfo));
   socket.on('sendMessage', sendMessage.bind(this, gameSocket, roomInfo));
   socket.on('enterRandom', enterRandom.bind(this, gameSocket, roomInfo));
-  socket.on('drawing', sendGameImage.bind(this, gameSocket));
+  socket.on('drawing', sendGameImage.bind(this, gameSocket, roomInfo));
   socket.on('disconnect', () => {
     if (!roomInfo) return; // 방정보가 없는 경우 게임중이 아니었으므로 종료
 
