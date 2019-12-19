@@ -7,7 +7,7 @@ import { CurrentMyInfoStyle, AvatarImage } from './CurrentMyInfo.style';
 
 export default function CurrentMyInfo() {
   const { user } = useContext(GlobalContext);
-  const { data, loading } = useQuery(GET_RANK_BY_ID);
+  const { data, loading, error } = useQuery(GET_RANK_BY_ID);
 
   return (
     <CurrentMyInfoStyle id="CurrentMyInfo">
@@ -15,7 +15,7 @@ export default function CurrentMyInfo() {
       <div>
         <span className="user-card nickname">{user.nickname}</span>
         <span className="user-card ranking">
-          {loading ? null : `랭킹 ${data.getRankById.rank}위`}
+          {loading || error ? null : `랭킹 ${data.getRankById.rank}위`}
         </span>
       </div>
     </CurrentMyInfoStyle>

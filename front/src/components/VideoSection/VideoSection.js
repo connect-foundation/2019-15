@@ -5,17 +5,19 @@ import { GET_LATEST_WORDS_BY_USER } from 'queries/video';
 import { useQuery } from '@apollo/react-hooks';
 import dateFormat from 'dateformat';
 import VideoModal from 'components/VideoSection/VideoModal/VideoModal';
+import Loading from 'components/globalComponents/Loading/Loading';
+import Alert from 'components/globalComponents/Alert/Alert';
 
 export default function Video() {
   const { data, loading, error } = useQuery(GET_LATEST_WORDS_BY_USER);
   const [modalWord, setModalWord] = useState(null);
 
-  if (loading) {
-    return <div>loading</div>;
+  if (error) {
+    return <Alert type="error" Wrapper={VideoSectionWrapper} />;
   }
 
-  if (error) {
-    return <div>error</div>;
+  if (loading) {
+    return <Loading Wrapper={VideoSectionWrapper} />;
   }
   return (
     <VideoSectionWrapper>
