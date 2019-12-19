@@ -41,23 +41,23 @@ export default function VideoModal({ question, setModalWord }) {
     </NonPainterBoardStyle>
   );
 
-  function makeSlow() {
+  const makeSlow = () => {
     setSpeed(2);
     setRestart(true);
-  }
+  };
 
-  function makeFast() {
+  const makeFast = () => {
     setSpeed(1);
     setRestart(true);
-  }
+  };
 
-  function makeRestart() {
+  const makeRestart = () => {
     setRestart(true);
-  }
+  };
 
-  function close() {
+  const close = () => {
     setModalWord(null);
-  }
+  };
 
   const Footer = () => (
     <ButtonSectionStyle>

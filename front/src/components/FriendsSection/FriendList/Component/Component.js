@@ -28,9 +28,9 @@ export default function Component({
   isConfigMode,
   dispatchModalContent,
 }) {
-  function clickDeleteButton() {
+  const clickDeleteButton = () => {
     dispatchModalContent({ type: 'deleteRequest', id, nickname });
-  }
+  };
 
   return (
     <ComponentStyle>

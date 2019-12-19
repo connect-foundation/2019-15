@@ -16,10 +16,12 @@ export const LogoImage = styled(Image)`
   margin-left: 50%;
   margin-top: 3rem;
   transform: translateX(-50%);
+  cursor: pointer;
 `;
 
 export const SmallLogoImage = styled(Image)`
   margin-top: 5px;
+  cursor: pointer;
   ${(props) =>
     props.pathname.includes('public') || props.pathname.includes('private')
       ? `

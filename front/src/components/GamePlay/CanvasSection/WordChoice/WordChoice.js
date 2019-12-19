@@ -13,7 +13,7 @@ WordChoice.propTypes = {
   setSelectedWord: PropTypes.func.isRequired,
 };
 
-function WordChoice({ setSelectedWord }) {
+export default function WordChoice({ setSelectedWord }) {
   const { gameSocket, room } = useContext(GlobalContext);
   const {
     painter,
@@ -33,18 +33,18 @@ function WordChoice({ setSelectedWord }) {
     return 'error';
   }
 
-  function close(e) {
+  const close = (e) => {
     refetch();
     setIsWordChoiceOpen(false);
     const { roomType, roomId } = room;
     const answer = e.target.textContent;
     setSelectedWord(answer);
     gameSocket.emit('selectWord', { answer, roomType, roomId });
-  }
+  };
 
-  async function wordsChange() {
+  const wordsChange = async () => {
     refetch();
-  }
+  };
 
   if (gameSocket.id !== painter && questionWord.wordLength === 0) {
     return (
@@ -78,5 +78,3 @@ function WordChoice({ setSelectedWord }) {
     </>
   );
 }
-
-export default WordChoice;

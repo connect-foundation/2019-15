@@ -21,7 +21,7 @@ const btnTextReducer = (state, action) => {
   }
 };
 
-const ChangeAvatar = () => {
+export default function ChangeAvatar() {
   const { user, userDispatch } = useContext(GlobalContext);
   const [disabled, setDisabled] = useState(false);
   const [btnText, btnTextDispatch] = useReducer(btnTextReducer, '저장');
@@ -54,7 +54,6 @@ const ChangeAvatar = () => {
       },
     });
     setDisabled(true);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [changeAvatar, selectedAvatar, user.avatar, user.nickname]);
 
   return (
@@ -73,6 +72,4 @@ const ChangeAvatar = () => {
       </SpectreButton>
     </ChangeAvatarStyle>
   );
-};
-
-export default ChangeAvatar;
+}

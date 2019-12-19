@@ -1,5 +1,5 @@
 import React, { useState, useReducer } from 'react';
-import { Route, Switch, HashRouter } from 'react-router-dom';
+import { Route, Switch, HashRouter, Redirect } from 'react-router-dom';
 import jwt from 'jsonwebtoken';
 import Home from 'pages/Home/Home';
 import GlobalContext from 'global.context';
@@ -28,6 +28,7 @@ const Router = () => {
     userInitial = new User(nickname, id, avatar);
   }
 
+  const [isLogin, setIsLogin] = useState(false);
   const [room, setRoom] = useState(new Room());
   const [user, userDispatch] = useReducer(changeUser, userInitial);
   const [gameSocket, setGameSocket] = useState(null);
@@ -48,6 +49,8 @@ const Router = () => {
               setRoom,
               gameSocket,
               setGameSocket,
+              isLogin,
+              setIsLogin,
             }}
           >
             <Route path="/mypage">
@@ -69,6 +72,9 @@ const Router = () => {
               <PrivateGame />
             </Route>
           </GlobalContext.Provider>
+          <Route>
+            <Redirect to="/main" />
+          </Route>
         </Switch>
       </HashRouter>
     </RouterStyle>

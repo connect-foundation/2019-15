@@ -66,11 +66,11 @@ export default function FriendModal({
     },
   });
 
-  function clearModalContent() {
+  const clearModalContent = () => {
     dispatchModalContent({ type: 'clear' });
-  }
+  };
 
-  function clickOKButton() {
+  const clickOKButton = () => {
     switch (modalContent.current) {
       case 'addDone':
       case 'deleteDone':
@@ -87,7 +87,7 @@ export default function FriendModal({
       default:
         throw new Error(`${modalContent.current}cannot find current`);
     }
-  }
+  };
 
   const Body = () => <span>{modalContent.content}</span>;
   const Footer = () => (

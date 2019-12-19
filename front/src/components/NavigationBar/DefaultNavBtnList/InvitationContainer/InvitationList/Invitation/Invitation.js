@@ -25,7 +25,7 @@ export default function Invitation({ id, nickname, roomId, remove }) {
   });
 
   const acceptInvitation = () => {
-    history.push(`setting:${roomId}`);
+    history.push(`/setting:${roomId}`);
   };
   const declineInvitation = async () => {
     await deleteInvitation({ variables: { id } });

@@ -39,9 +39,9 @@ export default function Header({
     [setValue],
   );
 
-  function addFriend() {
+  const addFriend = () => {
     dispatchModalContent({ type: 'addRequest', nickname: inputValue });
-  }
+  };
 
   return (
     <>

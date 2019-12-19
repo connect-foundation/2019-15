@@ -9,9 +9,9 @@ function switchListOpenReducer(state, action) {
 export default function FriendsSection() {
   const [listOpen, dispatchListOpen] = useReducer(switchListOpenReducer, false);
 
-  function switchListOpen() {
+  const switchListOpen = () => {
     dispatchListOpen({ current: listOpen });
-  }
+  };
 
   return (
     <div>

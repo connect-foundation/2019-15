@@ -9,7 +9,7 @@ QuestionResult.propTypes = {
   ).isRequired,
 };
 
-function QuestionResult({ answer, scores }) {
+export default function QuestionResult({ answer, scores }) {
   const Header = () => <h1>{answer}</h1>;
   const Body = () =>
     scores.map((score, idx) => {
@@ -25,5 +25,3 @@ function QuestionResult({ answer, scores }) {
 
   return <Modal />;
 }
-
-export default QuestionResult;

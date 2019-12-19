@@ -1,13 +1,13 @@
-function autoLoginCheckboxEventHandler(e) {
+const autoLoginCheckboxEventHandler = (e) => {
   localStorage.setItem('autoLogIn', e.target.checked.toString());
-}
+};
 
-function setAutoLogIn(isAutoLogIn) {
+const setAutoLogIn = (isAutoLogIn) => {
   localStorage.setItem('autoLogIn', isAutoLogIn.toString());
-}
+};
 
-function getAutoLogIn() {
+const getAutoLogIn = () => {
   return localStorage.getItem('autoLogIn') === 'true';
-}
+};
 
 export { autoLoginCheckboxEventHandler, setAutoLogIn, getAutoLogIn };

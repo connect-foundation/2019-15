@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { Redirect, useParams, useHistory } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
 import Preparation from 'components/Preparation/Preparation';
 import GlobalSocket from 'global.context';
 import NavigationBar from 'components/NavigationBar/NavigationBar';
@@ -18,7 +18,7 @@ export default function Waiting() {
   });
 
   useGameSocket('movePrivate', () => {
-    history.push(`private${hash}`);
+    history.replace(`/private${hash}`);
   });
 
   useGameSocket('roomOwner', () => {
@@ -26,7 +26,8 @@ export default function Waiting() {
   });
 
   if (!gameSocket) {
-    return <Redirect to={`setting${hash}`} />;
+    history.replace(`/setting${hash}`);
+    return <></>;
   }
 
   return (
