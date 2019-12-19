@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { AvatarImage } from './Avatar.style';
 import { getAvatar } from 'logics/avatar';
+import { AvatarImage } from './Avatar.style';
 
 AvatarImg.propTypes = {
   avatarIdx: PropTypes.number,

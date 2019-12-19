@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, useLocation, useHistory } from 'react-router-dom';
+import { useLocation, useHistory } from 'react-router-dom';
 import mainlogo from 'asset/mainlogo_yellowpink.png';
 import DefaultNavBtnList from 'components/NavigationBar/DefaultNavBtnList/DefaultNavBtnList';
 import GameNavBtnList from 'components/NavigationBar/GameNavBtnList/GameNavBtnList';

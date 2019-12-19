@@ -21,7 +21,7 @@ const btnTextReducer = (state, action) => {
   }
 };
 
-const ChangeAvatar = () => {
+export default function ChangeAvatar() {
   const { user, userDispatch } = useContext(GlobalContext);
   const [disabled, setDisabled] = useState(false);
   const [btnText, btnTextDispatch] = useReducer(btnTextReducer, '저장');
@@ -72,6 +72,4 @@ const ChangeAvatar = () => {
       </SpectreButton>
     </ChangeAvatarStyle>
   );
-};
-
-export default ChangeAvatar;
+}
