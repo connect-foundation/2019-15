@@ -47,13 +47,16 @@ export default function WordPreview({
   );
 
   const openLetterTrigger = useCallback(() => {
-    lettersDispatch({
-      type: 'openLetter',
-      arg: {
-        openIndex,
-        openLetter,
-      },
-    });
+    // 정답이 1글자인 경우 오픈하지 않는다
+    if (wordLength > 1) {
+      lettersDispatch({
+        type: 'openLetter',
+        arg: {
+          openIndex,
+          openLetter,
+        },
+      });
+    }
   }, [lettersDispatch, openIndex, openLetter]);
 
   useEffect(() => {
