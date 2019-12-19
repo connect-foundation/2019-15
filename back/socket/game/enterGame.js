@@ -1,10 +1,19 @@
 const User = require('../User');
 const { WAIT_UNTIL_USER_ADD_EVENT } = require('../../config/roomConfig');
+const jwt = require('jsonwebtoken');
+const jwtOptions = require('../../config/jwtOptions');
+const parseCookies = require('../../util/cookie/parseCookies');
 
 function enterRandom(gameSocket, roomInfo, { nickname, avatar }) {
   const room = this.RoomManager.getRoom(roomInfo);
 
-  room.addPlayer(new User(nickname, gameSocket, null, false, avatar));
+  const { jwt: jwtToken } = parseCookies(gameSocket.handshake.headers.cookie);
+  const { id } = jwt.verify(jwtToken, process.env.JWT_SECRET, {
+    issuer: jwtOptions.issuer,
+    subject: jwtOptions.subject,
+  });
+
+  room.addPlayer(new User(nickname, gameSocket, id, false, avatar));
 
   gameSocket.join(roomInfo.roomId);
   gameSocket.emit(`connectRandom`, roomInfo);

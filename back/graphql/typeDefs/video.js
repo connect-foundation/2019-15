@@ -12,8 +12,17 @@ module.exports = `
     data: String
   }
 
-  extend type Query{
+  type Result{
+    questionId: Int
+    dataLength: Int
+  }
+
+  extend type Query {
     getLatestWordsByUser:[DrawingHistory]
     getCanvasDatasByQuestionId(questionId:Int!):[CanvasData]
   } 
+
+  extend type Mutation{
+    saveCanvasData(data:String!, questionWord:String!):Result
+  }
 `;
