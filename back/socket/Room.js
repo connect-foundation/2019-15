@@ -242,8 +242,6 @@ class Room {
       makeReducerWithPromise(updateUserScore, makeUpdatedUserNumber),
       0,
     );
-
-    console.log('updatedUserNumber', updatedUserNumber);
   }
 
   getExaminerSocketId() {
