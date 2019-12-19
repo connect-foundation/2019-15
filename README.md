@@ -62,33 +62,34 @@
 | Sprint 6 |                         |                 |                 |                        |
 
 ## Environment
-- FRONT
-    - React
-    - apollo-boost
-    - styled-component
-    - Fabric.js
-    - three.js
-- BACK
-    - Express
-    - Passport.js
-    - JSON Web Token
-    - GraphQL
-    - Sequelize
-    - Socket.IO
-    - NODE-CACHE
-- CI/CD
-    - Travis CI
-- SERVER
-    - Docker
-- DB
-    - MySQL 5.7
-- VCS
-    - Git
-    - Git Flow
-- TEST
-    - Jest
-- etc
-    - ESLint (airbnb)
+### FRONT
+- React (16.11.0)
+- apollo-boost (0.4.4)
+- styled-component (4.4.1)
+- Fabric.js (3.5.1)
+### BACK
+- Express (4.16.1)
+- Passport.js (0.4.0)
+- JSON Web Token (8.5.1)
+- GraphQL (14.5.8)
+- Sequelize (5.19.6)
+- Sequelize CLI (5.5.1)
+- Socket.IO (2.3.0)
+- NODE-CACHE (5.0.2)
+### CI/CD
+- Travis CI 
+### SERVER
+- Docker (19.03.5)
+### DB
+- MySQL (5.7)
+### VCS
+- Git (2.23.0)
+- Git Flow 
+### TEST
+- Jest (24.9.0)
+### etc
+- ESLint - airbnb (6.1.0)
+- dotenv (8.2.0)
 
 ## Directory
 ### Frontend
