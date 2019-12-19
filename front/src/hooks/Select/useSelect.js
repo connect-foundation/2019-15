@@ -6,18 +6,18 @@ export default function useSelect(selectType, initValue) {
   const selectRef = useRef(null);
   const { gameSocket } = useContext(GlobalContext);
 
-  function onChange(e) {
+  const onChange = (e) => {
     setValue(e.target.value);
     gameSocket.emit('changeRoomSetting', {
       selectType,
       selectedIndex: e.target.selectedIndex,
     });
-  }
+  };
 
-  function changeSelectValue(selectedIndex) {
+  const changeSelectValue = (selectedIndex) => {
     const opts = selectRef.current.options;
     opts.selectedIndex = selectedIndex;
-  }
+  };
 
   return [value, onChange, selectRef, changeSelectValue];
 }

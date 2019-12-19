@@ -1,6 +1,6 @@
 import APP_URI from 'util/uri';
 
-function checkAuth(setNickName, setIsLogin) {
+const checkAuth = (setNickName, setIsLogin) => {
   fetch(`${APP_URI.REACT_APP_API_URI}/auth/authenticate`, {
     method: 'GET',
     credentials: 'include',
@@ -22,6 +22,6 @@ function checkAuth(setNickName, setIsLogin) {
       if (setNickName) setNickName(response);
     })
     .catch((error) => console.log(error));
-}
+};
 
 export default checkAuth;

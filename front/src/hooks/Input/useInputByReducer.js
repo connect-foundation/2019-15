@@ -1,6 +1,6 @@
 import { useReducer } from 'react';
 
-function nicknameReducer(state, action) {
+const nicknameReducer = (state, action) => {
   switch (action.type) {
     case 'nickname': {
       state.nickname = action.nickname;
@@ -9,7 +9,7 @@ function nicknameReducer(state, action) {
     default:
       throw new Error();
   }
-}
+};
 
 const initialInfo = {
   nickname: '부스트캠퍼',
@@ -21,8 +21,8 @@ export default function useInputByReducer() {
     initialInfo,
   );
 
-  function onChangeNick(e) {
+  const onChangeNick = (e) => {
     userNicknameDispatch({ type: 'nickname', nickname: e.target.value });
-  }
+  };
   return [userNickname, onChangeNick];
 }

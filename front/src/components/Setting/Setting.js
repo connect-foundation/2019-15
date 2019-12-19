@@ -28,14 +28,14 @@ export default function Setting() {
     });
   }, [gameSocket, hash, setRoom]);
 
-  function onClickGameStart() {
+  const onClickGameStart = () => {
     gameSocket.emit('enterPrivate', {
       nickname: nickname.nickname,
       roomId: room.roomId,
       avatar,
     });
     history.replace(`/waiting:${room.roomId}`);
-  }
+  };
 
   return (
     <SettingStyle>

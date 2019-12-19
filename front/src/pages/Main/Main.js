@@ -32,9 +32,7 @@ const Main = () => {
     history.push('/public');
   });
 
-  function closeModal() {
-    setIsSignUp(false);
-  }
+  const closeModal = () => setIsSignUp(false);
   const Header = () => <h1>환영합니다!</h1>;
   const Body = () => (
     <p>

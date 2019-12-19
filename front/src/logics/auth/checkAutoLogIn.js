@@ -1,6 +1,6 @@
 import APP_URI from 'util/uri';
 
-function checkAutoLogIn() {
+const checkAutoLogIn = () => {
   fetch(`${APP_URI.REACT_APP_API_URI}/auth/authenticate`, {
     method: 'GET',
     credentials: 'include',
@@ -12,6 +12,6 @@ function checkAutoLogIn() {
       if (response.status === 200) window.location.href = `#/main`;
     })
     .catch((error) => console.log(error));
-}
+};
 
 export default checkAutoLogIn;

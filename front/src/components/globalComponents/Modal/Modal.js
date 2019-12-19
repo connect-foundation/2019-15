@@ -2,8 +2,8 @@ import React from 'react';
 import BackgroundModalStyle from './BackgroundModal.style';
 import { ModalStyle, ModalDivStyle } from './Modal.style';
 
-function makeModal(Header, Body, Footer) {
-  function Modal() {
+export default function makeModal(Header, Body, Footer) {
+  const Modal = () => {
     return (
       <BackgroundModalStyle>
         <ModalStyle>
@@ -19,9 +19,7 @@ function makeModal(Header, Body, Footer) {
         </ModalStyle>
       </BackgroundModalStyle>
     );
-  }
+  };
 
   return Modal;
 }
-
-export default makeModal;

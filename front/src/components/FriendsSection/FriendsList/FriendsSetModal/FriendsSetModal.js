@@ -45,7 +45,7 @@ export default function FriendsSetModal({
     },
   });
 
-  async function clickHandler() {
+  const clickHandler = async () => {
     if (content === 'empty' || content === 'addDone') modalOff();
     else if (nickname === '') switchContent('empty');
     else if (content === 'add') {
@@ -60,7 +60,7 @@ export default function FriendsSetModal({
     } else if (content === 'deleteDone') {
       modalOff();
     }
-  }
+  };
 
   const Body = () => (
     <span>

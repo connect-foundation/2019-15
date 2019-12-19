@@ -2,16 +2,16 @@ import React, { useReducer } from 'react';
 import { ListPopUpButton } from 'components/FriendsSection/refactor/FriendsSection.style';
 import FriendList from 'components/FriendsSection/refactor/FriendList/FriendList';
 
-function switchListOpenReducer(state, action) {
+const switchListOpenReducer = (state, action) => {
   return !action.current;
-}
+};
 
 export default function FriendsSection() {
   const [listOpen, dispatchListOpen] = useReducer(switchListOpenReducer, false);
 
-  function switchListOpen() {
+  const switchListOpen = () => {
     dispatchListOpen({ current: listOpen });
-  }
+  };
 
   return (
     <div>

@@ -8,7 +8,7 @@ GameResult.propTypes = {
   ).isRequired,
 };
 
-function GameResult({ scores }) {
+export default function GameResult({ scores }) {
   const Header = () => <h1>Game Result</h1>;
   const Body = () =>
     scores.map((score, idx) => {
@@ -24,5 +24,3 @@ function GameResult({ scores }) {
 
   return <Modal />;
 }
-
-export default GameResult;

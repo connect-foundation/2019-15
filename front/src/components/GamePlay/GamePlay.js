@@ -34,7 +34,7 @@ const GamePlay = () => {
   const history = useHistory();
 
   const resetQuestionStates = useCallback(
-    function resetQuestionStates(nextExaminerSocketId) {
+    (nextExaminerSocketId) => {
       if (nextExaminerSocketId) setPainter(nextExaminerSocketId);
       setQuestionWord(initialQuestionWordState);
       setIsLetterOpen(false);
@@ -75,7 +75,15 @@ const GamePlay = () => {
         setIsWordChoiceOpen(true);
       }, 5000);
     },
-    [resetQuestionStates],
+    [
+      resetQuestionStates,
+      setIsTimerGetReady,
+      setIsWordChoiceOpen,
+      setRound,
+      setScores,
+      setSelectedWord,
+      setShowQuestionResult,
+    ],
   );
 
   const endGameCallback = useCallback(
@@ -100,23 +108,29 @@ const GamePlay = () => {
         }, 5000);
       }, 5000);
     },
-    [history, resetQuestionStates],
+    [
+      history,
+      resetQuestionStates,
+      setIsTimerGetReady,
+      setScores,
+      setSelectedWord,
+      setShowGameResult,
+      setShowQuestionResult,
+    ],
   );
 
   const prepareNewGameCallback = useCallback(() => {
     setIsTimerGetReady(false);
     setQuestionWord(initialQuestionWordState);
-  }, [initialQuestionWordState]);
+  }, [initialQuestionWordState, setIsTimerGetReady, setQuestionWord]);
 
   useGameSocket('userList', ({ playerList }) => {
     const parsedList = JSON.parse(playerList);
     setUserList(parsedList);
   });
-
   useGameSocket('roomCategory', ({ categoryId }) => {
     room.categoryId = categoryId;
   });
-
   useGameSocket('gamestart', ({ _painter, currentRound, totalRound }) => {
     setPainter(_painter);
     setRound({
@@ -124,7 +138,6 @@ const GamePlay = () => {
       totalRound,
     });
   });
-
   useGameSocket(
     'startQuestion',
     ({ wordLength, openLetter, openIndex, _endTime }) => {
@@ -133,11 +146,8 @@ const GamePlay = () => {
       setIsTimerGetReady(true);
     },
   );
-
   useGameSocket('endQuestion', endQuestionCallback);
-
   useGameSocket('endGame', endGameCallback);
-
   useGameSocket('prepareNewGame', prepareNewGameCallback);
 
   useEffect(() => {
