@@ -1,6 +1,8 @@
 const getScore = require('../../util/getScore');
 
-function sendMessage(gameSocket, { roomType, roomId, inputValue }) {
+function sendMessage(gameSocket, roomInfo, { inputValue }) {
+  if (!roomInfo) return;
+  const { roomType, roomId } = roomInfo;
   let answer;
   try {
     answer = this.RoomManager.room[roomType][roomId].word;
@@ -8,7 +10,7 @@ function sendMessage(gameSocket, { roomType, roomId, inputValue }) {
     answer = null;
   }
 
-  const room = this.RoomManager.room[roomType][roomId];
+  const room = this.RoomManager.getRoom(roomInfo);
   const idx = room.getUserIndexBySocketId(gameSocket);
   if (idx < 0) return;
 

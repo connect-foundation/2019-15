@@ -20,7 +20,7 @@ GameSetting.propTypes = {
 };
 
 export default function GameSetting({ roomOwner, waitingUserList }) {
-  const { gameSocket, room } = useContext(GlobalContext);
+  const { gameSocket } = useContext(GlobalContext);
   const [timer, onChangeTimer, timerRef, changeTimerValue] = useSelect(
     'timer',
     '40',
@@ -58,7 +58,6 @@ export default function GameSetting({ roomOwner, waitingUserList }) {
   const clickStartBtn = () => {
     if (waitingUserList.length < 2) return;
     gameSocket.emit('startPrivateGame', {
-      roomId: room.roomId,
       expireTime: timer,
       round,
       categoryId,

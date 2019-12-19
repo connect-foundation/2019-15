@@ -31,11 +31,11 @@ function setGameSocket(socket) {
     socket.to(roomInfo.roomId).emit('changeRoomSetting', { selectType, selectedIndex });
   });
 
-  socket.on('exitRoom', exitRoom.bind(this, gameSocket));
-  socket.on('startPrivateGame', startPrivateGame.bind(this, gameSocket));
+  socket.on('exitRoom', exitRoom.bind(this, gameSocket, roomInfo));
+  socket.on('startPrivateGame', startPrivateGame.bind(this, gameSocket, roomInfo));
   socket.on('enterPrivate', enterPrivate.bind(this, gameSocket, roomInfo));
-  socket.on('selectWord', selectWord.bind(this, gameSocket));
-  socket.on('sendMessage', sendMessage.bind(this, gameSocket));
+  socket.on('selectWord', selectWord.bind(this, gameSocket, roomInfo));
+  socket.on('sendMessage', sendMessage.bind(this, gameSocket, roomInfo));
   socket.on('enterRandom', enterRandom.bind(this, gameSocket, roomInfo));
   socket.on('drawing', sendGameImage.bind(this, gameSocket));
   socket.on('disconnect', () => {

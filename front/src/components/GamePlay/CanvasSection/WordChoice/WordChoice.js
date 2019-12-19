@@ -36,10 +36,9 @@ export default function WordChoice({ setSelectedWord }) {
   const close = (e) => {
     refetch();
     setIsWordChoiceOpen(false);
-    const { roomType, roomId } = room;
     const answer = e.target.textContent;
     setSelectedWord(answer);
-    gameSocket.emit('selectWord', { answer, roomType, roomId });
+    gameSocket.emit('selectWord', { answer });
   };
 
   const wordsChange = async () => {
