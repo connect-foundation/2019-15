@@ -166,16 +166,14 @@
 ### [Wiki](https://github.com/connect-foundation/2019-15/wiki)
 
 ## Getting started
-
-
-initialize tables
+Initialize DB Tables
 
 ```
 npx sequelize db:migrate --env local
 npx sequelize db:seed:all --env local
 ```
 
-run server 🐳
+Run Server 🐳
 
 ```
 cd back
@@ -184,7 +182,7 @@ npm run local
 ```
 
 
-run front 🎄
+Run Front 🎄
 
 ```
 cd front
