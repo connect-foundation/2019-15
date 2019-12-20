@@ -7,9 +7,15 @@ RoundSetting.propTypes = {
   onChangeRound: PropTypes.func.isRequired,
   disabled: PropTypes.bool.isRequired,
   roundRef: PropTypes.shape(useRef).isRequired,
+  defaultOption: PropTypes.string.isRequired,
 };
 
-export default function RoundSetting({ onChangeRound, disabled, roundRef }) {
+export default function RoundSetting({
+  onChangeRound,
+  disabled,
+  roundRef,
+  defaultOption,
+}) {
   const roundOptions = roundOption.map((round) => {
     return { value: round.toString(), text: round.toString() };
   });
@@ -19,7 +25,7 @@ export default function RoundSetting({ onChangeRound, disabled, roundRef }) {
       <Select
         disabled={disabled}
         option={roundOptions}
-        defaultOption="3"
+        defaultOption={defaultOption}
         onChangeSelect={onChangeRound}
         reference={roundRef}
       />
