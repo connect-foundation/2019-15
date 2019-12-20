@@ -5,7 +5,7 @@ const Background = styled.div`
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  height: 100%;
+  height: calc(100% - 4.5rem);
 `;
 
 export default Background;

@@ -6,6 +6,7 @@ const selectWord = require('./selectWord');
 const { PRIVATE_ROOM_NAME, escapeResultCode } = require('../../config/roomConfig');
 const { startPrivateGame } = require('./startPrivateGame');
 const exitRoom = require('./exitRoom');
+const changeRoomSetting = require('./changeRoomSetting');
 
 function setGameSocket(socket) {
   this.RoomManager = RoomManager;
@@ -19,7 +20,7 @@ function setGameSocket(socket) {
 
   socket.on('makePrivate', ({ roomId }) => {
     this.RoomManager.addRoom(PRIVATE_ROOM_NAME, roomId, this.gameIo);
-    this.RoomManager.room[PRIVATE_ROOM_NAME][roomId].roomOwner = gameSocket.id;
+    this.RoomManager.getRoom(roomId).roomOwner = gameSocket.id;
   });
 
   socket.on('enterPrivate', ({ nickname, roomId, avatar }) => {
@@ -27,10 +28,7 @@ function setGameSocket(socket) {
     roomInfo.roomId = roomId;
   });
 
-  socket.on('changeRoomSetting', ({ selectType, selectedIndex }) => {
-    socket.to(roomInfo.roomId).emit('changeRoomSetting', { selectType, selectedIndex });
-  });
-
+  socket.on('changeRoomSetting', changeRoomSetting.bind(this, gameSocket, roomInfo));
   socket.on('exitRoom', exitRoom.bind(this, gameSocket, roomInfo));
   socket.on('startPrivateGame', startPrivateGame.bind(this, gameSocket, roomInfo));
   socket.on('enterPrivate', enterPrivate.bind(this, gameSocket, roomInfo));

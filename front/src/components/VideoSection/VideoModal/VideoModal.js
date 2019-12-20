@@ -58,6 +58,8 @@ export default function VideoModal({ question, setModalWord }) {
     return <></>;
   }
 
+  const Header = () => <p></p>;
+
   const Body = () => (
     <NonPainterBoardStyle>
       <Canvas
@@ -77,7 +79,7 @@ export default function VideoModal({ question, setModalWord }) {
     </ButtonSectionStyle>
   );
 
-  const Modal = makeModal(null, Body, Footer);
+  const Modal = makeModal(Header, Body, Footer);
 
   return <Modal />;
 }

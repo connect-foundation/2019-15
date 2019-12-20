@@ -9,7 +9,7 @@ import RoundSetting from './RoundSetting';
 import CategorySetting from './CategorySetting';
 
 GameSetting.propTypes = {
-  roomOwner: PropTypes.bool.isRequired,
+  isRoomOwner: PropTypes.bool.isRequired,
   waitingUserList: PropTypes.arrayOf(
     PropTypes.shape({
       nickname: PropTypes.string,
@@ -19,22 +19,26 @@ GameSetting.propTypes = {
   ).isRequired,
 };
 
-export default function GameSetting({ roomOwner, waitingUserList }) {
+const defaultTime = '40';
+const defaultRound = '3';
+const defaultCategoryId = '8';
+
+export default function GameSetting({ isRoomOwner, waitingUserList }) {
   const { gameSocket, room } = useContext(GlobalContext);
   const [timer, onChangeTimer, timerRef, changeTimerValue] = useSelect(
     'timer',
-    '40',
+    defaultTime,
   );
   const [round, onChangeRound, roundRef, changeRoundValue] = useSelect(
     'round',
-    '3',
+    defaultRound,
   );
   const [
     categoryId,
     onChangeCategory,
     categoryRef,
     changeCategoryValue,
-  ] = useSelect('category', '1');
+  ] = useSelect('category', defaultCategoryId);
 
   useGameSocket('changeRoomSetting', ({ selectType, selectedIndex }) => {
     switch (selectType) {
@@ -68,21 +72,24 @@ export default function GameSetting({ roomOwner, waitingUserList }) {
   return (
     <GameSettingStyle>
       <TimeSetting
-        disabled={!roomOwner}
+        disabled={!isRoomOwner}
         onChangeTimer={onChangeTimer}
         timerRef={timerRef}
+        defaultOption={defaultTime}
       />
       <RoundSetting
-        disabled={!roomOwner}
+        disabled={!isRoomOwner}
         onChangeRound={onChangeRound}
         roundRef={roundRef}
+        defaultOption={defaultRound}
       />
       <CategorySetting
-        disabled={!roomOwner}
+        disabled={!isRoomOwner}
         onChangeCategory={onChangeCategory}
         categoryRef={categoryRef}
+        defaultOption={defaultCategoryId}
       />
-      <StartBtn disabled={!roomOwner} onClick={clickStartBtn}>
+      <StartBtn disabled={!isRoomOwner} onClick={clickStartBtn}>
         게임 시작
       </StartBtn>
     </GameSettingStyle>

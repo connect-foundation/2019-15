@@ -3,12 +3,9 @@ const NodeCache = require('node-cache');
 const { maxPeopleNum } = require('../config/roomConfig');
 const { Room } = require('./Room');
 
-const makeRoomId = () => {
-  return uuid();
-};
+const makeRoomId = () => uuid();
 
 const RoomManager = {
-  roomList: ['3명', '6명', '12명', '100명', '비밀방'],
   room: new NodeCache({ useClones: false }),
   maxPeopleNum,
 
@@ -28,7 +25,7 @@ const RoomManager = {
 
     const roomIdIndex = roomIdList.findIndex((roomId) => {
       const room = this.room.get(roomId);
-      if (room.roomType === roomType) return true;
+      if (room.roomType === roomType && room.players.length < maxPeopleNum[roomType]) return true;
       return false;
     });
 

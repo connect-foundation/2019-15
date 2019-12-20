@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import Image from '../globalComponents/Image/Image.style';
 
 export const NavigationBarStyle = styled.div`
-  display: absolute;
+  position: absolute;
   top: 0;
   left: 0;
   width: 100%;
@@ -14,7 +14,7 @@ export const LogoImage = styled(Image)`
   width: 25rem;
   height: 13rem;
   margin-left: 50%;
-  margin-top: 3rem;
+  margin-top: 1rem;
   transform: translateX(-50%);
   cursor: pointer;
 `;

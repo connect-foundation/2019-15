@@ -57,7 +57,7 @@ export default function WordPreview({
         },
       });
     }
-  }, [lettersDispatch, openIndex, openLetter]);
+  }, [lettersDispatch, openIndex, openLetter, wordLength]);
 
   useEffect(() => {
     if (selectedWord.length > 0)

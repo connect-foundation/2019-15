@@ -14,6 +14,7 @@ import User from 'utils/catchmymind/User';
 import RouterStyle from 'Router.style';
 import parseCookies from 'utils/cookie';
 import useInitSocket from 'hooks/Socket/useInitSocket';
+import NotFound from './pages/NotFound/NotFound';
 
 const changeUser = (prev, newUser) => {
   return { ...prev, ...newUser };
@@ -76,6 +77,9 @@ const Router = () => {
             <Redirect to="/main" />
           </Route>
         </Switch>
+        <Route>
+          <NotFound />
+        </Route>
       </HashRouter>
     </RouterStyle>
   );
