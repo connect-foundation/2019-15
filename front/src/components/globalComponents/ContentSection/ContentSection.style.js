@@ -5,16 +5,15 @@ const ContentSectionStyle = styled.section`
   padding: 1rem;
   flex-basis: 20rem;
   height: 33rem;
-  margin: 3rem 2.5rem 0 2.5rem;
+  margin: 11rem 2.5rem 0 2.5rem;
   @media (max-width: 900px) {
-    margin: 3rem 0.5rem 0 0.5rem;
+    margin: 11rem 0.5rem 0 0.5rem;
   }
   border: 2px solid white;
   border-radius: 0 1rem 1rem 1rem;
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 11rem;
 `;
 
 const ContentSectionTitleStyle = styled.span`
