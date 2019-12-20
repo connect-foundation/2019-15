@@ -6,9 +6,9 @@ const makeReducerWithPromise = require('../util/makeReducerWithPromise');
 const { PRIVATE_ROOM_NAME } = require('../config/roomConfig');
 
 class Room {
-  constructor(gameIo) {
-    this.roomId = null;
-    this.roomName = null;
+  constructor(gameIo, roomId, roomType) {
+    this.roomId = roomId;
+    this.roomType = roomType;
     this.players = [];
     this.categoryId = null;
     this.word = null;
@@ -190,7 +190,7 @@ class Room {
       answer: this.word,
     });
 
-    if (this.roomName !== PRIVATE_ROOM_NAME) this.updateUserScore();
+    if (this.roomType !== PRIVATE_ROOM_NAME) this.updateUserScore();
   }
 
   async updateUserScore() {
