@@ -40,7 +40,7 @@ const GamePlay = () => {
         showQuestionResult: false,
       });
     },
-    [initialQuestionWordState],
+    [initialQuestionWordState, gameStateDispatch],
   );
 
   const endQuestionCallback = useCallback(
@@ -72,7 +72,7 @@ const GamePlay = () => {
         });
       }, 5000);
     },
-    [resetQuestionStates],
+    [resetQuestionStates, gameStateDispatch],
   );
 
   const endGameCallback = useCallback(
@@ -102,7 +102,7 @@ const GamePlay = () => {
         }, 5000);
       }, 5000);
     },
-    [history, resetQuestionStates],
+    [history, resetQuestionStates, gameStateDispatch],
   );
 
   const prepareNewGameCallback = useCallback(() => {
@@ -111,10 +111,11 @@ const GamePlay = () => {
       type: 'setQuestionWord',
       questionWord: initialQuestionWordState,
     });
-  }, [initialQuestionWordState]);
+  }, [initialQuestionWordState, gameStateDispatch]);
 
   useGameSocket('userList', ({ playerList }) => {
     const parsedList = JSON.parse(playerList);
+    console.log('userList', playerList, parsedList);
     gameStateDispatch({ type: 'setUserList', userList: parsedList });
   });
   useGameSocket('roomCategory', ({ categoryId }) => {
