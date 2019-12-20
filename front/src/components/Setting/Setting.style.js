@@ -24,7 +24,7 @@ export const NicknameSettingStyle = styled(FlexColumnStyle)`
   justify-content: center;
   border-radius: 1rem;
   border: solid 2px white;
-  margin-top: 1rem;
+  margin-top: 5rem;
   font-size: 28px;
   padding: 1rem 0;
 `;
