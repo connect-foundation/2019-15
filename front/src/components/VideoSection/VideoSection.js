@@ -26,7 +26,8 @@ export default function Video() {
     return <Loading Wrapper={VideoSectionWrapper} />;
   }
 
-  if (!data || !data.length) return <></>;
+  if (!data || !data.length)
+    return <Alert type="noGameHistory" Wrapper={VideoSectionWrapper} />;
 
   return (
     <VideoSectionWrapper>

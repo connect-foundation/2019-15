@@ -23,7 +23,7 @@ export default function FriendList() {
   if (loading) return <Loading Wrapper={FriendListStyle} />;
   if (error) return <Alert type="error" Wrapper={FriendListStyle} />;
   if (!data || !data.length)
-    return <Alert type="noData" Wrapper={FriendListStyle} />;
+    return <Alert type="noFriend" Wrapper={FriendListStyle} />;
 
   return (
     <FriendListStyle>

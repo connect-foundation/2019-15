@@ -15,7 +15,7 @@ export default function RankingFriends() {
   if (loading) return <Loading Wrapper={UserRankingListStyle} />;
   if (error) return <Alert type="error" Wrapper={UserRankingListStyle} />;
   if (!data || !data.length)
-    return <Alert type="noData" Wrapper={UserRankingListStyle} />;
+    return <Alert type="noFriend" Wrapper={UserRankingListStyle} />;
 
   return (
     <RankingAllStyle>
