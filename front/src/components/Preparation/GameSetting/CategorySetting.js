@@ -8,12 +8,14 @@ CategorySetting.propTypes = {
   onChangeCategory: PropTypes.func.isRequired,
   disabled: PropTypes.bool.isRequired,
   categoryRef: PropTypes.shape(useRef).isRequired,
+  defaultOption: PropTypes.string.isRequired,
 };
 
 export default function CategorySetting({
   onChangeCategory,
   disabled,
   categoryRef,
+  defaultOption,
 }) {
   const { data, loading, error } = useQuery(GET_CATEGORIES);
 
@@ -37,7 +39,7 @@ export default function CategorySetting({
         option={options}
         onChangeSelect={onChangeCategory}
         reference={categoryRef}
-        defaultOption="1"
+        defaultOption={defaultOption}
       />
     </>
   );

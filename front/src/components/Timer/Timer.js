@@ -37,7 +37,7 @@ export default function Timer({ isTimerGetReady, endTime }) {
     return () => {
       cancelAnimationFrame(requestId.current);
     };
-  }, [endTime, isTimerGetReady]);
+  }, [endTime, isTimerGetReady, gameStateDispatch]);
 
   return (
     <>

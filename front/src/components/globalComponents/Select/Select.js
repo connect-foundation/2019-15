@@ -33,7 +33,7 @@ export default function Select({
     <option
       key={optionValue.value}
       value={optionValue.value}
-      defaultValue={optionValue === defaultOption}
+      selected={`${optionValue.value}` === defaultOption}
     >
       {optionValue.text}
     </option>

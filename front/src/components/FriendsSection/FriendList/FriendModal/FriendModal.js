@@ -30,7 +30,7 @@ export default function FriendModal({
   dispatchModalContent,
   refetch,
 }) {
-  const { onlineSocket } = useContext(GlobalContext);
+  const { onlineSocket, user } = useContext(GlobalContext);
   const [deleteFriendRequest] = useMutation(DELETE_FRIEND, {
     onCompleted({ deleteFriend }) {
       onlineSocket.emit('deleteFriend', deleteFriend);
@@ -51,7 +51,7 @@ export default function FriendModal({
     onCompleted({ sendFriendRequest: friend }) {
       onlineSocket.emit('alarm', {
         user: friend,
-        message: `${friend.nickname}님이 친구가 되고 싶어해요`,
+        message: `${user.nickname}님이 친구가 되고 싶어해요`,
       });
       dispatchModalContent({
         type: 'addDone',
