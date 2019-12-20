@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react';
 import GlobalContext from 'global.context';
 import TextInputStyle from './TextInput.style';
 
-export default function Chatting() {
+export default function TextInput() {
   const { gameSocket, room } = useContext(GlobalContext);
   const [inputValue, setValue] = useState('');
 
