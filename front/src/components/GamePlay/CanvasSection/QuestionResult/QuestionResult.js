@@ -4,9 +4,12 @@ import makeModal from '../../../globalComponents/Modal/Modal';
 
 QuestionResult.propTypes = {
   answer: PropTypes.string.isRequired,
-  scores: PropTypes.arrayOf(
-    PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  ).isRequired,
+  scores: PropTypes.arrayOf((propValue, key) =>  {
+    if (typeof propValue[key][0] !== 'string')
+      return new Error(`propValue[key][0] must be string`);
+    if (typeof propValue[key][1] !== 'number')
+      return new Error(`propValue[key][1] must be number`);
+  }).isRequired,
 };
 
 export default function QuestionResult({ answer, scores }) {

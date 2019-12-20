@@ -115,7 +115,6 @@ const GamePlay = () => {
 
   useGameSocket('userList', ({ playerList }) => {
     const parsedList = JSON.parse(playerList);
-    console.log('userList', playerList, parsedList);
     gameStateDispatch({ type: 'setUserList', userList: parsedList });
   });
   useGameSocket('roomCategory', ({ categoryId }) => {
