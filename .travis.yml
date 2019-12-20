@@ -15,6 +15,43 @@ branches:
 
 jobs:
   include:
+    - stage: "TEST"
+      name: "FRONT TEST"
+      before_install:
+        - openssl aes-256-cbc -K $encrypted_95dd47aaf502_key -iv $encrypted_95dd47aaf502_iv -in env.tar.enc -out env.tar -d
+        - tar xvf env.tar
+        - cp .front.env ./front/.env
+        - cd ./front
+      install:
+        - npm install
+      before_script:
+        - cat .env
+      script:
+        - |
+          if [ $TRAVIS_BRANCH == "master" ]; then
+            npm run test:prod
+          else
+            npm run test:dev
+          fi
+
+    - name: "BACK TEST"
+      before_install:
+        - openssl aes-256-cbc -K $encrypted_95dd47aaf502_key -iv $encrypted_95dd47aaf502_iv -in env.tar.enc -out env.tar -d
+        - tar xvf env.tar
+        - cp .back.env ./back/.env
+        - cd ./back
+      install:
+        - npm install
+      before_script:
+        - cat .env
+      script:
+        - |
+          if [ $TRAVIS_BRANCH == "master" ]; then
+            npm run test:prod
+          else
+            npm run test:dev
+          fi
+
     - stage: "DEV DEPLOY"
       name: "DEPLOY FRONT"
       if: type = push AND branch = develop
