@@ -1,7 +1,7 @@
 const { WAIT_UNTIL_USER_ADD_EVENT } = require('../../config/roomConfig');
 
 function startPrivateGame(gameSocket, roomInfo, { expireTime, round, categoryId }) {
-  const room = this.RoomManager.getRoom(roomInfo);
+  const room = this.RoomManager.getRoomIfExist(roomInfo);
   if (!room) return;
 
   const { roomId } = roomInfo;
