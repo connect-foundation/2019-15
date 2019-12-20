@@ -58,7 +58,7 @@ export default function VideoModal({ question, setModalWord }) {
     return <></>;
   }
 
-  const Header = () => <p></p>;
+  const Header = () => <p />;
 
   const Body = () => (
     <NonPainterBoardStyle>
