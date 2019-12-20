@@ -4,7 +4,7 @@ const Sequelize = require('sequelize');
 
 // eslint-disable-next-line import/no-dynamic-require
 const config = require(`${__dirname}/../../config/db.js`)[process.env.NODE_ENV];
-console.log(process.env.NODE_ENV);
+console.log(config);
 const basename = path.basename(__filename);
 const models = {};
 let sequelize;

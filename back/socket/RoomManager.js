@@ -3,12 +3,9 @@ const NodeCache = require('node-cache');
 const { maxPeopleNum } = require('../config/roomConfig');
 const { Room } = require('./Room');
 
-const makeRoomId = () => {
-  return uuid();
-};
+const makeRoomId = () => uuid();
 
 const RoomManager = {
-  roomList: ['3명', '6명', '12명', '100명', '비밀방'],
   room: new NodeCache({ useClones: false }),
   maxPeopleNum,
 

@@ -14,16 +14,16 @@ Preparation.propTypes = {
       avatar: PropTypes.number,
     }),
   ).isRequired,
-  roomOwner: PropTypes.bool.isRequired,
+  isRoomOwner: PropTypes.bool.isRequired,
 };
 
-export default function Preparation({ waitingUserList, roomOwner }) {
+export default function Preparation({ waitingUserList, isRoomOwner }) {
   return (
     <>
       <PreparationStyle>
         <RoomSettingStyle>
           <GameSetting
-            roomOwner={roomOwner}
+            isRoomOwner={isRoomOwner}
             waitingUserList={waitingUserList}
           />
           <FriendList />
