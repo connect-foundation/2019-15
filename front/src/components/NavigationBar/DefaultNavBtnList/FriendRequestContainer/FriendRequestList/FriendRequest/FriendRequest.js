@@ -7,6 +7,7 @@ import {
   DELETE_FRIEND_REQUEST,
 } from 'queries/beforeFriend';
 import GlobalContext from 'global.context';
+import NO_FRIEND_REQUEST from 'constants/friendRequestError';
 
 FriendRequest.propTypes = {
   id: PropTypes.number.isRequired,
@@ -19,6 +20,10 @@ export default function FriendRequest({ id, nickname, remove }) {
   const [deleteFriendRequest] = useMutation(DELETE_FRIEND_REQUEST, {
     onCompleted() {
       remove();
+    },
+    onError({ graphQLErrors }) {
+      if (graphQLErrors && graphQLErrors[0].message === NO_FRIEND_REQUEST)
+        remove();
     },
   });
 
