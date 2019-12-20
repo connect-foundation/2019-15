@@ -14,6 +14,7 @@ const ContentSectionStyle = styled.section`
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin-top: 7rem;
 `;
 
 const ContentSectionTitleStyle = styled.span`
