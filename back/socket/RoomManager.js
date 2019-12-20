@@ -25,7 +25,7 @@ const RoomManager = {
 
     const roomIdIndex = roomIdList.findIndex((roomId) => {
       const room = this.room.get(roomId);
-      if (room.roomType === roomType) return true;
+      if (room.roomType === roomType && room.players.length < maxPeopleNum[roomType]) return true;
       return false;
     });
 
