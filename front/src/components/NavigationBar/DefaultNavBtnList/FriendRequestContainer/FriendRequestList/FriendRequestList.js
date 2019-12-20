@@ -16,7 +16,7 @@ export default function FriendRequestList() {
   if (loading) return <Loading Wrapper={MessageListStyle} />;
   if (error) return <Alert type="error" Wrapper={MessageListStyle} />;
   if (!data || !data.length)
-    return <Alert type="noData" Wrapper={MessageListStyle} />;
+    return <Alert type="noFriendRequest" Wrapper={MessageListStyle} />;
 
   return (
     <MessageListStyle>

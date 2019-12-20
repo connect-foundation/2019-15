@@ -3,8 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "cross-env NODE_ENV='production' node ./bin/www",
-    "dev": "cross-env NODE_ENV='development' node ./bin/www",
+    "start": "cross-env NODE_ENV='production' pm2-runtime ./bin/www",
+    "dev": "cross-env NODE_ENV='development' pm2-runtime ./bin/www",
     "local": "cross-env NODE_ENV='local' nodemon ./bin/www ",
     "test:prod": "cross-env NODE_ENV='production' npm run db:migrate && cross-env NODE_ENV='production' npm run jest",
     "test:dev": "cross-env NODE_ENV='development' npm run db:migrate && cross-env NODE_ENV='development' npm run jest",
