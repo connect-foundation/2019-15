@@ -9,6 +9,8 @@ export const AnchorStyle = styled(FlexRowStyle)`
   border-radius: 0.3rem;
   background-color: ${({ theme }) => theme.paleRose};
   margin: 1rem 0rem;
+  border: solid 2px white;
+  border-radius: 1rem;
 `;
 
 export const AnchorImageStyle = styled.img`

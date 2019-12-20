@@ -23,8 +23,10 @@ export const NicknameSettingStyle = styled(FlexColumnStyle)`
   align-items: center;
   justify-content: center;
   border-radius: 1rem;
+  border: solid 2px white;
+  margin-top: 1rem;
   font-size: 28px;
-  margin: 2rem;
+  padding: 1rem 0;
 `;
 
 export const AvatarSettingStyle = styled(FlexColumnStyle)`
@@ -34,15 +36,16 @@ export const AvatarSettingStyle = styled(FlexColumnStyle)`
   align-items: center;
   justify-content: center;
   border-radius: 1rem;
+  border: solid 2px white;
   font-size: 28px;
   margin: 2rem;
+  padding: 1rem 0;
 `;
 
 export const GameStartButtonStyle = styled(ButtonStyle)`
   width: 80%;
   height: 10%;
   font-size: 22px;
-  margin: 1rem;
 `;
 
 export const InputWrapper = styled(FlexColumnStyle)`

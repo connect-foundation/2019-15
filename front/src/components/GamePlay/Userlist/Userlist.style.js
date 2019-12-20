@@ -5,8 +5,7 @@ const UserListStyle = styled.div`
   background-color: white;
   height: 39.5rem;
   min-width: 16rem;
-  margin-left: 6rem;
-  margin-right: 0.5rem;
+  margin: 4rem 0.5rem 0 6rem;
   overflow-y: auto;
   border-radius: 0.5rem;
 `;
