@@ -21,4 +21,4 @@ function startPrivateGame(gameSocket, roomInfo, { expireTime, round, categoryId 
   }
 }
 
-module.exports = { startPrivateGame };
+module.exports = startPrivateGame;
