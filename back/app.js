@@ -10,7 +10,7 @@ const session = require('express-session');
 const http = require('http');
 const socketIo = require('socket.io');
 const graphqlPath = require('./config/graphqlPath');
-const bodyParserConfig = require('./config/bodyPraser');
+const bodyParserConfig = require('./config/bodyParser');
 // cors
 const corsOptions = require('./config/corsOptions');
 // passport
