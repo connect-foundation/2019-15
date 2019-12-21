@@ -20,12 +20,16 @@ const Main = () => {
     parseCookies(document.cookie).isSignUp === 'true',
   );
   const history = useHistory();
+
+  const gameSocket = useInitGameSocket();
+
   useEffect(() => {
     checkAuth(setNickName, setIsLogin);
     setRoom(null);
+    if (gameSocket) gameSocket.emit('exitRoom');
   }, [setIsLogin, setRoom]);
 
-  setGameSocket(useInitGameSocket());
+  setGameSocket(gameSocket);
 
   useGameSocket('connectRandom', ({ roomId }) => {
     setRoom(new Room(roomId));

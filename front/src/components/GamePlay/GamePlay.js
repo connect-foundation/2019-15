@@ -149,6 +149,7 @@ const GamePlay = () => {
     if (!gameSocket) return () => {};
     return () => {
       if (!gameSocket) return;
+      gameSocket.emit('exitRoom');
       gameSocket.close();
       setGameSocket(null);
     };
