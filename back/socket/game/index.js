@@ -1,6 +1,6 @@
-const { RoomManager } = require('../RoomManager');
 const { PRIVATE_ROOM_NAME } = require('../../config/roomConfig');
 const { enterRandom, enterPrivate } = require('./enterGame');
+const RoomManager = require('../../util/RoomManager');
 const sendMessage = require('./message');
 const startPrivateGame = require('./startPrivateGame');
 const sendGameImage = require('./gameImage');
@@ -15,8 +15,13 @@ function setGameSocket(socket) {
   const gameSocket = socket;
 
   socket.on('enterRandom', ({ nickname, roomType, avatar }) => {
-    roomInfo.roomType = roomType;
-    roomInfo.roomId = RoomManager.getEnableRoomId(roomType, this.gameIo);
+    if (!roomInfo) {
+      roomInfo.stop = true;
+    } else {
+      roomInfo.roomType = roomType;
+      roomInfo.roomId = RoomManager.getEnableRoomId(roomType, this.gameIo);
+      roomInfo.stop = false;
+    }
   });
 
   socket.on('makePrivate', ({ roomId }) => {
@@ -25,8 +30,13 @@ function setGameSocket(socket) {
   });
 
   socket.on('enterPrivate', ({ nickname, roomId, avatar }) => {
-    roomInfo.roomType = PRIVATE_ROOM_NAME;
-    roomInfo.roomId = roomId;
+    if (!roomInfo) {
+      roomInfo.stop = true;
+    } else {
+      roomInfo.roomType = PRIVATE_ROOM_NAME;
+      roomInfo.roomId = roomId;
+      roomInfo.stop = false;
+    }
   });
 
   socket.on('changeRoomSetting', changeRoomSetting.bind(this, gameSocket, roomInfo));
