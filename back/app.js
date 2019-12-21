@@ -1,6 +1,8 @@
 require('dotenv').config();
 const createError = require('http-errors');
 const cookieParser = require('cookie-parser');
+
+const bodyParser = require('body-parser');
 const logger = require('morgan');
 const cors = require('cors');
 const express = require('express');
@@ -8,7 +10,7 @@ const session = require('express-session');
 const http = require('http');
 const socketIo = require('socket.io');
 const graphqlPath = require('./config/graphqlPath');
-
+const bodyParserConfig = require('./config/bodyPraser');
 // cors
 const corsOptions = require('./config/corsOptions');
 // passport
@@ -35,7 +37,7 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-
+app.use(bodyParser.urlencoded(bodyParserConfig));
 // session
 app.use(
   session({

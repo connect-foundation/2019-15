@@ -23,6 +23,10 @@ class SocketUser {
       this.io.to(id).emit(eventName, data);
     });
   }
+
+  isOnline() {
+    return !!this.socketList.length;
+  }
 }
 
 module.exports = SocketUser;

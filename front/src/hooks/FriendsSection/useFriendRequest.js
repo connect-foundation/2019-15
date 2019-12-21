@@ -5,6 +5,7 @@ import {
 } from 'queries/beforeFriend';
 import { useMutation } from '@apollo/react-hooks';
 import GlobalContext from 'global.context';
+import NO_FRIEND_REQUEST from 'constants/friendRequestError';
 
 export default function useFriendRequest({ id, remove }) {
   const { onlineSocket } = useContext(GlobalContext);
@@ -12,6 +13,10 @@ export default function useFriendRequest({ id, remove }) {
   const [deleteFriendRequest] = useMutation(DELETE_FRIEND_REQUEST, {
     onCompleted() {
       remove();
+    },
+    onError({ graphQLErrors }) {
+      if (graphQLErrors && graphQLErrors[0].message === NO_FRIEND_REQUEST)
+        remove();
     },
   });
 
