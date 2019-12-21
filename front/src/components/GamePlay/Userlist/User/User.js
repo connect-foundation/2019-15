@@ -50,7 +50,11 @@ export default function User({
           <Drawer drawer={drawer} src={PENCIL} />
         </UserNickName>
         <Score>{score}</Score>
-        <small>그리는 순서가 {leftTurn} 차례 남았습니다.</small>
+        {leftTurn === 0 ? (
+          <small>제 차례입니다!</small>
+        ) : (
+          <small>그리는 순서가 {leftTurn} 차례 남았습니다.</small>
+        )}
       </UserInfoStyle>
     </UserStyle>
   );
