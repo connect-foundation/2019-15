@@ -1,6 +1,30 @@
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
+const canvasSize = { width: '760px', height: '470px' };
+
+export const WordSet = styled.div`
+  width: 100%;
+  height: 3rem;
+  display: flex;
+  justify-content: space-between;
+  margin: 20%;
+`;
+
+export const Background = styled.div`
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.2);
+  margin-top: 3.5rem;
+  margin-left: 0.5rem;
+  height: ${canvasSize.height};
+  width: ${canvasSize.width};
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2;
+  border-radius: 0.5rem;
+`;
+
 export const WordCard = styled.div`
   display: table;
   border: 1px solid lightgray;

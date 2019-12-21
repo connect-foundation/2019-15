@@ -4,9 +4,15 @@ import GET_RANDOM_WORDS from 'queries/word';
 import GlobalContext from 'global.context';
 import GamePlayContext from 'components/GamePlay/GamePlay.context';
 import { faSync } from '@fortawesome/free-solid-svg-icons';
-import Background from './Background.style';
-import WordSet from './WordSet.style';
-import { WordCard, P, Icon, Div, Button } from './WordCard.style';
+import {
+  WordSet,
+  Background,
+  WordCard,
+  P,
+  Icon,
+  Div,
+  Button,
+} from './WordChoice.style';
 
 export default function WordChoice() {
   const { gameSocket, room } = useContext(GlobalContext);
