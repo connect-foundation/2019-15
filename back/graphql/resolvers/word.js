@@ -1,5 +1,5 @@
 const Sequelize = require('sequelize');
-const getRandomInt = require('../../util/getRandomInt');
+const getRandomInt = require('../../util/common/getRandomInt');
 
 const { Op } = Sequelize;
 

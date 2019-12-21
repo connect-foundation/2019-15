@@ -1,5 +1,5 @@
 import React, { useCallback, useContext, useReducer, useState } from 'react';
-import Avatar from 'components/Avatar/Avatar';
+import Avatar from 'components/globalComponents/Avatar/Avatar';
 import useCarousel from 'hooks/commons/useCarousel';
 import { useMutation } from '@apollo/react-hooks';
 import { CHANGE_AVATAR as changeAvatarQuery } from 'queries/user';

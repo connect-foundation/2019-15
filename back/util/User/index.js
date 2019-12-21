@@ -8,6 +8,16 @@ class User {
     this.roomOwner = roomOwner;
     this.avatar = avatar;
   }
+
+  makeUserData(nickname) {
+    return {
+      nickname,
+      socketId: this.socket.id,
+      privileged: this.privileged,
+      avatar: this.avatar,
+      roomOwner: this.roomOwner,
+    };
+  }
 }
 
 module.exports = User;

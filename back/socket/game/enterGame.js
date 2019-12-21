@@ -1,10 +1,12 @@
 const jwt = require('jsonwebtoken');
-const User = require('../User');
+const User = require('../../util/User');
 const { WAIT_UNTIL_USER_ADD_EVENT } = require('../../config/roomConfig');
 const jwtOptions = require('../../config/jwtOptions');
 const parseCookies = require('../../util/cookie/parseCookies');
 
 function enterRandom(gameSocket, roomInfo, { nickname, avatar, roomType }) {
+  if (roomInfo.stop) return;
+
   const room = this.RoomManager.getRoomIfExist(roomInfo);
   if (!room) return;
 
@@ -33,6 +35,8 @@ function enterRandom(gameSocket, roomInfo, { nickname, avatar, roomType }) {
 }
 
 function enterPrivate(gameSocket, roomInfo, { nickname, avatar }) {
+  if (roomInfo.stop) return;
+
   const room = this.RoomManager.getRoomIfExist(roomInfo);
   if (!room) return;
 

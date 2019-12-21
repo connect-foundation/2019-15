@@ -1,6 +1,6 @@
 const uuidv4 = require('uuid/v4');
 const { Users, Words, Op } = require('../../db/models');
-const getRandomInt = require('../getRandomInt');
+const getRandomInt = require('../common/getRandomInt');
 
 async function signUp(profile) {
   // 사용되지 않는 단어들을 찾는다

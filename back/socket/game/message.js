@@ -1,29 +1,23 @@
-const getScore = require('../../util/getScore');
+const getScore = require('../../util/score/getScore');
 
-function sendMessage(gameSocket, roomInfo, { inputValue }) {
+function sendMessage(gameSocket, roomInfo, { inputValue: userInput }) {
   const room = this.RoomManager.getRoomIfExist(roomInfo);
   if (!room) return;
 
   const { roomId } = roomInfo;
 
-  let answer;
-  try {
-    answer = room.word;
-  } catch {
-    answer = null;
-  }
+  const userIdx = room.getUserIndexBySocketId(gameSocket);
+  if (userIdx < 0) return;
 
-  const idx = room.getUserIndexBySocketId(gameSocket);
-  if (idx < 0) return;
-
-  const player = room.players[idx];
+  const player = room.players[userIdx];
+  const answer = room.word;
 
   const returnMessage = {
-    content: `${player.nickname} : ${inputValue}`,
+    content: `${player.nickname} : ${userInput}`,
     privileged: player.privileged,
   };
 
-  if (inputValue === answer && !player.privileged) {
+  if (userInput === answer && !player.privileged) {
     room.answererCount += 1;
     player.privileged = true;
     returnMessage.content = `${player.nickname}님이 정답을 맞췄습니다! Hooray`;
@@ -51,4 +45,4 @@ function sendMessage(gameSocket, roomInfo, { inputValue }) {
   this.gameIo.in(roomId).emit('getMessage', returnMessage);
 }
 
-module.exports = { sendMessage };
+module.exports = sendMessage;

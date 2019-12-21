@@ -10,7 +10,9 @@ const session = require('express-session');
 const http = require('http');
 const socketIo = require('socket.io');
 const graphqlPath = require('./config/graphqlPath');
+const sokcetConfig = require('./config/socketConfig');
 const bodyParserConfig = require('./config/bodyParser');
+
 // cors
 const corsOptions = require('./config/corsOptions');
 // passport
@@ -26,7 +28,7 @@ const app = express();
 const server = http.createServer(app);
 
 // create socket handler
-const io = socketIo(server, { transports: ['websocket'] });
+const io = socketIo(server, sokcetConfig);
 const initSocketIO = require('./socket');
 
 // initSocket

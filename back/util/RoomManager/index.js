@@ -1,7 +1,7 @@
 const uuid = require('uuid/v1');
 const NodeCache = require('node-cache');
-const { maxPeopleNum } = require('../config/roomConfig');
-const { Room } = require('./Room');
+const { maxPeopleNum } = require('../../config/roomConfig');
+const Room = require('../room');
 
 const makeRoomId = () => uuid();
 
@@ -52,4 +52,4 @@ const RoomManager = {
   },
 };
 
-module.exports = { RoomManager };
+module.exports = RoomManager;
