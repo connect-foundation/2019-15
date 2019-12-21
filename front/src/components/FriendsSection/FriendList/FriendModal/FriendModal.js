@@ -47,6 +47,7 @@ export default function FriendModal({
       });
     },
   });
+
   const [sendFriendRequest] = useMutation(SEND_FRIEND_REQUEST, {
     onCompleted({ sendFriendRequest: friend }) {
       onlineSocket.emit('alarm', {

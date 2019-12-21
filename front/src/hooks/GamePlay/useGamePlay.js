@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import { useReducer } from 'react';
 import produce from 'immer';
 
