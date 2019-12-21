@@ -10,7 +10,6 @@ import useGameSocket from 'hooks/Socket/useGameSocket';
 import DrawingPlayGroundContext from 'components/GamePlay/CanvasSection/DrawingPlayGround/DrawingPlayGround.context';
 import NonPainterToolManager from 'components/GamePlay/CanvasSection/DrawingPlayGround/NonPainterPlayGround/NonPainterBoard/ToolType/NonPainterToolManager';
 import GamePlayContext from 'components/GamePlay/GamePlay.context';
-import { fab } from '@fortawesome/free-brands-svg-icons';
 
 NonPainterBoard.propTypes = {
   size: PropTypes.shape({

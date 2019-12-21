@@ -15,7 +15,7 @@ function setGameSocket(socket) {
   const gameSocket = socket;
 
   socket.on('enterRandom', ({ nickname, roomType, avatar }) => {
-    if (!roomInfo) {
+    if (roomInfo.hasOwnProperty('stop')) {
       roomInfo.stop = true;
     } else {
       roomInfo.roomType = roomType;
@@ -30,7 +30,7 @@ function setGameSocket(socket) {
   });
 
   socket.on('enterPrivate', ({ nickname, roomId, avatar }) => {
-    if (!roomInfo) {
+    if (roomInfo.hasOwnProperty('stop')) {
       roomInfo.stop = true;
     } else {
       roomInfo.roomType = PRIVATE_ROOM_NAME;
@@ -39,6 +39,9 @@ function setGameSocket(socket) {
     }
   });
 
+  socket.on('exitRoom', () => {
+    delete roomInfo.stop;
+  });
   socket.on('changeRoomSetting', changeRoomSetting.bind(this, gameSocket, roomInfo));
   socket.on('exitRoom', exitRoom.bind(this, gameSocket, roomInfo));
   socket.on('startPrivateGame', startPrivateGame.bind(this, gameSocket, roomInfo));

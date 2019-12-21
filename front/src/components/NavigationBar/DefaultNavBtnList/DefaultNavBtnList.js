@@ -22,7 +22,7 @@ export default function DefaultNavBtnList() {
     if (location.pathname.includes('main')) history.push('/mypage');
     else history.replace('/mypage');
   };
-  const moveMain = () => history.push('/main');
+  const moveMain = () => history.replace('/main');
 
   const logout = () => {
     window.location.href = `${APP_URI.REACT_APP_API_URI}/auth/logout`;
