@@ -1,47 +1,20 @@
-import React, { useRef, useState, useEffect, useContext } from 'react';
-import GlobalContext from 'global.context';
-import GamePlayContext from 'components/GamePlay/GamePlay.context';
-import useGameSocket from 'hooks/Socket/useGameSocket';
+import React, { useRef, useEffect } from 'react';
+import useChatting from 'hooks/Chatting/useChatting';
 import ChattingListStyle from './ChattingList.style';
 import Div from './Div.style';
 
 export default function ChattingList() {
-  const { gameSocket } = useContext(GlobalContext);
-  const { gameState } = useContext(GamePlayContext);
-  const { userList } = gameState;
   const scrollRef = useRef(null);
-  const [message, setMessage] = useState('');
-  const [filteredMessageArr, pushFilteredMessage] = useState([]);
-  const isPrivileged = userList.findIndex((user) => {
-    if (user.socketId === gameSocket.id) {
-      return user.privileged;
-    }
-    return false;
-  });
-  useGameSocket('getMessage', ({ content, privileged }) => {
-    const splitRes = content.split(' : ');
-    if (splitRes.length === 2 && splitRes[1] === '') return;
-    setMessage({ content, privileged });
-  });
+  const messages = useChatting();
 
   useEffect(() => {
-    if (!(isPrivileged === -1 && message.privileged === true)) {
-      const isMessageIn = filteredMessageArr.findIndex((value) => {
-        return value === message;
-      });
-
-      if (isMessageIn === -1) {
-        pushFilteredMessage([...filteredMessageArr, message]);
-      }
-    }
-
     scrollRef.current.scrollTop =
       scrollRef.current.scrollHeight - scrollRef.current.clientHeight;
-  }, [filteredMessageArr, message, isPrivileged]);
+  }, [messages]);
 
   return (
     <ChattingListStyle ref={scrollRef}>
-      {filteredMessageArr.map((value, idx) => {
+      {messages.map((value, idx) => {
         const order = idx + 1;
         return (
           <Div key={order} order={order} privileged={value.privileged}>
