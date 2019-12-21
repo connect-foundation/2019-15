@@ -26,4 +26,3 @@ export const SliderStyle = styled.div`
   width: 10rem;
   position: relative;
 `;
-
