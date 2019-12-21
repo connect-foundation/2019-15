@@ -12,7 +12,9 @@ export default function CurrentMyInfo() {
 
   return (
     <CurrentMyInfoStyle id="CurrentMyInfo">
-      <AvatarImage alt="avatar" src={getAvatar(user.avatar)} />
+      {user && user.avatar ? (
+        <AvatarImage alt="avatar" src={getAvatar(user.avatar)} />
+      ) : null}
       <div>
         <span className="user-card nickname">{user.nickname}</span>
         <span className="user-card ranking">
