@@ -1,6 +1,6 @@
 const models = require('../../db/models');
 
-const getRandomInt = require('../../util/getRandomInt');
+const getRandomInt = require('../../util/common/getRandomInt');
 const { roomState } = require('../../config/roomConfig');
 const { DrawingHistories } = require('../../db/models');
 

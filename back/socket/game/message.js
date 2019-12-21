@@ -1,4 +1,4 @@
-const getScore = require('../../util/getScore');
+const getScore = require('../../util/score/getScore');
 
 function sendMessage(gameSocket, roomInfo, { inputValue: userInput }) {
   const room = this.RoomManager.getRoomIfExist(roomInfo);
