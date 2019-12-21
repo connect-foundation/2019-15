@@ -1,9 +1,8 @@
 import React, { useContext } from 'react';
 import GlobalContext from 'global.context';
-import { getAvatar } from 'utils/catchmymind/avatar';
+import { getAvatar, avatar } from 'utils/catchmymind/avatar';
 import { GET_RANK_BY_ID } from 'queries/ranking';
 import { useQuery } from '@apollo/react-hooks';
-
 import { CurrentMyInfoStyle, AvatarImage } from './CurrentMyInfo.style';
 
 export default function CurrentMyInfo() {
@@ -12,7 +11,7 @@ export default function CurrentMyInfo() {
 
   return (
     <CurrentMyInfoStyle id="CurrentMyInfo">
-      {user && user.avatar ? (
+      {user && Object.keys(avatar).includes(user.avatar.toString()) ? (
         <AvatarImage alt="avatar" src={getAvatar(user.avatar)} />
       ) : null}
       <div>
