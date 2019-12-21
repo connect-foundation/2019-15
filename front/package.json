@@ -12,7 +12,6 @@
     "dateformat": "^3.0.3",
     "dotenv": "^8.2.0",
     "fabric": "^3.5.1",
-    "faker": "^4.1.0",
     "graphql": "^14.5.8",
     "graphql-tag": "^2.10.1",
     "immer": "^5.0.2",
@@ -25,7 +24,6 @@
     "react-scripts": "3.2.0",
     "socket.io-client": "^2.3.0",
     "styled-components": "^4.4.1",
-    "three": "^0.111.0",
     "uuid": "^3.3.3"
   },
   "scripts": {
