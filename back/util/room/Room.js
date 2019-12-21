@@ -1,9 +1,9 @@
 const { Op } = require('sequelize');
-const models = require('../db/models');
-const { roomState, defaultRoomSetting, escapeResultCode } = require('../config/roomConfig');
-const Timer = require('../util/timer/Timer');
-const makeReducerWithPromise = require('../util/makeReducerWithPromise');
-const { PRIVATE_ROOM_NAME } = require('../config/roomConfig');
+const models = require('../../db/models');
+const { roomState, defaultRoomSetting, escapeResultCode } = require('../../config/roomConfig');
+const Timer = require('../timer/Timer');
+const makeReducerWithPromise = require('../makeReducerWithPromise');
+const { PRIVATE_ROOM_NAME } = require('../../config/roomConfig');
 
 class Room {
   constructor(gameIo, roomId, roomType) {
@@ -29,6 +29,7 @@ class Room {
     this.players[this.examinerIndex].privileged = true;
   }
 
+  // 방 상태
   initRoomState() {
     this.categoryId = null;
     this.word = null;
@@ -51,14 +52,9 @@ class Room {
   }
 
   prepareNextQuestion() {
-    try {
-      this.resetRoomState();
-      this.examinerIndex -= 1;
-      // 주의!!!
-      this.players[this.examinerIndex].privileged = true;
-    } catch (e) {
-      console.log(e);
-    }
+    this.resetRoomState();
+    this.examinerIndex -= 1;
+    this.players[this.examinerIndex].privileged = true;
   }
 
   prepareNextRound() {
@@ -73,6 +69,18 @@ class Room {
     if (this.state === roomState.EMPTY) this.state = roomState.WAITING;
   }
 
+  removePlayer(userIndex) {
+    if (userIndex < 0) return;
+    const [removedPlayer] = this.players.splice(userIndex, 1);
+    if (this.players.length === 1) {
+      this.state = roomState.WAITING;
+    }
+  }
+
+  getUserIndexBySocketId(gameSocket) {
+    return this.players.findIndex((user) => user.socket.id === gameSocket.id);
+  }
+
   sendUserList(gameIo) {
     const userList = this.players.map((user) => {
       const userName = user.nickname || '부스트캠퍼';
@@ -85,14 +93,6 @@ class Room {
       };
     });
     gameIo.in(this.roomId).emit('userList', { playerList: JSON.stringify(userList) });
-  }
-
-  removePlayer(userIndex) {
-    if (userIndex < 0) return;
-    const [removedPlayer] = this.players.splice(userIndex, 1);
-    if (this.players.length === 1) {
-      this.state = roomState.WAITING;
-    }
   }
 
   getRoomStateAfterRemovePlayer(userIndex) {
@@ -143,10 +143,6 @@ class Room {
     return this.answererCount === this.players.length - 1;
   }
 
-  getUserIndexBySocketId(gameSocket) {
-    return this.players.findIndex((user) => user.socket.id === gameSocket.id);
-  }
-
   isQuestionEnd() {
     return this.answererCount === this.players.length - 1;
   }
@@ -194,7 +190,7 @@ class Room {
   }
 
   async updateUserScore() {
-    function getPlayerByNickname(player) {
+    const getPlayerByNickname = (player) => {
       return models.Users.findOne({
         where: {
           nickname: {
@@ -202,23 +198,23 @@ class Room {
           },
         },
       });
-    }
+    };
 
-    function makeIdScoreTuple(acc, user, player) {
+    const makeIdScoreTuple = (acc, user, player) => {
       acc.push({
         id: user.dataValues.id,
         score: user.dataValues.score + player.score,
       });
 
       return acc;
-    }
+    };
 
     const users = await this.players.reduce(
       makeReducerWithPromise(getPlayerByNickname, makeIdScoreTuple),
       [],
     );
 
-    function updateUserScore(user) {
+    const updateUserScore = (user) => {
       return models.Users.update(
         {
           score: user.score,
@@ -231,17 +227,14 @@ class Room {
           },
         },
       );
-    }
+    };
 
-    function makeUpdatedUserNumber(acc, updatedUser) {
+    const makeUpdatedUserNumber = (acc, updatedUser) => {
       acc += updatedUser[0];
       return acc;
-    }
+    };
 
-    const updatedUserNumber = await users.reduce(
-      makeReducerWithPromise(updateUserScore, makeUpdatedUserNumber),
-      0,
-    );
+    await users.reduce(makeReducerWithPromise(updateUserScore, makeUpdatedUserNumber), 0);
   }
 
   getExaminerSocketId() {
@@ -327,4 +320,4 @@ class Room {
   }
 }
 
-module.exports = { Room };
+module.exports = Room;
