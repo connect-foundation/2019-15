@@ -45,7 +45,7 @@ const friendResolvers = {
         },
       });
       if (!count) {
-        throw new Error('해당 친구 요청이 없습니다.');
+        throw new Error('noFriendRequest');
       }
       return { id };
     },
@@ -53,10 +53,6 @@ const friendResolvers = {
       let transaction;
       try {
         transaction = await sequelize.transaction();
-        await Friends.bulkCreate(
-          [{ pFriendId: id, sFriendId: req.user.id }, { pFriendId: req.user.id, sFriendId: id }],
-          { transaction },
-        );
         await BeforeFriends.update(
           { friendStateId: 2 },
           {
@@ -66,6 +62,15 @@ const friendResolvers = {
           },
           { transaction },
         );
+        await Friends.bulkCreate(
+          [{ pFriendId: id, sFriendId: req.user.id }, { pFriendId: req.user.id, sFriendId: id }],
+          { transaction },
+        );
+        await BeforeFriends.destroy({
+          where: {
+            [Op.and]: [{ pFriendId: req.user.id }, { sFriendId: id }],
+          },
+        });
         await transaction.commit();
         return {
           id,

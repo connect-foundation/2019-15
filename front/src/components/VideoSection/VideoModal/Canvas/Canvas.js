@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import React, { useEffect } from 'react';
 import useFabricCanvas from 'hooks/DrawingPlayGround/useFabricCanvas';
 import PropTypes from 'prop-types';

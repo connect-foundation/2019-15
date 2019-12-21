@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import React, { useState, useContext, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import {
@@ -34,7 +35,12 @@ export default function PainterBoard({ drawingOptions }) {
   const [lastDrawingTime, setLastDrawingTime] = useState(new Date());
   const [saveCanvasData] = useMutation(SAVE_CANVAS_DATA);
   const { gameState } = useContext(GamePlayContext);
-  const { selectedWord } = gameState;
+  const { selectedWord, painter } = gameState;
+
+  useEffect(() => {
+    if (!fabricCanvas) return;
+    fabricCanvas.clear();
+  }, [fabricCanvas, painter]);
 
   useEffect(() => {
     if (!fabricCanvas) return () => {};

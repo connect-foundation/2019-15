@@ -1,3 +1,4 @@
+/* eslint no-nested-ternary:0 */
 import { fabric } from 'fabric';
 
 const Brush = fabric.util.createClass(fabric.BaseBrush, {
@@ -106,7 +107,7 @@ const Brush = fabric.util.createClass(fabric.BaseBrush, {
     }
     ctx.moveTo(p1.x, p1.y);
 
-    for (i = 1, len = this._points.length; i < len; i++) {
+    for (i = 1, len = this._points.length; i < len; i += 1) {
       // we pick the point between pi + 1 & pi + 2 as the
       // end point and p1 as our control point.
       this._drawSegment(ctx, p1, p2);
@@ -140,7 +141,7 @@ const Brush = fabric.util.createClass(fabric.BaseBrush, {
       p1.y - multSignY * width,
       ' ',
     );
-    for (i = 1; i < len; i++) {
+    for (i = 1; i < len; i += 1) {
       if (!p1.eq(p2)) {
         const midPoint = p1.midPointFrom(p2);
         // p1 is our bezier control point
@@ -186,16 +187,16 @@ const Brush = fabric.util.createClass(fabric.BaseBrush, {
       return points;
     }
     const zoom = this.canvas.getZoom();
-    const adjustedDistance = Math.pow(distance / zoom, 2);
+    const adjustedDistance = (distance / zoom) * (distance / zoom);
     let i;
     const l = points.length - 1;
     let lastPoint = points[0];
     const newPoints = [lastPoint];
     let cDistance;
-    for (i = 1; i < l; i++) {
+    for (i = 1; i < l; i += 1) {
       cDistance =
-        Math.pow(lastPoint.x - points[i].x, 2) +
-        Math.pow(lastPoint.y - points[i].y, 2);
+        (lastPoint.x - points[i].x) * (lastPoint.x - points[i].x) +
+        (lastPoint.y - points[i].y) * (lastPoint.y - points[i].y);
       if (cDistance >= adjustedDistance) {
         lastPoint = points[i];
         newPoints.push(lastPoint);

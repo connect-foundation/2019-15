@@ -1,4 +1,10 @@
 import APP_URI from 'constants/uri';
+import { createHashHistory } from 'history';
+
+const history = createHashHistory({
+  basename: '',
+  hashType: 'slash',
+});
 
 export const autoLoginCheckboxEventHandler = (e) => {
   localStorage.setItem('autoLogIn', e.target.checked.toString());
@@ -15,10 +21,11 @@ export const checkAuth = (setNickName, setIsLogin) => {
     weakCredentials: true,
     httpOnly: false,
     secure: false,
+    cache: 'no-store',
   })
     .then((response) => {
       if (response.status === 401 || response.status === 403) {
-        window.location.href = `#/`;
+        history.push('/');
         setIsLogin(false);
       }
       if (response.status === 200) {
