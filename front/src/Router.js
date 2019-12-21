@@ -76,10 +76,10 @@ const Router = () => {
           <Route>
             <Redirect to="/main" />
           </Route>
+          <Route>
+            <NotFound />
+          </Route>
         </Switch>
-        <Route>
-          <NotFound />
-        </Route>
       </HashRouter>
     </RouterStyle>
   );
