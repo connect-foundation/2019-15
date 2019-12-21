@@ -4,7 +4,7 @@ import makeModal from '../../../globalComponents/Modal/Modal';
 
 QuestionResult.propTypes = {
   answer: PropTypes.string.isRequired,
-  scores: PropTypes.arrayOf((propValue, key) =>  {
+  scores: PropTypes.arrayOf((propValue, key) => {
     if (typeof propValue[key][0] !== 'string')
       return new Error(`propValue[key][0] must be string`);
     if (typeof propValue[key][1] !== 'number')

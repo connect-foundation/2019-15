@@ -9,6 +9,8 @@ import useFabricCanvas from 'hooks/DrawingPlayGround/useFabricCanvas';
 import useGameSocket from 'hooks/Socket/useGameSocket';
 import DrawingPlayGroundContext from 'components/GamePlay/CanvasSection/DrawingPlayGround/DrawingPlayGround.context';
 import NonPainterToolManager from 'components/GamePlay/CanvasSection/DrawingPlayGround/NonPainterPlayGround/NonPainterBoard/ToolType/NonPainterToolManager';
+import GamePlayContext from 'components/GamePlay/GamePlay.context';
+import { fab } from '@fortawesome/free-brands-svg-icons';
 
 NonPainterBoard.propTypes = {
   size: PropTypes.shape({
@@ -26,7 +28,14 @@ NonPainterBoard.defaultProps = {
 
 export default function NonPainterBoard() {
   const { canvasSize } = useContext(DrawingPlayGroundContext);
+  const { gameState } = useContext(GamePlayContext);
+  const { painter } = gameState;
   const [fabricCanvas, attachFabricCanvas] = useFabricCanvas(canvasSize);
+
+  useEffect(() => {
+    if (!fabricCanvas) return;
+    fabricCanvas.clear();
+  }, [fabricCanvas, painter]);
 
   const setCanvas = (eventList) => {
     eventList.forEach((e) => {
