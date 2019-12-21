@@ -1,9 +1,7 @@
-const { Op } = require('sequelize');
-const models = require('../../db/models');
 const { roomState, defaultRoomSetting, escapeResultCode } = require('../../config/roomConfig');
 const Timer = require('../timer/Timer');
-const makeReducerWithPromise = require('../makeReducerWithPromise');
 const { PRIVATE_ROOM_NAME } = require('../../config/roomConfig');
+const updateUsersScore = require('../score/updateUserScore');
 
 class Room {
   constructor(gameIo, roomId, roomType) {
@@ -21,12 +19,6 @@ class Room {
     this.answererCount = 0;
     this.timer.setTimeOutCallback(this.questionEndCallback.bind(this, gameIo));
     this.roomOwner = null;
-  }
-
-  prepareFirstQuestion() {
-    this.state = roomState.SELECTING_WORD;
-    this.examinerIndex = this.players.length - 1;
-    this.players[this.examinerIndex].privileged = true;
   }
 
   // 방 상태
@@ -51,6 +43,12 @@ class Room {
     });
   }
 
+  prepareFirstQuestion() {
+    this.state = roomState.SELECTING_WORD;
+    this.examinerIndex = this.players.length - 1;
+    this.players[this.examinerIndex].privileged = true;
+  }
+
   prepareNextQuestion() {
     this.resetRoomState();
     this.examinerIndex -= 1;
@@ -64,6 +62,7 @@ class Room {
     this.currentRound += 1;
   }
 
+  // Players
   addPlayer(user) {
     this.players.push(user);
     if (this.state === roomState.EMPTY) this.state = roomState.WAITING;
@@ -71,7 +70,8 @@ class Room {
 
   removePlayer(userIndex) {
     if (userIndex < 0) return;
-    const [removedPlayer] = this.players.splice(userIndex, 1);
+    this.players.splice(userIndex, 1);
+
     if (this.players.length === 1) {
       this.state = roomState.WAITING;
     }
@@ -83,16 +83,17 @@ class Room {
 
   sendUserList(gameIo) {
     const userList = this.players.map((user) => {
-      const userName = user.nickname || '부스트캠퍼';
-      return {
-        nickname: userName,
-        socketId: user.socket.id,
-        privileged: user.privileged,
-        avatar: user.avatar,
-        roomOwner: user.roomOwner,
-      };
+      const nickname = user.nickname || '부스트캠퍼';
+      return user.makeUserData(nickname);
     });
     gameIo.in(this.roomId).emit('userList', { playerList: JSON.stringify(userList) });
+  }
+
+  resetAllPlayerPrivilege() {
+    this.players = this.players.map((player) => {
+      player.privileged = false;
+      return player;
+    });
   }
 
   getRoomStateAfterRemovePlayer(userIndex) {
@@ -109,15 +110,39 @@ class Room {
       // 출제자가 아닌 플레이어가 탈주한 경우
       else {
         if (userIndex < this.examinerIndex) this.examinerIndex -= 1;
-
         if (this.isPlayingQuestion()) return escapeResultCode.NON_EXAMINER_IS_ESCAPED;
       }
-
       // 누가 나가던 상관없는 경우
       if (this.isWaiting()) return escapeResultCode.IS_WAITING;
       if (this.isSelectingWord()) return escapeResultCode.IS_SELECTING_WORD;
     }
     return escapeResultCode.NOT_PROPER;
+  }
+
+  roomSettingAfterUserRemove(removeResult, gameSocket) {
+    switch (removeResult) {
+      case escapeResultCode.IS_WAITING: {
+        this.timer.stop();
+        this.resetAllPlayerPrivilege();
+        gameSocket.to(this.roomId).emit('prepareNewGame');
+        break;
+      }
+      case escapeResultCode.IS_SELECTING_WORD: {
+        gameSocket.to(this.roomId).emit('gamestart', this.makeGameStartData());
+        break;
+      }
+      case escapeResultCode.EXAMINER_IS_ESCAPED: {
+        this.questionEndCallback(gameSocket);
+        break;
+      }
+      case escapeResultCode.NON_EXAMINER_IS_ESCAPED: {
+        if (this.isAllPlayerAnswered()) this.questionEndCallback(gameSocket);
+        break;
+      }
+      default: {
+        break;
+      }
+    }
   }
 
   // 방이 대기중인 상태인 경우
@@ -155,6 +180,17 @@ class Room {
     return this.isLastRound() && this.examinerIndex === 0;
   }
 
+  makeEndQuestionData(answer) {
+    const nextExaminer = this.getExaminer();
+    return {
+      nextExaminerSocketId: nextExaminer.socket.id,
+      _scores: this.getScores(),
+      answer: answer,
+      currentRound: this.currentRound,
+      totalRound: this.totalRound,
+    };
+  }
+
   questionEndCallback(gameIo) {
     const answer = this.word;
     // 마지막 문제인 경우
@@ -167,14 +203,7 @@ class Room {
     // 아직 한 라운드가 끝나지 않은 경우
     else this.prepareNextQuestion();
 
-    const nextExaminer = this.getExaminer();
-    gameIo.in(this.roomId).emit('endQuestion', {
-      nextExaminerSocketId: nextExaminer.socket.id,
-      _scores: this.getScores(),
-      answer: answer,
-      currentRound: this.currentRound,
-      totalRound: this.totalRound,
-    });
+    gameIo.in(this.roomId).emit('endQuestion', this.makeEndQuestionData(answer));
     setTimeout(() => {
       this.sendUserList(gameIo);
     }, 5000);
@@ -186,55 +215,7 @@ class Room {
       answer: this.word,
     });
 
-    if (this.roomType !== PRIVATE_ROOM_NAME) this.updateUserScore();
-  }
-
-  async updateUserScore() {
-    const getPlayerByNickname = (player) => {
-      return models.Users.findOne({
-        where: {
-          nickname: {
-            [Op.eq]: player.nickname,
-          },
-        },
-      });
-    };
-
-    const makeIdScoreTuple = (acc, user, player) => {
-      acc.push({
-        id: user.dataValues.id,
-        score: user.dataValues.score + player.score,
-      });
-
-      return acc;
-    };
-
-    const users = await this.players.reduce(
-      makeReducerWithPromise(getPlayerByNickname, makeIdScoreTuple),
-      [],
-    );
-
-    const updateUserScore = (user) => {
-      return models.Users.update(
-        {
-          score: user.score,
-        },
-        {
-          where: {
-            id: {
-              [Op.eq]: user.id,
-            },
-          },
-        },
-      );
-    };
-
-    const makeUpdatedUserNumber = (acc, updatedUser) => {
-      acc += updatedUser[0];
-      return acc;
-    };
-
-    await users.reduce(makeReducerWithPromise(updateUserScore, makeUpdatedUserNumber), 0);
+    if (this.roomType !== PRIVATE_ROOM_NAME) updateUsersScore(this.players);
   }
 
   getExaminerSocketId() {
@@ -266,6 +247,7 @@ class Room {
     };
   }
 
+  // RoomOwner
   passRoomOwnerToNext() {
     try {
       if (this.players.length > 0) {
@@ -283,39 +265,6 @@ class Room {
       setTimeout(() => {
         gameSocket.emit('roomOwner');
       }, 100);
-    }
-  }
-
-  resetAllPlayerPrivilege() {
-    this.players = this.players.map((player) => {
-      player.privileged = false;
-      return player;
-    });
-  }
-
-  roomSettingAfterUserRemove(removeResult, gameSocket) {
-    switch (removeResult) {
-      case escapeResultCode.IS_WAITING: {
-        this.timer.stop();
-        this.resetAllPlayerPrivilege();
-        gameSocket.to(this.roomId).emit('prepareNewGame');
-        break;
-      }
-      case escapeResultCode.IS_SELECTING_WORD: {
-        gameSocket.to(this.roomId).emit('gamestart', this.makeGameStartData());
-        break;
-      }
-      case escapeResultCode.EXAMINER_IS_ESCAPED: {
-        this.questionEndCallback(gameSocket);
-        break;
-      }
-      case escapeResultCode.NON_EXAMINER_IS_ESCAPED: {
-        if (this.isAllPlayerAnswered()) this.questionEndCallback(gameSocket);
-        break;
-      }
-      default: {
-        break;
-      }
     }
   }
 }
