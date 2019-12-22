@@ -27,7 +27,7 @@ const Main = () => {
     checkAuth(setNickName, setIsLogin);
     setRoom(null);
     if (gameSocket) gameSocket.emit('exitRoom');
-  }, [setIsLogin, setRoom]);
+  }, [gameSocket, setIsLogin, setRoom]);
 
   setGameSocket(gameSocket);
 
