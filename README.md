@@ -156,7 +156,10 @@
 ## Sequence Diagram
 ### 랜덤 게임
 ![Sequence Diagram](https://i.imgur.com/tRz3C1P.png)
-    
+
+## DB
+![ERD](https://i.imgur.com/wHqvVP5.png)
+
 ## Document
 ### [Ground Rule](https://github.com/connect-foundation/2019-15/wiki/%EA%B7%B8%EB%9D%BC%EC%9A%B4%EB%93%9C-%EB%A3%B0)
 ### [Design](https://github.com/connect-foundation/2019-15/wiki/%EC%84%A4%EA%B3%84)
