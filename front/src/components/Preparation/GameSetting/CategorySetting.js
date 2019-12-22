@@ -23,10 +23,12 @@ export default function CategorySetting({
     return (
       <>
         {'카테고리'}
-        <Select disabled={disabled} />
+        <Select disabled={disabled} reference={categoryRef} />
       </>
     );
-  if (error) return <></>;
+
+  if (error) return <Select disabled={disabled} reference={categoryRef} />;
+
   const options = Object.values(data.getCategories).map((dbData) => {
     return { text: dbData.category, value: dbData.id };
   });
@@ -37,7 +39,7 @@ export default function CategorySetting({
       {'카테고리'}
       <Select
         disabled={disabled}
-        option={options}
+        optionList={options}
         onChangeSelect={onChangeCategory}
         reference={categoryRef}
         defaultOption={defaultOption}

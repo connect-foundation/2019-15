@@ -1,12 +1,13 @@
-import React, { useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import SelectStyle from './Select.style';
 
 Select.propTypes = {
-  option: PropTypes.arrayOf(
-    PropTypes.objectOf(
-      PropTypes.shape({ value: PropTypes.string, text: PropTypes.string }),
-    ),
+  optionList: PropTypes.arrayOf(
+    PropTypes.shape({
+      value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+      text: PropTypes.string,
+    }),
   ),
   defaultOption: PropTypes.string,
   onChangeSelect: PropTypes.func,
@@ -15,33 +16,31 @@ Select.propTypes = {
 };
 
 Select.defaultProps = {
-  option: [{ value: '0', text: '0' }],
+  optionList: [{ value: '0', text: '0' }],
   defaultOption: '',
   onChangeSelect: () => {},
   reference: null,
 };
 
 export default function Select({
-  option,
+  optionList,
   defaultOption,
   onChangeSelect,
   disabled,
   reference,
 }) {
-  let options = [];
-  options = option.map((optionValue) => (
-    <option
-      key={optionValue.value}
-      value={optionValue.value}
-      selected={`${optionValue.value}` === defaultOption}
-    >
-      {optionValue.text}
-    </option>
-  ));
-
   return (
-    <SelectStyle ref={reference} disabled={disabled} onChange={onChangeSelect}>
-      {options}
+    <SelectStyle
+      ref={reference}
+      disabled={disabled}
+      onChange={onChangeSelect}
+      value={defaultOption}
+    >
+      {optionList.map((optionValue) => (
+        <option key={optionValue.value} value={optionValue.value}>
+          {optionValue.text}
+        </option>
+      ))}
     </SelectStyle>
   );
 }

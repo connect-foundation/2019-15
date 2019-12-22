@@ -24,7 +24,7 @@ export default function TimeSetting({
       {'게임 시간'}
       <Select
         disabled={disabled}
-        option={timerOptions}
+        optionList={timerOptions}
         defaultOption={defaultOption}
         onChangeSelect={onChangeTimer}
         reference={timerRef}
