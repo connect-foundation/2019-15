@@ -228,7 +228,13 @@ class Room {
   }
 
   getScores() {
-    return this.players.map((player) => [player.nickname, player.score]);
+    return this.players.map((player) => {
+      return {
+        socketId: player.socket.id,
+        nickname: player.nickname,
+        score: player.score,
+      };
+    });
   }
 
   makeGameStartData() {

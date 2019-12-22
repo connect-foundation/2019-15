@@ -16,7 +16,7 @@ export default function UserList() {
     const className = user.socketId === gameSocket.id ? 'you' : '';
     const drawer = user.socketId === painter;
     const score = scores.length
-      ? scores.find(([nickname]) => nickname === user.nickname)[1]
+      ? scores.find(({ socketId }) => socketId === user.socketId).score
       : 0;
 
     const painterIndex = userList.findIndex(
