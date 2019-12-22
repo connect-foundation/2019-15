@@ -10,7 +10,10 @@ Canvas.propTypes = {
       data: PropTypes.string,
     }),
   ),
-  size: PropTypes.func,
+  size: PropTypes.shape({
+    width: PropTypes.number,
+    height: PropTypes.number,
+  }),
   setRestart: PropTypes.func,
   speed: PropTypes.number,
 };

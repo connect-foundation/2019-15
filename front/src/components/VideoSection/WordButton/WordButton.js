@@ -3,7 +3,7 @@ import WordButtonStyle from 'components/VideoSection/WordButton/WordButton.style
 import PropTypes from 'prop-types';
 
 WordButton.propTypes = {
-  children: PropTypes.string,
+  children: PropTypes.arrayOf(String),
   onClick: PropTypes.func,
 };
 
