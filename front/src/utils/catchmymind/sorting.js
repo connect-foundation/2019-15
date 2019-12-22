@@ -1,5 +1,5 @@
 function sortScoresDecending(a, b) {
-  return b[1] - a[1];
+  return b.score - a.score;
 }
 
 export default function sortScores(scores) {
