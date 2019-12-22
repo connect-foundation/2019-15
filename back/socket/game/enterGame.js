@@ -48,7 +48,13 @@ function enterPrivate(gameSocket, roomInfo, { nickname, avatar }) {
     roomOwner = true;
   }
 
-  room.addPlayer(new User(nickname, gameSocket, null, roomOwner, avatar));
+  const { jwt: jwtToken } = parseCookies(gameSocket.handshake.headers.cookie);
+  const { id } = jwt.verify(jwtToken, process.env.JWT_SECRET, {
+    issuer: jwtOptions.issuer,
+    subject: jwtOptions.subject,
+  });
+
+  room.addPlayer(new User(nickname, gameSocket, id, roomOwner, avatar));
 
   gameSocket.join(roomId);
 
