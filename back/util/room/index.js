@@ -70,6 +70,7 @@ class Room {
 
   removePlayer(userIndex) {
     if (userIndex < 0) return;
+    if (this.players[userIndex].privileged === true) this.answererCount -= 1;
     this.players.splice(userIndex, 1);
 
     if (this.players.length === 1) {
