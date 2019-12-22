@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import makeModal from '../../../globalComponents/Modal/Modal';
+import makeModal from 'components/globalComponents/Modal/Modal';
+import sortScores from 'utils/catchmymind/sorting';
 
 QuestionResult.propTypes = {
   answer: PropTypes.string.isRequired,
@@ -15,7 +16,7 @@ QuestionResult.propTypes = {
 export default function QuestionResult({ answer, scores }) {
   const Header = () => <h1>{answer}</h1>;
   const Body = () =>
-    scores.map((score, idx) => {
+    sortScores(scores).map((score, idx) => {
       const order = idx + 1;
       return (
         <div key={order}>
