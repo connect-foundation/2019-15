@@ -1,18 +1,24 @@
-const { PRIVATE_ROOM_NAME } = require('../../config/roomConfig');
-const { sendUserListToRoom } = require('./game');
+const { WAIT_UNTIL_USER_ADD_EVENT } = require('../../config/roomConfig');
 
-function startPrivateGame(gameSocket, { roomId }) {
-  // 난입 시나리오 추가해야됨
-  const room = this.RoomManager.room[PRIVATE_ROOM_NAME][roomId];
+function startPrivateGame(gameSocket, roomInfo, { expireTime, round, categoryId }) {
+  const room = this.RoomManager.getRoomIfExist(roomInfo);
+  if (!room) return;
+
+  const { roomId } = roomInfo;
+
   if (room.isPlayable()) {
+    room.timer.expireTime = expireTime * 1000; // 밀리초
+    room.totalRound = round * 1;
+    room.categoryId = categoryId;
     this.gameIo.to(roomId).emit('movePrivate');
+    this.gameIo.to(roomId).emit('roomCategory', { categoryId: room.categoryId });
 
     setTimeout(() => {
       room.prepareFirstQuestion();
-      sendUserListToRoom(room.players, roomId, this.gameIo);
+      room.sendUserList(this.gameIo);
       this.gameIo.to(roomId).emit('gamestart', room.makeGameStartData());
-    }, 1000);
+    }, WAIT_UNTIL_USER_ADD_EVENT);
   }
 }
 
-module.exports = { startPrivateGame };
+module.exports = startPrivateGame;

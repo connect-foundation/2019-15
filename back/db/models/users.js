@@ -5,16 +5,19 @@ module.exports = (sequelize, DataTypes) => {
       userId: DataTypes.STRING,
       nickname: DataTypes.STRING,
       score: DataTypes.BIGINT,
+      avatar: DataTypes.INTEGER,
     },
     {},
   );
   Users.associate = function(models) {
     Users.hasMany(models.BeforeFriends, {
       foreignKey: 'pFriendId',
+      as: 'pBeforeFriend',
       sourceKey: 'id',
     });
     Users.hasMany(models.BeforeFriends, {
       foreignKey: 'sFriendId',
+      as: 'sBeforeFriend',
       sourceKey: 'id',
     });
     Users.hasMany(models.Friends, { foreignKey: 'pFriendId', sourceKey: 'id', as: 'pFriend' });

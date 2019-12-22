@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 const CanvasSectionStyle = styled.div`
   position: relative;
-  margin-top: 0.5rem;
+  margin-top: 4.5rem;
   & > section {
     box-shadow: rgba(0, 0, 0, 0.12) 0px 2px 10px,
       rgba(0, 0, 0, 0.16) 0px 2px 5px;

@@ -6,12 +6,16 @@ import {
 
 export const UserListStyle = styled(FlexRowStyle)`
   width: 40rem;
-  height: 35rem;
+  height: 29rem;
   margin-left: 2rem;
   flex-wrap: wrap;
   justify-content: flex-start;
   align-content: flex-start;
   background-color: ${({ theme }) => theme.paleRose};
+  margin-top: 6rem;
+  border-radius: 1rem;
+  border: solid 2px white;
+  padding: 1rem 0;
 `;
 
 export const UserStyle = styled(FlexColumnStyle)`
@@ -25,8 +29,8 @@ export const UserStyle = styled(FlexColumnStyle)`
 `;
 
 export const Avatar = styled.img`
-  width: 90px;
-  height: 90px;
+  width: 80px;
+  height: 80px;
 `;
 
 export const RoomOwner = styled.img`

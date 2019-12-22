@@ -1,21 +1,18 @@
-const { sendUserListToRoom } = require('./game');
-const { RoomManager } = require('../RoomManager');
+function exitRoom(gameSocket, roomInfo) {
+  const room = this.RoomManager.getRoomIfExist(roomInfo);
+  if (!room) return;
 
-function exitRoom(gameSocket, { roomType, roomId }) {
-  if (!RoomManager.isExistRoom({ roomId, roomType })) return;
-
-  const room = RoomManager.room[roomType][roomId];
   const userIndex = room.getUserIndexBySocketId(gameSocket);
+  if (userIndex < 0) return; // 방에서 유저 정보를 못 찾은경우 종료
+
   room.removePlayer(userIndex);
 
-  gameSocket.leave(roomId);
-  // 리뷰: 유저리스트를 다보내지 말고 제외된 유저 아이디만 보내자
-  sendUserListToRoom(room.players, roomId, this.gameIo);
+  gameSocket.leave(roomInfo.roomId);
 
   if (gameSocket.id === room.roomOwner) {
     room.passRoomOwnerToNext();
-    sendUserListToRoom(room.players, roomId, this.gameIo);
   }
+  room.sendUserList(this.gameIo);
 }
 
 module.exports = exitRoom;

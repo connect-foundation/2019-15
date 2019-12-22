@@ -1,14 +1,46 @@
-const { personEnterRoom, sendUserListToRoom } = require('./game');
-const { PRIVATE_ROOM_NAME } = require('../../config/roomConfig');
-const User = require('../User');
+const jwt = require('jsonwebtoken');
+const User = require('../../util/User');
+const { WAIT_UNTIL_USER_ADD_EVENT } = require('../../config/roomConfig');
+const jwtOptions = require('../../config/jwtOptions');
+const parseCookies = require('../../util/cookie/parseCookies');
 
-function enterRandom(gameSocket, roomInfo, { nickname, roomType, avatar }) {
-  personEnterRoom(nickname, gameSocket, roomType, this.gameIo, roomInfo.roomId, avatar);
+function enterRandom(gameSocket, roomInfo, { nickname, avatar, roomType }) {
+  if (roomInfo.stop) return;
+
+  const room = this.RoomManager.getRoomIfExist(roomInfo);
+  if (!room) return;
+
+  const { roomId } = roomInfo;
+  const { jwt: jwtToken } = parseCookies(gameSocket.handshake.headers.cookie);
+  const { id } = jwt.verify(jwtToken, process.env.JWT_SECRET, {
+    issuer: jwtOptions.issuer,
+    subject: jwtOptions.subject,
+  });
+
+  room.addPlayer(new User(nickname, gameSocket, id, false, avatar));
+
+  gameSocket.join(roomId);
+  gameSocket.emit(`connectRandom`, roomInfo);
+
+  if (room.isPlayable()) {
+    room.prepareFirstQuestion();
+    this.gameIo.to(roomId).emit('gamestart', room.makeGameStartData());
+  } else if (room.isSelectingWord()) {
+    gameSocket.emit('gamestart', room.makeGameStartData());
+  } else if (room.isPlayingQuestion()) {
+    gameSocket.emit('gamestart', room.makeGameStartData());
+    gameSocket.emit('startQuestion', room.makeStartQuestionData());
+  }
+  room.sendUserList(this.gameIo);
 }
 
-function enterPrivate(gameSocket, { nickname, roomId, avatar }) {
-  const room = this.RoomManager.room[PRIVATE_ROOM_NAME][roomId];
+function enterPrivate(gameSocket, roomInfo, { nickname, avatar }) {
+  if (roomInfo.stop) return;
+
+  const room = this.RoomManager.getRoomIfExist(roomInfo);
   if (!room) return;
+
+  const { roomId } = roomInfo;
 
   let roomOwner = false;
   if (room.players.length === 0) {
@@ -16,26 +48,36 @@ function enterPrivate(gameSocket, { nickname, roomId, avatar }) {
     roomOwner = true;
   }
 
-  room.addPlayer(new User(nickname, gameSocket, null, roomOwner, avatar));
+  const { jwt: jwtToken } = parseCookies(gameSocket.handshake.headers.cookie);
+  const { id } = jwt.verify(jwtToken, process.env.JWT_SECRET, {
+    issuer: jwtOptions.issuer,
+    subject: jwtOptions.subject,
+  });
+
+  room.addPlayer(new User(nickname, gameSocket, id, roomOwner, avatar));
 
   gameSocket.join(roomId);
 
   room.checkAndEmitRoomOwner(gameSocket.id, gameSocket);
+
   setTimeout(() => {
-    sendUserListToRoom(room.players, roomId, this.gameIo);
+    room.sendUserList(this.gameIo);
   }, 0);
 
-  if (room.isPlayingQuestion()) {
+  if (room.isSelectingWord()) {
+    gameSocket.emit('movePrivate');
     setTimeout(() => {
-      gameSocket.emit('movePrivate');
-    }, 100);
+      room.sendUserList(this.gameIo);
+      gameSocket.emit('gamestart', room.makeGameStartData());
+    }, WAIT_UNTIL_USER_ADD_EVENT);
+  } else if (room.isPlayingQuestion()) {
+    gameSocket.emit('movePrivate');
 
     setTimeout(() => {
-      sendUserListToRoom(room.players, roomId, this.gameIo);
-
+      room.sendUserList(this.gameIo);
       gameSocket.emit('gamestart', room.makeGameStartData());
       gameSocket.emit('startQuestion', room.makeStartQuestionData());
-    }, 1000);
+    }, WAIT_UNTIL_USER_ADD_EVENT);
   }
 }
 

@@ -13,27 +13,20 @@ import GameResult from './GameResult/GameResult';
 
 export default function CanvasSection() {
   const { gameSocket } = useContext(GlobalContext);
+  const { gameState } = useContext(GamePlayContext);
   const {
     userList,
     painter,
     questionWord,
     isTimerGetReady,
-    setIsTimerGetReady,
     isLetterOpen,
-    setIsLetterOpen,
     selectedWord,
-    setSelectedWord,
     showQuestionResult,
-    setShowQuestionResult,
     scores,
-    setScores,
     round,
-    setRound,
     endTime,
-    setEndTime,
     showGameResult,
-    setShowGameResult,
-  } = useContext(GamePlayContext);
+  } = gameState;
 
   const [drawable, setDrawable] = useState(false);
   const [painterNickname, setPainterNickname] = useState(null);
@@ -50,24 +43,20 @@ export default function CanvasSection() {
     return () => {
       setDrawable(false);
     };
-  }, [drawable, gameSocket.id, painter, userList]);
+  }, [gameSocket.id, painter, userList]);
 
   return (
     <CanvasSectionStyle>
       <GameLoading />
       {userList.length > 1 && !showQuestionResult && !showGameResult ? (
-        <WordChoice setSelectedWord={setSelectedWord} />
+        <WordChoice />
       ) : null}
       {showQuestionResult ? (
         <QuestionResult scores={scores} answer={selectedWord} />
       ) : null}
       {showGameResult ? <GameResult scores={scores} /> : null}
       <section>
-        <Timer
-          isTimerGetReady={isTimerGetReady}
-          setIsLetterOpen={setIsLetterOpen}
-          endTime={endTime}
-        />
+        <Timer isTimerGetReady={isTimerGetReady} endTime={endTime} />
         <GameInfo round={round} />
         <WordPreview
           openLetter={questionWord.openLetter}

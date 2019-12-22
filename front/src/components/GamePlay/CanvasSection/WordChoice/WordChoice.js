@@ -1,28 +1,27 @@
 import React, { useContext } from 'react';
 import { useQuery } from '@apollo/react-hooks';
-import PropTypes from 'prop-types';
 import GET_RANDOM_WORDS from 'queries/word';
 import GlobalContext from 'global.context';
 import GamePlayContext from 'components/GamePlay/GamePlay.context';
-import { selectWord } from 'logics/socketLogic';
 import { faSync } from '@fortawesome/free-solid-svg-icons';
-import Background from './Background.style';
-import WordSet from './WordSet.style';
-import { WordCard, P, Icon, Div, Button } from './WordCard.style';
+import {
+  WordSet,
+  Background,
+  WordCard,
+  P,
+  Icon,
+  Div,
+  Button,
+} from './WordChoice.style';
 
-WordChoice.propTypes = {
-  setSelectedWord: PropTypes.func.isRequired,
-};
-
-function WordChoice({ setSelectedWord }) {
+export default function WordChoice() {
   const { gameSocket, room } = useContext(GlobalContext);
-  const {
-    painter,
-    questionWord,
-    isWordChoiceOpen,
-    setIsWordChoiceOpen,
-  } = useContext(GamePlayContext);
-  const { data, loading, error, refetch } = useQuery(GET_RANDOM_WORDS);
+  const { gameState, gameStateDispatch } = useContext(GamePlayContext);
+  const { painter, questionWord, isWordChoiceOpen } = gameState;
+
+  const { data, loading, error, refetch } = useQuery(GET_RANDOM_WORDS, {
+    variables: { categoryId: Number(room.categoryId) },
+  });
 
   if (loading) {
     return <></>;
@@ -31,18 +30,18 @@ function WordChoice({ setSelectedWord }) {
     return 'error';
   }
 
-  async function close(e) {
+  const close = (e) => {
     refetch();
-    setIsWordChoiceOpen(false);
+    gameStateDispatch({ type: 'setIsWordChoiceOpen', isWordChoiceOpen: false });
     const { roomType, roomId } = room;
     const answer = e.target.textContent;
-    setSelectedWord(answer);
-    selectWord(gameSocket, { answer, roomType, roomId });
-  }
+    gameStateDispatch({ type: 'setSelectedWord', selectedWord: answer });
+    gameSocket.emit('selectWord', { answer, roomType, roomId });
+  };
 
-  async function wordsChange() {
+  const wordsChange = async () => {
     refetch();
-  }
+  };
 
   if (gameSocket.id !== painter && questionWord.wordLength === 0) {
     return (
@@ -76,5 +75,3 @@ function WordChoice({ setSelectedWord }) {
     </>
   );
 }
-
-export default WordChoice;

@@ -1,8 +1,8 @@
 function deleteFriend(nodeCache, socketUser, receiver) {
   const friendSocket = nodeCache.get(receiver.id);
-  friendSocket.emitToMySockets('friendOffline', socketUser.user);
+  friendSocket.emitToMySockets('offlineFriend', socketUser.user);
 
-  socketUser.emitToMySockets('friendOffline', friendSocket.user);
+  socketUser.emitToMySockets('offlineFriend', friendSocket.user);
 }
 
 module.exports = deleteFriend;

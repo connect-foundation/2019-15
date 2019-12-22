@@ -1,12 +1,12 @@
 import React from 'react';
 import ChangeMyInfoStyle from './ChangeMyInfo.style';
 import NicknameChangeContainer from './NicknameChangeContainer/NicknameChangeContainer';
-import ChangeCharacter from '../ChangeCharacter/ChangeCharacter';
+import ChangeAvatar from '../ChangeAvatar/ChangeAvatar';
 
 export default function ChangeMyInfo() {
   return (
     <ChangeMyInfoStyle id="ChangeMyInfo">
-      <ChangeCharacter />
+      <ChangeAvatar />
       <div>
         <NicknameChangeContainer />
       </div>

@@ -1,6 +1,6 @@
 import React, { useEffect, useReducer, useCallback } from 'react';
 import PropTypes from 'prop-types';
-import makeEmptyArray from 'logics/wordPreview/makeEmptyArray';
+import makeEmptyArray from 'utils/makeEmptyArray';
 import WordPreviewStyle from './WordPreview.style';
 
 WordPreview.propTypes = {
@@ -15,7 +15,7 @@ WordPreview.defaultProps = {
   selectedWord: '',
 };
 
-function lettersReducer(state, action) {
+const lettersReducer = (state, action) => {
   switch (action.type) {
     case 'makeNewArray': {
       return makeEmptyArray(action.arg);
@@ -32,7 +32,7 @@ function lettersReducer(state, action) {
       throw Error('please check action type');
     }
   }
-}
+};
 
 export default function WordPreview({
   wordLength,
@@ -47,14 +47,17 @@ export default function WordPreview({
   );
 
   const openLetterTrigger = useCallback(() => {
-    lettersDispatch({
-      type: 'openLetter',
-      arg: {
-        openIndex,
-        openLetter,
-      },
-    });
-  }, [lettersDispatch, openIndex, openLetter]);
+    // 정답이 1글자인 경우 오픈하지 않는다
+    if (wordLength > 1) {
+      lettersDispatch({
+        type: 'openLetter',
+        arg: {
+          openIndex,
+          openLetter,
+        },
+      });
+    }
+  }, [lettersDispatch, openIndex, openLetter, wordLength]);
 
   useEffect(() => {
     if (selectedWord.length > 0)

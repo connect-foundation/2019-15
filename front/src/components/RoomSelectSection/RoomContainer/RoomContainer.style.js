@@ -7,7 +7,7 @@ const RoomContainerStyle = styled.section`
   margin: 10px;
   border-radius: 3rem;
   border: solid 0.2rem white;
-  margin-top: 4rem;
+  margin-top: 10rem;
 `;
 
 export default RoomContainerStyle;

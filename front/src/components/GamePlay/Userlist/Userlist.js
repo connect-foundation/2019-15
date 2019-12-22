@@ -7,11 +7,25 @@ import User from './User/User';
 
 export default function UserList() {
   const { gameSocket } = useContext(GlobalContext);
-  const { userList, painter } = useContext(GamePlayContext);
+  // const { userList, painter, scores } = useContext(GamePlayContext);
+  const { gameState } = useContext(GamePlayContext);
+  const { userList, painter, scores } = gameState;
+
   const UserComponents = userList.map((user, index) => {
     const order = index + 1;
     const className = user.socketId === gameSocket.id ? 'you' : '';
     const drawer = user.socketId === painter;
+    const foundUser = scores.find(({ socketId }) => socketId === user.socketId);
+    const score = foundUser ? foundUser.score : 0;
+
+    const painterIndex = userList.findIndex(
+      (user_) => user_.socketId === painter,
+    );
+    const leftTurn =
+      index <= painterIndex
+        ? painterIndex - index
+        : painterIndex + (userList.length - 1 - index) + 1;
+
     return (
       <User
         key={order}
@@ -21,6 +35,8 @@ export default function UserList() {
         index={order}
         avatar={user.avatar}
         drawer={drawer}
+        score={score}
+        leftTurn={leftTurn}
       />
     );
   });

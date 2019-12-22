@@ -6,7 +6,7 @@ const AlertStyle = styled.div`
   align-items: center;
   justify-content: center;
   background-color: transparent;
-
+  margin: 1rem;
   > svg {
     color: ${(props) => props.theme.mustard};
   }

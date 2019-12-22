@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
-import regex from 'constant/TextInput';
+import regex from 'constants/nicknameRegex';
 import TextInputStyle from './TextInput.style';
 
 TextInput.propTypes = {

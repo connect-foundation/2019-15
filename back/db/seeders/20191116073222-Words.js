@@ -8,7 +8,7 @@ module.exports = {
       const json = [];
       let progress = 0;
 
-      queryInterface.bulkInsert('words', [
+      queryInterface.bulkInsert('Words', [
         { word: '강아지', categoryId: null, userId: 1 },
         { word: '고양이', categoryId: null, userId: 2 },
         { word: '치킨', categoryId: null, userId: 3 },

@@ -1,11 +1,15 @@
 import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
-import { startPrivateGame } from 'logics/socketLogic';
 import GlobalContext from 'global.context';
+import useGameSocket from 'hooks/Socket/useGameSocket';
+import useSelect from 'hooks/Setting/useSelect';
 import { GameSettingStyle, StartBtn } from './GameSetting.style';
+import TimeSetting from './TimeSetting';
+import RoundSetting from './RoundSetting';
+import CategorySetting from './CategorySetting';
 
 GameSetting.propTypes = {
-  roomOwner: PropTypes.bool.isRequired,
+  isRoomOwner: PropTypes.bool.isRequired,
   waitingUserList: PropTypes.arrayOf(
     PropTypes.shape({
       nickname: PropTypes.string,
@@ -15,16 +19,77 @@ GameSetting.propTypes = {
   ).isRequired,
 };
 
-export default function GameSetting({ roomOwner, waitingUserList }) {
-  const { gameSocket, room } = useContext(GlobalContext);
+const defaultTime = '40';
+const defaultRound = '3';
+const defaultCategoryId = '8';
 
-  function clickStartBtn() {
+export default function GameSetting({ isRoomOwner, waitingUserList }) {
+  const { gameSocket, room } = useContext(GlobalContext);
+  const [timer, onChangeTimer, timerRef, changeTimerValue] = useSelect(
+    'timer',
+    defaultTime,
+  );
+  const [round, onChangeRound, roundRef, changeRoundValue] = useSelect(
+    'round',
+    defaultRound,
+  );
+  const [
+    categoryId,
+    onChangeCategory,
+    categoryRef,
+    changeCategoryValue,
+  ] = useSelect('category', defaultCategoryId);
+
+  useGameSocket('changeRoomSetting', ({ selectType, selectedIndex }) => {
+    switch (selectType) {
+      case 'timer': {
+        changeTimerValue(selectedIndex);
+        break;
+      }
+      case 'round': {
+        changeRoundValue(selectedIndex);
+        break;
+      }
+      case 'category': {
+        changeCategoryValue(selectedIndex);
+        break;
+      }
+      default:
+        throw new Error();
+    }
+  });
+
+  const clickStartBtn = () => {
     if (waitingUserList.length < 2) return;
-    startPrivateGame(gameSocket, { roomId: room.roomId });
-  }
+    gameSocket.emit('startPrivateGame', {
+      roomId: room.roomId,
+      expireTime: timer,
+      round,
+      categoryId,
+    });
+  };
+
   return (
     <GameSettingStyle>
-      <StartBtn disabled={!roomOwner} onClick={clickStartBtn}>
+      <TimeSetting
+        disabled={!isRoomOwner}
+        onChangeTimer={onChangeTimer}
+        timerRef={timerRef}
+        defaultOption={timer}
+      />
+      <RoundSetting
+        disabled={!isRoomOwner}
+        onChangeRound={onChangeRound}
+        roundRef={roundRef}
+        defaultOption={round}
+      />
+      <CategorySetting
+        disabled={!isRoomOwner}
+        onChangeCategory={onChangeCategory}
+        categoryRef={categoryRef}
+        defaultOption={categoryId}
+      />
+      <StartBtn disabled={!isRoomOwner} onClick={clickStartBtn}>
         게임 시작
       </StartBtn>
     </GameSettingStyle>

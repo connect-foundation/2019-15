@@ -63,14 +63,15 @@ export default function NicknameChange({
     };
   }, [data, nickname, userNickname]);
 
-  const checkNickname = (input) => {
-    checkInputNicknameAvailable(input);
-    checkSelfNickname(input);
-  };
-
-  const checkInputNicknameAvailable = useCallback(
+  const checkNickname = useCallback(
     (input) => {
-      if (input && input !== userNickname) {
+      if (input === userNickname) {
+        setDisabled(true);
+        resultTextDispatch({ type: 'init' });
+        return;
+      }
+
+      if (input) {
         checkNicknameAvailable({
           variables: {
             nickname: input,
@@ -78,17 +79,7 @@ export default function NicknameChange({
         });
       }
     },
-    [checkNicknameAvailable, userNickname],
-  );
-
-  const checkSelfNickname = useCallback(
-    (input) => {
-      if (input === userNickname) {
-        setDisabled(true);
-        resultTextDispatch({ type: 'init' });
-      }
-    },
-    [resultTextDispatch, userNickname],
+    [checkNicknameAvailable, resultTextDispatch, userNickname],
   );
 
   const onInputChange = useCallback(
