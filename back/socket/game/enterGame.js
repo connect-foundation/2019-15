@@ -64,10 +64,14 @@ function enterPrivate(gameSocket, roomInfo, { nickname, avatar }) {
     room.sendUserList(this.gameIo);
   }, 0);
 
-  if (room.isPlayingQuestion()) {
+  if (room.isSelectingWord()) {
+    gameSocket.emit('movePrivate');
     setTimeout(() => {
-      gameSocket.emit('movePrivate');
-    }, 0);
+      room.sendUserList(this.gameIo);
+      gameSocket.emit('gamestart', room.makeGameStartData());
+    }, WAIT_UNTIL_USER_ADD_EVENT);
+  } else if (room.isPlayingQuestion()) {
+    gameSocket.emit('movePrivate');
 
     setTimeout(() => {
       room.sendUserList(this.gameIo);
