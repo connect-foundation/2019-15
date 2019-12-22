@@ -10,7 +10,7 @@ User.propTypes = {
     nickname: PropTypes.string,
     socketId: PropTypes.string,
     avatar: PropTypes.number,
-    isRoomOwner: PropTypes.bool,
+    roomOwner: PropTypes.bool,
   }).isRequired,
 };
 
@@ -19,7 +19,7 @@ export default function User({ user }) {
   return (
     <UserStyle>
       <Avatar src={getAvatar(user.avatar)} />
-      <Text isRoomOwner={user.isRoomOwner} title={user.nickname}>
+      <Text roomOwner={user.roomOwner} title={user.nickname}>
         <RoomOwner src={crown} />
         {user.nickname}
       </Text>

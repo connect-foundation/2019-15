@@ -2,18 +2,12 @@ import character1 from 'asset/character1.png';
 import character2 from 'asset/character2.png';
 import character3 from 'asset/character3.png';
 
+export const avatar = {
+  '0': character1,
+  '1': character2,
+  '2': character3,
+};
 export function getAvatar(index) {
-  switch (index) {
-    case 0:
-      return character1;
-
-    case 1:
-      return character2;
-
-    case 2:
-      return character3;
-
-    default:
-      throw new Error();
-  }
+  if (!avatar[index]) throw new Error('aba');
+  return avatar[index];
 }

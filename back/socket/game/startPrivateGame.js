@@ -8,7 +8,7 @@ function startPrivateGame(gameSocket, roomInfo, { expireTime, round, categoryId 
 
   if (room.isPlayable()) {
     room.timer.expireTime = expireTime * 1000; // 밀리초
-    room.totalRound = round;
+    room.totalRound = round * 1;
     room.categoryId = categoryId;
     this.gameIo.to(roomId).emit('movePrivate');
     this.gameIo.to(roomId).emit('roomCategory', { categoryId: room.categoryId });

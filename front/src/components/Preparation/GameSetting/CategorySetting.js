@@ -30,6 +30,7 @@ export default function CategorySetting({
   const options = Object.values(data.getCategories).map((dbData) => {
     return { text: dbData.category, value: dbData.id };
   });
+  options.splice(0, 0, { text: '전체', value: null });
 
   return (
     <>

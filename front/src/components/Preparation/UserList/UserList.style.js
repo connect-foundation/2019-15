@@ -48,6 +48,6 @@ export const Text = styled.div`
   word-wrap: normal;
   overflow: hidden;
   img {
-    display: ${({ isRoomOwner }) => (isRoomOwner ? 'inline' : 'none')};
+    display: ${({ roomOwner }) => (roomOwner ? 'inline' : 'none')};
   }
 `;
