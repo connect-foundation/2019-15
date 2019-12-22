@@ -7,13 +7,24 @@ import Ranking from 'components/Ranking/Ranking';
 import VideoSection from 'components/VideoSection/VideoSection';
 import { checkAuth } from 'utils/catchmymind/auth';
 import GlobalContext from 'global.context';
+import { useHistory } from 'react-router-dom';
 
 export default function MyPage() {
-  const { setIsLogin } = useContext(GlobalContext);
+  const { setIsLogin, isLogin } = useContext(GlobalContext);
+  const history = useHistory();
 
   useEffect(() => {
     checkAuth(null, setIsLogin);
   });
+
+  const moveHome = () => {
+    history.replace('/');
+  };
+
+  if (!isLogin) {
+    moveHome();
+    return <></>;
+  }
 
   return (
     <>

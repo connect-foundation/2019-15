@@ -6,12 +6,16 @@ import NavigationBar from 'components/NavigationBar/NavigationBar';
 import useGameSocket from 'hooks/Socket/useGameSocket';
 
 export default function Waiting() {
-  const { gameSocket } = useContext(GlobalSocket);
+  const { gameSocket, isLogin } = useContext(GlobalSocket);
   const [userList, setUserList] = useState([]);
   const [isRoomOwner, setIsRoomOwner] = useState(false);
 
   const { hash } = useParams();
   const history = useHistory();
+
+  const moveHome = () => {
+    history.replace('/');
+  };
 
   useGameSocket('userList', ({ playerList }) => {
     const parsedList = JSON.parse(playerList);
@@ -25,6 +29,11 @@ export default function Waiting() {
   useGameSocket('roomOwner', () => {
     setIsRoomOwner(true);
   });
+
+  if (!isLogin) {
+    moveHome();
+    return <></>;
+  }
 
   if (!gameSocket) {
     history.replace(`/setting${hash}`);
