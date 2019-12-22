@@ -54,6 +54,10 @@
 | Sprint 4 | 디자인 변경  | 리팩토링, 버그픽스    | 캔버스 소켓 통신, 알림 리팩토링 |  문제 종료, 라운드 변경, 프론트 코드 리팩토링(지영이와 페어 코딩) |
 | Sprint 5 |   정답 기능 구현, 친구 리팩토링     |  아바타 선택 기능  | 캔버스 툴 추가, 게임 초대 | 타이머 정확도 개선, 난입에 대한 예외처리, 게임 종료 로직 구현 |
 | Sprint 6 |   게임 기록 움짤 기능 구현, 내정보 동기화                      |  소켓 리팩토링, 버그픽스, 아바타, 비밀방 게임설정 | 캔버스 소켓 통신 방법 수정,알림 버그 픽스, 프론트 리팩토링 | 탈주 예외 처리, 라이센스 및 카피라이트 추가,useGamePlay 리팩토링, 404페이지 추가
+
+## Architecture
+![architecture](https://i.imgur.com/kJNMTlC.png)
+
 ## Environment
 ### FRONT
 - React (16.11.0)
@@ -83,6 +87,9 @@
 ### etc
 - ESLint - airbnb (6.1.0)
 - dotenv (8.2.0)
+
+## DB ERD
+![ERD](https://i.imgur.com/wHqvVP5.png)
 
 ## Directory
 ### Frontend
@@ -156,9 +163,6 @@
 ## Sequence Diagram
 ### 랜덤 게임
 ![Sequence Diagram](https://i.imgur.com/tRz3C1P.png)
-
-## DB
-![ERD](https://i.imgur.com/wHqvVP5.png)
 
 ## Document
 ### [Ground Rule](https://github.com/connect-foundation/2019-15/wiki/%EA%B7%B8%EB%9D%BC%EC%9A%B4%EB%93%9C-%EB%A3%B0)
