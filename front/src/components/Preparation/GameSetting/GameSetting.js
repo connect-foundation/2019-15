@@ -75,19 +75,19 @@ export default function GameSetting({ isRoomOwner, waitingUserList }) {
         disabled={!isRoomOwner}
         onChangeTimer={onChangeTimer}
         timerRef={timerRef}
-        defaultOption={defaultTime}
+        defaultOption={timer}
       />
       <RoundSetting
         disabled={!isRoomOwner}
         onChangeRound={onChangeRound}
         roundRef={roundRef}
-        defaultOption={defaultRound}
+        defaultOption={round}
       />
       <CategorySetting
         disabled={!isRoomOwner}
         onChangeCategory={onChangeCategory}
         categoryRef={categoryRef}
-        defaultOption={defaultCategoryId}
+        defaultOption={categoryId}
       />
       <StartBtn disabled={!isRoomOwner} onClick={clickStartBtn}>
         게임 시작

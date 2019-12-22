@@ -24,7 +24,7 @@ export default function RoundSetting({
       {'라운드'}
       <Select
         disabled={disabled}
-        option={roundOptions}
+        optionList={roundOptions}
         defaultOption={defaultOption}
         onChangeSelect={onChangeRound}
         reference={roundRef}

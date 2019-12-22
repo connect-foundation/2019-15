@@ -39,7 +39,7 @@ export default function CategorySetting({
       {'카테고리'}
       <Select
         disabled={disabled}
-        option={options}
+        optionList={options}
         onChangeSelect={onChangeCategory}
         reference={categoryRef}
         defaultOption={defaultOption}
