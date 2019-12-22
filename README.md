@@ -170,6 +170,9 @@
 ### [Sharing Technology](https://github.com/connect-foundation/2019-15/wiki/%EA%B8%B0%EC%88%A0-%EA%B3%B5%EC%9C%A0)
 ### [Wiki](https://github.com/connect-foundation/2019-15/wiki)
 
+## Promotional Video
+📺[홍보 영상](https://youtu.be/j5HjPBZd2ko)
+
 ## Getting started
 Initialize DB Tables
 
