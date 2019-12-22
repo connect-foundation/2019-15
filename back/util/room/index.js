@@ -70,7 +70,7 @@ class Room {
 
   removePlayer(userIndex) {
     if (userIndex < 0) return;
-    if (this.players[userIndex].privileged === true) this.answererCount -= 1;
+    if (this.players[userIndex].privileged) this.answererCount -= 1;
     this.players.splice(userIndex, 1);
 
     if (this.players.length === 1) {
@@ -125,6 +125,7 @@ class Room {
       case escapeResultCode.IS_WAITING: {
         this.timer.stop();
         this.resetAllPlayerPrivilege();
+        this.resetAnswererCount();
         gameSocket.to(this.roomId).emit('prepareNewGame');
         break;
       }
@@ -169,8 +170,8 @@ class Room {
     return this.answererCount === this.players.length - 1;
   }
 
-  isQuestionEnd() {
-    return this.answererCount === this.players.length - 1;
+  resetAnswererCount() {
+    this.answererCount = 0;
   }
 
   isLastRound() {

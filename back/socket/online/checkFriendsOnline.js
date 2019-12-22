@@ -6,7 +6,6 @@ async function checkFriendsOnline(nodeCache, socketUser, socket, friends) {
     }
     return acc;
   }, {});
-  console.log(onlineFriends);
   this.onlineIo.to(socket.id).emit('checkFriendsOnline', onlineFriends);
 }
 
