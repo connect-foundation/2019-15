@@ -40,6 +40,7 @@ export default function Video() {
             const date = new Date(Number(value.createdAt));
             return (
               <WordButton
+                key={value.id}
                 onClick={() =>
                   setModalWord({ questionId: value.id, word: value.word })
                 }
