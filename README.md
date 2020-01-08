@@ -56,7 +56,7 @@
 | Sprint 6 |   게임 기록 움짤 기능 구현, 내정보 동기화                      |  소켓 리팩토링, 버그픽스, 아바타, 비밀방 게임설정 | 캔버스 소켓 통신 방법 수정,알림 버그 픽스, 프론트 리팩토링 | 탈주 예외 처리, 라이센스 및 카피라이트 추가,useGamePlay 리팩토링, 404페이지 추가
 
 ## Architecture
-![Architecture](https://i.imgur.com/CE8RnRs.png)
+![Architecture](https://i.imgur.com/AtP3KYT.png)
 
 ## Environment
 ### FRONT
