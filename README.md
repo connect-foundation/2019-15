@@ -155,7 +155,6 @@
     - Socket Room
     - Throttle
     - Debounce
-    - Expoenetial Reconnection
 - requestAnimationFrame in React
 - canvas with Fabric.js and custom drawing tool
 - cursor based lazy loading and infinite scroll
