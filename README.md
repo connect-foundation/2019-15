@@ -18,6 +18,8 @@
 ![Website](https://img.shields.io/website?url=http%3A%2F%2Fcatchmymind.shop)
 
 ## Link
+### 시연영상
+:green_heart: [시연영상 link](https://drive.google.com/file/d/1h-iDZHIYuQRvc17M-m5dYhQROs1PaOIq/view)
 ### Release
 :house: http://catchmymind.shop/
 ### Develop
