@@ -50,7 +50,7 @@
     "request-promise": "^4.2.5",
     "sequelize": "^5.19.6",
     "sequelize-cli": "^5.5.1",
-    "socket.io": "^2.3.0",
+    "socket.io": "^2.5.0",
     "uuid": "^3.3.3"
   },
   "devDependencies": {
