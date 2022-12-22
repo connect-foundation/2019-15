@@ -16,7 +16,7 @@
     "graphql-tag": "^2.10.1",
     "history": "^4.10.1",
     "immer": "^5.0.2",
-    "jsonwebtoken": "^8.5.1",
+    "jsonwebtoken": "^9.0.0",
     "prop-types": "^15.7.2",
     "react": "^16.11.0",
     "react-apollo": "^3.1.3",
