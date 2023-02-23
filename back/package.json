@@ -48,7 +48,7 @@
     "passport-google-oauth": "^2.0.0",
     "request": "^2.88.0",
     "request-promise": "^4.2.5",
-    "sequelize": "^5.19.6",
+    "sequelize": "^6.28.2",
     "sequelize-cli": "^5.5.1",
     "socket.io": "^2.3.0",
     "uuid": "^3.3.3"
